@@ -1,0 +1,172 @@
+section {
+    height: 100vh;
+    max-height: 100%;
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #ECEEFE; // TEST IN GLOABL
+    
+    mat-card {
+        width: 400px;
+        padding: 25px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        h1 {
+            margin: 2rem;
+
+            color: #454DF1; // TEST IN GLOABL
+            font-size: 3rem;
+            font-weight: 600;
+        }
+
+        p {
+            text-align: center;
+        }
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 35px;
+
+    input {
+        font-family: 'Nunito';
+        padding: 15px 30px;
+        width: 100%;
+        height: 45px;
+        position: relative;
+
+        background: #ECEEFE; // TEST IN GLOABL
+        border: 1px solid #ECEEFE; // TEST IN GLOABL
+        border-radius: 50px;
+        box-sizing: border-box;
+        transition: all 225ms ease-in-out;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid black; // TEST IN GLOABL
+        }
+    }
+}
+
+.input-parent {
+    width: 100%;
+}
+
+.forgot-password {
+    padding: 5px;
+
+    color: #454DF1; // TEST IN GLOABL;
+    border: 1px solid transparent;
+    border-radius: 50px;
+    transition: all 225ms ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #ECEEFE; // TEST IN GLOABL
+    }
+}
+
+.or-parent {
+    width: 100%;
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .grey-line {
+        z-index: 1;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        left: 0;
+        border: 1px solid #adb0d9; // TEST IN GLOABL
+    }
+
+    .or-child {
+        padding: 10px;
+        background-color: #ffffff; // TEST IN GLOABL
+
+        z-index: 2 !important;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.button-google {
+    width: 100%;
+    height: 45px;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 1rem;
+    color: #454DF1; // TEST IN GLOABL;
+    background-color: #ECEEFE; // TEST IN GLOABL
+    border-radius: 50px;
+    border: 0px;
+    transition: all 225ms ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        border: 1px solid #454DF1; // TEST IN GLOABL
+        font-weight: 600;
+    }
+}
+
+.button-bottom-parent {
+    display: flex;
+    gap: 16px;
+
+    button,a {
+        width: 125px;
+        height: 45px;
+    
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        border: 1px solid #454DF1; // TEST IN GLOABL
+        box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
+        transition: all 225ms ease-in-out;
+        cursor: pointer;
+    }
+
+    .button-sign-in {
+        color: #ffffff; // TEST IN GLOABL;
+        background-color: #454DF1; // TEST IN GLOABL
+
+        &:hover {
+            background-color: #575ff7; // TEST IN GLOABL
+        }
+    }
+    
+    .button-guest-login {
+        color: #454DF1; // TEST IN GLOABL;
+        background-color: #ffffff; // TEST IN GLOABL
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:hover {
+            color: #ffffff; // TEST IN GLOABL
+            background-color: #454DF1; // TEST IN GLOABL;
+        }
+    }
+}
+

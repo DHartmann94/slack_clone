@@ -3,23 +3,46 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { TestComponent } from './test/test.component';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environments } from 'src/environments/environment.prod';
 import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 
+
+import { MatCardModule } from '@angular/material/card';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatButtonModule } from '@angular/material/button';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
+import { StartscreenComponent } from './startscreen/startscreen.component';
+import { SignInComponent } from './sign-in/sign-in.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { BoardComponent } from './board/board.component';
+
+import { HeaderBarComponent } from './header-bar/header-bar.component';
+import { ChannelsComponent } from './channels/channels.component';
+
 @NgModule({
   declarations: [
     AppComponent,
-    TestComponent,
-    UserProfileCardComponent
+    UserProfileCardComponent,
+    StartscreenComponent,
+    SignInComponent,
+    SignUpComponent,
+    BoardComponent,
+    HeaderBarComponent,
+    ChannelsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    provideFirebaseApp(() => initializeApp(environments.firebase)),
+    MatCardModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatToolbarModule,
     provideFirebaseApp(() => initializeApp(environments.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
