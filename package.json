@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^15.2.0",
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
-    "firebase": "angular/fire",
+    "firebase": "github:angular/fire",
     "firebase-tools": "^12.4.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

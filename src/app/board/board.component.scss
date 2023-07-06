@@ -1,0 +1,57 @@
+.grid-view-component {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(10, 1fr);
+    height: 100vh;
+
+    .grid-view-header {
+        grid-column: 1/7;
+        grid-row: 1/1;
+    }
+
+    .grid-view-channels {
+        grid-row: 2/11;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    } 
+
+    .board-container {
+        grid-column: 2/7;
+        grid-row: 2/4;
+    }
+
+    .add-task-container {
+        grid-column: 2/11;
+        grid-row: 2/11;
+        margin-top: 2rem;
+        max-width: 900px;
+        margin-left: 80px;
+        margin-right: 1rem;
+        overflow-y: auto;
+    }
+
+    .contacts-container {
+        display: flex;
+        flex-direction: row;
+        grid-row: 2/ 11;
+        grid-column: 2/ 11;
+    }
+
+    .summary-container {
+        grid-column: 2/ 11;
+        grid-row: 2/11;
+        overflow-y: auto;
+        margin-top: 2rem;
+        margin-left: 80px;
+    }
+
+    .contact-icons-small {
+        position: relative;
+        bottom: 44px;
+        left: 22px;
+        display: flex;
+        flex-direction: column;
+    }
+}

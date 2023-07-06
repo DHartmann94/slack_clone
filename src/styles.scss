@@ -1,13 +1,21 @@
-@import "src/styles.variables.scss";
-@import "src/assets/scss/fonts.scss";
+@import "./styles.variables.scss";
+@import "./assets/scss/fonts.scss";
 
 html,
 body {
-    font-family: 'Nunito', Arial, Helvetica, sans-serif;
+    font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
     margin: 0px;
-    color: $color-test;
+    background-color: var(--bg-color);
 }
 
+:root {
+  --c-darkblue: rgb(42, 54, 71);
+  --c-text-grey: #686868;
+  --white: #f5f5f5;
+  --c-light-purple: #ADB0D9;
+  --c-purple: #444DF2;
+  --bg-color: #ECEEFE;
+}
 
 /*------ SCROLLBAR ------*/
 /* width */
@@ -32,3 +40,6 @@ body {
     background: #555; 
   }
 
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
