@@ -8,27 +8,86 @@ section {
     justify-content: center;
     align-items: center;
 
-    background-color: #ECEEFE; // TEST IN GLOABL
+    background-color: var(--bg-color);
+
+    a { // TEST GLOABAL?????
+        color: var(--c-purple);
+        text-decoration: none;
+        transition: all 225ms ease-in-out;
+        cursor: pointer;
+    }
+}
+
+/*------ Header ------*/
+.header-parent {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+
+    padding: 10px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h1 {
+        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
+        margin: 2rem;
+
+        color: var(--c-purple);
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    a {
+        padding: 5px;
+
+        border: 1px solid transparent;
+        border-radius: 50px;
     
-    mat-card {
-        width: 400px;
-        padding: 25px;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        h1 {
-            margin: 2rem;
-
-            color: #454DF1; // TEST IN GLOABL
-            font-size: 3rem;
-            font-weight: 600;
+        &:hover {
+            border: 1px solid var(--c-light-purple);
         }
+    }
+}
 
-        p {
-            text-align: center;
-        }
+.header-logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    p {
+        margin: 0px;
+    }
+}
+
+/*------ Sign-in Card ------*/
+mat-card {
+    width: 400px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
+        margin: 2rem;
+
+        color: var(--c-purple);
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    p {
+        text-align: center;
     }
 }
 
@@ -46,8 +105,8 @@ form {
         height: 45px;
         position: relative;
 
-        background: #ECEEFE; // TEST IN GLOABL
-        border: 1px solid #ECEEFE; // TEST IN GLOABL
+        background: var(--bg-color);
+        border: 1px solid var(--bg-color);
         border-radius: 50px;
         box-sizing: border-box;
         transition: all 225ms ease-in-out;
@@ -66,14 +125,11 @@ form {
 .forgot-password {
     padding: 5px;
 
-    color: #454DF1; // TEST IN GLOABL;
     border: 1px solid transparent;
     border-radius: 50px;
-    transition: all 225ms ease-in-out;
-    cursor: pointer;
 
     &:hover {
-        background-color: #ECEEFE; // TEST IN GLOABL
+        background-color: var(--bg-color);
     }
 }
 
@@ -91,12 +147,12 @@ form {
         top: 50%;
         right: 0;
         left: 0;
-        border: 1px solid #adb0d9; // TEST IN GLOABL
+        border: 1px solid var(--c-light-purple);
     }
 
     .or-child {
         padding: 10px;
-        background-color: #ffffff; // TEST IN GLOABL
+        background-color: var(--white);
 
         z-index: 2 !important;
         position: absolute;
@@ -116,15 +172,15 @@ form {
     justify-content: center;
     
     font-size: 1rem;
-    color: #454DF1; // TEST IN GLOABL;
-    background-color: #ECEEFE; // TEST IN GLOABL
+    color: var(--c-purple);
+    background-color: var(--bg-color);
     border-radius: 50px;
     border: 0px;
     transition: all 225ms ease-in-out;
     cursor: pointer;
 
     &:hover {
-        border: 1px solid #454DF1; // TEST IN GLOABL
+        border: 1px solid var(--c-purple);
         font-weight: 600;
     }
 }
@@ -140,15 +196,15 @@ form {
         font-size: 1rem;
         font-weight: 600;
         border-radius: 50px;
-        border: 1px solid #454DF1; // TEST IN GLOABL
+        border: 1px solid var(--c-purple);
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
         transition: all 225ms ease-in-out;
         cursor: pointer;
     }
 
     .button-sign-in {
-        color: #ffffff; // TEST IN GLOABL;
-        background-color: #454DF1; // TEST IN GLOABL
+        color: var(--white);
+        background-color: var(--c-purple);
 
         &:hover {
             background-color: #575ff7; // TEST IN GLOABL
@@ -156,16 +212,16 @@ form {
     }
     
     .button-guest-login {
-        color: #454DF1; // TEST IN GLOABL;
-        background-color: #ffffff; // TEST IN GLOABL
+        color: var(--c-purple);
+        background-color: var(--white);
 
         display: flex;
         align-items: center;
         justify-content: center;
 
         &:hover {
-            color: #ffffff; // TEST IN GLOABL
-            background-color: #454DF1; // TEST IN GLOABL;
+            color: var(--white);
+            background-color: var(--c-purple);
         }
     }
 }

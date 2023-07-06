@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { environments } from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment.prod';
 import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 
 
@@ -38,12 +38,12 @@ import { ChannelsComponent } from './channels/channels.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    provideFirebaseApp(() => initializeApp(environments.firebase)),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     MatCardModule,
     MatSidenavModule,
     MatButtonModule,
     MatToolbarModule,
-    provideFirebaseApp(() => initializeApp(environments.firebase)),
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],
