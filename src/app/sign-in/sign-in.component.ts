@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 
 @Component({
@@ -6,30 +7,39 @@ import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent {
+export class SignInComponent implements OnInit {
+  isSignIn: boolean = false;
 
-  allUsers: any = [];
+  signInForm = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', Validators.required),
+  });
 
   constructor(private firestore: Firestore) { }
 
   ngOnInit(): void {
-    this.getUsersFromFirebase();
   }
 
-  /**
-   * Retrieves user data from Firebase Firestore and onSnapshot() listens for real-time changes.
-   * map; Converts the documents in the snapshot into an array of user objects.
-   * id: doc.id, ...doc.data(); Find the ID in the Firebase object using the spread operator.
-   * allUsers = []; Updates the local variable with the new user data.
-   */
-  getUsersFromFirebase() {
-    let changes;
-    const collectionUsersRef = collection(this.firestore, 'user');
-    onSnapshot(collectionUsersRef, (snapshot) => {
-      changes = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // ...doc.data = Spread Operator
-      this.allUsers = changes;
-      console.log('Users:', this.allUsers);
-    });
+
+  signIn() {
+    if (this.signInForm.invalid) {
+      return;
+    }
+    this.isSignIn = true;
+    this.signInForm.disable();
+
+    let data = {
+      email: this.signInForm.value.email,
+      password: this.signInForm.value.password,
+    }
+    
+    console.log('Daten: ', data);
+
+    setTimeout(() => {
+      this.signInForm.enable();
+      this.isSignIn = false;
+    }, 3000);
   }
+
 
 }

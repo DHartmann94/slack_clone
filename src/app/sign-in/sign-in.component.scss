@@ -100,9 +100,9 @@ form {
 
     input {
         font-family: 'Nunito';
-        padding: 15px 30px;
+        padding: 15px 40px;
         width: 100%;
-        height: 45px;
+        height: 50px;
         position: relative;
 
         background: var(--bg-color);
@@ -119,7 +119,19 @@ form {
 }
 
 .input-parent {
+    position: relative;
     width: 100%;
+
+    img {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+    }
+
+    div {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .forgot-password {
@@ -164,7 +176,7 @@ form {
 
 .button-google {
     width: 100%;
-    height: 45px;
+    height: 50px;
 
     display: flex;
     flex-direction: row;

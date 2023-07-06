@@ -13,12 +13,20 @@
         <mat-card>
             <h1>Sign in</h1>
             <p>We recommend using the email address you use at work.</p>
-            <form>
+            <form (ngSubmit)="signIn()" [formGroup]="signInForm">
                 <div class="input-parent">
-                    <input [placeholder]="'example@email.com'" required>
+                    <input type="email" formControlName="email" [placeholder]="'example@email.com'" required>
+                    <img src="./assets/img/icons/mail.png">
+                    <div *ngIf="signInForm.controls['email'].invalid && (signInForm.controls['email'].dirty || signInForm.controls['email'].touched)">
+                        <span>Please enter a valid email-adress.</span>
+                    </div>
                 </div>
                 <div class="input-parent">
-                    <input [placeholder]="'Password'" required>
+                    <input type="password" formControlName="password" [placeholder]="'Password'" required>
+                    <img src="./assets/img/icons/lock.png">
+                    <div *ngIf="signInForm.controls['password'].invalid && (signInForm.controls['password'].dirty || signInForm.controls['password'].touched)">
+                        <span>Your password is required.</span>
+                    </div>
                 </div>
 
                 <a class="forgot-password">Forgot password?</a>
@@ -34,7 +42,7 @@
                 </button>
 
                 <div class="button-bottom-parent">
-                    <button class="button-sign-in">Login</button>
+                    <button type="submit" [disabled]="isSignIn" class="button-sign-in">Login</button>
                     <a class="button-guest-login">Guest-Login</a>
                 </div>
             </form>
