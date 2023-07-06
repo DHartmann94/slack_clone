@@ -16,14 +16,14 @@
             <form (ngSubmit)="signIn()" [formGroup]="signInForm">
                 <div class="input-parent">
                     <input type="email" formControlName="email" [placeholder]="'example@email.com'" required>
-                    <img src="./assets/img/icons/mail.png">
+                    <img src="./assets/img/icons/mail.png" alt="EMail">
                     <div *ngIf="signInForm.controls['email'].invalid && (signInForm.controls['email'].dirty || signInForm.controls['email'].touched)">
                         <span>Please enter a valid email-adress.</span>
                     </div>
                 </div>
                 <div class="input-parent">
                     <input type="password" formControlName="password" [placeholder]="'Password'" required>
-                    <img src="./assets/img/icons/lock.png">
+                    <img src="./assets/img/icons/lock.png" alt="Lock">
                     <div *ngIf="signInForm.controls['password'].invalid && (signInForm.controls['password'].dirty || signInForm.controls['password'].touched)">
                         <span>Your password is required.</span>
                     </div>

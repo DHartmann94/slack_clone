@@ -1,1 +1,41 @@
-<p>sign-up works!</p>
+<section>
+    <div class="header-parent">
+        <div class="header-logo-container">
+            <img src="./assets/imgs/Logo.png" alt="Logo">
+            <h1>DABubble</h1>
+        </div>
+    </div>
+
+    <mat-card>
+        <img routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
+        <h1>Sign Up</h1>
+        <p>With your name, email address and password, create your new DABubble account.</p>
+        <form (ngSubmit)="signUp()" [formGroup]="signUpForm">
+            <div class="input-parent">
+                <input type="text" formControlName="email" [placeholder]="'First- and last name'" required>
+                <img src="./assets/img/icons/person.png" alt="Person">
+                <div *ngIf="signUpForm.controls['email'].invalid && (signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)">
+                    <span>Please enter a valid first- and last name'.</span>
+                </div>
+            </div>
+            <div class="input-parent">
+                <input type="email" formControlName="email" [placeholder]="'example@email.com'" required>
+                <img src="./assets/img/icons/mail.png" alt="EMail">
+                <div *ngIf="signUpForm.controls['email'].invalid && (signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)">
+                    <span>Please enter a valid email-adress.</span>
+                </div>
+            </div>
+            <div class="input-parent">
+                <input type="password" formControlName="password" [placeholder]="'Password'" required>
+                <img src="./assets/img/icons/lock.png" alt="Lock">
+                <div *ngIf="signUpForm.controls['password'].invalid && (signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)">
+                    <span>Your password is required.</span>
+                </div>
+            </div>
+
+            <div class="button-bottom-parent">
+                <button type="submit" [disabled]="isSignUp" class="button-sign-up">Next</button>
+            </div>
+        </form>
+    </mat-card>
+</section>

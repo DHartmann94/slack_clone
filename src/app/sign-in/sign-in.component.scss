@@ -10,6 +10,15 @@ section {
 
     background-color: var(--bg-color);
 
+    h1 {
+        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
+        margin: 2rem;
+
+        color: var(--c-purple);
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
     a { // TEST GLOABAL?????
         color: var(--c-purple);
         text-decoration: none;
@@ -31,15 +40,6 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    h1 {
-        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
-        margin: 2rem;
-
-        color: var(--c-purple);
-        font-size: 3rem;
-        font-weight: bold;
-    }
 
     a {
         padding: 5px;
@@ -76,15 +76,6 @@ mat-card {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    h1 {
-        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
-        margin: 2rem;
-
-        color: var(--c-purple);
-        font-size: 3rem;
-        font-weight: bold;
-    }
 
     p {
         text-align: center;
