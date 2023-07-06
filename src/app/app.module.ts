@@ -12,13 +12,15 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { MatCardModule } from '@angular/material/card';
+import { StartscreenComponent } from './startscreen/startscreen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TestComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    StartscreenComponent
   ],
   imports: [
     BrowserModule,
