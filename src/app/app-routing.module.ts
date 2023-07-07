@@ -5,6 +5,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { BoardComponent } from './board/board.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
+import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 
 const routes: Routes = [ 
   { path: 'sign-in', component: SignInComponent },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'board', component: BoardComponent, children: [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent }
-  ]}
+  ]},
+  { path: 'user-profile-card', component: UserProfileCardComponent}
 ];
 
 

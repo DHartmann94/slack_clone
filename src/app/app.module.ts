@@ -6,7 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
-import { environment } from 'src/environments/environment.prod';
+import { environments } from 'src/environments/environment.prod';
 import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +15,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from "@angular/material/icon";
 
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -41,12 +42,13 @@ import { ChannelsComponent } from './channels/channels.component';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirebaseApp(() => initializeApp(environments.firebase)),
     MatCardModule,
     MatSidenavModule,
     MatButtonModule,
     MatToolbarModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    MatIconModule,
+    provideFirebaseApp(() => initializeApp(environments.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],

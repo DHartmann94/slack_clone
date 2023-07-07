@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 
+
 @Component({
   selector: 'app-user-profile-card',
   templateUrl: './user-profile-card.component.html',
@@ -8,3 +9,4 @@ import { Component } from '@angular/core';
 export class UserProfileCardComponent {
 
 }
+
