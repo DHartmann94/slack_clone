@@ -9,6 +9,7 @@ import { Firestore, collection, onSnapshot } from '@angular/fire/firestore';
 })
 export class SignInComponent implements OnInit {
   isSignIn: boolean = false;
+  submitted: boolean = false;
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -22,6 +23,7 @@ export class SignInComponent implements OnInit {
 
 
   signIn() {
+    this. submitted = true;
     if (this.signInForm.invalid) {
       return;
     }
@@ -38,6 +40,7 @@ export class SignInComponent implements OnInit {
     setTimeout(() => {
       this.signInForm.enable();
       this.isSignIn = false;
+      this. submitted = false;
     }, 3000);
   }
 
