@@ -15,16 +15,16 @@
             <p>We recommend using the email address you use at work.</p>
             <form (ngSubmit)="signIn()" [formGroup]="signInForm">
                 <div class="input-parent">
-                    <input type="email" formControlName="email" [placeholder]="'example@email.com'" required>
+                    <input [ngClass]="{'error-border': signInForm.controls['email'].invalid && (submitted ||signInForm.controls['email'].dirty || signInForm.controls['email'].touched)}" type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                     <img src="./assets/img/icons/mail.png" alt="EMail">
-                    <div *ngIf="signInForm.controls['email'].invalid && (signInForm.controls['email'].dirty || signInForm.controls['email'].touched)">
+                    <div *ngIf="signInForm.controls['email'].invalid && (submitted || signInForm.controls['email'].dirty || signInForm.controls['email'].touched)" class="error-notification">
                         <span>Please enter a valid email-adress.</span>
                     </div>
                 </div>
                 <div class="input-parent">
-                    <input type="password" formControlName="password" [placeholder]="'Password'" required>
+                    <input [ngClass]="{'error-border': signInForm.controls['password'].invalid && (submitted ||signInForm.controls['password'].dirty || signInForm.controls['password'].touched)}" type="password" formControlName="password" [placeholder]="'Password'" required>
                     <img src="./assets/img/icons/lock.png" alt="Lock">
-                    <div *ngIf="signInForm.controls['password'].invalid && (signInForm.controls['password'].dirty || signInForm.controls['password'].touched)">
+                    <div *ngIf="signInForm.controls['password'].invalid && (submitted || signInForm.controls['password'].dirty || signInForm.controls['password'].touched)" class="error-notification">
                         <span>Your password is required.</span>
                     </div>
                 </div>
