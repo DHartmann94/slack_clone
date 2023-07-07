@@ -12,6 +12,7 @@ export class SignUpComponent implements OnInit {
   //user: User = new User();
   isSignUp: boolean = false;
   submitted: boolean = false;
+  showAccountNotification: boolean = false;
 
   signUpForm = new FormGroup({
     name: new FormControl('', [
@@ -65,6 +66,7 @@ export class SignUpComponent implements OnInit {
     await this.sendUserToAuthenticator();
     await this.sendUserToFirebase();
 
+    this.showsCreateAccountAnimation();
     setTimeout(() => {
       this.signUpForm.reset();
       this.signUpForm.enable();
@@ -88,6 +90,13 @@ export class SignUpComponent implements OnInit {
     addDoc(usersCollection, user.toJSON()).then(async (result) => {
       await getDoc(result);
     });
+  }
+
+  showsCreateAccountAnimation() {
+    this.showAccountNotification = true;
+    setTimeout(() => {
+      this.showAccountNotification = false;
+    }, 3000);
   }
 
 }
