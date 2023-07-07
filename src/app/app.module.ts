@@ -16,6 +16,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from "@angular/material/icon";
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -34,15 +35,15 @@ import { ChannelsComponent } from './channels/channels.component';
     SignUpComponent,
     BoardComponent,
     HeaderBarComponent,
-    ChannelsComponent
+    ChannelsComponent,
   ],
   imports: [
     BrowserModule,
+
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    provideFirebaseApp(() => initializeApp(environments.firebase)),
     MatCardModule,
     MatSidenavModule,
     MatButtonModule,
@@ -51,8 +52,11 @@ import { ChannelsComponent } from './channels/channels.component';
     provideFirebaseApp(() => initializeApp(environments.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    MatIconModule,
+    MatExpansionModule
+
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -15,7 +15,10 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-    } 
+        position: absolute;
+        top: 115px;
+        left: 50px;
+    }
 
     .board-container {
         grid-column: 2/7;
