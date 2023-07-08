@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Firestore, addDoc, collection, getDoc } from '@angular/fire/firestore';
 import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-up',
@@ -41,7 +42,7 @@ export class SignUpComponent implements OnInit {
     ]),
   });
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -58,7 +59,7 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
-  async checkEmailExist(emailLowerCase: string) {
+  async checkEmailExists(emailLowerCase: string) {
     const auth = getAuth();
 
     try {
@@ -68,7 +69,7 @@ export class SignUpComponent implements OnInit {
         console.log('Email existiert');
         return this.emailExists = true;
       }
-      
+
       console.log('Email existiert NICHT');
       return this.emailExists = false;;
 
@@ -85,21 +86,20 @@ export class SignUpComponent implements OnInit {
       return;
     }
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
-    this.checkEmailExist(emailLowerCase);
+    await this.checkEmailExists(emailLowerCase);
+    if (this.emailExists) {
+      this.resetEmailExistsError();
+      return;
+    }
 
     this.isSignUp = true;
     this.signUpForm.disable();
 
-    await this.sendUserToAuthenticator(emailLowerCase);
-    await this.sendUserToFirebase(emailLowerCase);
+    //await this.sendUserToAuthenticator(emailLowerCase);
+    //await this.sendUserToFirebase(emailLowerCase);
 
     this.showsCreateAccountAnimation();
-    setTimeout(() => {
-      this.signUpForm.reset();
-      this.signUpForm.enable();
-      this.isSignUp = false;
-      this.submitted = false;
-    }, 3000);
+    this.navigateToLogin();
   }
 
   async sendUserToAuthenticator(emailLowerCase: string) {
@@ -139,5 +139,22 @@ export class SignUpComponent implements OnInit {
       this.showAccountNotification = false;
     }, 3000);
   }
+
+  resetEmailExistsError() {
+    setTimeout(() => {
+      this.emailExists = false;
+    }, 3000);
+  }
+
+  navigateToLogin() {
+    setTimeout(() => {
+      this.signUpForm.reset();
+      this.signUpForm.enable();
+      this.isSignUp = false;
+      this.submitted = false;
+      //this.router.navigateByUrl("/sign-in");
+    }, 3500);
+  }
+
 
 }

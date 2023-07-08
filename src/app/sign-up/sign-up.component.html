@@ -34,15 +34,16 @@
             <!--- email --->
             <div class="input-parent">
                 <input
-                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)}"
+                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched) || emailExists}"
                     type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                 <img src="./assets/img/icons/mail.png" alt="EMail">
                 <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
                     class="error-notification">
-                    <span *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">Please enter a valid email-adress.</span>
-                    <!--- function --->
-                    <span *ngIf="emailExists">Email already exists.</span>
+                    <span *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                    Please enter a valid email-address.</span>
                 </div>
+                <!--- function --->
+                <span *ngIf="emailExists" class="error-notification">Email already exists.</span>
             </div>
             <!--- password --->
             <div class="input-parent">
