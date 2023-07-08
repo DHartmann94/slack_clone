@@ -37,9 +37,11 @@
                     [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)}"
                     type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                 <img src="./assets/img/icons/mail.png" alt="EMail">
-                <div *ngIf="signUpForm.controls['email'].invalid && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
+                <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
                     class="error-notification">
-                    <span>Please enter a valid email-adress.</span>
+                    <span *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">Please enter a valid email-adress.</span>
+                    <!--- function --->
+                    <span *ngIf="emailExists">Email already exists.</span>
                 </div>
             </div>
             <!--- password --->
@@ -71,8 +73,8 @@
                     class="error-notification">
                     <!--- required --->
                     <span *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
-                        Your password is required.</span>
-                    <!--- pattern --->
+                        Your confirm password is required.</span>
+                    <!--- function --->
                     <span *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
                         Your passwords do not match.</span>
                 </div>

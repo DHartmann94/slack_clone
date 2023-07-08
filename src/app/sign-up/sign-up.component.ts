@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, AsyncValidatorFn, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Firestore, addDoc, collection, getDoc } from '@angular/fire/firestore';
+import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
 @Component({
@@ -9,10 +10,11 @@ import { User } from 'src/models/user.class';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  //user: User = new User();
+  //user: User = new User(); // TEST
   isSignUp: boolean = false;
   submitted: boolean = false;
   showAccountNotification: boolean = false;
+  emailExists: boolean = false;
 
   signUpForm = new FormGroup({
     name: new FormControl('', [
@@ -24,7 +26,7 @@ export class SignUpComponent implements OnInit {
 
     email: new FormControl('', [
       Validators.required,
-      Validators.email
+      Validators.email,
     ]),
 
     password: new FormControl('', [
@@ -44,6 +46,7 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /*------ Validator-Funktions ------*/
   matchPassword(control: AbstractControl): ValidationErrors | null {
     const password = control.root.get('password');
     const confirmPassword = control.value;
@@ -55,16 +58,40 @@ export class SignUpComponent implements OnInit {
     return null;
   }
 
+  async checkEmailExist(emailLowerCase: string) {
+    const auth = getAuth();
+
+    try {
+      const emailResult = await fetchSignInMethodsForEmail(auth, emailLowerCase);
+
+      if (emailResult.length > 0) {
+        console.log('Email existiert');
+        return this.emailExists = true;
+      }
+      
+      console.log('Email existiert NICHT');
+      return this.emailExists = false;;
+
+    } catch (error) {
+      console.log('Error: ', error);
+      return this.emailExists = true;;
+    }
+  }
+
+  /*------ SIGN-UP ------*/
   async signUp() {
     this.submitted = true;
     if (this.signUpForm.invalid) {
       return;
     }
+    const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
+    this.checkEmailExist(emailLowerCase);
+
     this.isSignUp = true;
     this.signUpForm.disable();
 
-    await this.sendUserToAuthenticator();
-    await this.sendUserToFirebase();
+    await this.sendUserToAuthenticator(emailLowerCase);
+    await this.sendUserToFirebase(emailLowerCase);
 
     this.showsCreateAccountAnimation();
     setTimeout(() => {
@@ -75,14 +102,28 @@ export class SignUpComponent implements OnInit {
     }, 3000);
   }
 
-  async sendUserToAuthenticator() {
+  async sendUserToAuthenticator(emailLowerCase: string) {
+    const auth = getAuth();
+    const password: string = this.signUpForm.value.password ?? '';
 
+    createUserWithEmailAndPassword(auth, emailLowerCase, password)
+      .then((userCredential: any) => {
+        // Signed up 
+        const user = userCredential.user;
+        // ...
+      })
+      .catch((error: any) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('ERROR: ', errorCode, errorMessage);
+        // ..
+      });
   }
 
-  async sendUserToFirebase() {
+  async sendUserToFirebase(emailLowerCase: string) {
     let data = {
       name: this.signUpForm.value.name,
-      email: this.signUpForm.value.email,
+      email: emailLowerCase,
     }
     const user = new User(data);
 
