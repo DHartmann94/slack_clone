@@ -106,7 +106,7 @@ export class SignUpComponent implements OnInit {
     const auth = getAuth();
     const password: string = this.signUpForm.value.password ?? '';
 
-    createUserWithEmailAndPassword(auth, emailLowerCase, password)
+    await createUserWithEmailAndPassword(auth, emailLowerCase, password)
       .then((userCredential: any) => {
         // Signed up 
         const user = userCredential.user;
