@@ -13,20 +13,21 @@
         <mat-card>
             <h1>Sign in</h1>
             <p>We recommend using the email address you use at work.</p>
-            <form (ngSubmit)="signIn()" [formGroup]="signInForm">
+            <form (ngSubmit)="signIn(this.signInForm.value.email ?? '', this.signInForm.value.password ?? '')" [formGroup]="signInForm">
                 <div class="input-parent">
                     <input [ngClass]="{'error-border': signInForm.controls['email'].invalid && (submitted ||signInForm.controls['email'].dirty || signInForm.controls['email'].touched)}" type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                     <img src="./assets/img/icons/mail.png" alt="EMail">
                     <div *ngIf="signInForm.controls['email'].invalid && (submitted || signInForm.controls['email'].dirty || signInForm.controls['email'].touched)" class="error-notification">
-                        <span>Please enter a valid email-adress.</span>
+                        <mat-error>Please enter a valid email-adress.</mat-error>
                     </div>
                 </div>
                 <div class="input-parent">
                     <input [ngClass]="{'error-border': signInForm.controls['password'].invalid && (submitted ||signInForm.controls['password'].dirty || signInForm.controls['password'].touched)}" type="password" formControlName="password" [placeholder]="'Password'" required>
                     <img src="./assets/img/icons/lock.png" alt="Lock">
                     <div *ngIf="signInForm.controls['password'].invalid && (submitted || signInForm.controls['password'].dirty || signInForm.controls['password'].touched)" class="error-notification">
-                        <span>Your password is required.</span>
+                        <mat-error>Your password is required.</mat-error>
                     </div>
+                    <mat-error *ngIf="userNotFound"  class="error-notification">Email or Password are wrong!</mat-error>
                 </div>
 
                 <a class="forgot-password">Forgot password?</a>
@@ -42,8 +43,11 @@
                 </a>
 
                 <div class="button-bottom-parent">
-                    <button type="submit" [disabled]="isSignIn" class="button-sign-in">Login</button>
-                    <a class="button-guest-login">Guest-Login</a>
+                    <button type="submit" [disabled]="isSignIn" class="button-sign-in">
+                        <span *ngIf="!isSignIn">Login</span>
+                        <mat-spinner *ngIf="isSignIn"></mat-spinner>
+                    </button>
+                    <a (click)="signInGuest('guest@guest.com','Guest123!')" class="button-guest-login">Guest-Login</a>
                 </div>
             </form>
         </mat-card>

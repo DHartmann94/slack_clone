@@ -212,6 +212,10 @@ form {
         color: var(--white);
         background-color: var(--c-purple);
 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         &:hover {
             background-color: #575ff7; // TEST IN GLOABL
         }
@@ -234,7 +238,6 @@ form {
 
 .error-notification {
     font-size: 0.7rem;
-    color: #E61C40; // TEST IN GLOABL
 
     display: flex;
     flex-direction: column;
@@ -244,4 +247,13 @@ form {
 
 .error-border {
     border: 1px solid #E61C40 !important; // TEST IN GLOABL
+}
+
+mat-spinner {
+    width: 40px !important;
+    height: 40px !important;
+
+    ::ng-deep circle {
+        stroke: var(--white) !important;
+    }
 }
