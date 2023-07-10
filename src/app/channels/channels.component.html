@@ -4,12 +4,10 @@
     </mat-card-content>
     <div class="sidenav-icon"><img src="./assets/icons/show_menu.png" alt="#"></div>
 </mat-card>
-<mat-drawer-container *ngIf="showFiller" class="channel-container" autosize>
-    <mat-card>
+<mat-card *ngIf="showFiller" class="channel-container" autosize>
         <mat-drawer mode="side">
-            <p>Auto-resizing sidenav</p>
+            <div></div>
         </mat-drawer>
-    </mat-card>
-</mat-drawer-container>
+</mat-card>
 
 

@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ThreadsComponent implements OnInit {
 
+  closeFiller: boolean = true;
+
   constructor() {
 
   }
@@ -15,10 +17,8 @@ export class ThreadsComponent implements OnInit {
     
   }
 
-
-
   close() {
-
+    this.closeFiller = false;
   }
 
 }
