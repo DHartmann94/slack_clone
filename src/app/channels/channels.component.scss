@@ -40,4 +40,38 @@
     border-radius: 15px;
     padding: 32px 30px;
     margin: 15px;
+
+    .channel-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        .channel-info {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            column-gap: 10px;
+
+            h2 {
+                margin: 0;
+            }
+
+            .shape {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: lightgray;
+            }
+
+        }
+
+
+        .edit-icon {
+            width: 45px;
+            object-fit: scale-down;
+        }
+
+    }
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 
 @Component({
   selector: 'app-channels',
@@ -7,14 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ChannelsComponent implements OnInit {
 
-  showFiller: boolean = true; 
+  showFiller: boolean = true;
 
-  constructor() {
+  userData: UserDataInterface[] = [];
 
-  }
+  constructor(
+    private userDataService: UserDataService
+  ) { }
 
   ngOnInit(): void {
-    
+    this.userDataService.getUserData().subscribe(
+      userData => {
+        this.userData = userData;
+        console.log('Subscribed data:', userData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
   }
 
   toggle() {
