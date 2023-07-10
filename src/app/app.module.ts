@@ -14,6 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import {MatIconModule} from '@angular/material/icon';
 
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -21,6 +22,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { BoardComponent } from './board/board.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
+import { ThreadsComponent } from './threads/threads.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { ChannelsComponent } from './channels/channels.component';
     SignUpComponent,
     BoardComponent,
     HeaderBarComponent,
-    ChannelsComponent
+    ChannelsComponent,
+    ThreadsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +43,7 @@ import { ChannelsComponent } from './channels/channels.component';
     MatSidenavModule,
     MatButtonModule,
     MatToolbarModule,
+    MatIconModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),

@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 
 export class ChannelsComponent implements OnInit {
 
-  showFiller: boolean = true; 
+  showFiller = false;
 
   constructor() {
 
@@ -18,6 +18,6 @@ export class ChannelsComponent implements OnInit {
     
   }
   toggle() {
-
+    this.showFiller = !this.showFiller;
   }
 }
