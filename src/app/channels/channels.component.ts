@@ -6,11 +6,18 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./channels.component.scss'],
 })
 export class ChannelsComponent implements OnInit {
-  panelOpenState: boolean = false;
-  showFiller: boolean = true;
 
-  constructor() {}
+  showFiller: boolean = true; 
 
-  ngOnInit(): void {}
-  toggle() {}
+  constructor() {
+
+  }
+
+  ngOnInit(): void {
+    
+  }
+
+  toggle() {
+    this.showFiller = !this.showFiller;
+  }
 }

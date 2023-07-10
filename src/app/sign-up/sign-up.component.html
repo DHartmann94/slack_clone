@@ -7,7 +7,7 @@
     </div>
 
     <mat-card>
-        <img routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
+        <img class="arrow-img" routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
         <h1>Sign Up</h1>
         <p>With your name, email address and password, create your new DABubble account.</p>
         <form (ngSubmit)="signUp()" [formGroup]="signUpForm">
@@ -20,8 +20,7 @@
                 <div *ngIf="signUpForm.controls['name'].errors && (submitted || signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)"
                     class="error-notification">
                     <!--- required --->
-                    <span *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name is
-                        required.</span>
+                    <span *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name are required.</span>
                     <!--- minlength / maxlenght --->
                     <span *ngIf="signUpForm.controls['name'].errors['minlength']
                     || signUpForm.controls['name'].errors['maxlength']
@@ -35,13 +34,16 @@
             <!--- email --->
             <div class="input-parent">
                 <input
-                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)}"
+                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched) || emailExists}"
                     type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                 <img src="./assets/img/icons/mail.png" alt="EMail">
-                <div *ngIf="signUpForm.controls['email'].invalid && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
+                <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
                     class="error-notification">
-                    <span>Please enter a valid email-adress.</span>
+                    <span *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                    Please enter a valid email-address.</span>
                 </div>
+                <!--- function --->
+                <span *ngIf="emailExists" class="error-notification">Email already exists.</span>
             </div>
             <!--- password --->
             <div class="input-parent">
@@ -72,8 +74,8 @@
                     class="error-notification">
                     <!--- required --->
                     <span *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
-                        Your password is required.</span>
-                    <!--- pattern --->
+                        Your confirm password is required.</span>
+                    <!--- function --->
                     <span *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
                         Your passwords do not match.</span>
                 </div>
@@ -84,4 +86,10 @@
             </div>
         </form>
     </mat-card>
+
+    <div *ngIf="showAccountNotification" [class.account-message-animation]="showAccountNotification" class="account-create-send-message" #viewAnimation>
+        <div>
+            <span>Account created successfully!</span>
+        </div>
+    </div>
 </section>

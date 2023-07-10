@@ -1,4 +1,5 @@
 section {
+    width: 100%;
     height: 100vh;
     max-height: 100%;
     position: relative;
@@ -47,13 +48,30 @@ mat-card {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 
     h1 {
+        margin: 0rem 2rem 2rem 2rem;
         color: var(--c-purple);
     }
 
     p {
         text-align: center;
+    }
+}
+
+.arrow-img {
+    position: absolute;
+    top: 30px;
+    left: 25px;
+    padding: 3px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    transition: all 225ms ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--bg-color);
     }
 }
 
@@ -139,4 +157,62 @@ form {
 
 .error-border {
     border: 1px solid #E61C40 !important; // TEST IN GLOABL
+}
+
+/*------ Create Account Message ------*/
+.account-create-send-message {
+    z-index: 10000;
+    position: absolute;
+    top: 70%;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 15px 25px;
+    width: 326px;
+    height: 74px;
+    background-color: var(--c-purple);
+    border: 1px solid var(--c-purple);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    span {
+        color: var(--white);
+        font-weight: bold;
+    }
+
+    @media(max-width: 970px) {
+        width: 246px;
+        height: 54px;
+    }
+}
+
+.account-message-animation {
+    animation: leftToRight 0.8s ease-in-out forwards 0.2s;
+}
+
+@keyframes leftToRight {
+    from {
+        right: 0%;
+        transform: translateX(0%);
+        opacity: 0;
+    }
+
+    to {
+        right: 50%;
+        transform: translateX(50%);
+        opacity: 1;
+    }
 }

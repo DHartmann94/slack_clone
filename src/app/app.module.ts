@@ -1,3 +1,4 @@
+//<-----App----->//
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -7,24 +8,30 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment.prod';
-import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 
+
+//<-----Modules----->//
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
 import { MatCardModule } from '@angular/material/card';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from "@angular/material/icon";
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
+
+//<-----Components----->//
+import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { BoardComponent } from './board/board.component';
-
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
+import { ThreadsComponent } from './threads/threads.component';
+
 
 @NgModule({
   declarations: [
@@ -36,10 +43,11 @@ import { ChannelsComponent } from './channels/channels.component';
     BoardComponent,
     HeaderBarComponent,
     ChannelsComponent,
+    ThreadsComponent
+
   ],
   imports: [
     BrowserModule,
-
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,

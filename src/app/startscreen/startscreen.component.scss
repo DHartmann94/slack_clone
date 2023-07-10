@@ -7,39 +7,101 @@
 
 .background {
     height: 100vh;
-    width: 100%;
-    position: relative;
-    background-image: linear-gradient(#797ef3,  #323be6);
+    width: 100vw;
+    max-width: 100%;
+    position: fixed;
+    background-image: linear-gradient(#797ef3, #323be6);
     background-position: center;
-    object-fit: cover;
-    position: absolute;
-    top: 0;
-    left: 0;
+    background-size: cover;
     @extend .center;
 }
 
-.logo-container {
-    img {
-        height: 20vh;
-    }
+.hide-bg {
+    animation: hide 1s ease-in;
+}
+
+
+.logo {
+    height: 150px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    animation: slideLeft 2s ease;
+    z-index: 3;
+    transform: translate(-70%, -50%);
+    opacity: 1 !important;
 }
 
 .animation-headline {
     font-size: 70px;
     font-weight: bold;
     color: white;
-}
-
-.logo-container {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    transform: translate(25%, -50%);
+    animation: slideRight 2s ease;
     @extend .center;
 }
 
+.left-top-corner {
+    transition: all 1s ease;
+    left: 1vh !important;
+    top: 1vh !important;
+    scale: 0.5;
+    * {
+        transition: all 1s ease;
+        color: black !important;
+    }
+    
+}
 
 
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    height: 250px;
+    width: 400px;
+}
 
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translate(0, -50%);
+    }
 
+    30% {
+        opacity: 0;
+    }
 
+    100% {
+        opacity: 1;
+        transform: translate(25%, -50%);
+    }
+}
 
+@keyframes slideLeft {
+    0% {
 
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
 
+    100% {
+        transform: translate(-70%, -50%)rotate(360deg);
+    }
+}
+
+@keyframes hide {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
 

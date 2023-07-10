@@ -36,10 +36,10 @@
                     <div class="or-child">OR</div>
                 </div>
                 
-                <button class="button-google">
+                <a class="button-google" (click)="loginWithGoogle()">
                     <img src="./assets/img/icons/google.png" alt="Google">
                     <span>Sign in with Google</span>
-                </button>
+                </a>
 
                 <div class="button-bottom-parent">
                     <button type="submit" [disabled]="isSignIn" class="button-sign-in">Login</button>
