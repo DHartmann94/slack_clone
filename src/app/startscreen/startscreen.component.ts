@@ -7,11 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StartscreenComponent implements OnInit {
   hideIntro = true;
+  toLeft = false;
   
   
   ngOnInit(): void {
     setTimeout(() => {
-        this.hideIntro = false;
+        this.toLeft = true;
+        // this.hideIntro = false;
     }, 3000);
   }
 } 

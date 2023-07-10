@@ -9,37 +9,104 @@
     height: 100vh;
     width: 100%;
     position: relative;
-    background-image: linear-gradient(#797ef3,  #323be6);
+    background-image: linear-gradient(#797ef3, #323be6);
     background-position: center;
     object-fit: cover;
     position: absolute;
     top: 0;
     left: 0;
     @extend .center;
+    // animation: hide 2.5s ease-in-out;
+    // opacity: 0;
 }
 
 .logo-container {
-    img {
-        height: 20vh;
-    }
+    position: relative;
+    width: 100%;
+    @extend .center;
+    height: 300px;
+
+}
+
+.logo {
+    height: 150px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    animation: slideLeft 2s ease;
+    z-index: 3;
+    transform: translate(-70%, -50%);
+    opacity: 1 !important;
 }
 
 .animation-headline {
     font-size: 70px;
     font-weight: bold;
     color: white;
-}
-
-.logo-container {
+    left: 50%;
+    top: 50%;
+    transform: translate(60%, -50%);
+    animation: slideRight 2s ease;
     @extend .center;
 }
 
+.left-top-corner {
+    animation: toLeft 3s ease-in-out;
+    transform: translate(-70%, -50%);
+}
+
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translate(0, -50%);
+    }
+
+    30% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate(60%, -50%);
+    }
+}
+
+@keyframes slideLeft {
+    0% {
+
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
 
 
+    100% {
+        transform: translate(-70%, -50%) rotate(-360deg);
+    }
+}
 
+@keyframes hide {
+    0% {
+        opacity: 1;
+    }
 
+    80% {
+        opacity: 1;
+    }
 
+    100% {
+        opacity: 0;
+    }
+}
 
+@keyframes toLeft {
+    0% {
+        transform: translate(-70%, -50%);
+    }
 
+    66% {
+        transform: translate(-70%, -50%);
+    }
 
-
+    100% {
+        top: 10px;
+    }
+}
