@@ -25,15 +25,18 @@ export class SignInComponent implements OnInit {
   }
 
 
-  async signIn(email: string, password: string) {
+  async signIn() {
     this.submitted = true;
     if (this.signInForm.invalid) {
       return;
     }
+
     this.isSignIn = true;
     this.signInForm.disable();
 
-    await this.loginWithEmail(email, password);
+    const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
+    const password = this.signInForm.value.password ?? '';
+    await this.loginWithEmail(emailLowerCase, password);
 
     this.resetForm();
   }
