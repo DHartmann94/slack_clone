@@ -5,12 +5,11 @@
     <div class="sidenav-icon"><img src="./assets/icons/show_menu.png" alt="#"></div>
 </mat-card>
 <mat-drawer-container *ngIf="showFiller" class="channel-container" autosize>
-    <mat-drawer mode="side">
-        <p>Auto-resizing sidenav</p>
-        <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-        <button (click)="showFiller = !showFiller" mat-raised-button>
-            Toggle extra text
-        </button>
-    </mat-drawer>
+    <mat-card>
+        <mat-drawer mode="side">
+            <p>Auto-resizing sidenav</p>
+        </mat-drawer>
+    </mat-card>
 </mat-drawer-container>
+
 

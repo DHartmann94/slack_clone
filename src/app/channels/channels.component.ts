@@ -16,7 +16,8 @@ export class ChannelsComponent implements OnInit {
   ngOnInit(): void {
     
   }
-  toggle() {
 
+  toggle() {
+    this.showFiller = !this.showFiller;
   }
 }
