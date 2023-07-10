@@ -3,12 +3,11 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
-  styleUrls: ['./channels.component.scss']
+  styleUrls: ['./channels.component.scss'],
 })
-
 export class ChannelsComponent implements OnInit {
 
-  showFiller = false;
+  showFiller: boolean = true; 
 
   constructor() {
 
@@ -18,6 +17,6 @@ export class ChannelsComponent implements OnInit {
     
   }
   toggle() {
-    this.showFiller = !this.showFiller;
+
   }
 }

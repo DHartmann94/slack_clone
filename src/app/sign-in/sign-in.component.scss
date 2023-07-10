@@ -8,27 +8,81 @@ section {
     justify-content: center;
     align-items: center;
 
-    background-color: #ECEEFE; // TEST IN GLOABL
+    background-color: var(--bg-color);
+
+    h1 {
+        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
+        margin: 2rem;
+
+        font-size: 3rem;
+        font-weight: bold;
+    }
+
+    a { // TEST GLOABAL?????
+        color: var(--c-purple);
+        text-decoration: none;
+        transition: all 225ms ease-in-out;
+        cursor: pointer;
+    }
+}
+
+/*------ Header ------*/
+.header-parent {
+    z-index: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+
+    padding: 10px 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    a {
+        padding: 5px;
+
+        border: 1px solid transparent;
+        border-radius: 50px;
     
-    mat-card {
-        width: 400px;
-        padding: 25px;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-
-        h1 {
-            margin: 2rem;
-
-            color: #454DF1; // TEST IN GLOABL
-            font-size: 3rem;
-            font-weight: 600;
+        &:hover {
+            border: 1px solid var(--c-light-purple);
         }
+    }
+}
 
-        p {
-            text-align: center;
-        }
+.header-logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-link-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+
+    p {
+        margin: 0px;
+    }
+}
+
+/*------ Sign-in Card ------*/
+mat-card {
+    width: 400px;
+    padding: 25px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h1 {
+        margin: 0rem 2rem 2rem 2rem;
+        color: var(--c-purple);
+    }
+
+    p {
+        text-align: center;
     }
 }
 
@@ -37,17 +91,17 @@ form {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 35px;
+    gap: 25px;
 
     input {
         font-family: 'Nunito';
-        padding: 15px 30px;
+        padding: 15px 40px;
         width: 100%;
-        height: 45px;
+        height: 50px;
         position: relative;
 
-        background: #ECEEFE; // TEST IN GLOABL
-        border: 1px solid #ECEEFE; // TEST IN GLOABL
+        background: var(--bg-color);
+        border: 1px solid var(--bg-color);
         border-radius: 50px;
         box-sizing: border-box;
         transition: all 225ms ease-in-out;
@@ -60,20 +114,29 @@ form {
 }
 
 .input-parent {
+    position: relative;
     width: 100%;
+
+    img {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+    }
+
+    div {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 .forgot-password {
     padding: 5px;
 
-    color: #454DF1; // TEST IN GLOABL;
     border: 1px solid transparent;
     border-radius: 50px;
-    transition: all 225ms ease-in-out;
-    cursor: pointer;
 
     &:hover {
-        background-color: #ECEEFE; // TEST IN GLOABL
+        background-color: var(--bg-color);
     }
 }
 
@@ -91,12 +154,12 @@ form {
         top: 50%;
         right: 0;
         left: 0;
-        border: 1px solid #adb0d9; // TEST IN GLOABL
+        border: 1px solid var(--c-light-purple);
     }
 
     .or-child {
         padding: 10px;
-        background-color: #ffffff; // TEST IN GLOABL
+        background-color: #ffffff;
 
         z-index: 2 !important;
         position: absolute;
@@ -108,7 +171,7 @@ form {
 
 .button-google {
     width: 100%;
-    height: 45px;
+    height: 50px;
 
     display: flex;
     flex-direction: row;
@@ -116,16 +179,15 @@ form {
     justify-content: center;
     
     font-size: 1rem;
-    color: #454DF1; // TEST IN GLOABL;
-    background-color: #ECEEFE; // TEST IN GLOABL
+    color: var(--c-purple);
+    background-color: var(--bg-color);
     border-radius: 50px;
-    border: 0px;
+    border: 1px solid transparent;
     transition: all 225ms ease-in-out;
     cursor: pointer;
 
     &:hover {
-        border: 1px solid #454DF1; // TEST IN GLOABL
-        font-weight: 600;
+        border: 1px solid var(--c-purple);
     }
 }
 
@@ -138,17 +200,17 @@ form {
         height: 45px;
     
         font-size: 1rem;
-        font-weight: 600;
+        font-weight: bold;
         border-radius: 50px;
-        border: 1px solid #454DF1; // TEST IN GLOABL
+        border: 1px solid var(--c-purple);
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
         transition: all 225ms ease-in-out;
         cursor: pointer;
     }
 
     .button-sign-in {
-        color: #ffffff; // TEST IN GLOABL;
-        background-color: #454DF1; // TEST IN GLOABL
+        color: var(--white);
+        background-color: var(--c-purple);
 
         &:hover {
             background-color: #575ff7; // TEST IN GLOABL
@@ -156,17 +218,30 @@ form {
     }
     
     .button-guest-login {
-        color: #454DF1; // TEST IN GLOABL;
-        background-color: #ffffff; // TEST IN GLOABL
+        color: var(--c-purple);
+        background-color: var(--white);
 
         display: flex;
         align-items: center;
         justify-content: center;
 
         &:hover {
-            color: #ffffff; // TEST IN GLOABL
-            background-color: #454DF1; // TEST IN GLOABL;
+            color: var(--white);
+            background-color: var(--c-purple);
         }
     }
 }
 
+.error-notification {
+    font-size: 0.7rem;
+    color: #E61C40; // TEST IN GLOABL
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.error-border {
+    border: 1px solid #E61C40 !important; // TEST IN GLOABL
+}
