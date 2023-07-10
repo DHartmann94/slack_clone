@@ -1,1 +1,95 @@
-<p>sign-up works!</p>
+<section>
+    <div class="header-parent">
+        <div class="header-logo-container">
+            <img src="./assets/imgs/Logo.png" alt="Logo">
+            <h1>DABubble</h1>
+        </div>
+    </div>
+
+    <mat-card>
+        <img class="arrow-img" routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
+        <h1>Sign Up</h1>
+        <p>With your name, email address and password, create your new DABubble account.</p>
+        <form (ngSubmit)="signUp()" [formGroup]="signUpForm">
+            <!--- name --->
+            <div class="input-parent">
+                <input
+                    [ngClass]="{'error-border': signUpForm.controls['name'].invalid && (submitted ||signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)}"
+                    type="text" formControlName="name" [placeholder]="'First- and last name'" required>
+                <img src="./assets/img/icons/person.png" alt="Person">
+                <div *ngIf="signUpForm.controls['name'].errors && (submitted || signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)"
+                    class="error-notification">
+                    <!--- required --->
+                    <span *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name are required.</span>
+                    <!--- minlength / maxlenght --->
+                    <span *ngIf="signUpForm.controls['name'].errors['minlength']
+                    || signUpForm.controls['name'].errors['maxlength']
+                    && signUpForm.controls['name'].touched">Minimum 3 and maximum 25 characters.</span>
+                    <!--- pattern --->
+                    <span *ngIf="signUpForm.controls['name'].errors['pattern'] 
+                    && signUpForm.controls['name'].touched">
+                    Please enter your first AND last name.<br> Only letters allowed.</span>
+                </div>
+            </div>
+            <!--- email --->
+            <div class="input-parent">
+                <input
+                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched) || emailExists}"
+                    type="email" formControlName="email" [placeholder]="'example@email.com'" required>
+                <img src="./assets/img/icons/mail.png" alt="EMail">
+                <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
+                    class="error-notification">
+                    <span *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                    Please enter a valid email-address.</span>
+                </div>
+                <!--- function --->
+                <span *ngIf="emailExists" class="error-notification">Email already exists.</span>
+            </div>
+            <!--- password --->
+            <div class="input-parent">
+                <input
+                    [ngClass]="{'error-border': signUpForm.controls['password'].invalid && (submitted ||signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)}"
+                    type="password" formControlName="password" [placeholder]="'Password'" required>
+                <img src="./assets/img/icons/lock.png" alt="Lock">
+                <div *ngIf="signUpForm.controls['password'].errors && (submitted || signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)"
+                    class="error-notification">
+                    <!--- required --->
+                    <span *ngIf="signUpForm.controls['password'].errors['required']">Your password is required.</span>
+                    <!--- minlength --->
+                    <span *ngIf="signUpForm.controls['password'].errors['minlength']
+                    && signUpForm.controls['password'].touched">Min 8 characters.</span>
+                    <!--- pattern --->
+                    <span *ngIf="signUpForm.controls['password'].errors['pattern'] 
+                    && signUpForm.controls['password'].touched">
+                    Please use at least one capital letter, special character and number.</span>
+                </div>
+            </div>
+            <!--- password --->
+            <div class="input-parent">
+                <input
+                    [ngClass]="{'error-border': signUpForm.controls['confirmPassword'].invalid && (submitted ||signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)}"
+                    type="password" formControlName="confirmPassword" [placeholder]="'Confirm-Password'" required>
+                <img src="./assets/img/icons/lock.png" alt="Lock">
+                <div *ngIf="signUpForm.controls['confirmPassword'].errors && (submitted || signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)"
+                    class="error-notification">
+                    <!--- required --->
+                    <span *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
+                        Your confirm password is required.</span>
+                    <!--- function --->
+                    <span *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
+                        Your passwords do not match.</span>
+                </div>
+            </div>
+
+            <div class="button-bottom-parent">
+                <button type="submit" [disabled]="isSignUp" class="button-sign-up">Next</button>
+            </div>
+        </form>
+    </mat-card>
+
+    <div *ngIf="showAccountNotification" [class.account-message-animation]="showAccountNotification" class="account-create-send-message" #viewAnimation>
+        <div>
+            <span>Account created successfully!</span>
+        </div>
+    </div>
+</section>

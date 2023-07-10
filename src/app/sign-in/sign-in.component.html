@@ -1,14 +1,32 @@
 <section>
-    <div class="signin-parent">
+    <div class="header-parent">
+        <div class="header-logo-container">
+            <img src="./assets/imgs/Logo.png" alt="Logo">
+            <h1>DABubble</h1>
+        </div>
+        <div class="header-link-container">
+            <p>New to DABubble?</p>
+            <a routerLink="/sign-up">Create account</a>
+        </div>
+    </div>
+
         <mat-card>
             <h1>Sign in</h1>
             <p>We recommend using the email address you use at work.</p>
-            <form>
+            <form (ngSubmit)="signIn()" [formGroup]="signInForm">
                 <div class="input-parent">
-                    <input [placeholder]="'example@email.com'" required>
+                    <input [ngClass]="{'error-border': signInForm.controls['email'].invalid && (submitted ||signInForm.controls['email'].dirty || signInForm.controls['email'].touched)}" type="email" formControlName="email" [placeholder]="'example@email.com'" required>
+                    <img src="./assets/img/icons/mail.png" alt="EMail">
+                    <div *ngIf="signInForm.controls['email'].invalid && (submitted || signInForm.controls['email'].dirty || signInForm.controls['email'].touched)" class="error-notification">
+                        <span>Please enter a valid email-adress.</span>
+                    </div>
                 </div>
                 <div class="input-parent">
-                    <input [placeholder]="'Password'" required>
+                    <input [ngClass]="{'error-border': signInForm.controls['password'].invalid && (submitted ||signInForm.controls['password'].dirty || signInForm.controls['password'].touched)}" type="password" formControlName="password" [placeholder]="'Password'" required>
+                    <img src="./assets/img/icons/lock.png" alt="Lock">
+                    <div *ngIf="signInForm.controls['password'].invalid && (submitted || signInForm.controls['password'].dirty || signInForm.controls['password'].touched)" class="error-notification">
+                        <span>Your password is required.</span>
+                    </div>
                 </div>
 
                 <a class="forgot-password">Forgot password?</a>
@@ -18,16 +36,15 @@
                     <div class="or-child">OR</div>
                 </div>
                 
-                <button class="button-google">
-                    <img src="./assets/img/" alt="Google">
+                <a class="button-google" (click)="loginWithGoogle()">
+                    <img src="./assets/img/icons/google.png" alt="Google">
                     <span>Sign in with Google</span>
-                </button>
+                </a>
 
                 <div class="button-bottom-parent">
-                    <button class="button-sign-in">Login</button>
+                    <button type="submit" [disabled]="isSignIn" class="button-sign-in">Login</button>
                     <a class="button-guest-login">Guest-Login</a>
                 </div>
             </form>
         </mat-card>
-    </div>
 </section>
