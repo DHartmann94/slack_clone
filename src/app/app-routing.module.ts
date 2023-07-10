@@ -23,7 +23,6 @@ const routes: Routes = [
   { path: 'edit-user', component: EditUserProfileCardComponent}
 ];
 
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
