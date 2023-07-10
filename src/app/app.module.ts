@@ -23,7 +23,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 
 //<-----Components----->//
-import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -31,6 +30,8 @@ import { BoardComponent } from './board/board.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
+import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
+import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import { ThreadsComponent } from './threads/threads.component';
     BoardComponent,
     HeaderBarComponent,
     ChannelsComponent,
-    ThreadsComponent
+    ThreadsComponent,
+    EditUserProfileCardComponent
 
   ],
   imports: [

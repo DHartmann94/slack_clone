@@ -6,7 +6,8 @@ import { BoardComponent } from './board/board.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
-import { UserProfileCardComponent } from './user-profile-card/user-profile-card.component';
+import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
+import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 
 const routes: Routes = [ 
   { path: 'sign-in', component: SignInComponent },
@@ -14,9 +15,10 @@ const routes: Routes = [
   { path: 'board', component: BoardComponent, children: [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent },
-    { path: 'threads', component: ThreadsComponent }
+    { path: 'threads', component: ThreadsComponent },
   ]},
-  { path: 'user-profile-card', component: UserProfileCardComponent}
+  { path: 'user', component: UserProfileCardComponent},
+  { path: 'edit-user', component: EditUserProfileCardComponent}
 ];
 
 
