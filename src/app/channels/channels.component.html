@@ -13,3 +13,51 @@
         <img class="edit-icon" src="./assets/icons/edit_square.png" alt="#">
     </div>
 </mat-card>
+
+
+<div class="channel-edition-main">
+  <div class="channel-wrapper">
+    <div class="flex-row main-row margin-btm-20">
+      <div class="flex">
+        <p class="h2-hashtag" id="tag-big">#</p>
+        <h2>{{ channelName }}</h2>
+      </div>
+      <mat-icon class="close" (click)="closeEditChannel()">close</mat-icon>
+    </div>
+    <div class="channel-name margin-btm-20">
+      <div class="flex-row margin-btm-20">
+        <h3>Channel-name</h3>
+        <p class="edit" (click)="editChannelName()" href="">Edit</p>
+      </div>
+      <div class="flex">
+        <p id="tag-small">#</p>
+        <p class="font-18-400">{{ channelName }}</p>
+      </div>
+    </div>
+    <div class="channel-description">
+      <div class="flex-row margin-btm-20">
+        <h3>Description</h3>
+        <p class="edit" (click)="editChannelDescription()" href="">Edit</p>
+      </div>
+      <div class="margin-btm-30">
+        <span class="font-18-400">
+          {{ descriptionText}}
+        </span>
+      </div>
+      <div>
+        <div class="parting-line"></div>
+        <div class="creator-area">
+          <div class="margin-tp-30 margin-btm-20">
+            <h3>Created-by</h3>
+          </div>
+          <div class="userName">
+            <p class="creator-name" *ngFor="let userName of userNames">{{ userName }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="btn-area">
+      <button (click)="leaveChannel()" class="leave-channel">Leave channel</button>
+    </div>
+  </div>
+</div>
