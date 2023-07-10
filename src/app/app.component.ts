@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'slack_clone';
+
+  hideStartscreen = false;
+
+  // ngOnInit(): void {
+  //   setTimeout(() => {
+  //       this.hideStartscreen = true;
+  //   }, 3000);
+  // }
 }
