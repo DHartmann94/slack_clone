@@ -1,7 +1,7 @@
 <section>
     <div class="header-parent">
         <div class="header-logo-container">
-            <img src="./assets/imgs/Logo.png" alt="Logo">
+            <img src="./assets/img/Logo-small.png" alt="Logo">
             <h1>DABubble</h1>
         </div>
     </div>
@@ -26,7 +26,7 @@
                     || signUpForm.controls['name'].errors['maxlength']
                     && signUpForm.controls['name'].touched">Minimum 3 and maximum 25 characters.</span>
                     <!--- pattern --->
-                    <span *ngIf="signUpForm.controls['name'].errors['pattern'] 
+                    <span *ngIf="signUpForm.controls['name'].errors['pattern']
                     && signUpForm.controls['name'].touched">
                     Please enter your first AND last name.<br> Only letters allowed.</span>
                 </div>
@@ -59,7 +59,7 @@
                     <span *ngIf="signUpForm.controls['password'].errors['minlength']
                     && signUpForm.controls['password'].touched">Min 8 characters.</span>
                     <!--- pattern --->
-                    <span *ngIf="signUpForm.controls['password'].errors['pattern'] 
+                    <span *ngIf="signUpForm.controls['password'].errors['pattern']
                     && signUpForm.controls['password'].touched">
                     Please use at least one capital letter, special character and number.</span>
                 </div>

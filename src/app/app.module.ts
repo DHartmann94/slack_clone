@@ -32,6 +32,7 @@ import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
@@ -45,7 +46,8 @@ import { UserProfileCardComponent } from './user/user-profile-card/user-profile-
     HeaderBarComponent,
     ChannelsComponent,
     ThreadsComponent,
-    EditUserProfileCardComponent
+    EditUserProfileCardComponent,
+    ChatComponent
 
   ],
   imports: [
