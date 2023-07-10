@@ -1,58 +1,13 @@
-<!-- <mat-drawer-container class="example-container" autosize>
-  <mat-drawer #drawer class="example-sidenav" mode="side">
-    <p>Auto-resizing sidenav</p>
-    <p *ngIf="showFiller">Lorem, ipsum dolor sit amet consectetur.</p>
-    <button (click)="showFiller = !showFiller" mat-raised-button>
-      Toggle extra text
-    </button>
-  </mat-drawer>
+<mat-card class="workspace-card" (click)="toggle()">
+    <mat-card-content>
+        <h2>Workspace-Menü schließen</h2>
+    </mat-card-content>
+    <div class="sidenav-icon"><img src="./assets/icons/show_menu.png" alt="#"></div>
+</mat-card>
+<mat-card *ngIf="showFiller" class="channel-container" autosize>
+        <mat-drawer mode="side">
+            <div></div>
+        </mat-drawer>
+</mat-card>
 
-  <div class="example-sidenav-content">
-    <mat-toolbar>
-      <mat-toolbar-row>
-        <button type="button" mat-button (click)="drawer.toggle()">
-          Toggle sidenav
-        </button>
-      </mat-toolbar-row>
-    </mat-toolbar>
-  </div>
 
-</mat-drawer-container> -->
-
-<div class="channels-wrapper">
-  <div class="first-row">
-    <img class="channel-icon" src="./assets/img/icons/channel-sample-icon.png" alt="">
-    <h1>code learning</h1>
-    <i class="fa-regular fa-pen-to-square" style="color: #000000;"></i>
-    <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="edit"></mat-icon>
-  </div>
-<div class="second-row">
-  <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false" togglePosition="before">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-         <p>Channels</p>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <p># Developer team</p>
-      <div class="channels-add-channel">
-        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add_circle_outline"></mat-icon>
-        <p>add channel</p>
-      </div>
-    </mat-expansion-panel>
-    </mat-accordion>
-
-    <mat-accordion>
-    <mat-expansion-panel (opened)="panelOpenState = true"
-                         (closed)="panelOpenState = false" togglePosition="before">
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          Direct messages
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-      <img class="usr-icon" src="./assets/imgs/avatar.png" alt="">
-    </mat-expansion-panel>
-  </mat-accordion>
-</div>
-</div>

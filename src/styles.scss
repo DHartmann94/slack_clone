@@ -1,10 +1,10 @@
-@import "./styles.variables.scss";
 @import "./assets/scss/fonts.scss";
 
 html,
 body {
   font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
   margin: 0px;
+  background-color: var(--bg-color);
 }
 
 :root {
