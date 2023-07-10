@@ -7,6 +7,11 @@ body {
   background-color: var(--bg-color);
 }
 
+a {
+  text-decoration: none;
+  color: var(--c-light-purple);
+}
+
 :root {
   --c-darkblue: rgb(42, 54, 71);
   --c-text-grey: #686868;

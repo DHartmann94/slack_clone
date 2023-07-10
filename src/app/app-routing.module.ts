@@ -1,3 +1,4 @@
+import { ChatComponent } from './chat/chat.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SignInComponent } from './sign-in/sign-in.component';
@@ -10,12 +11,13 @@ import { UserProfileCardComponent } from './user/user-profile-card/user-profile-
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 
-const routes: Routes = [ 
+const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'board', component: BoardComponent, children: [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent },
+    { path: 'chat', component: ChatComponent },
     { path: 'threads', component: ThreadsComponent },
   ]},
   { path: 'user', component: UserProfileCardComponent},

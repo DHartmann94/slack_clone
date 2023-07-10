@@ -34,6 +34,7 @@ import { ThreadsComponent } from './threads/threads.component';
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
 import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
+import { ChatComponent } from './chat/chat.component';
 
 
 @NgModule({
@@ -48,7 +49,8 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
     ChannelsComponent,
     ThreadsComponent,
     EditUserProfileCardComponent,
-    LogoutUserProfileCardComponent
+    LogoutUserProfileCardComponent,
+    ChatComponent
 
   ],
   imports: [
