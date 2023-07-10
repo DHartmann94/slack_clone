@@ -8,6 +8,7 @@ import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
 import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
+import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 
 const routes: Routes = [ 
   { path: 'sign-in', component: SignInComponent },
@@ -18,7 +19,8 @@ const routes: Routes = [
     { path: 'threads', component: ThreadsComponent },
   ]},
   { path: 'user', component: UserProfileCardComponent},
-  { path: 'edit-user', component: EditUserProfileCardComponent}
+  { path: 'edit-user', component: EditUserProfileCardComponent},
+  { path: 'logout', component: LogoutUserProfileCardComponent}
 ];
 
 
