@@ -15,7 +15,7 @@ section {
 
     a {
         text-decoration: none;
-        color:#444DF2
+        color:#1381FF;
     }
 
     .user-header {
@@ -24,6 +24,10 @@ section {
 
         mat-card-title {
             font-weight: 700 !important;
+        }
+        
+        mat-icon {
+            cursor: pointer;
         }
       
     }
@@ -45,6 +49,7 @@ section {
         display: flex;
         justify-content: space-between;
         align-items: center;
+
 
         p {
             font-size: 1.6rem;
