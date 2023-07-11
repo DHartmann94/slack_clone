@@ -7,21 +7,29 @@
         <div class="user-img">
             <img src="/assets/profile-pictures/EliasNeumann.png">
         </div>
-        <mat-card-content>
-            <mat-form-field class="name-field">
-                <mat-label>Vollständiger Name</mat-label>
+        <mat-card-content class="user-edit-input">
+            <form class="name-form">
+                <div class="name-field">
+                    <div>
+                        <mat-icon>account_circle</mat-icon>
+                    </div>
+                    <div>
+                        <mat-label>Vollständiger Name</mat-label>
+                    </div>
+                </div>
                 <input matInput placeholder="Vollständiger Name">
-                <mat-icon>account_circle</mat-icon>
-            </mat-form-field>
-            <mat-form-field>
-                <mat-label>E-Mail-Adresse</mat-label>
+            </form>
+            <form class="email-form">
+                <div class="e-mail-field">
+                    <mat-icon>mail_outline</mat-icon>
+                    <mat-label>E-Mail-Adresse</mat-label>
+                </div>
                 <input matInput placeholder="E-Mail-Adresse">
-                <mat-icon>mail_outline</mat-icon>
-            </mat-form-field>
+            </form>
         </mat-card-content>
-        <mat-card-actions class="user-message-button">
-            <button mat-stroked-button>Abbrechen</button>
-            <button mat-flat-button color="primary">Speichern</button>
+        <mat-card-actions class="edit-buttons">
+            <button class="interrupt-button" mat-stroked-button>Abbrechen</button>
+            <button class="save-button" mat-flat-button color="primary">Speichern</button>
         </mat-card-actions>
     </mat-card>
 </section>

@@ -12,10 +12,14 @@ section {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     line-height: 2;
 
+    .user-header {
+        padding: 16px 8px 0;
+    }
+
 
     a {
         text-decoration: none;
-        color:#1381FF;
+        color: #1381FF;
     }
 
     .user-header {
@@ -25,11 +29,11 @@ section {
         mat-card-title {
             font-weight: 700 !important;
         }
-        
+
         mat-icon {
             cursor: pointer;
         }
-      
+
     }
 
     .user-img {
@@ -73,11 +77,10 @@ section {
         }
     }
 
-    .user-message-button {
+    .edit-buttons {
         display: flex;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
-        margin: 1rem;
     }
 
     button {
@@ -85,6 +88,39 @@ section {
         height: 45px;
         border-radius: 50px;
         background: #444DF2;
+    }
+
+    .name-field,
+    .e-mail-field {
+        display: flex;
+        margin-bottom: 0.5rem;
+
+        mat-icon {
+            margin-right: 0.4rem;
+            margin-top: 0.1rem;
+        }
+    }
+
+    .email-form,
+    .name-form {
+        margin-bottom: 1rem;
+
+        input {
+            width: 95%;
+            height: 1.5rem;
+            border-radius: 1rem;
+            padding: 0.3rem;
+            padding-left: 1rem;
+            border: 0.1rem solid lightgray;
+        }
+
+        mat-label {
+            font-weight: bold;
+        }
+    }
+
+    .interrupt-button {
+        background-color: white;
     }
 
 }
