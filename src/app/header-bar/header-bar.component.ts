@@ -6,5 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
+  isLogoutContainerOpen: boolean = false;
 
+  openLogoutContainer() {
+    this.isLogoutContainerOpen = true;
+  }
+
+  closeLogoutContainer() {
+    this.isLogoutContainerOpen = false;
+  }
 }

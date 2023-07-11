@@ -50,7 +50,8 @@ import { ChatComponent } from './chat/chat.component';
     ThreadsComponent,
     EditUserProfileCardComponent,
     LogoutUserProfileCardComponent,
-    ChatComponent
+    ChatComponent,
+    
 
   ],
   imports: [

@@ -9,7 +9,18 @@
     <div class="profile">
         <h2>Frederik Beck</h2>
         <img src="./assets/img/avatar.png" alt="">
-        <img src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
+        <mat-icon (click)="openLogoutContainer()">keyboard_arrow_down</mat-icon>
         <div class="status"></div>
+    </div>
+
+    <!-- Logout Container -->
+    <div class="logout-container" *ngIf="isLogoutContainerOpen" #containerRef>
+        <div class="logout">
+            <mat-icon (click)="closeLogoutContainer()">close</mat-icon>
+            <div class="logout-info">
+                <p>Profil</p>
+                <p>Log out</p>
+            </div>
+        </div>
     </div>
 </div>
