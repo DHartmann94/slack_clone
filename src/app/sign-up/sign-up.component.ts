@@ -85,21 +85,23 @@ export class SignUpComponent implements OnInit {
     if (this.signUpForm.invalid) {
       return;
     }
+    this.disableForm();
+
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
     await this.checkEmailExists(emailLowerCase);
     if (this.emailExists) {
+      this.signUpForm.enable();
+      this.isSignUp = false;
       this.resetEmailExistsError();
       return;
     }
 
-    this.isSignUp = true;
-    this.signUpForm.disable();
-
-    //await this.sendUserToAuthenticator(emailLowerCase);
-    //await this.sendUserToFirebase(emailLowerCase);
+    await this.sendUserToAuthenticator(emailLowerCase);
+    await this.sendUserToFirebase(emailLowerCase);
 
     this.showsCreateAccountAnimation();
-    this.navigateToLogin();
+    this.resetForm();
+    //this.router.navigateByUrl("/sign-in");
   }
 
   async sendUserToAuthenticator(emailLowerCase: string) {
@@ -146,13 +148,17 @@ export class SignUpComponent implements OnInit {
     }, 3000);
   }
 
-  navigateToLogin() {
+  disableForm() {
+    this.signUpForm.disable();
+    this.isSignUp = true;
+  }
+
+  resetForm() {
     setTimeout(() => {
       this.signUpForm.reset();
       this.signUpForm.enable();
       this.isSignUp = false;
       this.submitted = false;
-      //this.router.navigateByUrl("/sign-in");
     }, 3500);
   }
 

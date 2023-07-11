@@ -12,6 +12,7 @@ import { User } from 'src/models/user.class';
 export class SignInComponent implements OnInit {
   isSignIn: boolean = false;
   submitted: boolean = false;
+  userNotFound: boolean = false;
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -29,39 +30,41 @@ export class SignInComponent implements OnInit {
     if (this.signInForm.invalid) {
       return;
     }
+
     this.isSignIn = true;
     this.signInForm.disable();
 
-    await this.loginWithEmail();
+    const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
+    const password = this.signInForm.value.password ?? '';
+    await this.loginWithEmail(emailLowerCase, password);
 
-    setTimeout(() => {
-      this.signInForm.enable();
-      this.isSignIn = false;
-      this.submitted = false;
-    }, 3000);
+    this.resetForm();
   }
 
-  async loginWithEmail() {
+  async signInGuest(email: string, password: string) {
+    this.isSignIn = true;
+    this.signInForm.disable();
+
+    await this.loginWithEmail(email, password);
+
+    this.resetForm();
+  }
+
+  async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
-    const email: string = this.signInForm.value.email ?? '';
-    const password: string = this.signInForm.value.password ?? '';
     await signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential: any) => {
         // Signed in 
         const user = userCredential.user;
-        await this.searchLoginUser();
+            //WEITERLEITEN MIT UID?
         console.log('Login'); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
+        this.showUserError();
         const errorCode = error.code;
         const errorMessage = error.message;
         console.log('ERROR: ', errorCode, errorMessage);
       });
-  }
-
-  async searchLoginUser() {
-    // Nach der email suchen oder uid? wenn uid dann im sign up ins backend übertragen!
-    // Oder ab hier weiterleitung auf die nächste Seite?
   }
 
   async loginWithGoogle() {
@@ -99,6 +102,22 @@ export class SignInComponent implements OnInit {
     addDoc(usersCollection, user.toJSON()).then(async (result) => {
       await getDoc(result);
     });
+  }
+
+  showUserError() {
+    this.userNotFound = true;
+    setTimeout(() => {
+      this.userNotFound = false;
+    }, 3000);
+  }
+
+  // Gleiche Funktion wie in sign up.
+  resetForm() {
+    setTimeout(() => {
+      this.signInForm.enable();
+      this.isSignIn = false;
+      this.submitted = false;
+    }, 3500);
   }
 
 

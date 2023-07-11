@@ -1,0 +1,118 @@
+.chat-wrapper-main {
+  border-radius: 30px;
+  background: var(--white, #fff);
+}
+
+.chat-card {
+  position: absolute;
+  right: 382px;
+  top: 86px;
+  min-width: 500px;
+  min-height: 825px;
+  border-radius: 15px;
+  padding: 25px 35px 40px;
+  margin: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chat-first-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-corner {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-pictures-chat {
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
+}
+.participant-icon {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  margin-right: -10px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.participant-amount {
+  margin-left: 20px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.add-participant {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.hash-chat-name {
+  font-size: 24px;
+  font-weight: 700;
+  margin-right: 15px;
+}
+
+.chat-name {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.chat-left {
+  display: flex;
+  flex-direction: row;
+  width: 75%;
+}
+
+.chat-right {
+  width: 75%;
+}
+
+.parting-line {
+  width: 100%;
+  border: 0.5px solid #adb0d97a;
+  height: 0px;
+}
+
+.time-stamp {
+  border-radius: 30px;
+border: 1px solid var(--ligth-purple-lines, #ADB0D9);
+padding: 0 15px;
+width: fit-content;
+font-size: 18px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+background: white;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  margin-top: -14px;
+}

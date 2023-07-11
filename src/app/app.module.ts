@@ -66,6 +66,7 @@ import { ChatComponent } from './chat/chat.component';
     MatFormFieldModule,
     MatToolbarModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
