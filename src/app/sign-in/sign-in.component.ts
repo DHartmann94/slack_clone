@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, collection, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
 import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
@@ -13,6 +13,7 @@ export class SignInComponent implements OnInit {
   isSignIn: boolean = false;
   submitted: boolean = false;
   userNotFound: boolean = false;
+  authUID: string = '';
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -30,9 +31,7 @@ export class SignInComponent implements OnInit {
     if (this.signInForm.invalid) {
       return;
     }
-
-    this.isSignIn = true;
-    this.signInForm.disable();
+    this.disableForm();
 
     const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
     const password = this.signInForm.value.password ?? '';
@@ -42,8 +41,7 @@ export class SignInComponent implements OnInit {
   }
 
   async signInGuest(email: string, password: string) {
-    this.isSignIn = true;
-    this.signInForm.disable();
+    this.disableForm();
 
     await this.loginWithEmail(email, password);
 
@@ -56,14 +54,16 @@ export class SignInComponent implements OnInit {
       .then(async (userCredential: any) => {
         // Signed in 
         const user = userCredential.user;
-            //WEITERLEITEN MIT UID?
-        console.log('Login'); // TEST !!!!!!!!!!!!!!!
+        //WEITERLEITEN MIT UID?
+        console.log('Login with: ', user); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
-        this.showUserError();
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('ERROR: ', errorCode, errorMessage);
+        if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
+          this.showUserError();
+        }
+        console.log('ERROR loginWithEmail: ', errorCode);
       });
   }
 
@@ -74,24 +74,24 @@ export class SignInComponent implements OnInit {
     await signInWithPopup(auth, provider)
       .then(async (result) => {
         //const credential = GoogleAuthProvider.credentialFromResult(result);
+
         console.log(result); // TEST !!!!!!!!!!!!!!!
+        this.authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
         await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase)
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.customData.email;
-        // The AuthCredential type that was used.
         const credential = GoogleAuthProvider.credentialFromError(error);
+        console.error('ERROR login with Google: ', error);
       });
   }
 
-  // Gleiche Funktion wie in sign up.
+  // TEST Gleiche Funktion wie in sign up.
   async sendGoogleUserToFirebase(name: any, emailLowerCase: any) {
-    // Zuerst Prüfen ob der User existiert?
+    // Zuerst Prüfen ob der User existiert, geht auch ohne?
     let data = {
       name: name,
       email: emailLowerCase,
@@ -99,19 +99,32 @@ export class SignInComponent implements OnInit {
     const user = new User(data);
 
     const usersCollection = collection(this.firestore, 'users');
+    const docRef = doc(usersCollection, this.authUID);
+    console.log(this.authUID)
+    setDoc(docRef, user.toJSON()).then((result: any) => {
+
+    })
+      .catch((error: any) => {
+        console.error('ERROR user send to Firebase: ', error);
+      });
+    /*
     addDoc(usersCollection, user.toJSON()).then(async (result) => {
       await getDoc(result);
-    });
+    });*/
   }
 
   showUserError() {
     this.userNotFound = true;
     setTimeout(() => {
       this.userNotFound = false;
-    }, 3000);
+    }, 5000);
   }
 
-  // Gleiche Funktion wie in sign up.
+  disableForm() {
+    this.signInForm.disable();
+    this.isSignIn = true;
+  }
+
   resetForm() {
     setTimeout(() => {
       this.signInForm.enable();

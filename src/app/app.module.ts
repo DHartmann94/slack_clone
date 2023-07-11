@@ -35,6 +35,8 @@ import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit
 import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
 import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 import { ChatComponent } from './chat/chat.component';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import { ChatComponent } from './chat/chat.component';
     EditUserProfileCardComponent,
     LogoutUserProfileCardComponent,
     ChatComponent,
+    PasswordResetComponent,
+    PasswordConfirmComponent,
     
 
   ],
