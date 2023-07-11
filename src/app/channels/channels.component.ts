@@ -3,6 +3,11 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
+interface ChannelInterface {
+  channelName: string;
+  channelDescription: string;
+}
+
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
@@ -22,9 +27,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 export class ChannelsComponent implements OnInit {
 
-  createChannel!: FormGroup
-  showFiller: boolean = true;
+  channelForm!: FormGroup
 
+  showFiller: boolean = true;
+  openChannels: boolean = true;
   channelCard: boolean = false;
 
   userData: UserDataInterface[] = [];
@@ -44,10 +50,28 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+    this.channelForm = this.fb.group({
+      channelName: [''],
+      channelDescription: ['']
+    });
   }
 
   toggle() {
     this.showFiller = !this.showFiller;
+  }
+
+  toggleChannel() {
+    this.openChannels = !this.openChannels;
+  }
+
+  addChannel() {
+    this.channelCard = true;
+  }
+
+  submitChannel() {
+    if(this.channelForm.valid) {
+      
+    }
   }
 
   close() {

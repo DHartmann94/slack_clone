@@ -15,25 +15,32 @@
     </div>
     <div class="channel-edit">
         <div class="channel-info">
-            <img src="./assets/img/icons/arrow_drop_down.png" alt="#">
+            <img src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
             <img src="./assets/img/icons/workspaces.png" alt="#">
             <h2>Channels</h2>
         </div>
         <div>
-            <img src="./assets/img/icons/add.png" alt="#">
+            <img src="./assets/img/icons/add.png" alt="#" (click)="addChannel()">
         </div>
+    </div>
+    <div class="dropdown-container" *ngIf="openChannels">
+        <div class="channel-box"><h3># Entwicklerteam</h3></div>
+    </div>
+    <div class="add-channel">
+        <img src="./assets/img/icons/add_circle.png" alt="#" (click)="addChannel()">
+        <h3>Channel hinzufügen</h3>
     </div>
 </mat-card>
 
 <mat-card class="overlay" *ngIf="channelCard">
     <div class="channel-edition-card">
-        <form [formGroup]="createChannel">
+        <form [formGroup]="channelForm">
             <div class="channel-introduction">
                 <div class="channel-text">
                     <h2>Channel Erstellen</h2>
                     <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein  #marketing zum Beispiel.</p>
                 </div>
-                <mat-icon class="close" (click)="close()">close</mat-icon>
+                <img src="./assets/img/icons/close.png" alt="#" (click)="close()">
             </div>
             <h3>Channel-Name</h3>
             <div class="channel-inputs">
@@ -44,7 +51,7 @@
                 <input class="channel-name" type="text" placeholder="Dein Text hier" formControlName="channelDescription">
             </div>
             <div class="btn-area">
-                <button class="btn-channel">Erstellen</button>
+                <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
             </div>
         </form>
     </div>
