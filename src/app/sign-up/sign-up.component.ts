@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Firestore, addDoc, collection, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
 import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 import { Router } from '@angular/router';
@@ -16,6 +16,7 @@ export class SignUpComponent implements OnInit {
   submitted: boolean = false;
   showAccountNotification: boolean = false;
   emailExists: boolean = false;
+  authUID: string = '';
 
   signUpForm = new FormGroup({
     name: new FormControl('', [
@@ -97,7 +98,7 @@ export class SignUpComponent implements OnInit {
     }
 
     await this.sendUserToAuthenticator(emailLowerCase);
-    await this.sendUserToFirebase(emailLowerCase);
+    await this.sendUserToFirebase(emailLowerCase, this.authUID);
 
     this.showsCreateAccountAnimation();
     this.resetForm();
@@ -109,20 +110,18 @@ export class SignUpComponent implements OnInit {
     const password: string = this.signUpForm.value.password ?? '';
 
     await createUserWithEmailAndPassword(auth, emailLowerCase, password)
-      .then((userCredential: any) => {
+      .then(async (userCredential: any) => {
         // Signed up 
-        const user = userCredential.user;
-        // ...
+        this.authUID = userCredential.user.uid;
       })
       .catch((error: any) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('ERROR: ', errorCode, errorMessage);
-        // ..
+        console.log('ERROR create user Auth.: ', errorCode, errorMessage);
       });
   }
 
-  async sendUserToFirebase(emailLowerCase: string) {
+  async sendUserToFirebase(emailLowerCase: string, authUID: any) {
     let data = {
       name: this.signUpForm.value.name,
       email: emailLowerCase,
@@ -130,9 +129,17 @@ export class SignUpComponent implements OnInit {
     const user = new User(data);
 
     const usersCollection = collection(this.firestore, 'users');
+    const docRef = doc(usersCollection, authUID);
+    setDoc(docRef, user.toJSON()).then((result: any) => {
+
+    })
+      .catch((error: any) => {
+        console.error('ERROR user send to Firebase: ', error);
+      });
+    /*
     addDoc(usersCollection, user.toJSON()).then(async (result) => {
       await getDoc(result);
-    });
+    });*/
   }
 
   showsCreateAccountAnimation() {
