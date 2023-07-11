@@ -2,7 +2,7 @@
   <mat-card class="chat-card">
     <div class="chat-first-row">
       <div class="chat-head">
-        <span class="hash-chat-name">#</span>
+        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="">
         <span class="chat-name">Entwicklerteam</span>
         <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="">
       </div>
@@ -15,14 +15,14 @@
         <div class="participant-amount">
           3
         </div>
-        <div class="add-participant">
+        <div class="add-participant-background">
           <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="">
         </div>
       </div>
     </div>
     <div class="chat-text-area">
       <div class="parting-line"></div>
-      <div class="flex-center">
+      <div class="flex-center time-partLine">
         <div class="time-stamp">Tuesday, January 14th
         </div>
       </div>
@@ -30,37 +30,50 @@
         <div>
           <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
         </div>
-        <div>
-          <div>
-            <span class="left-name">Noah Braun</span>
-            <span chat-timeStamp>11:45 am</span>
+        <div class="messages-left">
+          <div class="chat-bubble-head">
+            <span class="chat-name">Noah Braun</span>
+            <span class="chat-timeStamp">11:45 am</span>
           </div>
           <div>
             <span class="chat-message-left">What is the current version of Angular?</span>
           </div>
           <div>
             <span class="responses-left">2 Responses</span>
-            <span class="reply-time-left">Last reply 09:45 am</span>
+            <span class="chat-timeStamp">Last reply 09:45 am</span>
           </div>
         </div>
       </div>
       <div class="parting-line"></div>
-      <div class="flex-center">
+      <div class="flex-center time-partLine">
         <div class="time-stamp">Today</div>
       </div>
       <div class="chat-right">
-        <div>
-          <div>
-            <span class="chat-name">Frederik Beck</span>
-            <span chat-timeStamp>11:45 am</span>
-          </div>
-          <div>
-            <span class="chat-message-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-              blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat, eu
-              faucibus lacus iaculis ac.</span>
-          </div>
-          <div class="like-area">
-            like, smiley
+        <div class="flex-row ">
+          <div class="messages-right">
+            <div class="chat-bubble-head right-bubble">
+              <span class="chat-name">Frederik Beck</span>
+              <span class="chat-timeStamp">11:45 am</span>
+            </div>
+            <div>
+              <span class="chat-message-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
+                blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat,
+                eu
+                faucibus lacus iaculis ac.</span>
+            </div>
+            <div class="like-area">
+              <div class="reaction-icon-container">
+                <img src="./assets/img/icons/rocket.svg" alt="">
+                <span class="reaction-counter">2</span>
+              </div>
+              <div class="reaction-icon-container">
+                <img src="./assets/img/icons/tick_green.svg" alt="">
+                <span class="reaction-counter">1</span>
+              </div>
+              <div class="reaction-button-container">
+                <img src="./assets/img/icons/add_reaction.svg" alt="">
+              </div>
+            </div>
           </div>
           <div>
             <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
