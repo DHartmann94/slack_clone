@@ -17,6 +17,7 @@
     align-items: center;
     justify-content: center;
 
+
     h2 {
         font-family: Nunito;
         font-size: 20px;
@@ -138,7 +139,7 @@ h3 {
 }
 
 .channel-edition-main {
-  display: flex;
+  display: none;
   width: 872px;
   padding: 40px;
   flex-direction: column;
