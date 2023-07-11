@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
 
-interface ChannelInterface {
+/* interface ChannelInterface {
   channelName: string;
   channelDescription: string;
 }
-
+ */
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
@@ -27,15 +28,19 @@ interface ChannelInterface {
 
 export class ChannelsComponent implements OnInit {
 
-  channelForm!: FormGroup
+  channelForm!: FormGroup;
+  userForm!: FormGroup;
 
   showFiller: boolean = true;
   openChannels: boolean = true;
   channelCard: boolean = false;
+  userCard: boolean = true;
 
   userData: UserDataInterface[] = [];
 
+
   constructor(
+    private firestore: Firestore,
     private userDataService: UserDataService,
     private fb: FormBuilder,
   ) { }
@@ -51,8 +56,11 @@ export class ChannelsComponent implements OnInit {
       }
     );
     this.channelForm = this.fb.group({
-      channelName: [''],
+      channelName: ['',[Validators.required]],
       channelDescription: ['']
+    });
+    this.userForm = this.fb.group({
+      userName: ['',[Validators.required]]
     });
   }
 
@@ -68,13 +76,26 @@ export class ChannelsComponent implements OnInit {
     this.channelCard = true;
   }
 
-  submitChannel() {
-    if(this.channelForm.valid) {
-      
+  async submitChannel() {
+    if(this.channelForm) {
+      const channelCollection = collection(this.firestore, 'channels');
+      await addDoc(channelCollection, this.channelForm.value);
+      this.clearChannelForm();
+      this.channelCard = false;
     }
+  }
+
+  clearChannelForm() {
+    this.channelForm.reset();
   }
 
   close() {
     this.channelCard = false;
+  }
+
+  submitUser() {
+    if(this.channelForm != null) {
+
+    }
   }
 }
