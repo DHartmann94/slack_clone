@@ -4,7 +4,8 @@
     </mat-card-content>
     <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
 </mat-card>
-<mat-card *ngIf="showFiller" class="channel-container" autosize>
+
+<mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
     <div class="channel-header">
         <div class="channel-info">
             <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt=""></div>
@@ -12,52 +13,39 @@
         </div>
         <img class="edit-icon" src="./assets/img/icons/edit_square.png" alt="#">
     </div>
+    <div class="channel-edit">
+        <div class="channel-info">
+            <img src="./assets/img/icons/arrow_drop_down.png" alt="#">
+            <img src="./assets/img/icons/workspaces.png" alt="#">
+            <h2>Channels</h2>
+        </div>
+        <div>
+            <img src="./assets/img/icons/add.png" alt="#">
+        </div>
+    </div>
 </mat-card>
 
-
-<div class="channel-edition-main">
-  <div class="channel-wrapper">
-    <div class="flex-row main-row margin-btm-20">
-      <div class="flex">
-        <p class="h2-hashtag" id="tag-big">#</p>
-        <h2>channelName</h2>
-      </div>
-      <mat-icon class="close">close</mat-icon>
+<mat-card class="overlay" *ngIf="channelCard">
+    <div class="channel-edition-card">
+        <form [formGroup]="createChannel">
+            <div class="channel-introduction">
+                <div class="channel-text">
+                    <h2>Channel Erstellen</h2>
+                    <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein  #marketing zum Beispiel.</p>
+                </div>
+                <mat-icon class="close" (click)="close()">close</mat-icon>
+            </div>
+            <h3>Channel-Name</h3>
+            <div class="channel-inputs">
+                <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
+            </div>
+            <h3>Beschreibung (optinal)</h3>
+            <div class="channel-inputs">
+                <input class="channel-name" type="text" placeholder="Dein Text hier" formControlName="channelDescription">
+            </div>
+            <div class="btn-area">
+                <button class="btn-channel">Erstellen</button>
+            </div>
+        </form>
     </div>
-    <div class="channel-name margin-btm-20">
-      <div class="flex-row margin-btm-20">
-        <h3>Channel-name</h3>
-        <p class="edit" href="">Edit</p>
-      </div>
-      <div class="flex">
-        <p id="tag-small">#</p>
-        <p class="font-18-400">channelName</p>
-      </div>
-    </div>
-    <div class="channel-description">
-      <div class="flex-row margin-btm-20">
-        <h3>Description</h3>
-        <p class="edit" href="">Edit</p>
-      </div>
-      <div class="margin-btm-30">
-        <span class="font-18-400">
-          descriptionText
-        </span>
-      </div>
-      <div>
-        <div class="parting-line"></div>
-        <div class="creator-area">
-          <div class="margin-tp-30 margin-btm-20">
-            <h3>Created-by</h3>
-          </div>
-          <div class="userName">
-            <p class="creator-name"></p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="btn-area">
-      <button class="leave-channel">Leave channel</button>
-    </div>
-  </div>
-</div>
+</mat-card>

@@ -9,7 +9,7 @@
     background-color: var(--white);
     box-shadow: 4px 4px 7px 0px rgba(0, 0, 0, 0.20);
     transform: rotate(-90deg);
-    z-index: 9999;
+    z-index: 10;
     cursor: pointer;
 
     display: flex;
@@ -35,17 +35,21 @@
     position: absolute;
     left: 0;
     top: 86px;
-    min-width: 250px;
     height: 825px;
     border-radius: 15px;
     padding: 32px 30px;
     margin: 15px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 
     .channel-header {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        column-gap: 10px;
 
         .channel-info {
             display: flex;
@@ -67,187 +71,117 @@
 
         }
 
-
         .edit-icon {
             width: 45px;
             object-fit: scale-down;
         }
+    }
 
+    .channel-edit {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+
+        img:last-child {
+            margin-top: .41rem;
+            width: 40px;
+            object-fit: scale-down;
+        }
+
+        .channel-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: 10px;
+
+            h2 {
+                margin: 0;
+            }
+        }
     }
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 
-// #################
+    .channel-edition-card {
+        width: 872px;
+        height: 455px;
+        background-color: white;
+        border-radius: 25px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
 
-.leave-channel {
-  border-radius: 25px;
-  background: var(--purple-1, #444df2);
-  color: var(--white, #fff);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  display: flex;
-  padding: 12px 25px;
-  justify-content: center;
-  align-items: center;
-  gap: 10px;
-  border: none;
-  height: 49px;
-  width: 204px;
-}
+        h2 {
+            font-family: 'Nunito';
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+        }
 
-h1,
-h2,
-h3,
-p,
-span {
-  margin: 0;
-}
+        h3 {
+            font-family: 'Nunito';
+            margin-top: 20px;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+        }
 
-h2,
-.h2-hashtag {
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-right: 8px;
-}
+        .channel-introduction {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
 
-h3 {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
+        .channel-name {
+            display: flex;
+            height: 20px;
+            padding: 18px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 95%;
+            border-radius: 20px;
+            border: 1px solid var(--ligth-purple-lines, #adb0d9);
+            padding: 20px;
+            gap: 20px;
+        }
 
-.main-row {
-  padding: 0 4px;
-}
+        .btn-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
 
-.flex-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.flex {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.channel-edition-main {
-  display: flex;
-  width: 872px;
-  padding: 40px;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-  border-radius: 0px 30px 30px 30px;
-  // background: var(--white, #fff);
-  box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.channel-wrapper {
-  width: 100%;
-}
-
-.channel-name,
-.channel-description {
-  border-radius: 20px;
-  border: 1px solid var(--ligth-purple-lines, #adb0d9);
-  padding: 20px;
-  gap: 20px;
-}
-
-.btn-area {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.parting-line {
-  height: 1px;
-  border: none;
-  border-top: 1px solid #adb0d9;
-}
-
-.sub-hashtag {
-  margin-right: 10px;
-  font-style: italic;
-}
-
-#tag-big {
-  margin-right: 15px;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-bottom: 0;
-}
-
-#tag-small {
-  margin-right: 10px;
-  font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.font-18-400 {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.margin-btm-30 {
-  margin-bottom: 30px;
-}
-.margin-tp-30 {
-  margin-top: 30px;
-}
-
-.margin-btm-20 {
-  margin-bottom: 20px;
-}
-.margin-tp-20 {
-  margin-top: 20px;
-}
-
-.creator-name {
-  color: #535af1;
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin-bottom: 0 !important;
-  cursor: pointer;
-  margin-right: 18px;
-}
-
-.edit {
-  color: #535af1;
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  cursor: pointer;
-}
-
-.close {
-  cursor: pointer;
-}
-
-.userName {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
+            .btn-channel {
+                border-radius: 25px;
+                background: var(--purple-1, #444df2);
+                color: var(--white, #fff);
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                display: flex;
+                padding: 12px 25px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border: none;
+                height: 49px;
+                width: 204px;
+            }
+        }
+    }
 }
