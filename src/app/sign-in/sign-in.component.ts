@@ -54,8 +54,8 @@ export class SignInComponent implements OnInit {
       .then(async (userCredential: any) => {
         // Signed in 
         const user = userCredential.user;
-        //WEITERLEITEN MIT UID?
         console.log('Login with: ', user); // TEST !!!!!!!!!!!!!!!
+        //WEITERLEITEN MIT UID
       })
       .catch((error: any) => {
         const errorCode = error.code;
@@ -63,7 +63,7 @@ export class SignInComponent implements OnInit {
         if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
           this.showUserError();
         }
-        console.log('ERROR loginWithEmail: ', errorCode);
+        console.log('ERROR loginWithEmail: ', error);
       });
   }
 
@@ -75,23 +75,22 @@ export class SignInComponent implements OnInit {
       .then(async (result) => {
         //const credential = GoogleAuthProvider.credentialFromResult(result);
 
-        console.log(result); // TEST !!!!!!!!!!!!!!!
         this.authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
-        await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase)
+        await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase);
+        console.log('Login with: ', result); // TEST !!!!!!!!!!!!!!!
+        //WEITERLEITEN MIT UID
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         const email = error.customData.email;
         const credential = GoogleAuthProvider.credentialFromError(error);
-        console.error('ERROR login with Google: ', error);
       });
   }
 
   // TEST Gleiche Funktion wie in sign up.
   async sendGoogleUserToFirebase(name: any, emailLowerCase: any) {
-    // Zuerst Prüfen ob der User existiert, geht auch ohne?
     let data = {
       name: name,
       email: emailLowerCase,
@@ -100,9 +99,7 @@ export class SignInComponent implements OnInit {
 
     const usersCollection = collection(this.firestore, 'users');
     const docRef = doc(usersCollection, this.authUID);
-    console.log(this.authUID)
     setDoc(docRef, user.toJSON()).then((result: any) => {
-
     })
       .catch((error: any) => {
         console.error('ERROR user send to Firebase: ', error);

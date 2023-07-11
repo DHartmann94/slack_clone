@@ -113,6 +113,7 @@ export class SignUpComponent implements OnInit {
       .then(async (userCredential: any) => {
         // Signed up 
         this.authUID = userCredential.user.uid;
+        // Send EMAIL_VERIFICATION!
       })
       .catch((error: any) => {
         const errorCode = error.code;
@@ -131,7 +132,6 @@ export class SignUpComponent implements OnInit {
     const usersCollection = collection(this.firestore, 'users');
     const docRef = doc(usersCollection, authUID);
     setDoc(docRef, user.toJSON()).then((result: any) => {
-
     })
       .catch((error: any) => {
         console.error('ERROR user send to Firebase: ', error);
