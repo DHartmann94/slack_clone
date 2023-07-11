@@ -18,6 +18,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from "@angular/material/icon";
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
@@ -32,6 +33,7 @@ import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
+import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 import { ChatComponent } from './chat/chat.component';
 
 
@@ -47,6 +49,7 @@ import { ChatComponent } from './chat/chat.component';
     ChannelsComponent,
     ThreadsComponent,
     EditUserProfileCardComponent,
+    LogoutUserProfileCardComponent,
     ChatComponent
 
   ],
@@ -59,8 +62,10 @@ import { ChatComponent } from './chat/chat.component';
     MatCardModule,
     MatSidenavModule,
     MatButtonModule,
+    MatFormFieldModule,
     MatToolbarModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
