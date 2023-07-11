@@ -23,7 +23,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 
-
 //<-----Components----->//
 import { StartscreenComponent } from './startscreen/startscreen.component';
 import { SignInComponent } from './sign-in/sign-in.component';

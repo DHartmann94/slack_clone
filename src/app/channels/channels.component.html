@@ -75,24 +75,27 @@
             </div>
         </div>
         <div class="radio-selection">
-            <mat-radio-group aria-label="Select an option">
-                <mat-radio-button color="primary" value="addFromGroup">Alle Mitglieder von <span class="">OfficeTeam</span> hinzufügen</mat-radio-button>
-                <mat-radio-button color="primary" value="addByUser">Bestimmte Leute hinzufügen</mat-radio-button>
+            <mat-radio-group>
+                <mat-radio-button color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
+                    Alle Mitglieder von <span>OfficeTeam</span> hinzufügen
+                </mat-radio-button>
+                <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
+                    Bestimmte Leute hinzufügen
+                </mat-radio-button>
             </mat-radio-group>
         </div>
-        <form [formGroup]="userForm">
+        <form [formGroup]="channelForm" *ngIf="openUserForm">
             <div class="users-inputs">
-                <input class="user-name" type="text" placeholder="Name eingeben"
-                    formControlName="userName">
-                <div *ngIf="userForm.controls['userName'].invalid && userForm.controls['userName'].touched">
-                    <div class="error-massage" *ngIf="userForm.controls['userName'].errors?.['required']">Name is
+                <input class="user-name" type="text" placeholder="Name eingeben" formControlName="userName">
+                <div *ngIf="channelForm.controls['userName'].invalid && channelForm.controls['userName'].touched">
+                    <div class="error-massage" *ngIf="channelForm.controls['userName'].errors?.['required']">Name is
                         required.
                     </div>
                 </div>
             </div>
         </form>
         <div class="btn-area">
-            <button class="btn-channel" (click)="submitUser()">Erstellen</button>
+            <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
         </div>
     </div>
 </mat-card>

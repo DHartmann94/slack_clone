@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
-import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
 
-/* interface ChannelInterface {
+interface ChannelInterface {
   channelName: string;
   channelDescription: string;
+  userName?: string;
 }
- */
+
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
@@ -27,17 +28,18 @@ import { Firestore, addDoc, collection, getDocs, query } from '@angular/fire/fir
 })
 
 export class ChannelsComponent implements OnInit {
-
   channelForm!: FormGroup;
-  userForm!: FormGroup;
 
   showFiller: boolean = true;
   openChannels: boolean = true;
   channelCard: boolean = false;
-  userCard: boolean = true;
+  userCard: boolean = false;
+  openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
+  channels: ChannelInterface[] = [];
 
+  channelId: string = ''
 
   constructor(
     private firestore: Firestore,
@@ -57,10 +59,8 @@ export class ChannelsComponent implements OnInit {
     );
     this.channelForm = this.fb.group({
       channelName: ['',[Validators.required]],
+      userName: ['',[Validators.required]],
       channelDescription: ['']
-    });
-    this.userForm = this.fb.group({
-      userName: ['',[Validators.required]]
     });
   }
 
@@ -77,25 +77,54 @@ export class ChannelsComponent implements OnInit {
   }
 
   async submitChannel() {
-    if(this.channelForm) {
+    if (this.channelForm) {
+      const channel: ChannelInterface = {
+        channelName: this.channelForm.value.channelName,
+        channelDescription: this.channelForm.value.channelDescription,
+      };
+  
       const channelCollection = collection(this.firestore, 'channels');
-      await addDoc(channelCollection, this.channelForm.value);
-      this.clearChannelForm();
+      const docRef = await addDoc(channelCollection, channel);
+      this.channelId = docRef.id;
+      console.log(this.channelId);
+
+      this.channelForm.reset();
       this.channelCard = false;
+      this.userCard = true;
     }
   }
-
-  clearChannelForm() {
-    this.channelForm.reset();
-  }
-
+  
   close() {
     this.channelCard = false;
   }
 
-  submitUser() {
-    if(this.channelForm != null) {
-
+  addUser(value:string) {
+    if(value === 'addByUser') {
+      this.openUserForm = true;
+    } else if(value === 'addFromGroup') {
+      this.openUserForm = false;
     }
+  }
+
+  async submitUserToChannel() {
+    if (this.channelForm && this.channelId) {
+      const users: string[] = [];
+      users.push(this.channelForm.value.userName);
+      console.log(users);
+      
+      try {
+        const channelDoc = doc(this.firestore, 'channels', this.channelId);
+        await updateDoc(channelDoc, {
+          users: arrayUnion(...users)
+        });
+        console.log('User added successfully.');
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+      
+      this.channelForm.reset();
+      console.log("user value", this.channelForm);
+    }
+    this.userCard = false;
   }
 }
