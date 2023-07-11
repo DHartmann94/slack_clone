@@ -71,6 +71,7 @@ section {
 mat-card {
     width: 400px;
     padding: 25px;
+    position: relative;
 
     display: flex;
     flex-direction: column;
@@ -249,9 +250,25 @@ form {
     border: 1px solid #E61C40 !important; // TEST IN GLOABL
 }
 
+.loading-parent {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(45deg, rgba(100, 100, 100, 0.4), rgba(112, 112, 112, 0.4), rgba(209, 209, 209, 0.4), rgba(219, 219, 219, 0.4));
+}
+
 mat-spinner {
     width: 40px !important;
     height: 40px !important;
+    
 
     ::ng-deep circle {
         stroke: var(--white) !important;

@@ -31,9 +31,7 @@ export class SignInComponent implements OnInit {
     if (this.signInForm.invalid) {
       return;
     }
-
-    this.isSignIn = true;
-    this.signInForm.disable();
+    this.disableForm();
 
     const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
     const password = this.signInForm.value.password ?? '';
@@ -43,8 +41,7 @@ export class SignInComponent implements OnInit {
   }
 
   async signInGuest(email: string, password: string) {
-    this.isSignIn = true;
-    this.signInForm.disable();
+    this.disableForm();
 
     await this.loginWithEmail(email, password);
 
@@ -58,13 +55,15 @@ export class SignInComponent implements OnInit {
         // Signed in 
         const user = userCredential.user;
         //WEITERLEITEN MIT UID?
-        console.log('Login'); // TEST !!!!!!!!!!!!!!!
+        console.log('Login with: ', user); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
-        this.showUserError();
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log('ERROR: ', errorCode, errorMessage);
+        if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
+          this.showUserError();
+        }
+        console.log('ERROR loginWithEmail: ', errorCode);
       });
   }
 
@@ -90,7 +89,7 @@ export class SignInComponent implements OnInit {
       });
   }
 
-  // Gleiche Funktion wie in sign up.
+  // TEST Gleiche Funktion wie in sign up.
   async sendGoogleUserToFirebase(name: any, emailLowerCase: any) {
     // Zuerst Prüfen ob der User existiert, geht auch ohne?
     let data = {
@@ -118,10 +117,14 @@ export class SignInComponent implements OnInit {
     this.userNotFound = true;
     setTimeout(() => {
       this.userNotFound = false;
-    }, 3000);
+    }, 5000);
   }
 
-  // Gleiche Funktion wie in sign up.
+  disableForm() {
+    this.signInForm.disable();
+    this.isSignIn = true;
+  }
+
   resetForm() {
     setTimeout(() => {
       this.signInForm.enable();

@@ -44,10 +44,13 @@
 
                 <div class="button-bottom-parent">
                     <button type="submit" [disabled]="isSignIn" class="button-sign-in">
-                        <span *ngIf="!isSignIn">Login</span>
-                        <mat-spinner *ngIf="isSignIn"></mat-spinner>
+                        <span>Login</span>
                     </button>
                     <a (click)="signInGuest('guest@guest.com','Guest123!')" class="button-guest-login">Guest-Login</a>
+                </div>
+
+                <div *ngIf="isSignIn" class="loading-parent">
+                    <mat-spinner></mat-spinner>
                 </div>
             </form>
         </mat-card>
