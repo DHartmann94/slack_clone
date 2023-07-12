@@ -1,17 +1,14 @@
 .chat-wrapper-main {
   border-radius: 30px;
-  background: var(--white, #fff);
+  /* background: var(--white, #fff); */
 }
 
 .chat-card {
-  position: absolute;
-  right: 382px;
-  top: 86px;
   min-width: 500px;
-  min-height: 825px;
+  min-height: 100vh;
   border-radius: 15px;
   padding: 25px 35px 40px;
-  margin: 15px;
+  margin: 15px 10px 10px 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

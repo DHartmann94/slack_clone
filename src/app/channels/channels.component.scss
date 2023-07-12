@@ -33,13 +33,10 @@
 }
 
 .channel-container {
-    position: absolute;
-    left: 0;
-    top: 86px;
-    height: 825px;
+    min-height: 100vh;
     border-radius: 15px;
     padding: 32px 30px;
-    margin: 15px;
+    margin: 15px 0 0 10px;
 
     display: flex;
     flex-direction: column;
