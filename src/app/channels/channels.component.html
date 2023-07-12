@@ -15,7 +15,7 @@
     </div>
     <div class="channel-edit">
         <div class="channel-info">
-            <img src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
+            <img [ngClass]="{'arrow-for-dropdown-open': openChannels}" class="arrow-for-dropdown-closed" src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
             <img src="./assets/img/icons/workspaces.png" alt="#">
             <h2>Channels</h2>
         </div>
