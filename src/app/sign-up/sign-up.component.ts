@@ -100,7 +100,7 @@ export class SignUpComponent implements OnInit {
     console.log(authUID);
     await this.sendUserToFirebase(emailLowerCase, authUID);
 
-    this.showsCreateAccountAnimation();
+    this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
   }
@@ -145,7 +145,7 @@ export class SignUpComponent implements OnInit {
     });*/
   }
 
-  showsCreateAccountAnimation() {
+  showsNotificationAnimation() {
     this.showAccountNotification = true;
     setTimeout(() => {
       this.showAccountNotification = false;

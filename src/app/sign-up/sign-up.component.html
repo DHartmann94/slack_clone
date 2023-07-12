@@ -42,11 +42,11 @@
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
                     class="error-notification">
-                    <mat-error *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
-                    Please enter a valid email-address.</mat-error>
-                </div>
-                <!--- email-function --->
-                <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
+                        <mat-error *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                        Please enter a valid email-address.</mat-error>
+                    </div>
+                    <!--- email-function --->
+                    <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
                 </div>
             </div>
             <!--- password --->
