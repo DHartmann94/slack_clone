@@ -18,9 +18,46 @@
         <div class="logout">
             <mat-icon (click)="closeLogoutContainer()">close</mat-icon>
             <div class="logout-info">
-                <p>Profil</p>
+                <p (click)="openUserProfile()">Profile</p>
                 <p>Log out</p>
             </div>
         </div>
     </div>
+
+    <!-- Profile Container-->
+    <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
+        <mat-card class="user-profile-card">
+            <mat-card-header class="user-header">
+                <mat-card-title>Dein Profil bearbeiten</mat-card-title>
+                <mat-icon (click)="closeUserProfile()" >close</mat-icon>
+            </mat-card-header>
+            <div class="user-img">
+                <img src="/assets/profile-pictures/EliasNeumann.png">
+            </div>
+            <mat-card-content class="user-edit-input">
+                <form class="name-form">
+                    <div class="name-field">
+                        <div>
+                            <mat-icon>account_circle</mat-icon>
+                        </div>
+                        <div>
+                            <mat-label>Vollständiger Name</mat-label>
+                        </div>
+                    </div>
+                    <input matInput placeholder="Vollständiger Name">
+                </form>
+                <form class="email-form">
+                    <div class="e-mail-field">
+                        <mat-icon>mail_outline</mat-icon>
+                        <mat-label>E-Mail-Adresse</mat-label>
+                    </div>
+                    <input matInput placeholder="E-Mail-Adresse">
+                </form>
+            </mat-card-content>
+            <mat-card-actions class="edit-buttons">
+                <button class="interrupt-button" mat-stroked-button>Abbrechen</button>
+                <button class="save-button" mat-flat-button color="primary">Speichern</button>
+            </mat-card-actions>
+        </mat-card>
+    </section>
 </div>
