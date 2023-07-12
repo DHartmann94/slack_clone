@@ -65,6 +65,7 @@ export class PasswordResetComponent {
 
     await this.sendChangePasswordMail(emailLowerCase);
 
+    this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
   }
