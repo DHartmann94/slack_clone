@@ -1,3 +1,6 @@
+
+$line-spacing: 35px;
+
 section {
     height: 100vh;
     max-height: 100%;
@@ -12,7 +15,7 @@ section {
 
     h1 {
         font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
-        margin: 2rem;
+        margin: 25px;
 
         font-size: 3rem;
         font-weight: bold;
@@ -70,19 +73,21 @@ section {
 /*------ Sign-in Card ------*/
 mat-card {
     width: 400px;
-    padding: 25px;
+    padding: $line-spacing;
     position: relative;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
 
     h1 {
-        margin: 0rem 2rem 2rem 2rem;
         color: var(--c-purple);
+        margin: 0px 0px 35px 0px !important;
     }
 
     p {
+        margin: 5px 0px 35px 0px;
         text-align: center;
     }
 }
@@ -92,7 +97,6 @@ form {
     flex-direction: column;
     align-items: center;
     width: 100%;
-    gap: 25px;
 
     input {
         font-family: 'Nunito';
@@ -193,7 +197,10 @@ form {
 }
 
 .button-bottom-parent {
+    width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 16px;
 
     button,a {
@@ -220,6 +227,10 @@ form {
         &:hover {
             background-color: #575ff7; // TEST IN GLOABL
         }
+
+        &:disabled {
+            background-color: #686868;
+        }
     }
     
     .button-guest-login {
@@ -237,8 +248,22 @@ form {
     }
 }
 
+.bottom-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $line-spacing;
+}
+
+.error-parent {
+    width: 100%;
+    height: $line-spacing;
+}
+
 .error-notification {
-    font-size: 0.7rem;
+    font-size: 0.7rem !important;
 
     display: flex;
     flex-direction: column;
@@ -272,5 +297,63 @@ mat-spinner {
 
     ::ng-deep circle {
         stroke: var(--white) !important;
+    }
+}
+
+/*------ Left To Right Message ------*/
+.account-create-send-message {
+    z-index: 10000;
+    position: absolute;
+    top: 70%;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 15px 25px;
+    width: 326px;
+    height: 74px;
+    background-color: var(--c-purple);
+    border: 1px solid var(--c-purple);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    opacity: 0;
+
+    div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+
+        width: 100%;
+        height: 100%;
+    }
+
+    span {
+        color: var(--white);
+        font-weight: bold;
+    }
+
+    @media(max-width: 970px) {
+        width: 246px;
+        height: 54px;
+    }
+}
+
+.account-message-animation {
+    animation: leftToRight 0.8s ease-in-out forwards 0.2s;
+}
+
+@keyframes leftToRight {
+    from {
+        right: 0%;
+        transform: translateX(0%);
+        opacity: 0;
+    }
+
+    to {
+        right: 50%;
+        transform: translateX(50%);
+        opacity: 1;
     }
 }
