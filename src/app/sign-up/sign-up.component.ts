@@ -37,10 +37,9 @@ export class SignUpComponent implements OnInit {
     ]),
 
     confirmPassword: new FormControl('', [
-      Validators.required,
-      this.matchPassword.bind(this)
+      Validators.required
     ]),
-  });
+  }, { validators: this.matchPassword.bind(this) });
 
   constructor(private firestore: Firestore, private router: Router) { }
 
@@ -49,11 +48,16 @@ export class SignUpComponent implements OnInit {
 
   /*------ Validator-Funktions ------*/
   matchPassword(control: AbstractControl): ValidationErrors | null {
-    const password = control.root.get('password');
-    const confirmPassword = control.value;
+    const passwordControl = control.get("password");
+    const confirmPasswordControl = control.get("confirmPassword");
 
-    if (password && confirmPassword && password.value !== confirmPassword) {
-      return { mismatch: true };
+    if (passwordControl && confirmPasswordControl) {
+      const password: string = passwordControl.value;
+      const confirmPassword: string = confirmPasswordControl.value;
+
+      if (password !== confirmPassword) {
+        return { mismatch: true };
+      }
     }
 
     return null;
@@ -109,7 +113,7 @@ export class SignUpComponent implements OnInit {
     return new Promise((resolve, reject) => {
       const auth = getAuth();
       const password: string = this.signUpForm.value.password ?? '';
-  
+
       createUserWithEmailAndPassword(auth, emailLowerCase, password)
         .then((userCredential: any) => {
           const authUID = userCredential.user.uid;
@@ -123,7 +127,7 @@ export class SignUpComponent implements OnInit {
         });
     });
   }
-  
+
 
   async sendUserToFirebase(emailLowerCase: string, authUID: any) {
     let data = {

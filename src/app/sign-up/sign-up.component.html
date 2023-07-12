@@ -13,39 +13,37 @@
         <form (ngSubmit)="signUp()" [formGroup]="signUpForm">
             <!--- name --->
             <div class="input-parent">
-                <input
-                    [ngClass]="{'error-border': signUpForm.controls['name'].invalid && (submitted ||signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)}"
+                <input [ngClass]="{'error-border': signUpForm.controls['name'].invalid && (submitted ||signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)}"
                     type="text" formControlName="name" [placeholder]="'First- and last name'" required>
                 <img src="./assets/img/icons/person.png" alt="Person">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['name'].errors && (submitted || signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)"
                         class="error-notification">
                         <!--- required --->
-                        <mat-error *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name are
-                            required.</mat-error>
+                        <mat-error *ngIf="signUpForm.controls['name'].errors['required']">
+                        Your first and last name are required.</mat-error>
                         <!--- minlength / maxlenght --->
                         <mat-error *ngIf="signUpForm.controls['name'].errors['minlength']
-                    || signUpForm.controls['name'].errors['maxlength']
-                    && signUpForm.controls['name'].touched">Minimum 3 and maximum 25 characters.</mat-error>
+                        || signUpForm.controls['name'].errors['maxlength']
+                        && signUpForm.controls['name'].touched">
+                        Minimum 3 and maximum 25 characters.</mat-error>
                         <!--- pattern --->
                         <mat-error *ngIf="signUpForm.controls['name'].errors['pattern']
-                    && signUpForm.controls['name'].touched">
-                            Please enter your first AND last name.<br> Only letters allowed.</mat-error>
+                        && signUpForm.controls['name'].touched">
+                        Please enter your first AND last name.<br> Only letters allowed.</mat-error>
                     </div>
                 </div>
             </div>
             <!--- email --->
             <div class="input-parent">
-                <input
-                    [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched) || emailExists}"
+                <input [ngClass]="{'error-border': signUpForm.controls['email'].invalid && (submitted ||signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched) || emailExists}"
                     type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                 <img src="./assets/img/icons/mail.png" alt="EMail">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
                         class="error-notification">
-                        <mat-error
-                            *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
-                            Please enter a valid email-address.</mat-error>
+                        <mat-error *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                        Please enter a valid email-address.</mat-error>
                     </div>
                     <!--- email-function --->
                     <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
@@ -53,8 +51,7 @@
             </div>
             <!--- password --->
             <div class="input-parent">
-                <input
-                    [ngClass]="{'error-border': signUpForm.controls['password'].invalid && (submitted ||signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)}"
+                <input [ngClass]="{'error-border': signUpForm.controls['password'].invalid && (submitted ||signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)}"
                     type="password" formControlName="password" [placeholder]="'Password'" required>
                 <img src="./assets/img/icons/lock.png" alt="Lock">
                 <div class="error-parent">
@@ -64,31 +61,27 @@
                         <mat-error *ngIf="signUpForm.controls['password'].errors['required']">Your password is
                             required.</mat-error>
                         <!--- minlength --->
-                        <mat-error *ngIf="signUpForm.controls['password'].errors['minlength']
-                    && signUpForm.controls['password'].touched">Min 8 characters.</mat-error>
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['minlength'] && signUpForm.controls['password'].touched">
+                            Min 8 characters.</mat-error>
                         <!--- pattern --->
-                        <mat-error *ngIf="signUpForm.controls['password'].errors['pattern']
-                    && signUpForm.controls['password'].touched">
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['pattern'] && signUpForm.controls['password'].touched">
                             Please use at least one capital letter, special character and number.</mat-error>
                     </div>
                 </div>
             </div>
-            <!--- password --->
+            <!--- confirm-password --->
             <div class="input-parent">
-                <input
-                    [ngClass]="{'error-border': signUpForm.controls['confirmPassword'].invalid && (submitted ||signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)}"
+                <input [ngClass]="{'error-border': signUpForm.controls['confirmPassword'].invalid && (submitted ||signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched) || signUpForm.hasError('mismatch')}"
                     type="password" formControlName="confirmPassword" [placeholder]="'Confirm-Password'" required>
                 <img src="./assets/img/icons/lock.png" alt="Lock">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['confirmPassword'].errors && (submitted || signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)" class="error-notification">
                         <!--- required --->
                         <mat-error *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
-                            Your confirm password is required.</mat-error>
-                        <!--- function --->
-                        <mat-error
-                            *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
-                            Your passwords do not match.</mat-error>
+                        Your confirm password is required.</mat-error>
                     </div>
+                    <!--- function --->
+                    <mat-error *ngIf="signUpForm.hasError('mismatch')">Your passwords do not match.</mat-error>
                 </div>
             </div>
 
