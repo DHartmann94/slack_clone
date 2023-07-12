@@ -19,18 +19,19 @@
                 <img src="./assets/img/icons/person.png" alt="Person">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['name'].errors && (submitted || signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)"
-                    class="error-notification">
-                    <!--- required --->
-                    <mat-error *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name are required.</mat-error>
-                    <!--- minlength / maxlenght --->
-                    <mat-error *ngIf="signUpForm.controls['name'].errors['minlength']
+                        class="error-notification">
+                        <!--- required --->
+                        <mat-error *ngIf="signUpForm.controls['name'].errors['required']">Your first and last name are
+                            required.</mat-error>
+                        <!--- minlength / maxlenght --->
+                        <mat-error *ngIf="signUpForm.controls['name'].errors['minlength']
                     || signUpForm.controls['name'].errors['maxlength']
                     && signUpForm.controls['name'].touched">Minimum 3 and maximum 25 characters.</mat-error>
-                    <!--- pattern --->
-                    <mat-error *ngIf="signUpForm.controls['name'].errors['pattern']
+                        <!--- pattern --->
+                        <mat-error *ngIf="signUpForm.controls['name'].errors['pattern']
                     && signUpForm.controls['name'].touched">
-                    Please enter your first AND last name.<br> Only letters allowed.</mat-error>
-                </div>
+                            Please enter your first AND last name.<br> Only letters allowed.</mat-error>
+                    </div>
                 </div>
             </div>
             <!--- email --->
@@ -41,9 +42,10 @@
                 <img src="./assets/img/icons/mail.png" alt="EMail">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['email'].errors && (submitted || signUpForm.controls['email'].dirty || signUpForm.controls['email'].touched)"
-                    class="error-notification">
-                        <mat-error *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
-                        Please enter a valid email-address.</mat-error>
+                        class="error-notification">
+                        <mat-error
+                            *ngIf="signUpForm.controls['email'].errors['required'] || signUpForm.controls['email'].invalid">
+                            Please enter a valid email-address.</mat-error>
                     </div>
                     <!--- email-function --->
                     <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
@@ -57,17 +59,18 @@
                 <img src="./assets/img/icons/lock.png" alt="Lock">
                 <div class="error-parent">
                     <div *ngIf="signUpForm.controls['password'].errors && (submitted || signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)"
-                    class="error-notification">
-                    <!--- required --->
-                    <mat-error *ngIf="signUpForm.controls['password'].errors['required']">Your password is required.</mat-error>
-                    <!--- minlength --->
-                    <mat-error *ngIf="signUpForm.controls['password'].errors['minlength']
+                        class="error-notification">
+                        <!--- required --->
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['required']">Your password is
+                            required.</mat-error>
+                        <!--- minlength --->
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['minlength']
                     && signUpForm.controls['password'].touched">Min 8 characters.</mat-error>
-                    <!--- pattern --->
-                    <mat-error *ngIf="signUpForm.controls['password'].errors['pattern']
+                        <!--- pattern --->
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['pattern']
                     && signUpForm.controls['password'].touched">
-                    Please use at least one capital letter, special character and number.</mat-error>
-                </div>
+                            Please use at least one capital letter, special character and number.</mat-error>
+                    </div>
                 </div>
             </div>
             <!--- password --->
@@ -77,15 +80,15 @@
                     type="password" formControlName="confirmPassword" [placeholder]="'Confirm-Password'" required>
                 <img src="./assets/img/icons/lock.png" alt="Lock">
                 <div class="error-parent">
-                    <div *ngIf="signUpForm.controls['confirmPassword'].errors && (submitted || signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)"
-                    class="error-notification">
-                    <!--- required --->
-                    <mat-error *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
-                        Your confirm password is required.</mat-error>
-                    <!--- function --->
-                    <mat-error *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
-                        Your passwords do not match.</mat-error>
-                </div>
+                    <div *ngIf="signUpForm.controls['confirmPassword'].errors && (submitted || signUpForm.controls['confirmPassword'].dirty || signUpForm.controls['confirmPassword'].touched)" class="error-notification">
+                        <!--- required --->
+                        <mat-error *ngIf="signUpForm.controls['confirmPassword'].errors['required']">
+                            Your confirm password is required.</mat-error>
+                        <!--- function --->
+                        <mat-error
+                            *ngIf="signUpForm.controls['confirmPassword'].hasError('mismatch') && signUpForm.controls['confirmPassword'].touched">
+                            Your passwords do not match.</mat-error>
+                    </div>
                 </div>
             </div>
 
@@ -98,7 +101,8 @@
         </form>
     </mat-card>
 
-    <div *ngIf="showAccountNotification" [class.account-message-animation]="showAccountNotification" class="account-create-send-message" #viewAnimation>
+    <div *ngIf="showAccountNotification" [class.account-message-animation]="showAccountNotification"
+        class="account-create-send-message" #viewAnimation>
         <div>
             <span>Account created successfully!</span>
         </div>

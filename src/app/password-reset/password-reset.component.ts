@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { Firestore } from '@angular/fire/firestore';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { User } from 'src/models/user.class';
+import { Firestore } from '@angular/fire/firestore';
+import { getAuth, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { getAuth, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-password-reset',
@@ -11,7 +10,6 @@ import { getAuth, fetchSignInMethodsForEmail } from '@angular/fire/auth';
   styleUrls: ['./password-reset.component.scss']
 })
 export class PasswordResetComponent {
-  //user: User = new User(); // TEST
   isSendMail: boolean = false;
   submitted: boolean = false;
   showAccountNotification: boolean = false;
@@ -26,9 +24,6 @@ export class PasswordResetComponent {
 
 
   constructor(private firestore: Firestore, private router: Router) { }
-
-  ngOnInit(): void {
-  }
 
   /*------ Validator-Funktions ------*/
   async checkEmailExists(emailLowerCase: string) {
@@ -68,8 +63,22 @@ export class PasswordResetComponent {
       return;
     }
 
+    await this.sendChangePasswordMail(emailLowerCase);
+
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
+  }
+
+  async sendChangePasswordMail(emailLowerCase: string) {
+    const auth = getAuth();
+
+    sendPasswordResetEmail(auth, emailLowerCase)
+      .then(() => {
+        // Sending Mail (Standard: https://slag-clone.firebaseapp.com/__/auth/action?mode=action&oobCode=code)
+      })
+      .catch((error) => {
+        console.log('ERROR sending Mail:', error);
+      });
   }
 
   showsNotificationAnimation() {
