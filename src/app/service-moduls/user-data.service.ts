@@ -16,7 +16,7 @@ export interface UserDataInterface {
 
 export class UserDataService {
 
-  users: UserDataInterface[] = [];
+  userData: UserDataInterface[] = [];
 
   constructor(
     public firestore: Firestore
@@ -40,7 +40,7 @@ export class UserDataService {
           };
           storedUserData.push(user);
         });
-        this.users = storedUserData;
+        this.userData = storedUserData;
         return storedUserData;
       })
     );

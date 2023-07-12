@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
-import { FormBuilder, FormGroup, Validators  } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
 
 interface ChannelInterface {
   channelName: string;
   channelDescription: string;
   userName?: string;
+  color: any;
 }
 
 @Component({
@@ -37,17 +39,31 @@ export class ChannelsComponent implements OnInit {
   openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
-  channels: ChannelInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
+
+  channels = ["Entwicklerteam"];
 
   channelId: string = ''
+  channelColor: string[] = [];
 
   constructor(
     private firestore: Firestore,
     private userDataService: UserDataService,
+    private channelDataService: ChannelDataService,
     private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
+    this.channelDataService.getChannelData().subscribe(
+      channelData => {
+        this.channelData = channelData;
+        console.log('Subscribed data:', channelData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+
     this.userDataService.getUserData().subscribe(
       userData => {
         this.userData = userData;
@@ -57,9 +73,10 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+
     this.channelForm = this.fb.group({
-      channelName: ['',[Validators.required]],
-      userName: ['',[Validators.required]],
+      channelName: ['', [Validators.required]],
+      userName: ['', [Validators.required]],
       channelDescription: ['']
     });
   }
@@ -81,8 +98,9 @@ export class ChannelsComponent implements OnInit {
       const channel: ChannelInterface = {
         channelName: this.channelForm.value.channelName,
         channelDescription: this.channelForm.value.channelDescription,
+        color: this.newColor(),
       };
-  
+
       const channelCollection = collection(this.firestore, 'channels');
       const docRef = await addDoc(channelCollection, channel);
       this.channelId = docRef.id;
@@ -91,17 +109,18 @@ export class ChannelsComponent implements OnInit {
       this.channelForm.reset();
       this.channelCard = false;
       this.userCard = true;
+      this.updateChannels(channel.channelName);
     }
   }
-  
+
   close() {
     this.channelCard = false;
   }
 
-  addUser(value:string) {
-    if(value === 'addByUser') {
+  addUser(value: string) {
+    if (value === 'addByUser') {
       this.openUserForm = true;
-    } else if(value === 'addFromGroup') {
+    } else if (value === 'addFromGroup') {
       this.openUserForm = false;
     }
   }
@@ -111,7 +130,7 @@ export class ChannelsComponent implements OnInit {
       const users: string[] = [];
       users.push(this.channelForm.value.userName);
       console.log(users);
-      
+
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
         await updateDoc(channelDoc, {
@@ -121,10 +140,21 @@ export class ChannelsComponent implements OnInit {
       } catch (error) {
         console.error('Error adding user:', error);
       }
-      
-      this.channelForm.reset();
-      console.log("user value", this.channelForm);
     }
-    this.userCard = false;
+  }
+
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
+    return randomColor;
+  }
+
+  updateChannels(channelName: string) {
+    if (channelName) {
+      this.channels.push(channelName);
+      console.log("Channel added", this.channels);
+      this.userCard = false;
+    }
   }
 }

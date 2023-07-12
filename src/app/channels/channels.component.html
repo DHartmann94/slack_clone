@@ -24,12 +24,12 @@
         </div>
     </div>
     <div class="dropdown-container" *ngIf="openChannels">
-        <div class="channel-box">
-            <h3># Entwicklerteam</h3>
+        <div class="channel-box" *ngFor="let channel of channels; let i = index">
+            <h3 ># {{ channel }}</h3>
         </div>
     </div>
-    <div class="add-channel">
-        <img src="./assets/img/icons/add_circle.png" alt="#" (click)="addChannel()">
+    <div class="add-channel" (click)="addChannel()">
+        <img src="./assets/img/icons/add_circle.png" alt="#">
         <h3>Channel hinzufügen</h3>
     </div>
 </mat-card>
