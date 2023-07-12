@@ -1,0 +1,269 @@
+.chat-wrapper-main {
+  border-radius: 30px;
+  /* background: var(--white, #fff); */
+}
+
+.chat-card {
+  min-width: 500px;
+  min-height: 100vh;
+  border-radius: 15px;
+  padding: 25px 35px 40px;
+  margin: 15px 10px 10px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.chat-first-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 112.5px;
+  background: #fff;
+  padding: 0 10px;
+  z-index: 3;
+}
+
+.white-box {
+  height: 96px;
+  position: absolute;
+  background: #fff;
+  width: 100%;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  border-radius: 15px 15px 0 0;
+}
+
+.shadow-box {
+  z-index: 1;
+  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  height: 96px;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  border-radius: 15px 15px 0 0;
+}
+
+.right-corner {
+  display: flex;
+  align-items: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.profile-pictures-chat {
+  height: 70px;
+  width: 70px;
+  object-fit: cover;
+  margin: 0 15px;
+}
+
+.participant-icon {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  margin-right: -10px;
+  border: 2px solid white;
+  border-radius: 50%;
+}
+
+.participant-amount {
+  margin-left: 20px;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  margin-right: 20px;
+}
+
+.add-participant {
+  height: 24px;
+  width: 24px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  cursor: pointer;
+}
+
+.add-participant-background {
+  border-radius: 20px;
+  background: var(--bg-color, #eceefe);
+  height: 40px;
+  width: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-head {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  cursor: pointer;
+}
+
+.hash-chat-name {
+  margin-right: 15px;
+}
+
+.chat-name {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-right: 10px;
+}
+
+.chat-left {
+  display: flex;
+  flex-direction: row;
+  width: 75%;
+}
+
+.chat-right {
+  display: flex;
+  justify-content: flex-end;
+  padding-left: 145px;
+}
+
+.parting-line {
+  width: 100%;
+  border: 0.5px solid #adb0d97a;
+  height: 0px;
+  margin: 37.5px 0;
+}
+
+.time-stamp {
+  border-radius: 30px;
+  border: 1px solid var(--ligth-purple-lines, #adb0d9);
+  padding: 5px 15px;
+  width: fit-content;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background: white;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+
+.chat-message-left {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #000;
+  border-radius: 0px 30px 30px 30px;
+  background: var(--bg-color, #eceefe);
+  display: flex;
+  padding: 15px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  margin: 8px 0;
+}
+
+.chat-message-right {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  color: #fff;
+  border-radius: 30px 0px 30px 30px;
+  background: var(--purple-2, #797ef3);
+  display: flex;
+  padding: 15px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  align-self: stretch;
+  margin: 8px 0;
+}
+
+.chat-timeStamp {
+  color: var(--text-gray, #686868);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.chat-bubble-head {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.right-bubble {
+  flex-direction: row-reverse;
+}
+
+.messages-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-right: 15px;
+}
+
+.messages-left {
+  margin-left: 15px;
+}
+
+.responses-left {
+  color: var(--purple-3, #535af1);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+.time-partLine {
+  position: relative;
+  top: -58px;
+}
+
+.like-area {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.reaction-icon-container {
+  display: flex;
+  padding: 5px 10px;
+  align-items: center;
+  border-radius: 20px;
+  border: 1px solid var(--ligth-purple-lines, #adb0d9);
+  height: 24px;
+  width: 44px;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.reaction-counter {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.reaction-button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  width: 36px;
+}

@@ -1,22 +1,69 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { trigger, state, style, animate, transition } from '@angular/animations';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+
+interface ChannelInterface {
+  channelName: string;
+  channelDescription: string;
+  userName?: string;
+  color: any;
+}
 
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
   styleUrls: ['./channels.component.scss'],
+  animations: [
+    trigger('cardWidth', [
+      state('closed', style({
+        width: '0',
+      })),
+      state('open', style({
+        width: '300px',
+      })),
+      transition('closed <=> open', animate('0.5s ease')),
+    ]),
+  ],
 })
+
 export class ChannelsComponent implements OnInit {
+  channelForm!: FormGroup;
 
   showFiller: boolean = true;
+  openChannels: boolean = true;
+  channelCard: boolean = false;
+  userCard: boolean = false;
+  openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
+
+  channels = ["Entwicklerteam"];
+
+  channelId: string = ''
+  channelColor: string[] = [];
 
   constructor(
-    private userDataService: UserDataService
+    private firestore: Firestore,
+    private userDataService: UserDataService,
+    private channelDataService: ChannelDataService,
+    private fb: FormBuilder,
   ) { }
 
   ngOnInit(): void {
+    this.channelDataService.getChannelData().subscribe(
+      channelData => {
+        this.channelData = channelData;
+        console.log('Subscribed data:', channelData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+
     this.userDataService.getUserData().subscribe(
       userData => {
         this.userData = userData;
@@ -26,9 +73,88 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+
+    this.channelForm = this.fb.group({
+      channelName: ['', [Validators.required]],
+      userName: ['', [Validators.required]],
+      channelDescription: ['']
+    });
   }
 
   toggle() {
     this.showFiller = !this.showFiller;
+  }
+
+  toggleChannel() {
+    this.openChannels = !this.openChannels;
+  }
+
+  addChannel() {
+    this.channelCard = true;
+  }
+
+  async submitChannel() {
+    if (this.channelForm) {
+      const channel: ChannelInterface = {
+        channelName: this.channelForm.value.channelName,
+        channelDescription: this.channelForm.value.channelDescription,
+        color: this.newColor(),
+      };
+
+      const channelCollection = collection(this.firestore, 'channels');
+      const docRef = await addDoc(channelCollection, channel);
+      this.channelId = docRef.id;
+      console.log(this.channelId);
+
+      this.channelForm.reset();
+      this.channelCard = false;
+      this.userCard = true;
+      this.updateChannels(channel.channelName);
+    }
+  }
+
+  close() {
+    this.channelCard = false;
+  }
+
+  addUser(value: string) {
+    if (value === 'addByUser') {
+      this.openUserForm = true;
+    } else if (value === 'addFromGroup') {
+      this.openUserForm = false;
+    }
+  }
+
+  async submitUserToChannel() {
+    if (this.channelForm && this.channelId) {
+      const users: string[] = [];
+      users.push(this.channelForm.value.userName);
+      console.log(users);
+
+      try {
+        const channelDoc = doc(this.firestore, 'channels', this.channelId);
+        await updateDoc(channelDoc, {
+          users: arrayUnion(...users)
+        });
+        console.log('User added successfully.');
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+    }
+  }
+
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
+    return randomColor;
+  }
+
+  updateChannels(channelName: string) {
+    if (channelName) {
+      this.channels.push(channelName);
+      console.log("Channel added", this.channels);
+      this.userCard = false;
+    }
   }
 }

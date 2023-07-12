@@ -1,35 +1,35 @@
 <section class="user-profile-card-section">
     <mat-card class="user-profile-card">
         <mat-card-header class="user-header">
-            <mat-card-title>Profile</mat-card-title>
+            <mat-card-title>Dein Profil bearbeiten</mat-card-title>
             <mat-icon>close</mat-icon>
         </mat-card-header>
         <div class="user-img">
             <img src="/assets/profile-pictures/EliasNeumann.png">
         </div>
-        <mat-card-content>
-            <div class="user-contact-info">
-                <p>Elias Neumann</p>
-                <mat-icon>edit_outline</mat-icon>
-                <a href="#">Bearbeiten</a>
-            </div>
-            <div class="user-status">
-                <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                    </svg>
-                    Aktiv
-                </p>
-            </div>
-            <div class="user-email">
-                <mat-icon>mail_outline</mat-icon>
-                <div class="user-email-link">
-                    <p>E-Mail-Adresse</p>
-                    <a href="#">ichbinelias@beispiel.com</a>
+        <mat-card-content class="user-edit-input">
+            <form class="name-form">
+                <div class="name-field">
+                    <div>
+                        <mat-icon>account_circle</mat-icon>
+                    </div>
+                    <div>
+                        <mat-label>Vollständiger Name</mat-label>
+                    </div>
                 </div>
-            </div>
+                <input matInput placeholder="Vollständiger Name">
+            </form>
+            <form class="email-form">
+                <div class="e-mail-field">
+                    <mat-icon>mail_outline</mat-icon>
+                    <mat-label>E-Mail-Adresse</mat-label>
+                </div>
+                <input matInput placeholder="E-Mail-Adresse">
+            </form>
         </mat-card-content>
-        <mat-card-actions class="user-message-button">
-            <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
+        <mat-card-actions class="edit-buttons">
+            <button class="interrupt-button" mat-stroked-button>Abbrechen</button>
+            <button class="save-button" mat-flat-button color="primary">Speichern</button>
         </mat-card-actions>
     </mat-card>
 </section>

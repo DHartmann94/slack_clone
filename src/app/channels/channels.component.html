@@ -2,14 +2,100 @@
     <mat-card-content>
         <h2>Workspace-Menü schließen</h2>
     </mat-card-content>
-    <div class="sidenav-icon"><img src="./assets/icons/show_menu.png" alt="#"></div>
+    <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
 </mat-card>
-<mat-card *ngIf="showFiller" class="channel-container" autosize>
+
+<mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
     <div class="channel-header">
         <div class="channel-info">
-            <div class="shape"><img src="" alt=""></div>
+            <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt=""></div>
             <h2>Code learning</h2>
         </div>
-        <img class="edit-icon" src="./assets/icons/edit_square.png" alt="#">
+        <img class="edit-icon" src="./assets/img/icons/edit_square.png" alt="#">
+    </div>
+    <div class="channel-edit">
+        <div class="channel-info">
+            <img src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
+            <img src="./assets/img/icons/workspaces.png" alt="#">
+            <h2>Channels</h2>
+        </div>
+        <div>
+            <img src="./assets/img/icons/add.png" alt="#" (click)="addChannel()">
+        </div>
+    </div>
+    <div class="dropdown-container" *ngIf="openChannels">
+        <div class="channel-box" *ngFor="let channel of channels; let i = index">
+            <h3 ># {{ channel }}</h3>
+        </div>
+    </div>
+    <div class="add-channel" (click)="addChannel()">
+        <img src="./assets/img/icons/add_circle.png" alt="#">
+        <h3>Channel hinzufügen</h3>
+    </div>
+</mat-card>
+
+<mat-card class="overlay" *ngIf="channelCard">
+    <div class="channel-edit-card">
+        <form [formGroup]="channelForm">
+            <div class="channel-introduction">
+                <div class="channel-text">
+                    <h2>Channel Erstellen</h2>
+                    <p>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #
+                        marketing zum Beispiel.</p>
+                </div>
+                <img src="./assets/img/icons/close.png" alt="#" (click)="close()">
+            </div>
+            <h3>Channel-Name</h3>
+            <div class="channel-inputs">
+                <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+                    formControlName="channelName">
+                <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+                    <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+                        required.
+                    </div>
+                </div>
+            </div>
+            <h3>Beschreibung (optinal)</h3>
+            <div class="channel-inputs">
+                <input class="channel-name" type="text" placeholder="Dein Text hier"
+                    formControlName="channelDescription">
+            </div>
+            <div class="btn-area">
+                <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
+            </div>
+        </form>
+    </div>
+</mat-card>
+
+<mat-card class="overlay" *ngIf="userCard">
+    <div class="user-edit-card">
+        <div class="channel-introduction">
+            <div class="channel-text">
+                <h2>Leute hinzufügen</h2>
+            </div>
+        </div>
+        <div class="radio-selection">
+            <mat-radio-group>
+                <mat-radio-button color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
+                    Alle Mitglieder von <span>OfficeTeam</span> hinzufügen
+                </mat-radio-button>
+                <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
+                    Bestimmte Leute hinzufügen
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+        <form [formGroup]="channelForm" *ngIf="openUserForm">
+            <div class="users-inputs">
+                <input class="user-name" type="text" placeholder="Name eingeben" formControlName="userName">
+                <div *ngIf="channelForm.controls['userName'].invalid && channelForm.controls['userName'].touched">
+                    <div class="error-massage" *ngIf="channelForm.controls['userName'].errors?.['required']">Name is
+                        required.
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="btn-area">
+            <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
+        </div>
     </div>
 </mat-card>
