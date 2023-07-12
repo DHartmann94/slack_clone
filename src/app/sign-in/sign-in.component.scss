@@ -73,6 +73,7 @@ section {
 /*------ Sign-in Card ------*/
 mat-card {
     width: 400px;
+    border-radius: 15px;;
     padding: $line-spacing;
     position: relative;
 
@@ -107,7 +108,7 @@ form {
 
         background: var(--bg-color);
         border: 1px solid var(--bg-color);
-        border-radius: 50px;
+        border-radius: 42px;
         box-sizing: border-box;
         transition: all 225ms ease-in-out;
         cursor: pointer;
@@ -186,7 +187,7 @@ form {
     font-size: 1rem;
     color: var(--c-purple);
     background-color: var(--bg-color);
-    border-radius: 50px;
+    border-radius: 42px;
     border: 1px solid transparent;
     transition: all 225ms ease-in-out;
     cursor: pointer;
@@ -209,7 +210,7 @@ form {
     
         font-size: 1rem;
         font-weight: bold;
-        border-radius: 50px;
+        border-radius: 42px;
         border: 1px solid var(--c-purple);
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
         transition: all 225ms ease-in-out;
@@ -272,7 +273,7 @@ form {
 }
 
 .error-border {
-    border: 1px solid #E61C40 !important; // TEST IN GLOABL
+    border: 1px solid var(--c-error) !important; // TEST IN GLOABL
 }
 
 .loading-parent {
@@ -282,6 +283,9 @@ form {
     right: 0;
     bottom: 0;
     left: 0;
+
+    border: 1px solid transparent;
+    border-radius: 15px;;
 
     display: flex;
     align-items: center;
