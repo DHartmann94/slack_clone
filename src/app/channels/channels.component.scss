@@ -32,6 +32,16 @@
     }
 }
 
+.arrow-for-dropdown-closed {
+    transform: rotate(-90deg);
+}
+
+.arrow-for-dropdown-open {
+    transform: rotate(0);
+}
+
+
+
 .channel-container {
     min-height: 100vh;
     border-radius: 15px;
