@@ -17,40 +17,46 @@
                 <div class="input-parent">
                     <input [ngClass]="{'error-border': signInForm.controls['email'].invalid && (submitted ||signInForm.controls['email'].dirty || signInForm.controls['email'].touched)}" type="email" formControlName="email" [placeholder]="'example@email.com'" required>
                     <img src="./assets/img/icons/mail.png" alt="EMail">
-                    <div *ngIf="signInForm.controls['email'].invalid && (submitted || signInForm.controls['email'].dirty || signInForm.controls['email'].touched)" class="error-notification">
-                        <mat-error>Please enter a valid email-adress.</mat-error>
+                    <div class="error-parent">
+                        <div *ngIf="signInForm.controls['email'].invalid && (submitted || signInForm.controls['email'].dirty || signInForm.controls['email'].touched)" class="error-notification">
+                            <mat-error>Please enter a valid email-adress.</mat-error>
+                        </div>
                     </div>
                 </div>
                 <div class="input-parent">
                     <input [ngClass]="{'error-border': signInForm.controls['password'].invalid && (submitted ||signInForm.controls['password'].dirty || signInForm.controls['password'].touched)}" type="password" formControlName="password" [placeholder]="'Password'" required>
                     <img src="./assets/img/icons/lock.png" alt="Lock">
-                    <div *ngIf="signInForm.controls['password'].invalid && (submitted || signInForm.controls['password'].dirty || signInForm.controls['password'].touched)" class="error-notification">
-                        <mat-error>Your password is required.</mat-error>
+                    <div class="error-parent">
+                        <div *ngIf="signInForm.controls['password'].invalid && (submitted || signInForm.controls['password'].dirty || signInForm.controls['password'].touched)" class="error-notification">
+                            <mat-error>Your password is required.</mat-error>
+                        </div>
+                        <mat-error *ngIf="userNotFound"  class="error-notification">Email or Password are wrong!</mat-error>
                     </div>
-                    <mat-error *ngIf="userNotFound"  class="error-notification">Email or Password are wrong!</mat-error>
                 </div>
 
-                <a class="forgot-password">Forgot password?</a>
+                <div class="bottom-container">
+                    <a class="forgot-password">Forgot password?</a>
 
-                <div class="or-parent">
-                    <div class="grey-line"></div>
-                    <div class="or-child">OR</div>
-                </div>
-
-                <a class="button-google" (click)="loginWithGoogle()">
-                    <img src="./assets/img/icons/google.png" alt="Google">
-                    <span>Sign in with Google</span>
-                </a>
-
-                <div class="button-bottom-parent">
-                    <button type="submit" [disabled]="isSignIn" class="button-sign-in">
-                        <span>Login</span>
-                    </button>
-                    <a (click)="signInGuest('guest@guest.com','Guest123!')" class="button-guest-login">Guest-Login</a>
-                </div>
-
-                <div *ngIf="isSignIn" class="loading-parent">
-                    <mat-spinner></mat-spinner>
+                    <div class="or-parent">
+                        <div class="grey-line"></div>
+                        <div class="or-child">OR</div>
+                    </div>
+    
+                    <a class="button-google" (click)="loginWithGoogle()">
+                        <img src="./assets/img/icons/google.png" alt="Google">
+                        <span>Sign in with Google</span>
+                    </a>
+    
+                    <div class="button-bottom-parent">
+                        <button type="submit" [disabled]="isSignIn" class="button-sign-in">
+                            <span>Login</span>
+                        </button>
+                        <a (click)="signInGuest('guest@guest.com','Guest123!')" class="button-guest-login">Guest-Login</a>
+                    </div>
+    
+                    <div *ngIf="isSignIn" class="loading-parent">
+                        <mat-spinner></mat-spinner>
+                    </div>
                 </div>
             </form>
         </mat-card>

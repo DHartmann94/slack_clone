@@ -16,7 +16,6 @@ export class SignUpComponent implements OnInit {
   submitted: boolean = false;
   showAccountNotification: boolean = false;
   emailExists: boolean = false;
-  authUID: string = '';
 
   signUpForm = new FormGroup({
     name: new FormControl('', [
@@ -97,30 +96,34 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    await this.sendUserToAuthenticator(emailLowerCase);
-    await this.sendUserToFirebase(emailLowerCase, this.authUID);
+    const authUID = await this.sendUserToAuthenticator(emailLowerCase);
+    console.log(authUID);
+    await this.sendUserToFirebase(emailLowerCase, authUID);
 
     this.showsCreateAccountAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
   }
 
-  async sendUserToAuthenticator(emailLowerCase: string) {
-    const auth = getAuth();
-    const password: string = this.signUpForm.value.password ?? '';
-
-    await createUserWithEmailAndPassword(auth, emailLowerCase, password)
-      .then(async (userCredential: any) => {
-        // Signed up 
-        this.authUID = userCredential.user.uid;
-        // Send EMAIL_VERIFICATION!
-      })
-      .catch((error: any) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log('ERROR create user Auth.: ', errorCode, errorMessage);
-      });
+  async sendUserToAuthenticator(emailLowerCase: string): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const auth = getAuth();
+      const password: string = this.signUpForm.value.password ?? '';
+  
+      createUserWithEmailAndPassword(auth, emailLowerCase, password)
+        .then((userCredential: any) => {
+          const authUID = userCredential.user.uid;
+          resolve(authUID);
+        })
+        .catch((error: any) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log('ERROR create user Auth.: ', errorCode, errorMessage);
+          reject(null);
+        });
+    });
   }
+  
 
   async sendUserToFirebase(emailLowerCase: string, authUID: any) {
     let data = {
