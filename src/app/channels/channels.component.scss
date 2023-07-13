@@ -3,7 +3,7 @@
     left: -170px;
     bottom: 300px;
     width: 365px;
-    height: 65px;
+    height: 73px;
     padding: 23px 14px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
@@ -44,12 +44,15 @@
 .channel-container {
     min-height: 100vh;
     border-radius: 15px;
-    padding: 32px 30px;
     margin: 15px 0 0 10px;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    .channel-in-out {
+        padding: 35px;
+    }
 
     .channel-header {
         display: flex;
@@ -108,7 +111,15 @@
             align-items: center;
             column-gap: 10px;
 
+            &:hover {
+                color: var(--c-mediun-purple);
+            }
+
             h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
                 margin: 0;
             }
         }
@@ -128,7 +139,15 @@
             align-items: center;
             column-gap: 10px;
 
+            &:hover {
+                color: var(--c-mediun-purple);
+            }
+
             h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
                 margin: 0;
             }
         }
@@ -140,12 +159,12 @@
         align-items: center;
         width: auto;
         min-height: auto;
+        padding: 15px 0 0 35px;
 
         .channel-box {
             width: 200px;
             height: 35px;
             border-radius: 20px;
-            background: var(--bg-color);
             margin: 5px 0;
 
             display: flex;
@@ -158,6 +177,34 @@
                 font-style: normal;
                 font-weight: 700;
                 color: var(--white);
+                margin: 0;
+            }
+        }
+
+        .direct-box {
+            min-width: 220px;
+            min-height: 35px;
+            border-radius: 20px;
+            margin: 10px 0;
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+
+            .user-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50px;
+                background-color: var(--c-mediun-purple);
+            }
+
+            h3 {
+                font-family: 'Nunito';
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                color: var(--black);
                 margin: 0;
             }
         }
@@ -290,7 +337,7 @@
             font-family: 'Nunito';
             font-size: 24px;
             font-style: normal;
-            font-weight: 700; 
+            font-weight: 700;
             margin: 0;
         }
 
