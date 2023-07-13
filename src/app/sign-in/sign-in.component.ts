@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
 import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -13,18 +14,19 @@ export class SignInComponent implements OnInit {
   isSignIn: boolean = false;
   submitted: boolean = false;
   userNotFound: boolean = false;
-  authUID: string = '';
+  emailNotVerify: boolean = false;
+
+  user: any = null;
 
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private router: Router) { }
 
   ngOnInit(): void {
   }
-
 
   async signIn() {
     this.submitted = true;
@@ -36,6 +38,7 @@ export class SignInComponent implements OnInit {
     const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
     const password = this.signInForm.value.password ?? '';
     await this.loginWithEmail(emailLowerCase, password);
+    await this.checkLoginUser();
 
     this.resetForm();
   }
@@ -53,15 +56,14 @@ export class SignInComponent implements OnInit {
     await signInWithEmailAndPassword(auth, email, password)
       .then(async (userCredential: any) => {
         // Signed in 
-        const user = userCredential.user;
-        console.log('Login with: ', user); // TEST !!!!!!!!!!!!!!!
-        //WEITERLEITEN MIT UID
+        this.user = userCredential.user;
+        console.log('Login with: ', this.user); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
         const errorCode = error.code;
         const errorMessage = error.message;
         if (errorCode === 'auth/wrong-password' || errorCode === 'auth/user-not-found') {
-          this.showUserError();
+          this.showError('userNotFound')
         }
         console.log('ERROR loginWithEmail: ', error);
       });
@@ -75,9 +77,9 @@ export class SignInComponent implements OnInit {
       .then(async (result) => {
         //const credential = GoogleAuthProvider.credentialFromResult(result);
 
-        this.authUID = result.user.uid;
+        const authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
-        await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase);
+        await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase, authUID);
         console.log('Login with: ', result); // TEST !!!!!!!!!!!!!!!
         //WEITERLEITEN MIT UID
       })
@@ -90,7 +92,7 @@ export class SignInComponent implements OnInit {
   }
 
   // TEST Gleiche Funktion wie in sign up.
-  async sendGoogleUserToFirebase(name: any, emailLowerCase: any) {
+  async sendGoogleUserToFirebase(name: any, emailLowerCase: any, authUID: string) {
     let data = {
       name: name,
       email: emailLowerCase,
@@ -98,22 +100,28 @@ export class SignInComponent implements OnInit {
     const user = new User(data);
 
     const usersCollection = collection(this.firestore, 'users');
-    const docRef = doc(usersCollection, this.authUID);
+    const docRef = doc(usersCollection, authUID);
     setDoc(docRef, user.toJSON()).then((result: any) => {
     })
       .catch((error: any) => {
         console.error('ERROR user send to Firebase: ', error);
       });
-    /*
-    addDoc(usersCollection, user.toJSON()).then(async (result) => {
-      await getDoc(result);
-    });*/
   }
 
-  showUserError() {
-    this.userNotFound = true;
+  async checkLoginUser() {
+    if (this.user.emailVerified) {
+      this.emailNotVerify = false;
+      //WEITERLEITEN MIT UID
+    } else {
+      this.router.navigateByUrl('/sign-in');
+      this.showError('emailNotVerify');
+    }
+  }
+
+  showError(errorType: 'userNotFound' | 'emailNotVerify') {
+    this[errorType] = true;
     setTimeout(() => {
-      this.userNotFound = false;
+      this[errorType] = false;
     }, 5000);
   }
 
