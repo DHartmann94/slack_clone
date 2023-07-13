@@ -3,7 +3,7 @@
     left: -170px;
     bottom: 300px;
     width: 365px;
-    height: 65px;
+    height: 73px;
     padding: 23px 14px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
@@ -44,12 +44,15 @@
 .channel-container {
     min-height: 100vh;
     border-radius: 15px;
-    padding: 32px 30px;
     margin: 15px 0 0 10px;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    .channel-in-out {
+        padding: 35px;
+    }
 
     .channel-header {
         display: flex;
