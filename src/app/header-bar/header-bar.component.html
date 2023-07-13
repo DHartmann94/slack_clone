@@ -6,10 +6,10 @@
     <div>
         <input class="search-bar" type="text" placeholder="Code learning durchsuchen" id="searchUser">
     </div>
-    <div class="profile">
+    <div (click)="openLogoutContainer()" class="profile">
         <h2>Frederik Beck</h2>
         <img src="./assets/img/avatar.png" alt="">
-        <mat-icon (click)="openLogoutContainer()">keyboard_arrow_down</mat-icon>
+        <mat-icon>keyboard_arrow_down</mat-icon>
         <div class="status"></div>
     </div>
 
@@ -55,8 +55,8 @@
                 </form>
             </mat-card-content>
             <mat-card-actions class="edit-buttons">
-                <button class="interrupt-button" mat-stroked-button>Abbrechen</button>
-                <button class="save-button" mat-flat-button color="primary">Speichern</button>
+                <button (click)="closeUserProfile()" class="interrupt-button" mat-stroked-button>Abbrechen</button>
+                <button (click)="closeUserProfile()" class="save-button" mat-flat-button color="primary">Speichern</button>
             </mat-card-actions>
         </mat-card>
     </section>
