@@ -16,7 +16,6 @@
     <!-- Logout Container -->
     <div class="logout-container" *ngIf="isLogoutContainerOpen" #containerRef>
         <div class="logout">
-            <mat-icon (click)="closeLogoutContainer()">close</mat-icon>
             <div class="logout-info">
                 <p (click)="openUserProfile()">Profile</p>
                 <p>Log out</p>
@@ -65,7 +64,7 @@
     <mat-card class="user-profile-card">
         <mat-card-header class="user-header">
             <mat-card-title>Dein Profil bearbeiten</mat-card-title>
-            <mat-icon>close</mat-icon>
+            <mat-icon (click)="closeEditUserProfile()" >close</mat-icon>
         </mat-card-header>
         <div class="user-img">
             <img src="/assets/profile-pictures/EliasNeumann.png">

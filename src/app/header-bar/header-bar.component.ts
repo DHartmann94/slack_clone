@@ -36,5 +36,7 @@ export class HeaderBarComponent {
   closeEditUserProfile() {
     this.isEditProfileCardOpen = false;
   }
+
+ 
 }
 
