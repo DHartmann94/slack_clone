@@ -4,6 +4,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-channels',
@@ -27,6 +28,7 @@ export class ChannelsComponent implements OnInit {
 
   showFiller: boolean = true;
   openChannels: boolean = true;
+  openDirect: boolean = true;
   channelCard: boolean = false;
   userCard: boolean = false;
   openUserForm: boolean = false;
@@ -35,7 +37,6 @@ export class ChannelsComponent implements OnInit {
   channelData: ChannelDataInterface[] = [];
 
   channelId: string = '';
-  userSubscriptionId: string = '';
 
   constructor(
     private firestore: Firestore,
@@ -92,6 +93,10 @@ export class ChannelsComponent implements OnInit {
     this.openChannels = !this.openChannels;
   }
 
+  toggleDirect() {
+    this.openDirect = !this.openDirect;
+  }
+
   addChannel() {
     this.channelCard = true;
   }
@@ -132,14 +137,24 @@ export class ChannelsComponent implements OnInit {
     if (this.channelForm && this.channelId) {
       const users: string[] = [];
       users.push(this.channelForm.value.userName);
+      const userName = this.channelForm.value.userName; 
       console.log(users);
 
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
-        await updateDoc(channelDoc, {
-          users: arrayUnion(...users)
-        });
-        console.log('User added successfully.');
+        const userData = await firstValueFrom(this.userDataService.getUserData());
+        const matchingUser = userData.find(user => user.name === userName);
+
+        if (matchingUser) {
+          users.push(matchingUser.id);
+          const filteredUsers = users.filter(user => user !== userName);
+          await updateDoc(channelDoc, {
+            users: arrayUnion(...filteredUsers)
+          });
+          console.log('User added successfully.');
+        } else {
+          console.log('User not found.');
+        }
       } catch (error) {
         console.error('Error adding user:', error);
       }

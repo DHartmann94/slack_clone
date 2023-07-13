@@ -33,13 +33,13 @@
 
 .arrow-for-dropdown-closed {
     transform: rotate(-90deg);
+    transition: ease-in(0.25ms);
 }
 
 .arrow-for-dropdown-open {
     transform: rotate(0);
+    transition: ease-out(0.25ms);
 }
-
-
 
 .channel-container {
     min-height: 100vh;
@@ -114,6 +114,26 @@
         }
     }
 
+    .massage-edit {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        cursor: pointer;
+
+        .massage-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: 10px;
+
+            h2 {
+                margin: 0;
+            }
+        }
+    }
+
     .dropdown-container {
         display: flex;
         flex-direction: column;
@@ -137,7 +157,7 @@
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 700;
-                color: var(--c-mediun-purple);
+                color: var(--white);
                 margin: 0;
             }
         }

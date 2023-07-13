@@ -32,7 +32,7 @@ export class UserDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { name, email } = data;
+          const { name, email, } = data;
           const user: UserDataInterface = {
             id: doc.id,
             name: name,
