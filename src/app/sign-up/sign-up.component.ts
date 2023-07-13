@@ -15,7 +15,7 @@ export class SignUpComponent implements OnInit {
   //user: User = new User(); // TEST
   isSignUp: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
   emailExists: boolean = false;
 
   signUpForm = new FormGroup({
@@ -125,9 +125,9 @@ export class SignUpComponent implements OnInit {
   }
 
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 

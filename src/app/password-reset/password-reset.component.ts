@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class PasswordResetComponent {
   isSendMail: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
   emailExists: boolean = true;
 
   resetPasswortForm = new FormGroup({
@@ -63,9 +63,9 @@ export class PasswordResetComponent {
   }
 
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 

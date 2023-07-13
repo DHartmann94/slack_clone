@@ -314,7 +314,7 @@ mat-spinner {
 }
 
 /*------ Left To Right Message ------*/
-.account-create-send-message {
+.slide-in-container {
     z-index: 10000;
     position: absolute;
     top: 70%;
@@ -334,6 +334,7 @@ mat-spinner {
 
     div {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
@@ -353,7 +354,7 @@ mat-spinner {
     }
 }
 
-.account-message-animation {
+.slide-in-animation {
     animation: leftToRight 0.8s ease-in-out forwards 0.2s;
 }
 
