@@ -166,6 +166,7 @@
             height: 35px;
             border-radius: 20px;
             margin: 5px 0;
+            cursor: pointer;
 
             display: flex;
             justify-content: center;
@@ -186,6 +187,7 @@
             min-height: 35px;
             border-radius: 20px;
             margin: 10px 0;
+            cursor: pointer;
 
             display: flex;
             justify-content: flex-start;
@@ -247,7 +249,7 @@
 
     .channel-edit-card {
         width: 872px;
-        height: 455px;
+        height: auto;
         background-color: white;
         border-radius: 25px;
         padding: 40px;
@@ -344,6 +346,16 @@
         mat-radio-group {
             display: flex;
             flex-direction: column;
+        }
+
+        .radio-selection {
+            span {
+                font-family: 'Nunito';
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                color: var(--c-mediun-purple);
+            }
         }
 
         .user-name {

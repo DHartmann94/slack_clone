@@ -77,6 +77,11 @@
             <div class="channel-inputs">
                 <input class="channel-name" type="text" placeholder="Dein Text hier"
                     formControlName="channelDescription">
+                <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
+                    <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
+                        required.
+                    </div>
+                </div>
             </div>
             <div class="btn-area">
                 <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
@@ -94,19 +99,19 @@
         </div>
         <div class="radio-selection">
             <mat-radio-group>
-                <mat-radio-button color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
-                    Alle Mitglieder von <span>OfficeTeam</span> hinzufügen
+                <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
+                    Alle Mitglieder von <span>{{ channel.channelName }}</span> hinzufügen
                 </mat-radio-button>
                 <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
                     Bestimmte Leute hinzufügen
                 </mat-radio-button>
             </mat-radio-group>
         </div>
-        <form [formGroup]="channelForm" *ngIf="openUserForm">
+        <form [formGroup]="userForm" *ngIf="openUserForm">
             <div class="users-inputs">
                 <input class="user-name" type="text" placeholder="Name eingeben" formControlName="userName">
-                <div *ngIf="channelForm.controls['userName'].invalid && channelForm.controls['userName'].touched">
-                    <div class="error-massage" *ngIf="channelForm.controls['userName'].errors?.['required']">Name is
+                <div *ngIf="userForm.controls['userName'].invalid && userForm.controls['userName'].touched">
+                    <div class="error-massage" *ngIf="userForm.controls['userName'].errors?.['required']">Name is
                         required.
                     </div>
                 </div>

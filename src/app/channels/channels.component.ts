@@ -3,7 +3,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -25,6 +25,7 @@ import { firstValueFrom } from 'rxjs';
 
 export class ChannelsComponent implements OnInit {
   channelForm!: FormGroup;
+  userForm!: FormGroup;
 
   showFiller: boolean = true;
   openChannels: boolean = true;
@@ -42,14 +43,17 @@ export class ChannelsComponent implements OnInit {
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private fb: FormBuilder,
+    private fbChannel: FormBuilder,
+    private fbUser: FormBuilder,
   ) { }
 
   ngOnInit(): void {
-    this.channelForm = this.fb.group({
+    this.channelForm = this.fbChannel.group({
       channelName: ['', [Validators.required]],
+      channelDescription: ['', [Validators.required]],
+    });
+    this.userForm = this.fbUser.group({
       userName: ['', [Validators.required]],
-      channelDescription: ['']
     });
     this.getChannelData();
     this.getUserData();
@@ -102,11 +106,10 @@ export class ChannelsComponent implements OnInit {
   }
 
   async submitChannel() {
-    if (this.channelForm) {
+    if (this.channelForm.valid) {
       const channel: ChannelDataInterface = {
         channelName: this.channelForm.value.channelName,
         channelDescription: this.channelForm.value.channelDescription,
-        userName: '',
         color: this.newColor(),
       };
 
@@ -130,15 +133,15 @@ export class ChannelsComponent implements OnInit {
       this.openUserForm = true;
     } else if (value === 'addFromGroup') {
       this.openUserForm = false;
+      this.submitByGroup(value);
     }
   }
 
   async submitUserToChannel() {
-    if (this.channelForm && this.channelId) {
+    if (this.userForm.valid && this.channelId) {
       const users: string[] = [];
-      users.push(this.channelForm.value.userName);
-      const userName = this.channelForm.value.userName; 
-      console.log(users);
+      users.push(this.userForm.value.userName);
+      const userName = this.userForm.value.userName;
 
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
@@ -158,8 +161,35 @@ export class ChannelsComponent implements OnInit {
       } catch (error) {
         console.error('Error adding user:', error);
       }
-      
-      this.channelForm.reset();
+
+      this.userForm.reset();
+      this.userCard = false;
+    }
+  }
+
+  async submitByGroup(value: string) {
+    debugger
+    if (value === 'addFromGroup' && this.channelId) {
+      try {
+        const channelDoc = doc(this.firestore, 'channels', this.channelId);
+        const channelData = await firstValueFrom(this.channelDataService.getChannelData());
+        const matchChannelName = channelData.find(channel => channel.channelName);
+
+        const userData = await getDoc(channelDoc);
+        if (userData.exists()) {
+          const users = userData.data()['users']; 
+          console.log("Users:", users);
+        }
+
+        if (matchChannelName) {
+
+        } else {
+          console.log('Channel not found.');
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+
       this.userCard = false;
     }
   }
