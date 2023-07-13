@@ -1,4 +1,3 @@
-
 $line-spacing: 35px;
 
 section {
@@ -13,16 +12,17 @@ section {
 
     background-color: var(--bg-color);
 
-    h1 {
-        font-family: 'Nunito', Arial, Helvetica, sans-serif !important; // TEST
+    h1,
+    h2 {
+        font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
         margin: 25px;
 
-        font-size: 3rem;
+        font-size: 28px;
         font-weight: bold;
     }
 
     a { // TEST GLOABAL?????
-        color: var(--c-purple);
+        color: var(--c-purple); 
         text-decoration: none;
         transition: all 225ms ease-in-out;
         cursor: pointer;
@@ -48,7 +48,7 @@ section {
 
         border: 1px solid transparent;
         border-radius: 50px;
-    
+
         &:hover {
             border: 1px solid var(--c-light-purple);
         }
@@ -58,6 +58,11 @@ section {
 .header-logo-container {
     display: flex;
     align-items: center;
+
+    img {
+        width: 55px;
+        object-fit: scale-down;
+    }
 }
 
 .header-link-container {
@@ -73,7 +78,8 @@ section {
 /*------ Sign-in Card ------*/
 mat-card {
     width: 400px;
-    border-radius: 15px;;
+    border-radius: 15px;
+    ;
     padding: $line-spacing;
     position: relative;
 
@@ -85,6 +91,7 @@ mat-card {
     h1 {
         color: var(--c-purple);
         margin: 0px 0px 35px 0px !important;
+        font-size: 3rem !important;
     }
 
     p {
@@ -114,7 +121,7 @@ form {
         cursor: pointer;
 
         &:hover {
-            border: 1px solid black; // TEST IN GLOABL
+            border: 1px solid black;
         }
     }
 }
@@ -183,7 +190,7 @@ form {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    
+
     font-size: 1rem;
     color: var(--c-purple);
     background-color: var(--bg-color);
@@ -204,10 +211,11 @@ form {
     justify-content: center;
     gap: 16px;
 
-    button,a {
+    button,
+    a {
         width: 125px;
         height: 45px;
-    
+
         font-size: 1rem;
         font-weight: bold;
         border-radius: 42px;
@@ -233,7 +241,7 @@ form {
             background-color: #686868;
         }
     }
-    
+
     .button-guest-login {
         color: var(--c-purple);
         background-color: var(--white);
@@ -273,7 +281,7 @@ form {
 }
 
 .error-border {
-    border: 1px solid var(--c-error) !important; // TEST IN GLOABL
+    border: 1px solid var(--c-error) !important;
 }
 
 .loading-parent {
@@ -285,7 +293,8 @@ form {
     left: 0;
 
     border: 1px solid transparent;
-    border-radius: 15px;;
+    border-radius: 15px;
+    ;
 
     display: flex;
     align-items: center;
@@ -297,7 +306,7 @@ form {
 mat-spinner {
     width: 40px !important;
     height: 40px !important;
-    
+
 
     ::ng-deep circle {
         stroke: var(--white) !important;
