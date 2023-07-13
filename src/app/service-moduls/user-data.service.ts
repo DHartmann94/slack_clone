@@ -36,7 +36,7 @@ export class UserDataService {
           const user: UserDataInterface = {
             id: doc.id,
             name: name,
-            email: email
+            email: email,
           };
           storedUserData.push(user);
         });

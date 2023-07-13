@@ -40,8 +40,9 @@
         </div>
     </div>
     <div class="dropdown-container" *ngIf="openDirect">
-        <div class="channel-box" *ngFor="let users of userData; let i = index">
-            <h3># {{ users.name }}</h3>
+        <div class="direct-box" *ngFor="let users of userData; let i = index">
+            <div class="user-icon"></div>
+            <h3>{{ users.name }}</h3>
         </div>
     </div>
 </mat-card>
