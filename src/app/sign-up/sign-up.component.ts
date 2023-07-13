@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators }
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
 import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
+import { ValidationService } from '../service-moduls/validation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -39,14 +40,15 @@ export class SignUpComponent implements OnInit {
     confirmPassword: new FormControl('', [
       Validators.required
     ]),
-  }, { validators: this.matchPassword.bind(this) });
+  }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private firestore: Firestore, private router: Router) { }
+  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
 
   ngOnInit(): void {
   }
 
   /*------ Validator-Funktions ------*/
+  /*
   matchPassword(control: AbstractControl): ValidationErrors | null {
     const passwordControl = control.get("password");
     const confirmPasswordControl = control.get("confirmPassword");
@@ -81,7 +83,7 @@ export class SignUpComponent implements OnInit {
       console.log('Error: ', error);
       return this.emailExists = true;;
     }
-  }
+  }*/
 
   /*------ SIGN-UP ------*/
   async signUp() {
@@ -92,7 +94,7 @@ export class SignUpComponent implements OnInit {
     this.disableForm();
 
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
-    await this.checkEmailExists(emailLowerCase);
+    this.emailExists = await this.validation.checkEmailExists(emailLowerCase);
     if (this.emailExists) {
       this.signUpForm.enable();
       this.isSignUp = false;
