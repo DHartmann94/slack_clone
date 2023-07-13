@@ -4,6 +4,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
+    column-gap: 10px;
 
     .logo {
         display: flex;
@@ -13,7 +14,10 @@
         column-gap: 16px;
 
         h1 {
-            font-weight: bold;
+            font-family: 'Nunito';
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 700;
             margin: 0;
         }
 
@@ -39,12 +43,15 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
-        column-gap: 20px;
+        column-gap: 8px;
         cursor: pointer;
 
         h2 {
+            font-family: 'Nunito';
+            font-size: 28px;
+            font-style: normal;
+            font-weight: 700;
             margin: 0;
-            font-weight: bold;
         }
 
         .status {
