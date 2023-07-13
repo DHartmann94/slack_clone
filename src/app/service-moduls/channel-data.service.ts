@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } from '@angular/fire/firestore';
+import { user } from '@angular/fire/auth';
+import { DocumentData, Firestore, QuerySnapshot, arrayUnion, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
@@ -38,6 +39,7 @@ export class ChannelDataService {
           };
           storedUserData.push(channel);
         });
+
         this.channelData = storedUserData;
         return storedUserData;
       })

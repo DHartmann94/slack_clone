@@ -24,8 +24,8 @@
         </div>
     </div>
     <div class="dropdown-container" *ngIf="openChannels">
-        <div class="channel-box" *ngFor="let channel of channels; let i = index">
-            <h3 ># {{ channel }}</h3>
+        <div class="channel-box" *ngFor="let channel of channelData; let i = index">
+            <h3 ># {{ channel.channelName }}</h3>
         </div>
     </div>
     <div class="add-channel" (click)="addChannel()">

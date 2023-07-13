@@ -5,13 +5,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
 
-interface ChannelInterface {
-  channelName: string;
-  channelDescription: string;
-  userName?: string;
-  color: any;
-}
-
 @Component({
   selector: 'app-channels',
   templateUrl: './channels.component.html',
@@ -41,10 +34,8 @@ export class ChannelsComponent implements OnInit {
   userData: UserDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
 
-  channels = ["Entwicklerteam"];
-
-  channelId: string = ''
-  channelColor: string[] = [];
+  channelId: string = '';
+  userSubscriptionId: string = '';
 
   constructor(
     private firestore: Firestore,
@@ -54,31 +45,43 @@ export class ChannelsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.channelDataService.getChannelData().subscribe(
-      channelData => {
-        this.channelData = channelData;
-        console.log('Subscribed data:', channelData);
-      },
-      error => {
-        console.error('Error retrieving user data:', error);
-      }
-    );
-
-    this.userDataService.getUserData().subscribe(
-      userData => {
-        this.userData = userData;
-        console.log('Subscribed data:', userData);
-      },
-      error => {
-        console.error('Error retrieving user data:', error);
-      }
-    );
-
     this.channelForm = this.fb.group({
       channelName: ['', [Validators.required]],
       userName: ['', [Validators.required]],
       channelDescription: ['']
     });
+    this.getChannelData();
+    this.getUserData();
+  }
+
+  async getUserData() {
+    this.userDataService.getUserData().subscribe(
+      userData => {
+        this.userData = userData;
+        console.log('Subscribed data users:', userData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+  }
+
+  async getChannelData() {
+    if (this.openChannels !== null) {
+      try {
+        this.channelDataService.getChannelData().subscribe(
+          channelData => {
+            this.channelData = channelData;
+            console.log('Subscribed data channels:', channelData);
+          },
+          error => {
+            console.error('Error retrieving user data:', error);
+          }
+        );
+      } catch (error) {
+        console.log('Error logging in:', error);
+      }
+    }
   }
 
   toggle() {
@@ -95,9 +98,10 @@ export class ChannelsComponent implements OnInit {
 
   async submitChannel() {
     if (this.channelForm) {
-      const channel: ChannelInterface = {
+      const channel: ChannelDataInterface = {
         channelName: this.channelForm.value.channelName,
         channelDescription: this.channelForm.value.channelDescription,
+        userName: '',
         color: this.newColor(),
       };
 
@@ -109,7 +113,6 @@ export class ChannelsComponent implements OnInit {
       this.channelForm.reset();
       this.channelCard = false;
       this.userCard = true;
-      this.updateChannels(channel.channelName);
     }
   }
 
@@ -140,6 +143,9 @@ export class ChannelsComponent implements OnInit {
       } catch (error) {
         console.error('Error adding user:', error);
       }
+      
+      this.channelForm.reset();
+      this.userCard = false;
     }
   }
 
@@ -150,11 +156,4 @@ export class ChannelsComponent implements OnInit {
     return randomColor;
   }
 
-  updateChannels(channelName: string) {
-    if (channelName) {
-      this.channels.push(channelName);
-      console.log("Channel added", this.channels);
-      this.userCard = false;
-    }
-  }
 }
