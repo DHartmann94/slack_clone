@@ -23,19 +23,23 @@ export class PasswordConfirmComponent {
 
     confirmPassword: new FormControl('', [
       Validators.required,
-      this.matchPassword.bind(this)
     ]),
-  });
+  }, { validators: this.matchPassword.bind(this) });
 
   constructor(private firestore: Firestore, private router: Router) { }
 
   /*------ Validator-Funktions ------*/
   matchPassword(control: AbstractControl): ValidationErrors | null {
-    const password = control.root.get('password');
-    const confirmPassword = control.value;
+    const passwordControl = control.get("password");
+    const confirmPasswordControl = control.get("confirmPassword");
 
-    if (password && confirmPassword && password.value !== confirmPassword) {
-      return { mismatch: true };
+    if (passwordControl && confirmPasswordControl) {
+      const password: string = passwordControl.value;
+      const confirmPassword: string = confirmPasswordControl.value;
+
+      if (password !== confirmPassword) {
+        return { mismatch: true };
+      }
     }
 
     return null;
