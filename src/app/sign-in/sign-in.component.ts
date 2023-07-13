@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
+import { Firestore } from '@angular/fire/firestore';
 import { GoogleAuthProvider, getAuth, signInWithEmailAndPassword, signInWithPopup } from '@angular/fire/auth';
-import { User } from 'src/models/user.class';
+import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -23,11 +23,12 @@ export class SignInComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private firestore: Firestore, private router: Router) { }
+  constructor(private firestore: Firestore, private router: Router, public authentication: AuthenticationService) { }
 
   ngOnInit(): void {
   }
 
+  /*------ SIGN-IN ------*/
   async signIn() {
     this.submitted = true;
     if (this.signInForm.invalid) {
@@ -38,7 +39,7 @@ export class SignInComponent implements OnInit {
     const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
     const password = this.signInForm.value.password ?? '';
     await this.loginWithEmail(emailLowerCase, password);
-    await this.checkLoginUser();
+    this.checkLoginUser();
 
     this.resetForm();
   }
@@ -57,6 +58,9 @@ export class SignInComponent implements OnInit {
       .then(async (userCredential: any) => {
         // Signed in 
         this.user = userCredential.user;
+        if (this.user.emailVerified !== true) {
+          this.authentication.sendVerificationMail(this.user);
+        }
         console.log('Login with: ', this.user); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
@@ -79,7 +83,8 @@ export class SignInComponent implements OnInit {
 
         const authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
-        await this.sendGoogleUserToFirebase(result.user.displayName, emailLowerCase, authUID);
+        const name: string = result.user.displayName || '';
+        await this.authentication.sendUserToFirebase(name, emailLowerCase, authUID);
         console.log('Login with: ', result); // TEST !!!!!!!!!!!!!!!
         //WEITERLEITEN MIT UID
       })
@@ -91,24 +96,7 @@ export class SignInComponent implements OnInit {
       });
   }
 
-  // TEST Gleiche Funktion wie in sign up.
-  async sendGoogleUserToFirebase(name: any, emailLowerCase: any, authUID: string) {
-    let data = {
-      name: name,
-      email: emailLowerCase,
-    }
-    const user = new User(data);
-
-    const usersCollection = collection(this.firestore, 'users');
-    const docRef = doc(usersCollection, authUID);
-    setDoc(docRef, user.toJSON()).then((result: any) => {
-    })
-      .catch((error: any) => {
-        console.error('ERROR user send to Firebase: ', error);
-      });
-  }
-
-  async checkLoginUser() {
+  checkLoginUser() {
     if (this.user.emailVerified) {
       this.emailNotVerify = false;
       //WEITERLEITEN MIT UID
