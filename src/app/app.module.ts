@@ -9,7 +9,6 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { environment } from 'src/environments/environment.prod';
 
-
 //<-----Modules----->//
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -23,6 +22,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
+/* import { AngularEditorModule } from '@kolkov/angular-editor'; */
+import { HttpClientModule } from '@angular/common/http';
 
 //<-----Components----->//
 import { StartscreenComponent } from './startscreen/startscreen.component';
@@ -39,9 +40,6 @@ import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
 import { TextEditorComponent } from './text-editor/text-editor.component';
-import { AngularEditorModule } from '@kolkov/angular-editor';
-import { HttpClientModule } from '@angular/common/http';
-
 
 @NgModule({
   declarations: [
@@ -59,6 +57,7 @@ import { HttpClientModule } from '@angular/common/http';
     ChatComponent,
     PasswordResetComponent,
     PasswordConfirmComponent,
+    TextEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,7 +77,7 @@ import { HttpClientModule } from '@angular/common/http';
     MatMenuModule,
     MatIconModule,
     MatExpansionModule,
-    AngularEditorModule,
+/*     AngularEditorModule, */
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
