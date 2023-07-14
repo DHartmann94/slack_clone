@@ -4,7 +4,7 @@ import { Observable, from, map } from 'rxjs';
 
 
 export interface MessageInterface {
-  text: any;
+  messageText: any;
   time?: number;
   emojis?: any;
   thread?: any;
@@ -12,7 +12,6 @@ export interface MessageInterface {
   userId?: string;
   mentionedUser?: string; //ID from mentioned user
 }
-
 
 @Injectable({
   providedIn: 'root'
@@ -36,9 +35,9 @@ export class ChatService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { text, time, thread, emojis, channel, mentionedUser} = data;
+          const { messageText, time, thread, emojis, channel, mentionedUser} = data;
           const message: MessageInterface = {
-            text: text,
+            messageText: messageText,
             time: time,
             thread: thread,
             emojis: emojis,
