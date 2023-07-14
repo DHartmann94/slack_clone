@@ -31,7 +31,9 @@ export class ChatComponent implements OnInit {
   }
 
   async sendMessage() {
-    if (this.messageInput !== null) {
+    if (this.messageInput) {
+      
+
       const message: MessageInterface = {
         id: this.messageId,
         text: this.messageInput,
@@ -40,11 +42,9 @@ export class ChatComponent implements OnInit {
         thread: null,
       };
 
-      const chatlCollection = collection(this.firestore, 'chat');
-      const docRef = await addDoc(chatlCollection, message);
+      const chatCollection = collection(this.firestore, 'messages');
+      const docRef = await addDoc(chatCollection, message);
       this.messageId = docRef.id;
-
-
       console.log('Message ID', this.messageId);
       console.log('Sent message', this.messageInput);
     }
