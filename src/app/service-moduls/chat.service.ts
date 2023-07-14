@@ -5,12 +5,13 @@ import { Observable, from, map } from 'rxjs';
 
 export interface MessageInterface {
   id: string;
-  text: string;
-  time: number;
-  emojis: any;
+  text: any;
+  time?: number;
+  emojis?: any;
   thread?: any;
-  channel:string;
-  mention: string; //ID from mentioned user
+  channel?:string;
+  userId?: string;
+  mention?: string; //ID from mentioned user
 }
 
 

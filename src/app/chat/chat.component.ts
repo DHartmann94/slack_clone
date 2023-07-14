@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, doc, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 
 @Component({
@@ -12,7 +12,7 @@ export class ChatComponent implements OnInit {
   messageInput: string[] = [];
   messageId: string = '';
 
-  constructor(private chatService: ChatService,private firestore: Firestore,) {}
+  constructor(private chatService: ChatService, private firestore: Firestore,) { }
 
   ngOnInit(): void {
     this.getChatData();
@@ -32,16 +32,17 @@ export class ChatComponent implements OnInit {
 
   async sendMessage() {
     if (this.messageInput !== null) {
-
       const message: MessageInterface = {
-        channelName: this.channelForm.value.channelName,
-        channelDescription: this.channelForm.value.channelDescription,
-        color: this.newColor(),
+        id: this.messageId,
+        text: this.messageInput,
+        time: Date.now(),
+        emojis: [],
+        thread: null,
       };
 
       const chatlCollection = collection(this.firestore, 'chat');
-        const docRef = await addDoc(chatlCollection, message);
-        this.messageId = docRef.id;
+      const docRef = await addDoc(chatlCollection, message);
+      this.messageId = docRef.id;
 
 
       console.log('Message ID', this.messageId);
