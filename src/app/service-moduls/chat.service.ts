@@ -3,10 +3,10 @@ import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } fr
 import { Observable, from, map } from 'rxjs';
 
 
-export interface UserDataInterface {
+export interface MessageInterface {
   id: string; 
   text: string;
-  time: Date;
+  time: number;
   emojis: any;
   thread?: any;
   channel:string;
@@ -19,5 +19,38 @@ export interface UserDataInterface {
 })
 
 export class ChatService {
+
+  messageData: MessageInterface[] = [];
+
+  constructor(
+    public firestore: Firestore
+  ) {}
+    
+  getMessage(): Observable<MessageInterface[]> {
+    const messages = collection(this.firestore, 'messages');
+    const q = query(messages);
+
+    return from(getDocs(q)).pipe(
+      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+        const storedMessageData: MessageInterface[] = [];
+
+        querySnapshot.forEach(doc => {
+          const data = doc.data();
+          const { text, time, } = data;
+          const message: MessageInterface = {
+            id: doc.id,
+            text: text,
+            time: time,
+            emojis: undefined,
+            channel: '',
+            mention: ''
+          };
+          storedMessageData.push(message);
+        });
+        this.messageData = storedMessageData;
+        return storedMessageData;
+      })
+    );
+  }
   
 }
