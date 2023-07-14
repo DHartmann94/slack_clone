@@ -31,7 +31,7 @@ export class ChannelsComponent implements OnInit {
   openChannels: boolean = true;
   openDirect: boolean = true;
   channelCard: boolean = false;
-  userCard: boolean = false;
+  userCard: boolean = true;
   openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
@@ -168,7 +168,6 @@ export class ChannelsComponent implements OnInit {
   }
 
   async submitByGroup(value: string) {
-    debugger
     if (value === 'addFromGroup' && this.channelId) {
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
