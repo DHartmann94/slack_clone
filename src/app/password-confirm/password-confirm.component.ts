@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class PasswordConfirmComponent {
   isChangePassword: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
 
   confirmPasswortForm = new FormGroup({
     password: new FormControl('', [
@@ -45,9 +45,9 @@ export class PasswordConfirmComponent {
   }
 
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 

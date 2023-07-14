@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, fetchSignInMethodsForEmail, sendEmailVerification } from '@angular/fire/auth';
-import { User } from 'src/models/user.class';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Firestore } from '@angular/fire/firestore';
 import { ValidationService } from '../service-moduls/validation.service';
+import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,7 +14,7 @@ export class SignUpComponent implements OnInit {
   //user: User = new User(); // TEST
   isSignUp: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
   emailExists: boolean = false;
 
   signUpForm = new FormGroup({
@@ -42,7 +41,7 @@ export class SignUpComponent implements OnInit {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
+  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
 
   ngOnInit(): void {
   }
@@ -65,69 +64,23 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    const authUID = await this.sendUserToAuthenticator(emailLowerCase);
-    await this.sendUserToFirebase(name,emailLowerCase, authUID);
+    await this.createUser(name, emailLowerCase);
+  }
+
+  async createUser(name: string, emailLowerCase: string) {
+    const password: string = this.signUpForm.value.password ?? '';
+    const authUID = await this.authentication.sendUserToAuthenticator(emailLowerCase, password);
+    await this.authentication.sendUserToFirebase(name,emailLowerCase, authUID);
 
     this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
   }
 
-  async sendUserToAuthenticator(emailLowerCase: string): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      const auth = getAuth();
-      const password: string = this.signUpForm.value.password ?? '';
-
-      await createUserWithEmailAndPassword(auth, emailLowerCase, password)
-        .then(async (userCredential: any) => {
-          const user = userCredential.user;
-          const authUID = userCredential.user.uid;
-          await this.sendEmailVerification(user);
-          resolve(authUID);
-        })
-        .catch((error: any) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          console.log('ERROR create user Auth.: ', errorCode, errorMessage);
-          reject(null);
-        });
-    });
-  }
-
-  async sendEmailVerification(user: any) {
-    await sendEmailVerification(user)
-      .then(() => {
-        // Email verification sent!
-      })
-      .catch((error) => {
-        console.error('Error email verification:', error);
-      });
-  }
-
-  async sendUserToFirebase(name: string, emailLowerCase: string, authUID: any) {
-    let data = {
-      name: name,
-      email: emailLowerCase,
-    }
-    const user = new User(data);
-
-    const usersCollection = collection(this.firestore, 'users');
-    const docRef = doc(usersCollection, authUID);
-    setDoc(docRef, user.toJSON()).then((result: any) => {
-    })
-      .catch((error: any) => {
-        console.error('ERROR user send to Firebase: ', error);
-      });
-    /*
-    addDoc(usersCollection, user.toJSON()).then(async (result) => {
-      await getDoc(result);
-    });*/
-  }
-
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 

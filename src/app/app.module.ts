@@ -38,6 +38,9 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
+import { TextEditorComponent } from './text-editor/text-editor.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -73,12 +76,13 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
     MatProgressBarModule,
     MatRadioModule,
     MatMenuModule,
+    MatIconModule,
+    MatExpansionModule,
+    AngularEditorModule,
+    HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
-    MatIconModule,
-    MatExpansionModule
-
   ],
   providers: [],
   bootstrap: [AppComponent],

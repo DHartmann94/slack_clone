@@ -1,7 +1,24 @@
-.startscreen {
+app-startscreen {
     height: 100vh;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
+}
+
+.logo-left-top-corner {
+    height: 100px;
+    width: 250px;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+@media (max-width: 1000px) {
+    .logo-left-top-corner {
+        left: 50% !important;
+        top: 20px !important;
+        transform: translateX(-50%);
+
+    }
 }
