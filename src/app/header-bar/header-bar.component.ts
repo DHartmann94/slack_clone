@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-header-bar',
@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
+
+  
+
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
@@ -37,6 +40,11 @@ export class HeaderBarComponent {
     this.isEditProfileCardOpen = false;
   }
 
- 
+
+  closeContainers() {
+    this.isLogoutContainerOpen = false;
+    this.isProfileCardOpen = false;
+    this.isEditProfileCardOpen = false;
+  }
 }
 
