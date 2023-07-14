@@ -267,3 +267,15 @@
   cursor: pointer;
   width: 36px;
 }
+
+
+.text-editor {
+  border-radius: 20px;
+border: 1px solid var(--ligth-purple-lines, #ADB0D9);
+background: var(--white, #FFF);
+}
+
+textarea {
+  border: 0;
+  width: 100%;
+}
