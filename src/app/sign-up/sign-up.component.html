@@ -2,7 +2,7 @@
     <div class="header-parent">
         <div class="header-logo-container">
             <img src="./assets/img/Logo-small.png" alt="Logo">
-            <h1>DABubble</h1>
+            <h2>DABubble</h2>
         </div>
     </div>
 
@@ -94,10 +94,12 @@
         </form>
     </mat-card>
 
-    <div *ngIf="showAccountNotification" [class.account-message-animation]="showAccountNotification"
-        class="account-create-send-message" #viewAnimation>
+    <div *ngIf="showSlideInNotification" [class.slide-in-animation]="showSlideInNotification"
+        class="slide-in-container" #viewAnimation>
         <div>
-            <span>Account created successfully!</span>
+            <span>Account created successfully.</span>
+            <span>An email has been sent to you.</span>
+            <span>Please confirm the Email!</span>
         </div>
     </div>
 </section>

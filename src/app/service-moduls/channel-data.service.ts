@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-import { user } from '@angular/fire/auth';
-import { DocumentData, Firestore, QuerySnapshot, arrayUnion, collection, doc, getDocs, query, updateDoc } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
   channelName: string;
   channelDescription: string;
-  userName?: string;
-  color?: any;
+  color: any;
 }
 
 @Injectable({
@@ -17,6 +15,7 @@ export interface ChannelDataInterface {
 export class ChannelDataService {
 
   channelData: ChannelDataInterface[] = [];
+  users: string | undefined;
 
   constructor(
     public firestore: Firestore
@@ -32,10 +31,11 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription } = data;
+          const { channelName, channelDescription, color, userGroup } = data;
           const channel: ChannelDataInterface = {
             channelName: channelName,
             channelDescription: channelDescription,
+            color: color,
           };
           storedUserData.push(channel);
         });

@@ -3,7 +3,7 @@
     left: -170px;
     bottom: 300px;
     width: 365px;
-    height: 65px;
+    height: 73px;
     padding: 23px 14px;
     border-bottom-left-radius: 30px;
     border-bottom-right-radius: 30px;
@@ -33,23 +33,26 @@
 
 .arrow-for-dropdown-closed {
     transform: rotate(-90deg);
+    transition: ease-in(0.25ms);
 }
 
 .arrow-for-dropdown-open {
     transform: rotate(0);
+    transition: ease-out(0.25ms);
 }
-
-
 
 .channel-container {
     min-height: 100vh;
     border-radius: 15px;
-    padding: 32px 30px;
     margin: 15px 0 0 10px;
 
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+
+    .channel-in-out {
+        padding: 35px;
+    }
 
     .channel-header {
         display: flex;
@@ -108,7 +111,43 @@
             align-items: center;
             column-gap: 10px;
 
+            &:hover {
+                color: var(--c-mediun-purple);
+            }
+
             h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                margin: 0;
+            }
+        }
+    }
+
+    .massage-edit {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 25px;
+        cursor: pointer;
+
+        .massage-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: 10px;
+
+            &:hover {
+                color: var(--c-mediun-purple);
+            }
+
+            h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
                 margin: 0;
             }
         }
@@ -120,13 +159,14 @@
         align-items: center;
         width: auto;
         min-height: auto;
+        padding: 15px 0 0 35px;
 
         .channel-box {
             width: 200px;
             height: 35px;
             border-radius: 20px;
-            background: var(--bg-color);
             margin: 5px 0;
+            cursor: pointer;
 
             display: flex;
             justify-content: center;
@@ -137,7 +177,36 @@
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 700;
-                color: var(--c-mediun-purple);
+                color: var(--white);
+                margin: 0;
+            }
+        }
+
+        .direct-box {
+            min-width: 220px;
+            min-height: 35px;
+            border-radius: 20px;
+            margin: 10px 0;
+            cursor: pointer;
+
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 10px;
+
+            .user-icon {
+                width: 40px;
+                height: 40px;
+                border-radius: 50px;
+                background-color: var(--c-mediun-purple);
+            }
+
+            h3 {
+                font-family: 'Nunito';
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                color: var(--black);
                 margin: 0;
             }
         }
@@ -180,7 +249,7 @@
 
     .channel-edit-card {
         width: 872px;
-        height: 455px;
+        height: auto;
         background-color: white;
         border-radius: 25px;
         padding: 40px;
@@ -270,13 +339,23 @@
             font-family: 'Nunito';
             font-size: 24px;
             font-style: normal;
-            font-weight: 700; 
+            font-weight: 700;
             margin: 0;
         }
 
         mat-radio-group {
             display: flex;
             flex-direction: column;
+        }
+
+        .radio-selection {
+            span {
+                font-family: 'Nunito';
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 700;
+                color: var(--c-mediun-purple);
+            }
         }
 
         .user-name {

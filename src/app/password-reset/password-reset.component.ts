@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Firestore } from '@angular/fire/firestore';
-import { getAuth, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
+import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
+import { ValidationService } from '../service-moduls/validation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class PasswordResetComponent {
   isSendMail: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
   emailExists: boolean = true;
 
   resetPasswortForm = new FormGroup({
@@ -23,28 +24,7 @@ export class PasswordResetComponent {
   });
 
 
-  constructor(private firestore: Firestore, private router: Router) { }
-
-  /*------ Validator-Funktions ------*/
-  async checkEmailExists(emailLowerCase: string) {
-    const auth = getAuth();
-
-    try {
-      const emailResult = await fetchSignInMethodsForEmail(auth, emailLowerCase);
-
-      if (emailResult.length > 0) {
-        console.log('Email existiert');
-        return this.emailExists = true;
-      }
-
-      console.log('Email existiert NICHT');
-      return this.emailExists = false;;
-
-    } catch (error) {
-      console.log('Error: ', error);
-      return this.emailExists = true;;
-    }
-  }
+  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
 
   /*------ Send-Mail ------*/
   async sendMail() {
@@ -55,7 +35,7 @@ export class PasswordResetComponent {
     this.disableForm();
 
     const emailLowerCase: string = this.resetPasswortForm.value.email?.toLowerCase() || '';
-    await this.checkEmailExists(emailLowerCase);
+    this.emailExists = await this.validation.checkEmailExists(emailLowerCase);
     if (!this.emailExists) {
       this.resetPasswortForm.enable();
       this.isSendMail = false;
@@ -83,9 +63,9 @@ export class PasswordResetComponent {
   }
 
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 

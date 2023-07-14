@@ -8,6 +8,8 @@ import { Component } from '@angular/core';
 export class HeaderBarComponent {
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
+  isEditProfileCardOpen: boolean = false;
+
 
   openLogoutContainer() {
     this.isLogoutContainerOpen = true;
@@ -25,5 +27,16 @@ export class HeaderBarComponent {
   closeUserProfile() {
     this.isProfileCardOpen = false;
   }
+
+  openEditProfileCard() {
+    this.isEditProfileCardOpen = true;
+    this.isProfileCardOpen = false;
+  }
+
+  closeEditUserProfile() {
+    this.isEditProfileCardOpen = false;
+  }
+
+ 
 }
 
