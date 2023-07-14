@@ -4,14 +4,14 @@ import { Observable, from, map } from 'rxjs';
 
 
 export interface MessageInterface {
-  id: string; 
+  id: string;
   text: string;
   time: number;
   emojis: any;
   thread?: any;
   channel:string;
   mention: string; //ID from mentioned user
-} 
+}
 
 
 @Injectable({
@@ -25,7 +25,7 @@ export class ChatService {
   constructor(
     public firestore: Firestore
   ) {}
-    
+
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
@@ -52,5 +52,11 @@ export class ChatService {
       })
     );
   }
-  
+
+
+  sendMessage() {
+    
+
+    console.log('sendMessage');
+  }
 }
