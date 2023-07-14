@@ -3,8 +3,6 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
-
-
 @Component({
   selector: 'app-header-bar',
   templateUrl: './header-bar.component.html',
@@ -12,8 +10,6 @@ import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } fro
 })
 export class HeaderBarComponent {
   userData: UserDataInterface[] = [];
-
-
 
   constructor(public authentication: AuthenticationService, private userDataService: UserDataService, private firestore: Firestore) { }
 
@@ -39,16 +35,6 @@ export class HeaderBarComponent {
       }
     }
   }
-
-
-
-
-
-
-
-
-
-
 
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
