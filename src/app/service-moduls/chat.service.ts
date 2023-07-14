@@ -4,15 +4,14 @@ import { Observable, from, map } from 'rxjs';
 
 
 export interface MessageInterface {
-  id: string; 
-  text: string;
-  time: number;
-  emojis: any;
+  messageText: any;
+  time?: number;
+  emojis?: any;
   thread?: any;
-  channel:string;
-  mention: string; //ID from mentioned user
-} 
-
+  channel?:string;
+  userId?: string;
+  mentionedUser?: string; //ID from mentioned user
+}
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +24,7 @@ export class ChatService {
   constructor(
     public firestore: Firestore
   ) {}
-    
+
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
@@ -36,14 +35,14 @@ export class ChatService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { text, time, } = data;
+          const { messageText, time, thread, emojis, channel, mentionedUser} = data;
           const message: MessageInterface = {
-            id: doc.id,
-            text: text,
+            messageText: messageText,
             time: time,
-            emojis: undefined,
-            channel: '',
-            mention: ''
+            thread: thread,
+            emojis: emojis,
+            channel: channel,
+            mentionedUser: mentionedUser,
           };
           storedMessageData.push(message);
         });
@@ -52,5 +51,10 @@ export class ChatService {
       })
     );
   }
-  
+
+  sendMessage() {
+    
+
+    console.log('sendMessage');
+  }
 }
