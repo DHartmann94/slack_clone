@@ -25,6 +25,4 @@ export class StartscreenComponent implements OnInit {
       this.workmode = true;
     }, 1000);
   }
-
-
 } 

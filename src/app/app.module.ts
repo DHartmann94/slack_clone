@@ -22,6 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatMenuModule } from '@angular/material/menu';
 
 //<-----Components----->//
 import { StartscreenComponent } from './startscreen/startscreen.component';
@@ -37,6 +38,7 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -55,8 +57,6 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
     ChatComponent,
     PasswordResetComponent,
     PasswordConfirmComponent,
-    
-
   ],
   imports: [
     BrowserModule,
@@ -73,12 +73,13 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
     MatProgressSpinnerModule,
     MatProgressBarModule,
     MatRadioModule,
+    MatMenuModule,
+    MatIconModule,
+    MatExpansionModule,
+    HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
-    MatIconModule,
-    MatExpansionModule
-
   ],
   providers: [],
   bootstrap: [AppComponent],

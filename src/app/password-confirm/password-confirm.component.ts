@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
+import { ValidationService } from '../service-moduls/validation.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class PasswordConfirmComponent {
   isChangePassword: boolean = false;
   submitted: boolean = false;
-  showAccountNotification: boolean = false;
+  showSlideInNotification: boolean = false;
 
   confirmPasswortForm = new FormGroup({
     password: new FormControl('', [
@@ -24,27 +25,11 @@ export class PasswordConfirmComponent {
     confirmPassword: new FormControl('', [
       Validators.required,
     ]),
-  }, { validators: this.matchPassword.bind(this) });
+  }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private firestore: Firestore, private router: Router) { }
+  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
 
-  /*------ Validator-Funktions ------*/
-  matchPassword(control: AbstractControl): ValidationErrors | null {
-    const passwordControl = control.get("password");
-    const confirmPasswordControl = control.get("confirmPassword");
-
-    if (passwordControl && confirmPasswordControl) {
-      const password: string = passwordControl.value;
-      const confirmPassword: string = confirmPasswordControl.value;
-
-      if (password !== confirmPassword) {
-        return { mismatch: true };
-      }
-    }
-
-    return null;
-  }
-
+  /*------ Change-Password ------*/
   async changePassword() {
     this.submitted = true;
     if (this.confirmPasswortForm.invalid) {
@@ -60,9 +45,9 @@ export class PasswordConfirmComponent {
   }
 
   showsNotificationAnimation() {
-    this.showAccountNotification = true;
+    this.showSlideInNotification = true;
     setTimeout(() => {
-      this.showAccountNotification = false;
+      this.showSlideInNotification = false;
     }, 3000);
   }
 
@@ -73,6 +58,7 @@ export class PasswordConfirmComponent {
 
   resetForm() {
     setTimeout(() => {
+      this.confirmPasswortForm.reset();
       this.confirmPasswortForm.enable();
       this.isChangePassword = false;
       this.submitted = false;

@@ -11,17 +11,11 @@ export class AppComponent {
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
 
-  hideStartscreen = false;
+  onlyLogo = false;
 
-  closeContainers() {
-    this.isLogoutContainerOpen = false;
-    this.isProfileCardOpen = false;
-    this.isEditProfileCardOpen = false;
+  ngOnInit(): void {
+    setTimeout(() => {
+        this.onlyLogo = true;
+    }, 3000);
   }
-
-  // ngOnInit(): void {
-  //   setTimeout(() => {
-  //       this.hideStartscreen = true;
-  //   }, 3000);
-  // }
 }

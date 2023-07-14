@@ -1,9 +1,8 @@
 
-    <div [ngClass]="{'left-top-corner':toLeft}" class="logo-container">
-        <img class="logo" src="assets/img/logo-quarter.png" alt="">
-        <div class="animation-headline">MySlack</div>
-    </div>
 
-<div *ngIf="!workmode" [ngClass]="{'hide-bg' : hideIntro }" class="background">
+ <div [ngClass]="{'make-logo':toLeft}" class="logo-container">
+    <img class="logo" src="assets/img/logo-quarter.png" alt="">
+    <div class="animation-headline">MySlack</div>
+</div>   
 
-</div>
+<div *ngIf="!workmode" [ngClass]="{'hide-bg' : hideIntro }" class="background"></div>

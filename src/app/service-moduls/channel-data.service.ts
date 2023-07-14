@@ -5,7 +5,6 @@ import { Observable, from, map } from 'rxjs';
 export interface ChannelDataInterface {
   channelName: string;
   channelDescription: string;
-  userName?: string;
   color: any;
 }
 
@@ -16,6 +15,7 @@ export interface ChannelDataInterface {
 export class ChannelDataService {
 
   channelData: ChannelDataInterface[] = [];
+  users: string | undefined;
 
   constructor(
     public firestore: Firestore
@@ -31,7 +31,7 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription, color } = data;
+          const { channelName, channelDescription, color, userGroup } = data;
           const channel: ChannelDataInterface = {
             channelName: channelName,
             channelDescription: channelDescription,

@@ -10,6 +10,10 @@
     width: 100vw;
     max-width: 100%;
     position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background-image: linear-gradient(#797ef3, #323be6);
     background-position: center;
     background-size: cover;
@@ -24,11 +28,11 @@
 .logo {
     height: 150px;
     position: absolute;
-    left: 50%;
-    top: 50%;
+    z-index: 10;
+    left: 0;
+    top: 0;
     animation: slideLeft 2s ease;
     z-index: 3;
-    transform: translate(-70%, -50%);
     opacity: 1 !important;
 }
 
@@ -39,16 +43,16 @@
     position: absolute;
     z-index: 3;
     top: 50%;
-    left: 50%;
-    transform: translate(25%, -50%);
+    transform: translateY(-50%);
+    right: 0;
     animation: slideRight 2s ease;
     @extend .center;
 }
 
-.left-top-corner {
+.make-logo {
     transition: all 1s ease;
-    left: 1vh !important;
-    top: 1vh !important;
+    left: 10px !important;
+    top: 10px !important;
     scale: 0.5;
     * {
         transition: all 1s ease;
@@ -59,39 +63,42 @@
 
 
 .logo-container {
-    position: absolute;
+    position: relative;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 5;
-    height: 250px;
-    width: 400px;
+    height: 150px;
+    width: 450px;
 }
+
 
 @keyframes slideRight {
     0% {
         opacity: 0;
-        transform: translate(0, -50%);
+        right: 50px;
     }
 
-    30% {
+    50% {
         opacity: 0;
+        right: 50px;
     }
 
     100% {
         opacity: 1;
-        transform: translate(25%, -50%);
+        right: 0;
     }
 }
 
 @keyframes slideLeft {
     0% {
-
-        transform: translate(-50%, -50%) rotate(0deg);
+        left: 30%;
+        transform:  rotate(0deg);
     }
 
     100% {
-        transform: translate(-70%, -50%)rotate(360deg);
+        left: 0;
+        transform: rotate(360deg);
     }
 }
 
@@ -105,3 +112,16 @@
     }
 }
 
+@media (max-width: 1000px) {
+    .make-logo {
+        left:50% !important;
+        top: 0 !important;
+        transform: translateX(-50%);
+        scale: 0.5;
+        * {
+            transition: all 1s ease;
+            color: black !important;
+        }
+        
+    }
+}
