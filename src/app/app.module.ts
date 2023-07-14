@@ -22,7 +22,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
-/* import { AngularEditorModule } from '@kolkov/angular-editor'; */
 import { HttpClientModule } from '@angular/common/http';
 
 //<-----Components----->//
@@ -39,7 +38,6 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
-import { TextEditorComponent } from './text-editor/text-editor.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +55,6 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
     ChatComponent,
     PasswordResetComponent,
     PasswordConfirmComponent,
-    TextEditorComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,7 +74,6 @@ import { TextEditorComponent } from './text-editor/text-editor.component';
     MatMenuModule,
     MatIconModule,
     MatExpansionModule,
-/*     AngularEditorModule, */
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
