@@ -7,6 +7,9 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'slack_clone';
+  isLogoutContainerOpen = false;
+  isProfileCardOpen = false;
+  isEditProfileCardOpen = false;
 
   onlyLogo = false;
 
