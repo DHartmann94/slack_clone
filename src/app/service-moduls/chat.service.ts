@@ -4,14 +4,13 @@ import { Observable, from, map } from 'rxjs';
 
 
 export interface MessageInterface {
-  id: string;
   text: any;
   time?: number;
   emojis?: any;
   thread?: any;
   channel?:string;
   userId?: string;
-  mention?: string; //ID from mentioned user
+  mentionedUser?: string; //ID from mentioned user
 }
 
 
@@ -37,14 +36,14 @@ export class ChatService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { text, time, } = data;
+          const { text, time, thread, emojis, channel, mentionedUser} = data;
           const message: MessageInterface = {
-            id: doc.id,
             text: text,
             time: time,
-            emojis: undefined,
-            channel: '',
-            mention: ''
+            thread: thread,
+            emojis: emojis,
+            channel: channel,
+            mentionedUser: mentionedUser,
           };
           storedMessageData.push(message);
         });
@@ -53,7 +52,6 @@ export class ChatService {
       })
     );
   }
-
 
   sendMessage() {
     
