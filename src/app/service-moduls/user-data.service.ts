@@ -21,7 +21,7 @@ export class UserDataService {
   constructor(
     public firestore: Firestore
   ) {}
-
+  
   getUserData(): Observable<UserDataInterface[]> {
     const userCollection = collection(this.firestore, 'users');
     const q = query(userCollection);

@@ -83,7 +83,12 @@
         </div>
       </div>
     </div>
-    <div class="message-input-field"></div>
+    <div class="message-input-field">
+      <div class="text-editor">
+        <textarea [(ngModel)]="messageInput" name="" cols="30" rows="4">
+        </textarea>
+        <button (click)="sendMessage()">Send</button>
+      </div>
+    </div>
   </mat-card>
-
 </div>

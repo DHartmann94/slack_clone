@@ -31,7 +31,7 @@ export class ChannelsComponent implements OnInit {
   openChannels: boolean = true;
   openDirect: boolean = true;
   channelCard: boolean = false;
-  userCard: boolean = true;
+  userCard: boolean = false;
   openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
@@ -176,7 +176,7 @@ export class ChannelsComponent implements OnInit {
 
         const userData = await getDoc(channelDoc);
         if (userData.exists()) {
-          const users = userData.data()['users']; 
+          const users = userData.data()['users'];
           console.log("Users:", users);
         }
 
