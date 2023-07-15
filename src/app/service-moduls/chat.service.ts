@@ -4,8 +4,7 @@ import { Observable, from, map } from 'rxjs';
 
 
 export interface MessageInterface {
-  id: string;
-  text: any;
+  messageText: any;
   time?: number;
   emojis?: any;
   thread?: any;
@@ -13,6 +12,8 @@ export interface MessageInterface {
   userId?: string;
   mention?: string; //ID from mentioned user
 }
+
+// TODO: Message im Chatfenster
 
 
 @Injectable({
@@ -39,8 +40,7 @@ export class ChatService {
           const data = doc.data();
           const { text, time, } = data;
           const message: MessageInterface = {
-            id: doc.id,
-            text: text,
+            messageText: text,
             time: time,
             emojis: undefined,
             channel: '',

@@ -32,11 +32,8 @@ export class ChatComponent implements OnInit {
 
   async sendMessage() {
     if (this.messageInput) {
-      
-
       const message: MessageInterface = {
-        id: this.messageId,
-        text: this.messageInput,
+        messageText: this.messageInput,
         time: Date.now(),
         emojis: [],
         thread: null,
