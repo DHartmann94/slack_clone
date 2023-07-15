@@ -1,16 +1,14 @@
 <div class="header-container">
-    <div class="logo">
-        <img src="./assets/img/Logo-small.png" alt="#">
-        <h1>DABubble</h1>
-    </div>
     <div>
         <input class="search-bar" type="text" placeholder="Code learning durchsuchen" id="searchUser">
     </div>
+    <div>
     <div (click)="openLogoutContainer()" class="profile">
-        <h2>Frederik Beck</h2>
+        <h2>{{ userData[0].name }}</h2>
         <img src="./assets/img/avatar.png" alt="">
         <mat-icon>keyboard_arrow_down</mat-icon>
         <div class="status"></div>
+    </div>
     </div>
 
     <!-- Logout Container -->
@@ -38,7 +36,7 @@
         </div>
         <mat-card-content>
             <div class="user-contact-info">
-                <p>Elias Neumann</p>
+                <p> {{ userData[0].name }}</p>
                 <a (click)="openEditProfileCard()">Bearbeiten</a>
             </div>
             <div class="user-status">
@@ -52,7 +50,7 @@
                 <mat-icon>mail_outline</mat-icon>
                 <div class="user-email-link">
                     <p>E-Mail-Adresse</p>
-                    <a href="#">ichbinelias@beispiel.com</a>
+                    <a href="#">{{ userData[0].email }}</a>
                 </div>
             </div>
         </mat-card-content>

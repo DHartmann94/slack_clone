@@ -10,11 +10,8 @@ export interface MessageInterface {
   thread?: any;
   channel?:string;
   userId?: string;
-  mention?: string; //ID from mentioned user
+  mentionedUser?: string; //ID from mentioned user
 }
-
-// TODO: Message im Chatfenster
-
 
 @Injectable({
   providedIn: 'root'
@@ -38,13 +35,14 @@ export class ChatService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { text, time, } = data;
+          const { messageText, time, thread, emojis, channel, mentionedUser} = data;
           const message: MessageInterface = {
-            messageText: text,
+            messageText: messageText,
             time: time,
-            emojis: undefined,
-            channel: '',
-            mention: ''
+            thread: thread,
+            emojis: emojis,
+            channel: channel,
+            mentionedUser: mentionedUser,
           };
           storedMessageData.push(message);
         });
@@ -53,7 +51,6 @@ export class ChatService {
       })
     );
   }
-
 
   sendMessage() {
     
