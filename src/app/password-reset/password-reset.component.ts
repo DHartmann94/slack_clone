@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Firestore } from '@angular/fire/firestore';
-import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 import { ValidationService } from '../service-moduls/validation.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
@@ -25,7 +23,7 @@ export class PasswordResetComponent {
   });
 
 
-  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService,  public authentication: AuthenticationService) { }
+  constructor(private router: Router, public validation: ValidationService,  public authentication: AuthenticationService) { }
 
   /*------ Send-Mail ------*/
   async sendMail() {

@@ -10,7 +10,6 @@ export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
 
-  //mode = this.activatedActivated.snapshot.queryParams['mode'];
 
   constructor(private firestore: Firestore) { }
 
@@ -101,7 +100,7 @@ export class AuthenticationService {
 
     await sendPasswordResetEmail(auth, emailLowerCase)
       .then(() => {
-        // Sending Mail (Standard: https://slag-clone.firebaseapp.com/__/auth/action?mode=action&oobCode=code)
+        // Paswword resent mail sent!
       })
       .catch((error) => {
         console.log('ERROR sending Mail:', error);
@@ -140,10 +139,6 @@ export class AuthenticationService {
       .catch((error: any) => {
         console.error('ERROR user send to Firebase: ', error);
       });
-    /*
-    addDoc(usersCollection, user.toJSON()).then(async (result) => {
-      await getDoc(result);
-    });*/
   }
 
 }
