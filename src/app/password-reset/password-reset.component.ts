@@ -50,6 +50,11 @@ export class PasswordResetComponent {
     //this.router.navigateByUrl("/sign-in");
   }
 
+  /**
+   * 
+   * Use: http://localhost:4200/confirm-password for testing.
+   * @param emailLowerCase 
+   */
   async sendChangePasswordMail(emailLowerCase: string) {
     const auth = getAuth();
 

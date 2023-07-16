@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
 @Injectable({
@@ -10,7 +10,9 @@ export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
 
-  constructor(private firestore: Firestore,) { }
+  //mode = this.activatedActivated.snapshot.queryParams['mode'];
+
+  constructor(private firestore: Firestore) { }
 
   async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
@@ -87,6 +89,23 @@ export class AuthenticationService {
       .catch((error) => {
         console.error('Error email verification:', error);
       });
+  }
+
+  async changePassword(code: string, newPassword: string) {
+    console.log('Code: ', code); // TEST
+    console.log('Password: ', newPassword); // TEST
+    const auth = getAuth();
+    
+    await confirmPasswordReset(auth, code, newPassword)
+      .then(() => {
+        // Password has been reset!
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('ERROR reset password: ', error);
+      });
+
   }
 
   /*------ FIREBASE ------*/
