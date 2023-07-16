@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Firestore } from '@angular/fire/firestore';
 import { getAuth, sendPasswordResetEmail } from '@angular/fire/auth';
 import { ValidationService } from '../service-moduls/validation.service';
+import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,7 +25,7 @@ export class PasswordResetComponent {
   });
 
 
-  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
+  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService,  public authentication: AuthenticationService) { }
 
   /*------ Send-Mail ------*/
   async sendMail() {
@@ -43,28 +44,11 @@ export class PasswordResetComponent {
       return;
     }
 
-    await this.sendChangePasswordMail(emailLowerCase);
+    await this.authentication.sendChangePasswordMail(emailLowerCase);
 
     this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
-  }
-
-  /**
-   * 
-   * Use: http://localhost:4200/confirm-password for testing.
-   * @param emailLowerCase 
-   */
-  async sendChangePasswordMail(emailLowerCase: string) {
-    const auth = getAuth();
-
-    sendPasswordResetEmail(auth, emailLowerCase)
-      .then(() => {
-        // Sending Mail (Standard: https://slag-clone.firebaseapp.com/__/auth/action?mode=action&oobCode=code)
-      })
-      .catch((error) => {
-        console.log('ERROR sending Mail:', error);
-      });
   }
 
   showsNotificationAnimation() {

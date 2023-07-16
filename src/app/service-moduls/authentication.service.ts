@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
 @Injectable({
@@ -91,11 +91,28 @@ export class AuthenticationService {
       });
   }
 
+  /**
+ * 
+ * Use: http://localhost:4200/confirm-password for testing.
+ * @param {string} emailLowerCase - The e-mail address where the reset e-mail should be sent.
+ */
+  async sendChangePasswordMail(emailLowerCase: string) {
+    const auth = getAuth();
+
+    await sendPasswordResetEmail(auth, emailLowerCase)
+      .then(() => {
+        // Sending Mail (Standard: https://slag-clone.firebaseapp.com/__/auth/action?mode=action&oobCode=code)
+      })
+      .catch((error) => {
+        console.log('ERROR sending Mail:', error);
+      });
+  }
+
   async changePassword(code: string, newPassword: string) {
     console.log('Code: ', code); // TEST
     console.log('Password: ', newPassword); // TEST
     const auth = getAuth();
-    
+
     await confirmPasswordReset(auth, code, newPassword)
       .then(() => {
         // Password has been reset!
