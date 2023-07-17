@@ -22,7 +22,7 @@
     </div>
 
     <!-- Overlay -->
-    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen" (click)="closeLogoutContainer()"></div>
+    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen" (click)="closeContainers()"></div>
 
 <!-- Profile Container-->
 <section class="user-profile-card-section" *ngIf="isProfileCardOpen">

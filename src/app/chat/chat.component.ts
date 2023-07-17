@@ -11,6 +11,9 @@ export class ChatComponent implements OnInit {
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
   messageId: string = '';
+  isProfileCardOpen: boolean = false;
+  isLogoutContainerOpen: boolean = false;
+  
 
   constructor(private chatService: ChatService, private firestore: Firestore,) { }
 
@@ -45,5 +48,14 @@ export class ChatComponent implements OnInit {
       console.log('Message ID', this.messageId);
       console.log('Sent message', this.messageInput);
     }
+  }
+
+  openUserProfile() {
+    this.isProfileCardOpen = true;
+    this.isLogoutContainerOpen = false;
+  }
+
+  closeUserProfile() {
+    this.isProfileCardOpen = false;
   }
 }

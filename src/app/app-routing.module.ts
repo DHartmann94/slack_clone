@@ -18,7 +18,7 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'reset-password', component: PasswordResetComponent },
   { path: 'confirm-password', component: PasswordConfirmComponent },
-  { path: 'board/:id', component: BoardComponent, children: [
+  { path: 'board', component: BoardComponent, children: [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent },
     { path: 'chat', component: ChatComponent },
