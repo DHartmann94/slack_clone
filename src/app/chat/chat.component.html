@@ -82,6 +82,13 @@
           </div>
         </div>
       </div>
+
+      <div class="message-container" *ngFor="let message of chatData">
+        <div class="time">{{ message.time | date:'mediumTime' }}</div>
+        <div class="message">{{ message.messageText }}</div>
+      </div>
+
+
     </div>
     <div class="message-input-field">
       <div class="text-editor">

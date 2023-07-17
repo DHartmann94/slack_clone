@@ -13,7 +13,7 @@ export class ChatComponent implements OnInit {
   messageId: string = '';
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
-  
+
 
   constructor(private chatService: ChatService, private firestore: Firestore,) { }
 
@@ -47,6 +47,7 @@ export class ChatComponent implements OnInit {
       this.messageId = docRef.id;
       console.log('Message ID', this.messageId);
       console.log('Sent message', this.messageInput);
+      this.messageInput = [''];
     }
   }
 

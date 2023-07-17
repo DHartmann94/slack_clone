@@ -368,11 +368,11 @@ section {
       mat-card-title {
           font-weight: 700 !important;
       }
-      
+
       mat-icon {
           cursor: pointer;
       }
-    
+
   }
 
   .user-img {
@@ -440,3 +440,17 @@ section {
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
 }
+
+.message-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.time {
+  margin-right: 10px;
+}
+
+
+
+
