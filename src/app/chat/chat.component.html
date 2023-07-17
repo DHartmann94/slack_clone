@@ -85,9 +85,19 @@
     </div>
     <div class="message-input-field">
       <div class="text-editor">
-        <textarea [(ngModel)]="messageInput" name="" cols="30" rows="4">
+        <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
-        <button (click)="sendMessage()">Send</button>
+        <div class="text-editor-bottom">
+          <div class="text-editor-left-btns">
+            <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
+            <div class="vertical-line-textEditor"></div>
+            <img src="./assets/img/icons/sentiment_satisfied.svg" alt="">
+            <img src="./assets/img/icons/alternate_email.svg" alt="">
+          </div>
+          <div class="send-message-btn">
+            <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
+          </div>
+        </div>
       </div>
     </div>
   </mat-card>

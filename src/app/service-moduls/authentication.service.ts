@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
 @Injectable({
@@ -10,7 +10,8 @@ export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
 
-  constructor(private firestore: Firestore,) { }
+
+  constructor(private firestore: Firestore) { }
 
   async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
@@ -89,6 +90,40 @@ export class AuthenticationService {
       });
   }
 
+  /**
+ * 
+ * Use: http://localhost:4200/confirm-password for testing.
+ * @param {string} emailLowerCase - The e-mail address where the reset e-mail should be sent.
+ */
+  async sendChangePasswordMail(emailLowerCase: string) {
+    const auth = getAuth();
+
+    await sendPasswordResetEmail(auth, emailLowerCase)
+      .then(() => {
+        // Paswword resent mail sent!
+      })
+      .catch((error) => {
+        console.log('ERROR sending Mail:', error);
+      });
+  }
+
+  async changePassword(code: string, newPassword: string) {
+    console.log('Code: ', code); // TEST
+    console.log('Password: ', newPassword); // TEST
+    const auth = getAuth();
+
+    await confirmPasswordReset(auth, code, newPassword)
+      .then(() => {
+        // Password has been reset!
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log('ERROR reset password: ', error);
+      });
+
+  }
+
   /*------ FIREBASE ------*/
   async sendUserToFirebase(name: string, emailLowerCase: string, authUID: any) {
     let data = {
@@ -104,10 +139,6 @@ export class AuthenticationService {
       .catch((error: any) => {
         console.error('ERROR user send to Firebase: ', error);
       });
-    /*
-    addDoc(usersCollection, user.toJSON()).then(async (result) => {
-      await getDoc(result);
-    });*/
   }
 
 }

@@ -1,4 +1,5 @@
 $line-spacing: 35px;
+$line-spacing-mobile: 30px;
 
 section {
     height: 100vh;
@@ -21,11 +22,18 @@ section {
         font-weight: bold;
     }
 
-    a { // TEST GLOABAL?????
-        color: var(--c-purple); 
+    a {
+        // TEST GLOABAL?????
+        color: var(--c-purple);
         text-decoration: none;
         transition: all 225ms ease-in-out;
         cursor: pointer;
+    }
+
+    @media(max-width: 970px) {
+        h2 {
+            margin: 15px;
+        }
     }
 }
 
@@ -53,6 +61,10 @@ section {
             border: 1px solid var(--c-light-purple);
         }
     }
+
+    @media(max-width: 970px) {
+        position: relative;
+    }
 }
 
 .header-logo-container {
@@ -73,13 +85,33 @@ section {
     p {
         margin: 0px;
     }
+
+    @media(max-width: 970px) {
+        display: none;
+    }
+}
+
+.mobile-header-link-container {
+    margin: 15px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    p {
+        margin: 0px;
+    }
+
+    @media(min-width: 970px) {
+        display: none;
+    }
 }
 
 /*------ Sign-in Card ------*/
 mat-card {
     width: 400px;
     border-radius: 15px;
-    ;
+
     padding: $line-spacing;
     position: relative;
 
@@ -98,6 +130,21 @@ mat-card {
         margin: 5px 0px 35px 0px;
         text-align: center;
     }
+
+    @media(max-width: 970px) {
+        width: clamp(19.063rem, 16.139rem + 14.615vw, 25rem);
+        padding: 25px;
+
+        h1 {
+            margin: 0px 0px 25px 0px !important;
+            font-size: 2.5rem !important;
+        }
+
+        p {
+            margin: 0px 0px 25px 0px;
+            text-align: center;
+        }
+    }
 }
 
 form {
@@ -110,7 +157,7 @@ form {
         font-family: 'Nunito';
         padding: 15px 40px;
         width: 100%;
-        height: 50px;
+        height: 45px;
         position: relative;
 
         background: var(--bg-color);
@@ -132,7 +179,7 @@ form {
 
     img {
         position: absolute;
-        top: 12px;
+        top: 11px;
         left: 12px;
     }
 
@@ -184,7 +231,7 @@ form {
 
 .button-google {
     width: 100%;
-    height: 50px;
+    height: 45px;
 
     display: flex;
     flex-direction: row;
@@ -264,15 +311,31 @@ form {
     flex-direction: column;
     align-items: center;
     gap: $line-spacing;
+
+    @media(max-width: 970px) {
+        gap: $line-spacing-mobile;
+    }
 }
 
 .error-parent {
     width: 100%;
     height: $line-spacing;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media(max-width: 970px) {
+        height: $line-spacing-mobile;
+    }
+}
+
+mat-error {
+    line-height: 10px;
 }
 
 .error-notification {
-    font-size: 0.7rem !important;
+    font-size: 0.6rem !important;
 
     display: flex;
     flex-direction: column;
@@ -294,7 +357,6 @@ form {
 
     border: 1px solid transparent;
     border-radius: 15px;
-    ;
 
     display: flex;
     align-items: center;

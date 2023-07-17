@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { Firestore } from '@angular/fire/firestore';
 import { getAuth, fetchSignInMethodsForEmail, sendPasswordResetEmail } from '@angular/fire/auth';
 import { ValidationService } from '../service-moduls/validation.service';
-import { Router } from '@angular/router';
+import { AuthenticationService } from '../service-moduls/authentication.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-password-confirm',
@@ -27,7 +27,7 @@ export class PasswordConfirmComponent {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService) { }
+  constructor(private route: ActivatedRoute, public validation: ValidationService, public authentication: AuthenticationService) { }
 
   /*------ Change-Password ------*/
   async changePassword() {
@@ -37,7 +37,9 @@ export class PasswordConfirmComponent {
     }
     this.disableForm();
 
-    // Funktion...
+    const newPassword: string = this.confirmPasswortForm.value.confirmPassword || '';
+    const code = this.route.snapshot.queryParams['oobCode'];
+    await this.authentication.changePassword(code, newPassword);
 
     this.showsNotificationAnimation();
     this.resetForm();
