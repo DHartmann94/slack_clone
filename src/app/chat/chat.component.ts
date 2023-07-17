@@ -24,7 +24,8 @@ export class ChatComponent implements OnInit {
   async getChatData() {
     this.chatService.getMessage().subscribe(
       (chatData) => {
-        this.chatData = chatData;
+        const filteredData = chatData.filter((message) => message.time !== undefined && message.time !== null);
+        this.chatData = filteredData.sort((a, b) => a.time! - b.time!);
         console.log('Subscribed data users:', chatData);
       },
       (error) => {
@@ -32,6 +33,7 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
 
   async sendMessage() {
     if (this.messageInput) {
