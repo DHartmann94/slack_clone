@@ -3,8 +3,6 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Firestore, collection, collectionData, doc, docData, updateDoc, getDoc } from '@angular/fire/firestore';
 
-
-
 @Component({
   selector: 'app-header-bar',
   templateUrl: './header-bar.component.html',

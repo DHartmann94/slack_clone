@@ -3,8 +3,9 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-channels',
@@ -38,6 +39,7 @@ export class ChannelsComponent implements OnInit {
   channelData: ChannelDataInterface[] = [];
 
   channelId: string = '';
+  selectedChannel: ChannelDataInterface | null | undefined = null;
 
   constructor(
     private firestore: Firestore,
@@ -105,6 +107,22 @@ export class ChannelsComponent implements OnInit {
     this.channelCard = true;
   }
 
+  selectChannel(channelId: any) {
+    this.selectedChannel = this.getChannelById(channelId);
+    console.log(this.selectedChannel);
+  }
+
+  getChannelById(channelId: any) {
+    return this.channelData.find(channel => channel.id === channelId) || null;
+  }
+
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
+    return randomColor;
+  }
+
   async submitChannel() {
     if (this.channelForm.valid) {
       const channel: ChannelDataInterface = {
@@ -133,7 +151,6 @@ export class ChannelsComponent implements OnInit {
       this.openUserForm = true;
     } else if (value === 'addFromGroup') {
       this.openUserForm = false;
-      this.submitByGroup(value);
     }
   }
 
@@ -167,37 +184,36 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async submitByGroup(value: string) {
-    if (value === 'addFromGroup' && this.channelId) {
+  async submitByGroup() {
+    if (this.selectedChannel) {
+      const getUsersFromGroup = this.selectedChannel.users;
+      console.log(getUsersFromGroup);
+      const users: string[] = [];
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
         const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-        const matchChannelName = channelData.find(channel => channel.channelName);
+        const matchingUsersInChannel = channelData.filter(user => getUsersFromGroup.includes(user.id));
+        console.log(matchingUsersInChannel);
+        
+        if (matchingUsersInChannel.length > 0) {
+          matchingUsersInChannel.forEach(user => {
+            if (!users.includes(user.id)) {
+              users.push(...user.users);
+            }
+            
+          });
 
-        const userData = await getDoc(channelDoc);
-        if (userData.exists()) {
-          const users = userData.data()['users'];
-          console.log("Users:", users);
-        }
-
-        if (matchChannelName) {
-
-        } else {
-          console.log('Channel not found.');
+          await updateDoc(channelDoc, {
+            users: arrayUnion(...users)
+          });
+          console.log('User added successfully.');
+        }  else {
+          console.log('User not found.');
         }
       } catch (error) {
         console.error('Error adding user:', error);
       }
-
       this.userCard = false;
     }
-  }
-
-  newColor() {
-    var randomColor = "#000000".replace(/0/g, () => {
-      return (~~(Math.random() * 16)).toString(16);
-    });
-    return randomColor;
-  }
-
+  }  
 }
