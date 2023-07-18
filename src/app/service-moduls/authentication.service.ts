@@ -42,18 +42,19 @@ export class AuthenticationService {
   async loginWithGoogle() {
     const auth = getAuth();
     const provider = new GoogleAuthProvider();
+    this.user = null;
     this.errorMessage = '';
 
     await signInWithPopup(auth, provider)
       .then(async (result) => {
         //const credential = GoogleAuthProvider.credentialFromResult(result);
 
+        this.user = result.user;
         const authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
         const name: string = result.user.displayName || '';
         await this.sendUserToFirebase(name, emailLowerCase, authUID);
-        console.log('Login with: ', result); // TEST !!!!!!!!!!!!!!!
-        //WEITERLEITEN MIT UID
+        this.getUserData()
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -108,6 +109,7 @@ export class AuthenticationService {
     const auth = getAuth();
     await signOut(auth).then(() => {
       // Sign-out successful.
+      this.router.navigateByUrl("/sign-in");
     }).catch((error) => {
       console.log('ERROR signOut: ', error);
     });

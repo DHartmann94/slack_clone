@@ -4,7 +4,7 @@
     </div>
     <div>
     <div (click)="openLogoutContainer()" class="profile">
-        <h2>Hans Peter</h2>
+        <h2>{{ userName }}</h2>
         <img src="./assets/img/avatar.png" alt="">
         <mat-icon>keyboard_arrow_down</mat-icon>
         <div class="status"></div>
@@ -16,7 +16,7 @@
         <div class="logout">
             <div class="logout-info">
                 <p (click)="openUserProfile()">Profile</p>
-                <p>Log out</p>
+                <p (click)="this.authentication.logoutAuth()">Log out</p>
             </div>
         </div>
     </div>
@@ -36,21 +36,21 @@
         </div>
         <mat-card-content>
             <div class="user-contact-info">
-                <p>Hans Peter</p>
-                <a (click)="openEditProfileCard()">Bearbeiten</a>
+                <p>{{ userName }}</p>
+                <a (click)="openEditProfileCard()">Edit</a>
             </div>
             <div class="user-status">
                 <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
                         <circle cx="4" cy="4" r="4" fill="#92C83E" />
                     </svg>
-                    Aktiv
+                    {{ userStatus }}
                 </p>
             </div>
             <div class="user-email">
                 <mat-icon>mail_outline</mat-icon>
                 <div class="user-email-link">
-                    <p>E-Mail-Adresse</p>
-                    <a href="#">Test@gmail.com</a>
+                    <p>E-Mail-Address</p>
+                    <a>{{ userEmail }}</a>
                 </div>
             </div>
         </mat-card-content>
@@ -61,7 +61,7 @@
 <section class="user-profile-card-section" *ngIf="isEditProfileCardOpen">
     <mat-card class="user-profile-card">
         <mat-card-header class="user-header">
-            <mat-card-title>Dein Profil bearbeiten</mat-card-title>
+            <mat-card-title>Edit Profile</mat-card-title>
             <mat-icon (click)="closeEditUserProfile()" >close</mat-icon>
         </mat-card-header>
         <div class="user-img">
@@ -74,23 +74,23 @@
                         <mat-icon>account_circle</mat-icon>
                     </div>
                     <div>
-                        <mat-label>Vollständiger Name</mat-label>
+                        <mat-label>Full Name</mat-label>
                     </div>
                 </div>
-                <input matInput placeholder="Vollständiger Name">
+                <input matInput placeholder="Full Name">
             </form>
             <form class="email-form">
                 <div class="e-mail-field">
                     <mat-icon>mail_outline</mat-icon>
-                    <mat-label>E-Mail-Adresse</mat-label>
+                    <mat-label>E-Mail-Address</mat-label>
                 </div>
-                <input matInput placeholder="E-Mail-Adresse">
+                <input matInput placeholder="E-Mail-Address">
             </form>
         </mat-card-content>
         <mat-card-actions class="edit-buttons">
-            <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Abbrechen</button>
+            <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
             <button (click)="closeEditUserProfile()" class="save-button" mat-flat-button
-                color="primary">Speichern</button>
+                color="primary">Save</button>
         </mat-card-actions>
     </mat-card>
 </section>

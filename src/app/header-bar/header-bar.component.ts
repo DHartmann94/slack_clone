@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, collectionData, doc, docData, updateDoc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-header-bar',
@@ -9,37 +9,54 @@ import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } fro
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
-  userData: UserDataInterface[] = [];
-
-  constructor(public authentication: AuthenticationService, private userDataService: UserDataService, private firestore: Firestore) { }
-
-  ngOnInit() {
-    //this.getUserData();
-  }
-
-  getUserData() {
-    this.userDataService.getUserData().subscribe((userData: UserDataInterface[]) => {
-      this.userData = userData;
-    });
-  }
-
-  async getUserData2() {
-    debugger
-    if (this.authentication.user !== null) {
-      const userDocRef = doc(this.firestore, 'users', this.authentication.user.id);
-      const userDocSnapshot = await getDoc(userDocRef);
-      if (userDocSnapshot.exists()) {
-        const userData = userDocSnapshot.data();
-        console.log(userData);
-      } else {
-        console.log('No such document!');
-      }
-    }
-  }
-
+  currentUser: string = '';
+  userName = '';
+  userEmail = '';
+  userStatus = '';
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
+  active: boolean = false;
+  coll = collection(this.firestore, 'users');
+
+
+  constructor(public authentication: AuthenticationService, private firestore: Firestore) { }
+
+
+  async ngOnInit() {
+    this.currentUser = localStorage.getItem('currentUser') ?? '';
+    await this.getUserData();
+  }
+
+
+  async getUserData() {
+    try {
+      const userDocRef = doc(this.firestore, 'users', this.currentUser);
+      const docSnapshot = await getDoc(userDocRef);
+      
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        console.log('User data:', userData);
+        this.userName = userData['name']; 
+        this.userEmail = userData['email']; 
+        this.userStatus = userData['status']; 
+      } else {
+        console.log('The document does not exist.');
+      }
+    } catch (error) {
+      console.log('Error retrieving user data:', error);
+    }
+  }
+
+
+  colorStatus() {
+    if (this.userStatus == 'Active') {
+      this.active = true;
+    }
+    if (this.userStatus == 'Inactive') {
+      this.active = false;
+    }
+  }
 
 
   openLogoutContainer() {

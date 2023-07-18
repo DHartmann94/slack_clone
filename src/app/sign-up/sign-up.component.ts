@@ -54,7 +54,7 @@ export class SignUpComponent implements OnInit {
     }
     this.disableForm();
 
-    const name: string = this.signUpForm.value.name?.toLowerCase() || '';
+    const name: string = this.signUpForm.value.name ?? '';
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
     this.emailExists = await this.validation.checkEmailExists(emailLowerCase);
     if (this.emailExists) {
