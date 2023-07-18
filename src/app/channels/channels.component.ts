@@ -38,6 +38,7 @@ export class ChannelsComponent implements OnInit {
   channelData: ChannelDataInterface[] = [];
 
   channelId: string = '';
+  selectedChannel: ChannelDataInterface | null | undefined = null;
 
   constructor(
     private firestore: Firestore,
@@ -105,6 +106,22 @@ export class ChannelsComponent implements OnInit {
     this.channelCard = true;
   }
 
+  selectChannel(channelId: any) {
+    this.selectedChannel = this.getChannelById(channelId);
+    console.log(this.selectedChannel);
+  }
+
+  getChannelById(channelId: any) {
+    return this.channelData.find(channel => channel.id === channelId) || null;
+  }
+
+  newColor() {
+    var randomColor = "#000000".replace(/0/g, () => {
+      return (~~(Math.random() * 16)).toString(16);
+    });
+    return randomColor;
+  }
+
   async submitChannel() {
     if (this.channelForm.valid) {
       const channel: ChannelDataInterface = {
@@ -133,7 +150,6 @@ export class ChannelsComponent implements OnInit {
       this.openUserForm = true;
     } else if (value === 'addFromGroup') {
       this.openUserForm = false;
-      this.submitByGroup(value);
     }
   }
 
@@ -167,37 +183,27 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async submitByGroup(value: string) {
-    if (value === 'addFromGroup' && this.channelId) {
+  async submitByGroup() {
+    if (this.selectedChannel) {
+      const usersAddByGroup: string[] = [];
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
         const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-        const matchChannelName = channelData.find(channel => channel.channelName);
+        const matchChannel = channelData.find(channel => channel.id === this.channelId);
 
-        const userData = await getDoc(channelDoc);
-        if (userData.exists()) {
-          const users = userData.data()['users'];
-          console.log("Users:", users);
-        }
+        console.log(matchChannel);
 
-        if (matchChannelName) {
-
+        if (matchChannel) {
+          usersAddByGroup.push(matchChannel.id);
+          const userData = await getDoc(channelDoc);
+          
         } else {
           console.log('Channel not found.');
         }
       } catch (error) {
         console.error('Error adding user:', error);
       }
-
       this.userCard = false;
     }
   }
-
-  newColor() {
-    var randomColor = "#000000".replace(/0/g, () => {
-      return (~~(Math.random() * 16)).toString(16);
-    });
-    return randomColor;
-  }
-
 }

@@ -3,6 +3,7 @@ import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } fr
 import { Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
+  id?: any;
   channelName: string;
   channelDescription: string;
   color: any;
@@ -31,8 +32,9 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription, color, userGroup } = data;
+          const { channelName, channelDescription, color } = data;
           const channel: ChannelDataInterface = {
+            id: doc.id,
             channelName: channelName,
             channelDescription: channelDescription,
             color: color,
