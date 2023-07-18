@@ -3,8 +3,9 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
+import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-channels',
@@ -185,25 +186,34 @@ export class ChannelsComponent implements OnInit {
 
   async submitByGroup() {
     if (this.selectedChannel) {
-      const usersAddByGroup: string[] = [];
+      const getUsersFromGroup = this.selectedChannel.users;
+      console.log(getUsersFromGroup);
+      const users: string[] = [];
       try {
         const channelDoc = doc(this.firestore, 'channels', this.channelId);
         const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-        const matchChannel = channelData.find(channel => channel.id === this.channelId);
+        const matchingUsersInChannel = channelData.filter(user => getUsersFromGroup.includes(user.id));
+        console.log(matchingUsersInChannel);
+        
+        if (matchingUsersInChannel.length > 0) {
+          matchingUsersInChannel.forEach(user => {
+            if (!users.includes(user.id)) {
+              users.push(...user.users);
+            }
+            
+          });
 
-        console.log(matchChannel);
-
-        if (matchChannel) {
-          usersAddByGroup.push(matchChannel.id);
-          const userData = await getDoc(channelDoc);
-          
-        } else {
-          console.log('Channel not found.');
+          await updateDoc(channelDoc, {
+            users: arrayUnion(...users)
+          });
+          console.log('User added successfully.');
+        }  else {
+          console.log('User not found.');
         }
       } catch (error) {
         console.error('Error adding user:', error);
       }
       this.userCard = false;
     }
-  }
+  }  
 }

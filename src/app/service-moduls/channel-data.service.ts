@@ -7,6 +7,7 @@ export interface ChannelDataInterface {
   channelName: string;
   channelDescription: string;
   color: any;
+  users?: any;
 }
 
 @Injectable({
@@ -32,12 +33,13 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription, color } = data;
+          const { channelName, channelDescription, color, user } = data;
           const channel: ChannelDataInterface = {
             id: doc.id,
             channelName: channelName,
             channelDescription: channelDescription,
             color: color,
+            users: user,
           };
           storedUserData.push(channel);
         });
