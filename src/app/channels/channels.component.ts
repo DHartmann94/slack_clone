@@ -3,7 +3,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -153,6 +153,7 @@ export class ChannelsComponent implements OnInit {
     } else if (value === 'addFromGroup') {
       this.openUserForm = false;
     }
+    console.log("type", this.selectedUserType);
   }
 
   async submitUserToChannel() {
@@ -165,8 +166,8 @@ export class ChannelsComponent implements OnInit {
   
         if (matchingUser) {
           if (this.selectedUserType === 'addFromGroup') {
-            this.addGroupToChannel(matchingUser);
-          } else {
+            await this.addGroupToChannel(matchingUser);
+          } else if (this.selectedUserType === 'addByUser') {
             const users: string[] = [matchingUser.id];
             await this.addUserToChannel(users, userName);
           }
