@@ -24,6 +24,7 @@ export class HeaderBarComponent {
   }
 
   async getUserData2() {
+    debugger
     if (this.authentication.user !== null) {
       const userDocRef = doc(this.firestore, 'users', this.authentication.user.id);
       const userDocSnapshot = await getDoc(userDocRef);

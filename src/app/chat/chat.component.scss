@@ -118,7 +118,13 @@
   font-weight: 700;
   line-height: normal;
   margin-right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--purple-3, #535af1);
+  }
 }
+
 
 .chat-left {
   display: flex;
@@ -267,6 +273,7 @@
   cursor: pointer;
   width: 36px;
 }
+
 .message-input-field {
   width: 100%;
   margin-top: 25px;
@@ -328,3 +335,122 @@ textarea {
     cursor: pointer;
   }
 }
+
+// User Profile Card Style
+
+section {
+  position: absolute;
+  right: 35rem;
+  top: 15rem;
+  z-index: 999;
+}
+
+.user-profile-card {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  width: 22rem;
+  height: 32rem;
+  border-radius: 15px;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  line-height: 2;
+
+
+  a {
+      text-decoration: none;
+      color:#1381FF;
+  }
+
+  .user-header {
+      display: flex;
+      justify-content: space-between;
+
+      mat-card-title {
+          font-weight: 700 !important;
+      }
+
+      mat-icon {
+          cursor: pointer;
+      }
+
+  }
+
+  .user-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem;
+  }
+
+  .user-img img {
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+  }
+
+  .user-contact-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+
+      p {
+          font-size: 1.6rem;
+          font-weight: 700;
+          line-height: 43px;
+          margin: 0;
+      }
+  }
+
+  .user-status {
+      color: #92C83E;
+      padding-top: 0.2rem;
+      padding-bottom: 0.3rem;
+  }
+
+  .user-email {
+      display: flex;
+
+      .user-email-link {
+          padding-left: 0.9rem;
+      }
+  }
+
+  .user-message-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 1rem;
+  }
+
+  button {
+      width: 154px;
+      height: 45px;
+      border-radius: 50px;
+      background: #444DF2;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 998;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.message-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.time {
+  margin-right: 10px;
+}
+
+
+
+

@@ -11,6 +11,9 @@ export class ChatComponent implements OnInit {
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
   messageId: string = '';
+  isProfileCardOpen: boolean = false;
+  isLogoutContainerOpen: boolean = false;
+
 
   constructor(private chatService: ChatService, private firestore: Firestore,) { }
 
@@ -21,7 +24,8 @@ export class ChatComponent implements OnInit {
   async getChatData() {
     this.chatService.getMessage().subscribe(
       (chatData) => {
-        this.chatData = chatData;
+        const filteredData = chatData.filter((message) => message.time !== undefined && message.time !== null);
+        this.chatData = filteredData.sort((a, b) => a.time! - b.time!);
         console.log('Subscribed data users:', chatData);
       },
       (error) => {
@@ -29,6 +33,7 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
 
   async sendMessage() {
     if (this.messageInput) {
@@ -44,6 +49,16 @@ export class ChatComponent implements OnInit {
       this.messageId = docRef.id;
       console.log('Message ID', this.messageId);
       console.log('Sent message', this.messageInput);
+      this.messageInput = [''];
     }
+  }
+
+  openUserProfile() {
+    this.isProfileCardOpen = true;
+    this.isLogoutContainerOpen = false;
+  }
+
+  closeUserProfile() {
+    this.isProfileCardOpen = false;
   }
 }

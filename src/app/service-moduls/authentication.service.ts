@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 
 @Injectable({
@@ -86,8 +86,17 @@ export class AuthenticationService {
         // Email verification sent!
       })
       .catch((error) => {
-        console.error('Error email verification:', error);
+        console.error('ERROR email verification:', error);
       });
+  }
+
+  async logoutAuth() {
+    const auth = getAuth();
+    await signOut(auth).then(() => {
+      // Sign-out successful.
+    }).catch((error) => {
+      console.log('ERROR signOut: ', error);
+    });
   }
 
   /**

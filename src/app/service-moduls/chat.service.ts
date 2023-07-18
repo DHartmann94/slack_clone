@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 
 
@@ -52,9 +52,23 @@ export class ChatService {
     );
   }
 
-  sendMessage() {
-    
+  sendMessage(message: MessageInterface): Observable<void> {
+    const messages = collection(this.firestore, 'messages');
+    const messageData = {
+      messageText: message.messageText,
+      time: message.time,
+      thread: message.thread,
+      emojis: message.emojis,
+      channel: message.channel,
+      mentionedUser: message.mentionedUser,
+    };
 
-    console.log('sendMessage');
+    return from(addDoc(messages, messageData)).pipe(
+      map(() => {
+        // Message sent successfully
+        console.log('Message sent');
+      })
+    );
   }
+
 }

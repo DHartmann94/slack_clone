@@ -4,7 +4,7 @@
     </div>
     <div>
     <div (click)="openLogoutContainer()" class="profile">
-        <h2>{{ userData[0].name }}</h2>
+        <h2>Hans Peter</h2>
         <img src="./assets/img/avatar.png" alt="">
         <mat-icon>keyboard_arrow_down</mat-icon>
         <div class="status"></div>
@@ -22,7 +22,7 @@
     </div>
 
     <!-- Overlay -->
-    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen" (click)="closeLogoutContainer()"></div>
+    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen" (click)="closeContainers()"></div>
 
 <!-- Profile Container-->
 <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
@@ -36,7 +36,7 @@
         </div>
         <mat-card-content>
             <div class="user-contact-info">
-                <p> {{ userData[0].name }}</p>
+                <p>Hans Peter</p>
                 <a (click)="openEditProfileCard()">Bearbeiten</a>
             </div>
             <div class="user-status">
@@ -50,7 +50,7 @@
                 <mat-icon>mail_outline</mat-icon>
                 <div class="user-email-link">
                     <p>E-Mail-Adresse</p>
-                    <a href="#">{{ userData[0].email }}</a>
+                    <a href="#">Test@gmail.com</a>
                 </div>
             </div>
         </mat-card-content>

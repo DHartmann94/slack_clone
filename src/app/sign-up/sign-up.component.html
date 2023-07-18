@@ -30,7 +30,7 @@
                         <!--- pattern --->
                         <mat-error *ngIf="signUpForm.controls['name'].errors['pattern']
                         && signUpForm.controls['name'].touched">
-                        Please enter your first AND last name.<br> Only letters allowed.</mat-error>
+                        Enter your first AND last name. Only letters allowed.</mat-error>
                     </div>
                 </div>
             </div>
@@ -81,7 +81,7 @@
                         Your confirm password is required.</mat-error>
                     </div>
                     <!--- function --->
-                    <mat-error *ngIf="signUpForm.hasError('mismatch')">Your passwords do not match.</mat-error>
+                    <mat-error *ngIf="signUpForm.hasError('mismatch')" class="error-notification">Your passwords do not match.</mat-error>
                 </div>
             </div>
 
