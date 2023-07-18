@@ -1,6 +1,7 @@
 export class User {
     name: string;
     email: string;
+    status: boolean = false;
 
 
     constructor(obj?: any) {
@@ -12,6 +13,7 @@ export class User {
         return {
             name: this.name,
             email: this.email,
+            status: this.status,
         }
     }
 }

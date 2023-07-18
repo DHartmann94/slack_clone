@@ -151,7 +151,7 @@ export class AuthenticationService {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         localStorage.setItem('currentUser', this.user.uid);
-        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
+        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: true }, { merge: true }).then(() => {
           this.router.navigateByUrl('/board').then(() => {
             //window.location.reload();
             console.log(this.user);
