@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, doc, setDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut } from '@angular/fire/auth';
+import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -9,9 +10,10 @@ import { User } from 'src/models/user.class';
 export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
+  guestUID: string = 'nsD6APoDVBR6t8jSXsYgW0nkV1v1';
 
 
-  constructor(private firestore: Firestore) { }
+  constructor(private firestore: Firestore, private router: Router) { }
 
   async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
@@ -22,10 +24,11 @@ export class AuthenticationService {
       .then(async (userCredential: any) => {
         // Signed in 
         this.user = userCredential.user;
-        if (this.user.emailVerified !== true) {
-          this.sendVerificationMail(this.user);
+        if (this.user.uid != this.guestUID) { // Guest-Login
+          if (this.user.emailVerified !== true) {
+            this.sendVerificationMail(this.user);
+          }
         }
-        console.log('Login with: ', this.user); // TEST !!!!!!!!!!!!!!!
       })
       .catch((error: any) => {
         const errorCode = error.code;
@@ -91,6 +94,17 @@ export class AuthenticationService {
   }
 
   async logoutAuth() {
+    const currentUserUID = localStorage.getItem('currentUser');
+
+    if (currentUserUID) {
+      const userRef = doc(this.firestore, 'users', currentUserUID);
+      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+        console.log('ERROR updateDoc:', error);
+      });
+
+      localStorage.setItem('currentUser', '');
+    }
+
     const auth = getAuth();
     await signOut(auth).then(() => {
       // Sign-out successful.
@@ -130,7 +144,24 @@ export class AuthenticationService {
         const errorMessage = error.message;
         console.log('ERROR reset password: ', error);
       });
+  }
 
+  getUserData() {
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        localStorage.setItem('currentUser', this.user.uid);
+        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
+          this.router.navigateByUrl('/board').then(() => {
+            //window.location.reload();
+            console.log(this.user);
+          });
+        });
+      } else {
+        // User is signed out
+        // ...
+      }
+    });
   }
 
   /*------ FIREBASE ------*/
