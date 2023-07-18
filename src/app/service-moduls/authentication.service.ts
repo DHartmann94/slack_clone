@@ -98,7 +98,7 @@ export class AuthenticationService {
 
     if (currentUserUID) {
       const userRef = doc(this.firestore, 'users', currentUserUID);
-      await updateDoc(userRef, { status: false }).catch((error) => {
+      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
         console.log('ERROR updateDoc:', error);
       });
 
@@ -108,6 +108,7 @@ export class AuthenticationService {
     const auth = getAuth();
     await signOut(auth).then(() => {
       // Sign-out successful.
+      this.router.navigateByUrl("/sign-in");
     }).catch((error) => {
       console.log('ERROR signOut: ', error);
     });
@@ -151,7 +152,7 @@ export class AuthenticationService {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         localStorage.setItem('currentUser', this.user.uid);
-        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: true }, { merge: true }).then(() => {
+        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
           this.router.navigateByUrl('/board').then(() => {
             //window.location.reload();
             console.log(this.user);

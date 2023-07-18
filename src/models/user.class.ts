@@ -1,7 +1,7 @@
 export class User {
     name: string;
     email: string;
-    status: boolean = false;
+    status: string = 'Inactive';
 
 
     constructor(obj?: any) {
