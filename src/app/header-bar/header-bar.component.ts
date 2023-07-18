@@ -9,16 +9,19 @@ import { Firestore, collection, collectionData, doc, docData, updateDoc, getDoc 
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
-  userData: UserDataInterface[] = [];
   currentUser: string = '';
   userName = '';
   userEmail = '';
   userStatus = '';
+  isLogoutContainerOpen: boolean = false;
+  isProfileCardOpen: boolean = false;
+  isEditProfileCardOpen: boolean = false;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
 
 
-  constructor(public authentication: AuthenticationService, private userDataService: UserDataService, private firestore: Firestore) { }
+  constructor(public authentication: AuthenticationService, private firestore: Firestore) { }
+
 
   async ngOnInit() {
     this.currentUser = localStorage.getItem('currentUser') ?? '';
@@ -45,6 +48,7 @@ export class HeaderBarComponent {
     }
   }
 
+
   colorStatus() {
     if (this.userStatus == 'Active') {
       this.active = true;
@@ -52,24 +56,7 @@ export class HeaderBarComponent {
     if (this.userStatus == 'Inactive') {
       this.active = false;
     }
-  
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-  isLogoutContainerOpen: boolean = false;
-  isProfileCardOpen: boolean = false;
-  isEditProfileCardOpen: boolean = false;
 
 
   openLogoutContainer() {
