@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
+  guestUID: string = 'nsD6APoDVBR6t8jSXsYgW0nkV1v1';
 
 
   constructor(private firestore: Firestore, private router: Router) { }
@@ -23,8 +24,10 @@ export class AuthenticationService {
       .then(async (userCredential: any) => {
         // Signed in 
         this.user = userCredential.user;
-        if (this.user.emailVerified !== true) {
-          this.sendVerificationMail(this.user);
+        if (this.user.uid != this.guestUID) { // Guest-Login
+          if (this.user.emailVerified !== true) {
+            this.sendVerificationMail(this.user);
+          }
         }
       })
       .catch((error: any) => {

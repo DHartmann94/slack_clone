@@ -33,9 +33,7 @@ export class SignInComponent implements OnInit {
     }
     this.disableForm();
 
-    const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
-    const password = this.signInForm.value.password ?? '';
-    await this.authentication.loginWithEmail(emailLowerCase, password);
+    await this.getDataFromForm();
 
     this.checkError();
     if (this.authentication.user === null) {
@@ -46,6 +44,12 @@ export class SignInComponent implements OnInit {
 
     this.checkLoginUser();
     this.resetForm();
+  }
+
+  async getDataFromForm() {
+    const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
+    const password = this.signInForm.value.password ?? '';
+    await this.authentication.loginWithEmail(emailLowerCase, password);
   }
 
   async signInGuest(email: string, password: string) {
