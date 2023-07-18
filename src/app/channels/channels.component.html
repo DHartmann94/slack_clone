@@ -100,15 +100,15 @@
         <div class="radio-selection">
             <mat-radio-group>
                 <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
-                    Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName || channel.channelName }}</span> hinzufügen
-                    <mat-menu #channelMenu="matMenu">
-                        <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannel(channel.id)">{{ channel.channelName }}</button>
-                    </mat-menu>                 
+                  Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName || channel.channelName }}</span> hinzufügen
+                  <mat-menu #channelMenu="matMenu">
+                    <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannel(channel.id)">{{ channel.channelName }}</button>
+                  </mat-menu>                 
                 </mat-radio-button>
                 <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
-                    Bestimmte Leute hinzufügen
+                  Bestimmte Leute hinzufügen
                 </mat-radio-button>
-            </mat-radio-group>
+            </mat-radio-group>    
         </div>
         <form [formGroup]="userForm" *ngIf="openUserForm">
             <div class="users-inputs">
@@ -121,7 +121,7 @@
             </div>
         </form>
         <div class="btn-area">
-            <button class="btn-channel" (click)="submitUserToChannel(); submitByGroup()">Erstellen</button>
+            <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
         </div>
     </div>
 </mat-card>
