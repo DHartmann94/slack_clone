@@ -18,7 +18,7 @@ export class HeaderBarComponent {
   constructor(public authentication: AuthenticationService, private userDataService: UserDataService, private firestore: Firestore) { }
 
   ngOnInit() {
-    this.getUserData();
+    //this.getUserData();
   }
 
   getUserData() {

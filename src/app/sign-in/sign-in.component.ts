@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Firestore } from '@angular/fire/firestore';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
 
@@ -21,7 +20,7 @@ export class SignInComponent implements OnInit {
     password: new FormControl('', Validators.required),
   });
 
-  constructor(private firestore: Firestore, private router: Router, public authentication: AuthenticationService) { }
+  constructor(private router: Router, public authentication: AuthenticationService) { }
 
   ngOnInit(): void {
   }
@@ -53,6 +52,7 @@ export class SignInComponent implements OnInit {
     this.disableForm();
 
     await this.authentication.loginWithEmail(email, password);
+    this.authentication.getUserData();
 
     this.resetForm();
   }
@@ -67,9 +67,8 @@ export class SignInComponent implements OnInit {
     if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
       console.log('Email verify weiterleiten..');
-      this.router.navigateByUrl('/board/' + this.authentication.user.uid);
-      console.log(this.authentication.user);
-      //WEITERLEITEN MIT UID
+      this.authentication.getUserData();
+      //this.router.navigateByUrl('/board/' + this.authentication.user.uid);
     } else {
       this.router.navigateByUrl('/sign-in');
       console.log('Email NICHT verify!');
