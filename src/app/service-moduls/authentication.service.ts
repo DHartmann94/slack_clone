@@ -98,7 +98,7 @@ export class AuthenticationService {
 
     if (currentUserUID) {
       const userRef = doc(this.firestore, 'users', currentUserUID);
-      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+      await updateDoc(userRef, { status: false }).catch((error) => {
         console.log('ERROR updateDoc:', error);
       });
 
