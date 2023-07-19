@@ -26,12 +26,35 @@ export class ChatComponent implements OnInit {
         const filteredData = chatData.filter(
           (message) => message.time !== undefined && message.time !== null
         );
-        this.chatData = filteredData.sort((a, b) => a.time! - b.time!);
+        this.chatData = filteredData.sort((a, b) => (a.time! > b.time! ? 1 : -1));
         console.log('Subscribed data users:', chatData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
       }
+    );
+  }
+
+  isNewDay(currentMessage: MessageInterface, previousMessage: MessageInterface): boolean {
+    if (!previousMessage) {
+      return true; // If there is no previous message, it's a new day
+    }
+
+    const currentDate = new Date(currentMessage.time!);
+    const previousDate = new Date(previousMessage.time!);
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set time to 00:00:00 to compare dates
+
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1); // Set date to yesterday
+
+    return (
+      currentDate.getFullYear() !== previousDate.getFullYear() ||
+      currentDate.getMonth() !== previousDate.getMonth() ||
+      currentDate.getDate() !== previousDate.getDate() ||
+      currentDate.getTime() === today.getTime() || // Check if currentDate is today
+      currentDate.getTime() === yesterday.getTime() // Check if currentDate is yesterday
     );
   }
 
@@ -63,26 +86,45 @@ export class ChatComponent implements OnInit {
   }
 
   formatTimeStamp(time: number | undefined): string {
-    // Check if time is undefined, and return 'N/A' in that case.
     if (typeof time === 'undefined') {
       return 'N/A';
     }
 
-    // Erstellen Sie ein Date-Objekt mit der übergebenen Zeit
     const dateObj = new Date(time);
-
-    // Extrahieren Sie Stunden und Minuten aus dem Date-Objekt
     const hours = dateObj.getHours();
     const minutes = dateObj.getMinutes();
-
-    // Stellen Sie sicher, dass Stunden und Minuten immer zweistellig sind
     const formattedHours = hours.toString().padStart(2, '0');
     const formattedMinutes = minutes.toString().padStart(2, '0');
-
-    // Bestimmen Sie, ob es sich um "am" oder "pm" handelt
     const amOrPm = hours >= 12 ? 'pm' : 'am';
 
-    // Erstellen Sie das gewünschte Zeitformat
     return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
   }
+
+  getFormattedDate(time: number | undefined): string {
+    if (typeof time === 'undefined') {
+      return '';
+    }
+
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+    const messageDate = new Date(time);
+    messageDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+
+    if (messageDate.getTime() === currentDate.getTime()) {
+      return 'Today';
+    }
+
+    const yesterday = new Date(currentDate);
+    yesterday.setDate(currentDate.getDate() - 1);
+
+    if (messageDate.getTime() === yesterday.getTime()) {
+      return 'Yesterday';
+    }
+
+    // For other dates, return the formatted date in 'mediumDate' format
+    return messageDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  }
+
+
 }
