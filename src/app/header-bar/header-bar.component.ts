@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
-import { Firestore, collection, collectionData, doc, docData, updateDoc, getDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-header-bar',
@@ -13,6 +12,7 @@ export class HeaderBarComponent {
   userName = '';
   userEmail = '';
   userStatus = '';
+  statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
@@ -26,6 +26,7 @@ export class HeaderBarComponent {
   async ngOnInit() {
     this.currentUser = localStorage.getItem('currentUser') ?? '';
     await this.getUserData();
+    this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
   }
 
 
@@ -40,6 +41,7 @@ export class HeaderBarComponent {
         this.userName = userData['name']; 
         this.userEmail = userData['email']; 
         this.userStatus = userData['status']; 
+        this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
       } else {
         console.log('The document does not exist.');
       }
@@ -47,17 +49,10 @@ export class HeaderBarComponent {
       console.log('Error retrieving user data:', error);
     }
   }
-
-
+  
   colorStatus() {
-    if (this.userStatus == 'Active') {
-      this.active = true;
-    }
-    if (this.userStatus == 'Inactive') {
-      this.active = false;
-    }
+    this.active = this.userStatus === 'Active';
   }
-
 
   openLogoutContainer() {
     this.isLogoutContainerOpen = true;
@@ -84,7 +79,6 @@ export class HeaderBarComponent {
   closeEditUserProfile() {
     this.isEditProfileCardOpen = false;
   }
-
 
   closeContainers() {
     this.isLogoutContainerOpen = false;
