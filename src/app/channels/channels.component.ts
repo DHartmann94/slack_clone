@@ -153,8 +153,8 @@ export class ChannelsComponent implements OnInit {
 
   async submitUserToChannel() {
     if (this.userForm.valid && this.channelId) {
-      const userName = this.userForm.value.userName;
       try {
+        const userName = this.userForm.value.userName;
         const userData = await firstValueFrom(this.userDataService.getUserData());
         const matchingUser = userData.find(user => user.name === userName);
 
@@ -168,9 +168,10 @@ export class ChannelsComponent implements OnInit {
         }
       } catch (error) {
         console.error('Error adding user:', error);
+      } finally{
+        this.userForm.reset();
+        this.userCard = false;
       }
-      this.userForm.reset();
-      this.userCard = false;
     }
 
     if (this.selectChannel !== null && this.channelId) {
@@ -178,13 +179,13 @@ export class ChannelsComponent implements OnInit {
         const channelData = await firstValueFrom(this.channelDataService.getChannelData());
         const matchingChannel = channelData.find(channel => channel.id === this.channelId);
 
-        if (matchingChannel) {
-          if (this.selectedUserType === 'addFromGroup') {
-            await this.addGroupToChannel(matchingChannel.id);
-          }
-        }  else {
+        if (!(matchingChannel && this.selectedUserType === 'addFromGroup')) {
           console.log('User not found.');
-        } 
+          return;
+        }
+
+        const channels: string[] = [matchingChannel.id];
+        await this.addGroupToChannel(channels, matchingChannel.id);
       } catch (error) {
         console.error('Error adding user:', error);
       }
@@ -205,23 +206,15 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async addGroupToChannel(matchingUser: UserDataInterface) {
+  async addGroupToChannel(channels: string[], matchingUser: ChannelDataInterface) {
     try {
       const channelDoc = doc(this.firestore, 'channels', this.channelId);
-      const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-      const matchingChannel = channelData.find(channel => channel.id === this.selectedChannel?.users);
-
-      if (matchingChannel && matchingChannel.users) {
-        const usersToAdd = matchingChannel.users.filter((user: string) => user !== matchingUser.id);
-        console.log("The users should be added", usersToAdd);
-        await updateDoc(channelDoc, {
-          users: arrayUnion(...usersToAdd)
-        });
-
-        console.log('Users added successfully.');
-      } else {
-        console.log('Channel or users not found.');
-      }
+      const usersToAdd = channels.filter((channel: string) => channel !== matchingUser.users);
+      console.log("The users should be added", usersToAdd);
+      await updateDoc(channelDoc, {
+        channels: arrayUnion(...usersToAdd)
+      });
+      console.log('Users added successfully.');
     } catch (error) {
       console.error('Error adding users:', error);
     }
