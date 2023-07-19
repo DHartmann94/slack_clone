@@ -18,6 +18,7 @@ export class ChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getChatData();
+    this.chatService.subscribeToMessageUpdates();
   }
 
   async getChatData() {
@@ -26,7 +27,9 @@ export class ChatComponent implements OnInit {
         const filteredData = chatData.filter(
           (message) => message.time !== undefined && message.time !== null
         );
-        this.chatData = filteredData.sort((a, b) => (a.time! > b.time! ? 1 : -1));
+        this.chatData = filteredData.sort((a, b) =>
+          a.time! > b.time! ? 1 : -1
+        );
         console.log('Subscribed data users:', chatData);
       },
       (error) => {
@@ -35,7 +38,10 @@ export class ChatComponent implements OnInit {
     );
   }
 
-  isNewDay(currentMessage: MessageInterface, previousMessage: MessageInterface): boolean {
+  isNewDay(
+    currentMessage: MessageInterface,
+    previousMessage: MessageInterface
+  ): boolean {
     if (!previousMessage) {
       return true; // If there is no previous message, it's a new day
     }
@@ -44,10 +50,10 @@ export class ChatComponent implements OnInit {
     const previousDate = new Date(previousMessage.time!);
 
     const today = new Date();
-    today.setHours(0, 0, 0, 0); // Set time to 00:00:00 to compare dates
+    today.setHours(0, 0, 0, 0);
 
     const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1); // Set date to yesterday
+    yesterday.setDate(today.getDate() - 1);
 
     return (
       currentDate.getFullYear() !== previousDate.getFullYear() ||
@@ -67,12 +73,23 @@ export class ChatComponent implements OnInit {
         thread: null,
       };
 
-      const chatCollection = collection(this.firestore, 'messages');
-      const docRef = await addDoc(chatCollection, message);
-      this.messageId = docRef.id;
-      console.log('Message ID', this.messageId);
-      console.log('Sent message', this.messageInput);
+      // Add the new message locally to chatData
+      this.chatData.push(message);
+
+      // Update the message input to clear the textbox
       this.messageInput = [''];
+
+      // Send the message to Firestore using the service
+      this.chatService.sendMessage(message).subscribe(
+        () => {
+          // Message sent successfully (already updated in local chatData)
+          console.log('Message sent');
+        },
+        (error) => {
+          // Handle any errors if needed
+          console.error('Error sending message:', error);
+        }
+      );
     }
   }
 
@@ -123,8 +140,10 @@ export class ChatComponent implements OnInit {
     }
 
     // For other dates, return the formatted date in 'mediumDate' format
-    return messageDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    return messageDate.toLocaleDateString('en-US', {
+      weekday: 'long',
+      month: 'long',
+      day: 'numeric',
+    });
   }
-
-
 }
