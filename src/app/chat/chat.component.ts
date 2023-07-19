@@ -14,8 +14,7 @@ export class ChatComponent implements OnInit {
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
-
-  constructor(private chatService: ChatService, private firestore: Firestore,) { }
+  constructor(private chatService: ChatService, private firestore: Firestore) {}
 
   ngOnInit(): void {
     this.getChatData();
@@ -24,7 +23,9 @@ export class ChatComponent implements OnInit {
   async getChatData() {
     this.chatService.getMessage().subscribe(
       (chatData) => {
-        const filteredData = chatData.filter((message) => message.time !== undefined && message.time !== null);
+        const filteredData = chatData.filter(
+          (message) => message.time !== undefined && message.time !== null
+        );
         this.chatData = filteredData.sort((a, b) => a.time! - b.time!);
         console.log('Subscribed data users:', chatData);
       },
@@ -33,7 +34,6 @@ export class ChatComponent implements OnInit {
       }
     );
   }
-
 
   async sendMessage() {
     if (this.messageInput) {
@@ -60,5 +60,29 @@ export class ChatComponent implements OnInit {
 
   closeUserProfile() {
     this.isProfileCardOpen = false;
+  }
+
+  formatTimeStamp(time: number | undefined): string {
+    // Check if time is undefined, and return 'N/A' in that case.
+    if (typeof time === 'undefined') {
+      return 'N/A';
+    }
+
+    // Erstellen Sie ein Date-Objekt mit der übergebenen Zeit
+    const dateObj = new Date(time);
+
+    // Extrahieren Sie Stunden und Minuten aus dem Date-Objekt
+    const hours = dateObj.getHours();
+    const minutes = dateObj.getMinutes();
+
+    // Stellen Sie sicher, dass Stunden und Minuten immer zweistellig sind
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+
+    // Bestimmen Sie, ob es sich um "am" oder "pm" handelt
+    const amOrPm = hours >= 12 ? 'pm' : 'am';
+
+    // Erstellen Sie das gewünschte Zeitformat
+    return `${formattedHours}:${formattedMinutes} ${amOrPm}`;
   }
 }
