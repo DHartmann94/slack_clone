@@ -67,10 +67,12 @@ export class ChatComponent implements OnInit {
   async sendMessage() {
     if (this.messageInput) {
       const message: MessageInterface = {
-        messageText: this.messageInput,
+        messageText: this.messageInput, // Use the string, not an array
         time: Date.now(),
         emojis: [],
         thread: null,
+        channel: 'your_channel_value_here', // Set the channel value to an appropriate value
+        mentionedUser: 'user_id_here', // Set the mentioned user ID or leave it as null if not applicable
       };
 
       // Add the new message locally to chatData
@@ -92,6 +94,8 @@ export class ChatComponent implements OnInit {
       );
     }
   }
+
+
 
   openUserProfile() {
     this.isProfileCardOpen = true;
