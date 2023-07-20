@@ -102,7 +102,6 @@ export class ChannelsComponent implements OnInit {
   }
 
   selectChannel(channelId: any) {
-    this.channelId = channelId;
     this.selectedChannel = this.getChannelById(channelId);
     console.log(this.selectedChannel);
   }
@@ -158,14 +157,12 @@ export class ChannelsComponent implements OnInit {
         const userData = await firstValueFrom(this.userDataService.getUserData());
         const matchingUser = userData.find(user => user.name === userName);
 
-        if (matchingUser) {
-          if (this.selectedUserType === 'addByUser') {
-            const users: string[] = [matchingUser.id];
-            await this.addUserToChannel(users, userName);
-          } 
-        } else {
+        if (!(matchingUser && this.selectedUserType === 'addByUser')) {
           console.log('User not found.');
-        }
+          return
+        } 
+        const users: string[] = [matchingUser.id];
+        await this.addUserToChannel(users, userName);
       } catch (error) {
         console.error('Error adding user:', error);
       } finally{
@@ -174,7 +171,7 @@ export class ChannelsComponent implements OnInit {
       }
     }
 
-    if (this.selectChannel !== null && this.channelId) {
+    if (this.selectedChannel !== null) {
       try {
         const channelData = await firstValueFrom(this.channelDataService.getChannelData());
         const matchingChannel = channelData.find(channel => channel.id === this.channelId);
@@ -183,9 +180,8 @@ export class ChannelsComponent implements OnInit {
           console.log('User not found.');
           return;
         }
-
-        const channels: string[] = [matchingChannel.id];
-        await this.addGroupToChannel(channels, matchingChannel.id);
+        const userGroup: string[] = [matchingChannel.id];
+        await this.addGroupToChannel(userGroup, matchingChannel.id);
       } catch (error) {
         console.error('Error adding user:', error);
       }
@@ -206,13 +202,13 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async addGroupToChannel(channels: string[], matchingUser: ChannelDataInterface) {
+  async addGroupToChannel(userGroup: string[], matchingUser: ChannelDataInterface) {
     try {
       const channelDoc = doc(this.firestore, 'channels', this.channelId);
-      const usersToAdd = channels.filter((channel: string) => channel !== matchingUser.users);
+      const usersToAdd = userGroup.filter((channel: string) => channel !== matchingUser.users);
       console.log("The users should be added", usersToAdd);
       await updateDoc(channelDoc, {
-        channels: arrayUnion(...usersToAdd)
+        userGroup: arrayUnion(...usersToAdd)
       });
       console.log('Users added successfully.');
     } catch (error) {
