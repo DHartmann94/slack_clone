@@ -9,6 +9,7 @@ import { AuthenticationService } from '../service-moduls/authentication.service'
 })
 export class EmailVerificationConfirmComponent implements OnInit {
   mode: any;
+  loading: boolean = false;
 
 
   constructor(private route: ActivatedRoute, public authentication: AuthenticationService) { }
@@ -18,12 +19,14 @@ export class EmailVerificationConfirmComponent implements OnInit {
   }
 
   async checkMode() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe( async params => {
       this.mode = '';
       this.mode = params['mode'];
       
       if (this.mode === 'verifyEmail') {
-        this.authentication.handleVerifyEmail();
+        this.loading = true;
+        await this.authentication.handleVerifyEmail();
+        this.loading = false;
       }
     });
   }
