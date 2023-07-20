@@ -74,7 +74,7 @@
                 <mat-icon class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">
-                <form class="name-form">
+                <form class="name-form" [formGroup]="editName">
                     <div class="name-field">
                         <div>
                             <mat-icon>account_circle</mat-icon>
@@ -83,19 +83,20 @@
                             <mat-label>Full Name</mat-label>
                         </div>
                     </div>
-                    <input matInput placeholder="Full Name">
+                    <input formControlName="name" matInput placeholder="Full Name">
                 </form>
-                <form class="email-form">
+                <form class="email-form" [formGroup]="editMail">
                     <div class="e-mail-field">
                         <mat-icon>mail_outline</mat-icon>
                         <mat-label>E-Mail-Address</mat-label>
                     </div>
-                    <input matInput placeholder="E-Mail-Address">
+                    <input formControlName="email" matInput placeholder="E-Mail-Address">
+                    <input formControlName="password" type="password" matInput placeholder="Password">
                 </form>
             </mat-card-content>
             <mat-card-actions class="edit-buttons">
                 <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
-                <button (click)="closeEditUserProfile()" class="save-button" mat-flat-button
+                <button (click)="editUserProfile()" class="save-button" mat-flat-button
                     color="primary">Save</button>
             </mat-card-actions>
         </mat-card>

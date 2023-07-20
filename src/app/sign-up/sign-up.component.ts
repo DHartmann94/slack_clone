@@ -69,12 +69,21 @@ export class SignUpComponent implements OnInit {
 
   async createUser(name: string, emailLowerCase: string) {
     const password: string = this.signUpForm.value.password ?? '';
+    const picturePath = this.randomPicture();
+    console.log(picturePath);
     const authUID = await this.authentication.sendUserToAuthenticator(emailLowerCase, password);
-    await this.authentication.sendUserToFirebase(name,emailLowerCase, authUID);
+    await this.authentication.sendUserToFirebase(name,emailLowerCase, authUID, picturePath);
 
     this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
+  }
+
+  randomPicture() {
+    const numberOfPictures = 5; 
+    const randomIndex = Math.floor(Math.random() * numberOfPictures) + 1;
+    const randomPicture = `./assets/profile-pictures/avatar${randomIndex}.png`;
+    return randomPicture;
   }
 
   showsNotificationAnimation() {

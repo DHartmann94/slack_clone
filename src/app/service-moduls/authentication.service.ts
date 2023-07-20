@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 import { Router } from '@angular/router';
 
@@ -53,7 +53,7 @@ export class AuthenticationService {
         const authUID = result.user.uid;
         const emailLowerCase: string = result.user.email?.toLowerCase() || '';
         const name: string = result.user.displayName || '';
-        await this.sendUserToFirebase(name, emailLowerCase, authUID);
+        await this.sendUserToFirebase(name, emailLowerCase, authUID, './assets/profile-pictures/avatar1.png');
         this.getUserData()
       })
       .catch((error) => {
@@ -148,6 +148,36 @@ export class AuthenticationService {
       });
   }
 
+  async changeMail(newEmail: string, password: string) {
+    const auth = getAuth();
+    const user: any = auth.currentUser;
+    console.log('Mail', newEmail);
+    console.log('currentUser changeEmail', user);
+    if (user) {
+      try {
+        await updateEmail(user, newEmail);
+      } catch (error: any) {
+        if (error.code === 'auth/requires-recent-login') {
+          try {
+            const emailCredential = EmailAuthProvider.credential(user.email, password);
+            await reauthenticateWithCredential(user, emailCredential);
+
+            try {
+              await updateEmail(user, newEmail);
+            } catch (error) {
+              console.log('ERROR changing email');
+            }
+
+          } catch (error) {
+            console.log('ERROR updating email:', error);
+          }
+        } else {
+          console.log('ERROR updating email:', error);
+        }
+      }
+    }
+  }
+
   getUserData() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -167,10 +197,11 @@ export class AuthenticationService {
   }
 
   /*------ FIREBASE ------*/
-  async sendUserToFirebase(name: string, emailLowerCase: string, authUID: any) {
+  async sendUserToFirebase(name: string, emailLowerCase: string, authUID: any, avatar: string) {
     let data = {
       name: name,
       email: emailLowerCase,
+      picture: avatar,
     }
     const user = new User(data);
 
