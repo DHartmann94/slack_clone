@@ -38,6 +38,9 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
+// import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+// import { PickerModule } from "@ctrl/ngx-emoji-mart";
+// import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
 
 @NgModule({
   declarations: [
@@ -55,9 +58,12 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
     ChatComponent,
     PasswordResetComponent,
     PasswordConfirmComponent,
+    
   ],
   imports: [
     BrowserModule,
+    // PickerComponent,
+    // EmojiPickerComponent,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,

@@ -1,12 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { addDoc, collection, doc, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
+// import { PickerModule } from "@ctrl/ngx-emoji-mart";
+// import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
+  styleUrls: ['./chat.component.scss']
 })
+
 export class ChatComponent implements OnInit {
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
