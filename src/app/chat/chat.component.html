@@ -5,7 +5,7 @@
     <div class="chat-first-row">
       <div class="chat-head">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="">
-        <span class="chat-name">Entwicklerteam</span>
+        <span class="chat-name">Data received: {{ receivedChannelData$ | async }}</span>
         <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="">
       </div>
       <div class="right-corner">
@@ -101,7 +101,7 @@
       <div class="message-input-field">
         <div class="text-editor">
           <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
-          </textarea>
+    </textarea>
           <div class="text-editor-bottom">
             <div class="text-editor-left-btns">
               <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">

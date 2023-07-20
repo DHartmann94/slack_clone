@@ -38,6 +38,7 @@ import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
+import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
 
 @NgModule({
   declarations: [
@@ -79,7 +80,7 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],
-  providers: [],
+  providers: [ChannelDataResolverService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

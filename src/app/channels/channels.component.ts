@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { trigger, state, style, animate, transition, query } from '@angular/animations';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -45,6 +47,7 @@ export class ChannelsComponent implements OnInit {
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
+    private channelDataResolver: ChannelDataResolverService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
   ) { }
@@ -103,6 +106,8 @@ export class ChannelsComponent implements OnInit {
 
   selectChannel(channelId: any) {
     this.selectedChannel = this.getChannelById(channelId);
+    const dataToSend = "Hello form channels";
+    this.channelDataResolver.sendData(dataToSend);
     console.log(this.selectedChannel);
   }
 

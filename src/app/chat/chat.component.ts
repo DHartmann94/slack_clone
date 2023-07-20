@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { addDoc, collection, doc, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-chat',
@@ -8,16 +10,24 @@ import { ChatService, MessageInterface } from '../service-moduls/chat.service';
   styleUrls: ['./chat.component.scss'],
 })
 export class ChatComponent implements OnInit {
+
+  receivedChannelData$!: Observable<string>;
+
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
   messageId: string = '';
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
-  constructor(private chatService: ChatService, private firestore: Firestore) {}
+  constructor(
+    private chatService: ChatService,
+    private ChannelDataResolver: ChannelDataResolverService, 
+    private firestore: Firestore
+  ) {}
 
   ngOnInit(): void {
     this.getChatData();
+    this.receivedChannelData$ = this.ChannelDataResolver.resolve();
   }
 
   async getChatData() {
