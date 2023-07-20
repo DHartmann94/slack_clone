@@ -32,7 +32,7 @@
                 <mat-card-title>Profile</mat-card-title>
                 <mat-icon (click)="closeUserProfile()">close</mat-icon>
             </mat-card-header>
-            <div class="user-img">
+            <div class="user-img-one">
                 <img src="/assets/profile-pictures/EliasNeumann.png">
             </div>
             <mat-card-content>
@@ -69,8 +69,9 @@
                 <mat-card-title>Edit Profile</mat-card-title>
                 <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
             </mat-card-header>
-            <div class="user-img">
+            <div class="user-img"(mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
                 <img src="/assets/profile-pictures/EliasNeumann.png">
+                <mat-icon class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">
                 <form class="name-form">

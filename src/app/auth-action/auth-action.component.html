@@ -1,0 +1,10 @@
+<app-email-verification-confirm *ngIf="mode === 'verifyEmail'"></app-email-verification-confirm>
+
+<app-password-confirm *ngIf="mode === 'resetPassword'"></app-password-confirm>
+
+<section>
+    <mat-card *ngIf="mode === 'ERROR'">
+        <img class="arrow-img" routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
+        <p>Something went wrong!</p>
+    </mat-card>
+</section>

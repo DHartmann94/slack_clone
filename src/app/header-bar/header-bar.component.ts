@@ -12,6 +12,7 @@ export class HeaderBarComponent {
   userName = '';
   userEmail = '';
   userStatus = '';
+  showIcon = false;
   statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
@@ -84,6 +85,14 @@ export class HeaderBarComponent {
     this.isLogoutContainerOpen = false;
     this.isProfileCardOpen = false;
     this.isEditProfileCardOpen = false;
+  }
+
+  showEditIcon() {
+    this.showIcon = true;
+  }
+
+  hideEditIcon() {
+    this.showIcon = false;
   }
 }
 

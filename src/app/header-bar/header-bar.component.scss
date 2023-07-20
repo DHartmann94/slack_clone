@@ -141,19 +141,62 @@ section {
 
     }
 
+    .user-img-one {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem;
+
+       
+    }
+
+    .user-img-one img {
+        height: 10rem;
+        width: 10rem;
+        border-radius: 50%;
+        transition: filter 0.3s ease-in-out;
+    }
+
     .user-img {
         display: flex;
         justify-content: center;
         align-items: center;
         margin: 1rem;
+        position: relative;
     }
-
+    
     .user-img img {
         height: 10rem;
         width: 10rem;
         border-radius: 50%;
+        transition: filter 0.3s ease-in-out;
+    }
+    
+    .edit-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        color: #ffffff;
+        background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
+        padding: 0.6rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
     }
 
+  
+    
+    .user-img:hover img {
+        filter: brightness(80%);
+    }
+    
+    .user-img:hover .edit-icon {
+        opacity: 1;
+    }
+    
     .user-contact-info {
         display: flex;
         justify-content: space-between;
