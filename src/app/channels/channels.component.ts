@@ -106,9 +106,7 @@ export class ChannelsComponent implements OnInit {
 
   selectChannel(channelId: any) {
     this.selectedChannel = this.getChannelById(channelId);
-    const dataToSend = "Hello form channels";
-    this.channelDataResolver.sendData(dataToSend);
-    console.log(this.selectedChannel);
+    this.channelDataResolver.sendData(this.selectedChannel);
   }
 
   getChannelById(channelId: any) {
