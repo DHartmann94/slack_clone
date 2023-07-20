@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ChannelDataInterface } from './channel-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ChannelDataResolverService implements Resolve<Observable<string>>  {
-  private dataSubject = new BehaviorSubject<string>('Initial data');
+export class ChannelDataResolverService {
+  private dataSubject = new BehaviorSubject<ChannelDataInterface | null>(null);
 
-  sendData(data: string) {
+  sendData(data: ChannelDataInterface | null) {
     this.dataSubject.next(data);
   }
 
-  resolve(): Observable<string> {
+  resolve(): Observable<ChannelDataInterface | null> {
     return this.dataSubject.asObservable();
   }
 }
