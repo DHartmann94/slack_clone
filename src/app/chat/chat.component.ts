@@ -27,11 +27,17 @@ export class ChatComponent implements OnInit {
 
   constructor(
     private chatService: ChatService,
-    private ChannelDataResolver: ChannelDataResolverService, 
-    private firestore: Firestore
+    private firestore: Firestore,
+    private ChannelDataResolver: ChannelDataResolverService,
+    private fbChannel: FormBuilder, 
+   
   ) {}
 
   ngOnInit(): void {
+    this.channelForm = this.fbChannel.group({
+      channelName: ['', [Validators.required]],
+      channelDescription: ['', [Validators.required]],
+    });
     this.getChatData();
     this.getDataFromChannel();
   }
@@ -141,7 +147,7 @@ export class ChatComponent implements OnInit {
   }
 
   leaveChannel() {
-    
+
   }
 
   formatTimeStamp(time: number | undefined): string {
