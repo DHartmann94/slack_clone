@@ -68,7 +68,7 @@ export class SignInComponent implements OnInit {
   }
 
   checkLoginUser() {
-    if (!this.authentication.user.emailVerified) {
+    if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
       console.log('Email verify weiterleiten..');
       this.authentication.getUserData();

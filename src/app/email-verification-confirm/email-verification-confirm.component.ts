@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { applyActionCode, getAuth } from '@angular/fire/auth';
 import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../service-moduls/authentication.service';
 
 @Component({
   selector: 'app-email-verification-confirm',
@@ -8,26 +8,26 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./email-verification-confirm.component.scss']
 })
 export class EmailVerificationConfirmComponent implements OnInit {
+  mode: any;
 
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, public authentication: AuthenticationService) { }
 
   ngOnInit(): void {
-    this.confirmEmail();
+    this.checkMode();
   }
 
-  async confirmEmail() {
-    const auth = getAuth();
-    const code = this.route.snapshot.queryParams['oobCode'];
-
-    await applyActionCode(auth, code)
-      .then(() => {
-        //how to update my backend based on the user's email
-        console.log('Email verify?');
-      })
-      .catch((error: any) => {
-        console.log('ERROR Email verify: ', error);
-      });
+  async checkMode() {
+    this.route.queryParams.subscribe(params => {
+      this.mode = '';
+      this.mode = params['mode'];
+      
+      if (this.mode === 'verifyEmail') {
+        this.authentication.handleVerifyEmail();
+      }
+    });
   }
+
+
 
 }

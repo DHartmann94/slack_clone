@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AuthenticationService {
   guestUID: string = 'nsD6APoDVBR6t8jSXsYgW0nkV1v1';
 
 
-  constructor(private firestore: Firestore, private router: Router) { }
+  constructor(private firestore: Firestore, private router: Router, private route: ActivatedRoute) { }
 
   async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
@@ -117,7 +117,7 @@ export class AuthenticationService {
 
   /**
  * 
- * Use: http://localhost:4200/confirm-password for testing.
+ * Use: http://localhost:4200/auth-action for testing.
  * @param {string} emailLowerCase - The e-mail address where the reset e-mail should be sent.
  */
   async sendChangePasswordMail(emailLowerCase: string) {
@@ -178,6 +178,18 @@ export class AuthenticationService {
     }
   }
 
+  async handleVerifyEmail() {
+    const auth = getAuth();
+    const actionCode = this.route.snapshot.queryParams['oobCode'];
+
+    await applyActionCode(auth, actionCode)
+      .then((resp) => {
+        // Email address has been verified.
+      }).catch((error) => {
+        console.log('ERROR verify EMail: ', error);
+      });
+  }
+
   getUserData() {
     const auth = getAuth();
     onAuthStateChanged(auth, (user) => {
@@ -191,7 +203,6 @@ export class AuthenticationService {
         });
       } else {
         // User is signed out
-        // ...
       }
     });
   }
