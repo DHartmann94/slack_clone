@@ -14,13 +14,16 @@ export class HeaderBarComponent {
   userName = '';
   userEmail = '';
   userStatus = '';
+  userPicture = '';
   showIcon = false;
   statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
+  isProfilePictureContainerOpen: boolean = false;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
+  profilePictures = ['/assets/profile-pictures/avatar1.png', '/assets/profile-pictures/avatar2.png', '/assets/profile-pictures/avatar3.png', '/assets/profile-pictures/avatar4.png', '/assets/profile-pictures/avatar5.png', '/assets/profile-pictures/avatar6.png'];
 
 
   constructor(public validation: ValidationService, public authentication: AuthenticationService, private firestore: Firestore) { }
@@ -44,6 +47,7 @@ export class HeaderBarComponent {
         this.userName = userData['name'];
         this.userEmail = userData['email'];
         this.userStatus = userData['status'];
+        this.userPicture = userData['picture'];
         this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
       } else {
         console.log('The document does not exist.');
@@ -79,6 +83,14 @@ export class HeaderBarComponent {
     let password = this.editMail.value.password ?? '';
     await this.editUserName(name);
     await this.editUserEmail(email, password);
+  }
+
+  openPictureContainer() {
+    this.isProfilePictureContainerOpen = true;
+  }
+
+  changeProfilePicture() {
+
   }
 
   async editUserName(name: string) {
@@ -134,9 +146,6 @@ export class HeaderBarComponent {
     }
   }
   
-
-
-
   colorStatus() {
     this.active = this.userStatus === 'Active';
   }

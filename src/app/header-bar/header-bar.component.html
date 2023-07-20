@@ -5,7 +5,7 @@
     <div>
         <div (click)="openLogoutContainer()" class="profile">
             <h2>{{ userName }}</h2>
-            <img src="./assets/img/avatar.png" alt="">
+            <img class="user-icon" src="{{ userPicture }}" alt="">
             <mat-icon>keyboard_arrow_down</mat-icon>
             <div class="status"></div>
         </div>
@@ -33,7 +33,7 @@
                 <mat-icon (click)="closeUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img-one">
-                <img src="/assets/profile-pictures/EliasNeumann.png">
+                <img src="{{ userPicture }}">
             </div>
             <mat-card-content>
                 <div class="user-contact-info">
@@ -70,8 +70,8 @@
                 <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img"(mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
-                <img src="/assets/profile-pictures/EliasNeumann.png">
-                <mat-icon class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
+                <img src="{{ userPicture }}">
+                <mat-icon (click)="openPictureContainer()" class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">
                 <form class="name-form" [formGroup]="editName">
@@ -100,5 +100,17 @@
                     color="primary">Save</button>
             </mat-card-actions>
         </mat-card>
+
+        <div *ngIf="isProfilePictureContainerOpen"  style="z-index: 99999;">
+            <div class="profile-picture-container">
+              <div *ngFor="let picture of profilePictures">
+                <img class="profile-picture" [src]="picture" alt="Profile Picture">
+              </div>
+              
+    
+            
+            </div>
+          </div>
+
     </section>
 </div>
