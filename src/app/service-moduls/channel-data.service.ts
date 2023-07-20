@@ -33,13 +33,13 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription, color, user } = data;
+          const { channelName, channelDescription, color, users } = data;
           const channel: ChannelDataInterface = {
             id: doc.id,
             channelName: channelName,
             channelDescription: channelDescription,
             color: color,
-            users: user,
+            users: users,
           };
           storedUserData.push(channel);
         });

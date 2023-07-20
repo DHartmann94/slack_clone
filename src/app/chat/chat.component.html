@@ -25,31 +25,9 @@
     <div class="chat-text-area">
       <div class="parting-line"></div>
       <div class="flex-center time-partLine">
-        <div class="time-stamp">Tuesday, January 14th
-        </div>
+        <div class="time-stamp">Thursday, July 13</div>
       </div>
-      <div class="chat-left">
-        <div>
-          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
-        </div>
-        <div class="messages-left">
-          <div class="chat-bubble-head">
-            <span class="chat-name" (click)="openUserProfile()">Noah Braun</span>
-            <span class="chat-timeStamp">11:45 am</span>
-          </div>
-          <div>
-            <span class="chat-message-left">What is the current version of Angular?</span>
-          </div>
-          <div>
-            <span class="responses-left">2 Responses</span>
-            <span class="chat-timeStamp">Last reply 09:45 am</span>
-          </div>
-        </div>
-      </div>
-      <div class="parting-line"></div>
-      <div class="flex-center time-partLine">
-        <div class="time-stamp">Today</div>
-      </div>
+
       <div class="chat-right">
         <div class="flex-row ">
           <div class="messages-right">
@@ -83,11 +61,14 @@
         </div>
       </div>
 
-      <div class="message-container" *ngFor="let message of chatData">
-        <div class="time">{{ message.time | date:'mediumTime' }}</div>
-        <div class="message">{{ message.messageText }}</div>
-      </div>
+      <!-- ngfor generated text -->
+      <div class="chat-container">
+        <!-- ngFor loop to display each message -->
+        <div *ngFor="let message of chatData; let index = index">
+          <!-- Add a horizontal line after each message except the first one -->
+          <div class="parting-line" *ngIf="isNewDay(message, chatData[index - 1])"></div>
 
+<<<<<<< HEAD
 
     </div>
     <div class="message-input-field">
@@ -111,50 +92,90 @@
             <app-emoji-picker></app-emoji-picker>
             <img src="./assets/img/icons/sentiment_satisfied.svg" alt="">
             <img src="./assets/img/icons/alternate_email.svg" alt="">
+=======
+          <!-- Format and display the date only if it's a new day -->
+          <div class="flex-center time-partLine" *ngIf="isNewDay(message, chatData[index - 1])">
+            <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
+>>>>>>> 058843ab3d6b7af9f2f635a3fa0a5c1aef5df197
           </div>
-          <div class="send-message-btn">
-            <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
+
+          <div class="message-container">
+            <div class="chat-left">
+              <div>
+                <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+              </div>
+              <div class="messages-left">
+                <div class="chat-bubble-head">
+                  <span class="chat-name" (click)="openUserProfile()">Noah Braun</span>
+                  <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+                </div>
+                <div>
+                  <span class="chat-message-left">{{ message.messageText }}</span>
+                </div>
+                <div>
+                  <span class="responses-left">2 Responses</span>
+                  <span class="chat-timeStamp">Last reply {{ formatTimeStamp(message.time) }}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </mat-card>
-</div>
 
-<!-- Profile Content -->
-<section *ngIf="isProfileCardOpen" class="user-profile-card-section">
-  <mat-card class="user-profile-card">
-      <mat-card-header class="user-header">
-          <mat-card-title>Profile</mat-card-title>
-          <mat-icon (click)="closeUserProfile()" >close</mat-icon>
-      </mat-card-header>
-      <div class="user-img">
-          <img src="/assets/profile-pictures/EliasNeumann.png">
+
+      <!-- Input field -->
+      <div class="message-input-field">
+        <div class="text-editor">
+          <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+          </textarea>
+          <div class="text-editor-bottom">
+            <div class="text-editor-left-btns">
+              <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
+              <div class="vertical-line-textEditor"></div>
+              <img src="./assets/img/icons/sentiment_satisfied.svg" alt="">
+              <img src="./assets/img/icons/alternate_email.svg" alt="">
+            </div>
+            <div class="send-message-btn">
+              <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
+            </div>
+          </div>
+        </div>
       </div>
-      <mat-card-content>
-          <div class="user-contact-info">
+
+      <!-- Profile Content -->
+      <section *ngIf="isProfileCardOpen" class="user-profile-card-section">
+        <mat-card class="user-profile-card">
+          <mat-card-header class="user-header">
+            <mat-card-title>Profile</mat-card-title>
+            <mat-icon (click)="closeUserProfile()">close</mat-icon>
+          </mat-card-header>
+          <div class="user-img">
+            <img src="/assets/profile-pictures/EliasNeumann.png">
+          </div>
+          <mat-card-content>
+            <div class="user-contact-info">
               <p>Elias Neumann</p>
-          </div>
-          <div class="user-status">
+            </div>
+            <div class="user-status">
               <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                      <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                  </svg>
-                  Aktiv
+                  <circle cx="4" cy="4" r="4" fill="#92C83E" />
+                </svg>
+                Aktiv
               </p>
-          </div>
-          <div class="user-email">
+            </div>
+            <div class="user-email">
               <mat-icon>mail_outline</mat-icon>
               <div class="user-email-link">
-                  <p>E-Mail-Adresse</p>
-                  <a>ichbinelias@beispiel.com</a>
+                <p>E-Mail-Adresse</p>
+                <a>ichbinelias@beispiel.com</a>
               </div>
-          </div>
-      </mat-card-content>
-      <mat-card-actions class="user-message-button">
-          <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
-      </mat-card-actions>
-  </mat-card>
-</section>
+            </div>
+          </mat-card-content>
+          <mat-card-actions class="user-message-button">
+            <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
+          </mat-card-actions>
+        </mat-card>
+      </section>
 
- <!-- Overlay -->
- <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+      <!-- Overlay -->
+      <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>

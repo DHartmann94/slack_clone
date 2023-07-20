@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { trigger, state, style, animate, transition } from '@angular/animations';
+import { trigger, state, style, animate, transition, query } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, getDocs, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -74,21 +74,15 @@ export class ChannelsComponent implements OnInit {
   }
 
   async getChannelData() {
-    if (this.openChannels !== null) {
-      try {
-        this.channelDataService.getChannelData().subscribe(
-          channelData => {
-            this.channelData = channelData;
-            console.log('Subscribed data channels:', channelData);
-          },
-          error => {
-            console.error('Error retrieving user data:', error);
-          }
-        );
-      } catch (error) {
-        console.log('Error logging in:', error);
+    this.channelDataService.getChannelData().subscribe(
+      channelData => {
+        this.channelData = channelData;
+        console.log('Subscribed data channels:', channelData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
       }
-    }
+    );
   }
 
   toggle() {
@@ -158,27 +152,39 @@ export class ChannelsComponent implements OnInit {
 
   async submitUserToChannel() {
     if (this.userForm.valid && this.channelId) {
-      const userName = this.userForm.value.userName;
-
       try {
+        const userName = this.userForm.value.userName;
         const userData = await firstValueFrom(this.userDataService.getUserData());
         const matchingUser = userData.find(user => user.name === userName);
-  
-        if (matchingUser) {
-          if (this.selectedUserType === 'addFromGroup') {
-            await this.addGroupToChannel(matchingUser);
-          } else if (this.selectedUserType === 'addByUser') {
-            const users: string[] = [matchingUser.id];
-            await this.addUserToChannel(users, userName);
-          }
-        } else {
+
+        if (!(matchingUser && this.selectedUserType === 'addByUser')) {
           console.log('User not found.');
+          return
+        } 
+        const users: string[] = [matchingUser.id];
+        await this.addUserToChannel(users, userName);
+      } catch (error) {
+        console.error('Error adding user:', error);
+      } finally{
+        this.userForm.reset();
+        this.userCard = false;
+      }
+    }
+
+    if (this.selectedChannel !== null) {
+      try {
+        const channelData = await firstValueFrom(this.channelDataService.getChannelData());
+        const matchingChannel = channelData.find(channel => channel.id === this.channelId);
+
+        if (!(matchingChannel && this.selectedUserType === 'addFromGroup')) {
+          console.log('User not found.');
+          return;
         }
+        const userGroup: string[] = [matchingChannel.id];
+        await this.addGroupToChannel(userGroup, matchingChannel.id);
       } catch (error) {
         console.error('Error adding user:', error);
       }
-      this.userForm.reset();
-      this.userCard = false;
     }
   }
 
@@ -196,23 +202,15 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async addGroupToChannel(matchingUser: UserDataInterface) {
+  async addGroupToChannel(userGroup: string[], matchingUser: ChannelDataInterface) {
     try {
       const channelDoc = doc(this.firestore, 'channels', this.channelId);
-      const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-      const matchingChannel = channelData.find(channel => channel.id === this.selectedChannel?.id);
-  
-      if (matchingChannel && matchingChannel.users) {
-        const usersToAdd = matchingChannel.users.filter((user: string) => user !== matchingUser.id);
-        console.log("The users should be added", usersToAdd);
-        await updateDoc(channelDoc, {
-          users: arrayUnion(...usersToAdd)
-        });
-  
-        console.log('Users added successfully.');
-      } else {
-        console.log('Channel or users not found.');
-      }
+      const usersToAdd = userGroup.filter((channel: string) => channel !== matchingUser.users);
+      console.log("The users should be added", usersToAdd);
+      await updateDoc(channelDoc, {
+        userGroup: arrayUnion(...usersToAdd)
+      });
+      console.log('Users added successfully.');
     } catch (error) {
       console.error('Error adding users:', error);
     }

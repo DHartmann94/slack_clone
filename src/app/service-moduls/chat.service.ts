@@ -1,29 +1,36 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc } from '@angular/fire/firestore';
-import { Observable, from, map } from 'rxjs';
-
+import {
+  DocumentData,
+  Firestore,
+  QuerySnapshot,
+  collection,
+  getDocs,
+  query,
+  addDoc,
+  onSnapshot,
+} from '@angular/fire/firestore';
+import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
   messageText: any;
   time?: number;
   emojis?: any;
   thread?: any;
-  channel?:string;
+  channel?: string;
   userId?: string;
   mentionedUser?: string; //ID from mentioned user
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ChatService {
+  private messageDataSubject: BehaviorSubject<MessageInterface[]> =
+    new BehaviorSubject<MessageInterface[]>([]);
+  public messageData$: Observable<MessageInterface[]> =
+    this.messageDataSubject.asObservable();
 
-  messageData: MessageInterface[] = [];
-
-  constructor(
-    public firestore: Firestore
-  ) {}
+  constructor(public firestore: Firestore) {}
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
@@ -33,9 +40,10 @@ export class ChatService {
       map((querySnapshot: QuerySnapshot<DocumentData>) => {
         const storedMessageData: MessageInterface[] = [];
 
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, channel, mentionedUser} = data;
+          const { messageText, time, thread, emojis, channel, mentionedUser } =
+            data;
           const message: MessageInterface = {
             messageText: messageText,
             time: time,
@@ -46,7 +54,7 @@ export class ChatService {
           };
           storedMessageData.push(message);
         });
-        this.messageData = storedMessageData;
+        this.messageDataSubject.next(storedMessageData); // Update BehaviorSubject with the latest data
         return storedMessageData;
       })
     );
@@ -65,10 +73,37 @@ export class ChatService {
 
     return from(addDoc(messages, messageData)).pipe(
       map(() => {
-        // Message sent successfully
+        // Message sent successfully (already updated in local chatData)
         console.log('Message sent');
       })
     );
   }
 
+  // Add this method to subscribe to real-time updates
+  subscribeToMessageUpdates() {
+    const messagesCollection = collection(this.firestore, 'messages');
+    const q = query(messagesCollection);
+
+    onSnapshot(q, (querySnapshot) => {
+      const updatedMessageData: MessageInterface[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const { messageText, time, thread, emojis, channel, mentionedUser } =
+          data;
+        const message: MessageInterface = {
+          messageText: messageText,
+          time: time,
+          thread: thread,
+          emojis: emojis,
+          channel: channel,
+          mentionedUser: mentionedUser,
+        };
+        updatedMessageData.push(message);
+      });
+
+      // Update the BehaviorSubject with real-time data
+      this.messageDataSubject.next(updatedMessageData);
+    });
+  }
 }

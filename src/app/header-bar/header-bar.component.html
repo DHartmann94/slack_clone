@@ -3,12 +3,12 @@
         <input class="search-bar" type="text" placeholder="Code learning durchsuchen" id="searchUser">
     </div>
     <div>
-    <div (click)="openLogoutContainer()" class="profile">
-        <h2>{{ userName }}</h2>
-        <img src="./assets/img/avatar.png" alt="">
-        <mat-icon>keyboard_arrow_down</mat-icon>
-        <div class="status"></div>
-    </div>
+        <div (click)="openLogoutContainer()" class="profile">
+            <h2>{{ userName }}</h2>
+            <img src="./assets/img/avatar.png" alt="">
+            <mat-icon>keyboard_arrow_down</mat-icon>
+            <div class="status"></div>
+        </div>
     </div>
 
     <!-- Logout Container -->
@@ -22,76 +22,81 @@
     </div>
 
     <!-- Overlay -->
-    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen" (click)="closeContainers()"></div>
+    <div class="overlay" *ngIf="isLogoutContainerOpen || isProfileCardOpen || isEditProfileCardOpen"
+        (click)="closeContainers()"></div>
 
-<!-- Profile Container-->
-<section class="user-profile-card-section" *ngIf="isProfileCardOpen">
-    <mat-card class="user-profile-card">
-        <mat-card-header class="user-header">
-            <mat-card-title>Profile</mat-card-title>
-            <mat-icon (click)="closeUserProfile()">close</mat-icon>
-        </mat-card-header>
-        <div class="user-img">
-            <img src="/assets/profile-pictures/EliasNeumann.png">
-        </div>
-        <mat-card-content>
-            <div class="user-contact-info">
-                <p>{{ userName }}</p>
-                <a (click)="openEditProfileCard()">Edit</a>
+    <!-- Profile Container-->
+    <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
+        <mat-card class="user-profile-card">
+            <mat-card-header class="user-header">
+                <mat-card-title>Profile</mat-card-title>
+                <mat-icon (click)="closeUserProfile()">close</mat-icon>
+            </mat-card-header>
+            <div class="user-img">
+                <img src="/assets/profile-pictures/EliasNeumann.png">
             </div>
-            <div class="user-status">
-                <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+            <mat-card-content>
+                <div class="user-contact-info">
+                    <p>{{ userName }}</p>
+                    <a (click)="openEditProfileCard()">Edit</a>
+                </div>
+                <div class="user-status">
+                    <p>
+                      <svg *ngIf="active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
                         <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                    </svg>
-                    {{ userStatus }}
-                </p>
-            </div>
-            <div class="user-email">
-                <mat-icon>mail_outline</mat-icon>
-                <div class="user-email-link">
-                    <p>E-Mail-Address</p>
-                    <a>{{ userEmail }}</a>
-                </div>
-            </div>
-        </mat-card-content>
-    </mat-card>
-</section>
-
-<!-- Edit Profile Container-->
-<section class="user-profile-card-section" *ngIf="isEditProfileCardOpen">
-    <mat-card class="user-profile-card">
-        <mat-card-header class="user-header">
-            <mat-card-title>Edit Profile</mat-card-title>
-            <mat-icon (click)="closeEditUserProfile()" >close</mat-icon>
-        </mat-card-header>
-        <div class="user-img">
-            <img src="/assets/profile-pictures/EliasNeumann.png">
-        </div>
-        <mat-card-content class="user-edit-input">
-            <form class="name-form">
-                <div class="name-field">
-                    <div>
-                        <mat-icon>account_circle</mat-icon>
-                    </div>
-                    <div>
-                        <mat-label>Full Name</mat-label>
-                    </div>
-                </div>
-                <input matInput placeholder="Full Name">
-            </form>
-            <form class="email-form">
-                <div class="e-mail-field">
+                      </svg>
+                      <svg *ngIf="!active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                        <circle cx="4" cy="4" r="4" fill="#FF0000" />
+                      </svg>
+                      {{ userStatus }}
+                    </p>
+                  </div>
+                <div class="user-email">
                     <mat-icon>mail_outline</mat-icon>
-                    <mat-label>E-Mail-Address</mat-label>
+                    <div class="user-email-link">
+                        <p>E-Mail-Address</p>
+                        <a>{{ userEmail }}</a>
+                    </div>
                 </div>
-                <input matInput placeholder="E-Mail-Address">
-            </form>
-        </mat-card-content>
-        <mat-card-actions class="edit-buttons">
-            <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
-            <button (click)="closeEditUserProfile()" class="save-button" mat-flat-button
-                color="primary">Save</button>
-        </mat-card-actions>
-    </mat-card>
-</section>
+            </mat-card-content>
+        </mat-card>
+    </section>
+
+    <!-- Edit Profile Container-->
+    <section class="user-profile-card-section" *ngIf="isEditProfileCardOpen">
+        <mat-card class="user-profile-card">
+            <mat-card-header class="user-header">
+                <mat-card-title>Edit Profile</mat-card-title>
+                <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
+            </mat-card-header>
+            <div class="user-img">
+                <img src="/assets/profile-pictures/EliasNeumann.png">
+            </div>
+            <mat-card-content class="user-edit-input">
+                <form class="name-form">
+                    <div class="name-field">
+                        <div>
+                            <mat-icon>account_circle</mat-icon>
+                        </div>
+                        <div>
+                            <mat-label>Full Name</mat-label>
+                        </div>
+                    </div>
+                    <input matInput placeholder="Full Name">
+                </form>
+                <form class="email-form">
+                    <div class="e-mail-field">
+                        <mat-icon>mail_outline</mat-icon>
+                        <mat-label>E-Mail-Address</mat-label>
+                    </div>
+                    <input matInput placeholder="E-Mail-Address">
+                </form>
+            </mat-card-content>
+            <mat-card-actions class="edit-buttons">
+                <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
+                <button (click)="closeEditUserProfile()" class="save-button" mat-flat-button
+                    color="primary">Save</button>
+            </mat-card-actions>
+        </mat-card>
+    </section>
 </div>
