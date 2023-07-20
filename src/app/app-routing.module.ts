@@ -11,13 +11,13 @@ import { UserProfileCardComponent } from './user/user-profile-card/user-profile-
 import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
 import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
-import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
+import { AuthActionComponent } from './auth-action/auth-action.component';
 
 const routes: Routes = [
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'reset-password', component: PasswordResetComponent },
-  { path: 'confirm-password', component: PasswordConfirmComponent },
+  { path: 'auth-action', component: AuthActionComponent },
   { path: 'board', component: BoardComponent, children: [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent },
