@@ -141,6 +141,22 @@ section {
 
     }
 
+    .user-img-one {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 1rem;
+
+       
+    }
+
+    .user-img-one img {
+        height: 10rem;
+        width: 10rem;
+        border-radius: 50%;
+        transition: filter 0.3s ease-in-out;
+    }
+
     .user-img {
         display: flex;
         justify-content: center;
