@@ -58,7 +58,7 @@ export class HeaderBarComponent {
     }
   }
 
-  editName = new FormGroup({
+  editNameForm = new FormGroup({
     name: new FormControl('', [
       Validators.minLength(3),
       Validators.maxLength(25),
@@ -66,11 +66,12 @@ export class HeaderBarComponent {
     ]),
   });
 
-  editMail = new FormGroup({
+  editMailForm = new FormGroup({
     email: new FormControl('', [
       Validators.email,
     ]),
     password: new FormControl('', [
+      Validators.required,
       Validators.minLength(8),
       Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
     ]),
@@ -79,9 +80,9 @@ export class HeaderBarComponent {
   emailExists: boolean = false;
 
   async editUserProfile() {
-    let name = this.editName.value.name ?? '';
-    let email = this.editMail.value.email?.toLowerCase() || '';
-    let password = this.editMail.value.password ?? '';
+    let name = this.editNameForm.value.name ?? '';
+    let email = this.editMailForm.value.email?.toLowerCase() || '';
+    let password = this.editMailForm.value.password ?? '';
     await this.editUserName(name);
     await this.editUserEmail(email, password);
   }
@@ -91,25 +92,40 @@ export class HeaderBarComponent {
   }
 
 
+  disableForm() {
+    this.editNameForm.disable();
+    this.editMailForm.disable();
+  }
+
+  resetForm() {
+    this.editNameForm.enable();
+    this.editNameForm.reset();
+
+    this.editMailForm.enable();
+    this.editMailForm.reset();
+  }
 
   async editUserName(name: string) {
     if (name === '') {
       return;
     }
-    if (this.editName.invalid) {
+    if (this.editNameForm.invalid) {
       console.log('Falsche Eingabe Mail');
       return;
     }
+    this.disableForm();
 
     await this.changeFirebase(name, 'name');
     this.getUserData();
+
+    this.resetForm();
   }
 
   async editUserEmail(email: string, password: string) {
     if (email === '' || password === '') {
       return;
     }
-    if (this.editMail.invalid) {
+    if (this.editMailForm.invalid) {
       console.log('Falsche Eingabe Mail');
       return;
     }
@@ -120,9 +136,11 @@ export class HeaderBarComponent {
       return;
     }
 
+    this.disableForm();
     await this.authentication.changeMail(email, password);
     await this.changeFirebase(email, 'email');
     this.getUserData();
+    this.resetForm();
   }
 
   async changeMailFirebase(newEmail: string) {

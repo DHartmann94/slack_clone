@@ -8,7 +8,7 @@ export interface UserDataInterface {
   email: string;
   picture: string;
   createdAt?: any;
-  status?: any;
+  status: any;
 }
 
 @Injectable({
@@ -33,12 +33,13 @@ export class UserDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { name, email, picture } = data;
+          const { name, email, picture, status } = data;
           const user: UserDataInterface = {
             id: doc.id,
             name: name,
             email: email,
-            picture: picture
+            picture: picture,
+            status: status
           };
           storedUserData.push(user);
         });

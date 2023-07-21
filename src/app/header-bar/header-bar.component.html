@@ -46,7 +46,7 @@
                             <circle cx="4" cy="4" r="4" fill="#92C83E" />
                         </svg>
                         <svg *ngIf="!active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                            <circle cx="4" cy="4" r="4" fill="#FF0000" />
+                            <circle cx="4" cy="4" r="4" fill="#808080" />
                         </svg>
                         {{ userStatus }}
                     </p>
@@ -74,7 +74,7 @@
                 <mat-icon (click)="openPictureContainer()" class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">
-                <form class="name-form" [formGroup]="editName">
+                <form class="name-form" [formGroup]="editNameForm">
                     <div class="name-field">
                         <div>
                             <mat-icon>account_circle</mat-icon>
@@ -83,15 +83,48 @@
                             <mat-label>Full Name</mat-label>
                         </div>
                     </div>
-                    <input formControlName="name" matInput placeholder="Full Name">
+                    <!--- name --->
+                    <input formControlName="name" matInput placeholder="Full Name"
+                        [ngClass]="{'error-border': editNameForm.controls['name'].invalid && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)}">
+                    <div class="error-parent">
+                        <div *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
+                            <!--- minlength / maxlenght --->
+                            <mat-error *ngIf="editNameForm.controls['name'].errors['minlength']
+                            || editNameForm.controls['name'].errors['maxlength']
+                            && editNameForm.controls['name'].touched">
+                                Minimum 3 and maximum 25 characters.</mat-error>
+                            <!--- pattern --->
+                            <mat-error *ngIf="editNameForm.controls['name'].errors['pattern']
+                            && editNameForm.controls['name'].touched">
+                            Enter your first AND last name. Only letters allowed.</mat-error>
+                        </div>
+                    </div>
                 </form>
-                <form class="email-form" [formGroup]="editMail">
+                <form class="email-form" [formGroup]="editMailForm">
                     <div class="e-mail-field">
                         <mat-icon>mail_outline</mat-icon>
                         <mat-label>E-Mail-Address</mat-label>
                     </div>
-                    <input formControlName="email" matInput placeholder="E-Mail-Address">
-                    <input formControlName="password" type="password" matInput placeholder="Password">
+                    <!--- email --->
+                    <input formControlName="email" matInput placeholder="E-Mail-Address"
+                    [ngClass]="{'error-border': editMailForm.controls['email'].invalid && (editMailForm.controls['email'].dirty || editMailForm.controls['email'].touched)}">
+                    <div class="error-parent">
+                        <div *ngIf="editMailForm.controls['email'].errors && (editMailForm.controls['email'].dirty || editMailForm.controls['email'].touched)"
+                            class="error-notification">
+                            <mat-error *ngIf="editMailForm.controls['email'].invalid">
+                            Please enter a valid email-address.</mat-error>
+                        </div>
+                    </div>
+                    <!--- password --->
+                    <input formControlName="password" type="password" matInput placeholder="Password"
+                    [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
+                    <div class="error-parent">
+                        <div *ngIf="editMailForm.controls['password'].errors && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"
+                            class="error-notification">
+                            <mat-error *ngIf="(editMailForm.controls['password'].errors['minlength'] && editMailForm.controls['password'].touched) || (editMailForm.controls['password'].errors['pattern'] && editMailForm.controls['password'].touched) || editMailForm.controls['password'].errors['required']">
+                            Your password is required.</mat-error>
+                        </div>
+                    </div>
                 </form>
             </mat-card-content>
             <mat-card-actions class="edit-buttons">
@@ -102,15 +135,18 @@
 
         <div *ngIf="isProfilePictureContainerOpen" style="z-index: 99999;">
             <div class="profile-picture-container">
-              <div class="new-profile-picture-container" *ngFor="let picture of profilePictures; let i = index;">
-                <img class="profile-picture" [src]="picture" alt="Profile Picture" [class.selected]="i === selectedPictureIndex" (click)="onPictureClick(i)">
-              </div>
-              <div>
-                <button (click)="closeProfilePictureContainer()" class="interrupt-button" mat-stroked-button>Cancel</button>
-                <button (click)="saveProfilePicture()" class="save-button" mat-flat-button color="primary">Save</button>
-              </div>
+                <div class="new-profile-picture-container" *ngFor="let picture of profilePictures; let i = index;">
+                    <img class="profile-picture" [src]="picture" alt="Profile Picture"
+                        [class.selected]="i === selectedPictureIndex" (click)="onPictureClick(i)">
+                </div>
+                <div>
+                    <button (click)="closeProfilePictureContainer()" class="interrupt-button"
+                        mat-stroked-button>Cancel</button>
+                    <button (click)="saveProfilePicture()" class="save-button" mat-flat-button
+                        color="primary">Save</button>
+                </div>
             </div>
-          </div>
+        </div>
 
     </section>
 </div>
