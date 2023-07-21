@@ -64,7 +64,6 @@ export class ChannelDataService {
 
     return from(addDoc(channels, channelData)).pipe(
       map(() => {
-        // Message sent successfully (already updated in local chatData)
         console.log('Message sent');
       })
     );
