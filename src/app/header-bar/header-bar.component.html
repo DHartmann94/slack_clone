@@ -87,7 +87,7 @@
                     <input formControlName="name" matInput placeholder="Full Name"
                         [ngClass]="{'error-border': editNameForm.controls['name'].invalid && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)}">
                     <div class="error-parent">
-                        <div *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
+                        <div class="error-notification" *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
                             <!--- minlength / maxlenght --->
                             <mat-error *ngIf="editNameForm.controls['name'].errors['minlength']
                             || editNameForm.controls['name'].errors['maxlength']
@@ -114,12 +114,14 @@
                             <mat-error *ngIf="editMailForm.controls['email'].invalid">
                             Please enter a valid email-address.</mat-error>
                         </div>
+                    <!--- email-function --->
+                    <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
                     </div>
                     <!--- password --->
                     <input formControlName="password" type="password" matInput placeholder="Password"
                     [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
                     <div class="error-parent">
-                        <div *ngIf="editMailForm.controls['password'].errors && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"
+                        <div *ngIf="editMailForm.controls['password'].errors && (submitted ||editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"
                             class="error-notification">
                             <mat-error *ngIf="(editMailForm.controls['password'].errors['minlength'] && editMailForm.controls['password'].touched) || (editMailForm.controls['password'].errors['pattern'] && editMailForm.controls['password'].touched) || editMailForm.controls['password'].errors['required']">
                             Your password is required.</mat-error>
