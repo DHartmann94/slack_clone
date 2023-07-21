@@ -61,7 +61,7 @@ export class HeaderBarComponent {
     name: new FormControl('', [
       Validators.minLength(3),
       Validators.maxLength(25),
-      Validators.pattern(/^[a-zA-Z]+\s[a-zA-Z]+$/),
+      Validators.pattern(/^[a-zA-Z-]+\s[a-zA-Z-]+$/),
     ]),
   });
 

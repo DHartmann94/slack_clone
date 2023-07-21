@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode, signInWithRedirect, getRedirectResult } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class AuthenticationService {
   user: any = null;
   errorMessage: string = '';
-  guestUID: string = 'nsD6APoDVBR6t8jSXsYgW0nkV1v1';
+  guestUID: string = 'VkLP7dYflLeKFtjvyqmZbPltJy13';
 
 
   constructor(private firestore: Firestore, private router: Router, private route: ActivatedRoute) { }
@@ -38,6 +38,18 @@ export class AuthenticationService {
         console.log('ERROR loginWithEmail: ', error);
       });
   }
+
+  /*
+  async loginWithGoogle() {
+    const auth = getAuth();
+    const provider = new GoogleAuthProvider();
+    this.user = null;
+    this.errorMessage = '';
+
+    signInWithRedirect(auth, provider);
+    const userCred = await getRedirectResult(auth);
+    console.log(userCred);
+  }*/
 
   async loginWithGoogle() {
     const auth = getAuth();
