@@ -96,38 +96,31 @@
         </div>
       </div>
     </div>
-      <!-- Input field -->
-      <div class="message-input-field">
-        <div class="text-editor">
-          <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
-    </textarea>
-          <div class="text-editor-bottom">
-            <div class="text-editor-left-btns">
-              <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
-              <div class="vertical-line-textEditor"></div>
-              <img src="./assets/img/icons/sentiment_satisfied.svg" alt="">
-              <img src="./assets/img/icons/alternate_email.svg" alt="">
-            </div>
-            <div class="send-message-btn">
-              <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
-            </div>
-          </div>
-        </div>
+  </mat-card>
+</div>  
+  
+<!-- Input field -->
+<div class="message-input-field">
+  <div class="text-editor">
+        <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+        </textarea>
+    <div class="text-editor-bottom">
+      <div class="text-editor-left-btns">
+        <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
+        <div class="vertical-line-textEditor"></div>
+        <img src="./assets/img/icons/sentiment_satisfied.svg" alt="">
+        <img src="./assets/img/icons/alternate_email.svg" alt="">
       </div>
+      <div class="send-message-btn">
+        <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
+      </div>
+    </div>
+  </div>
+</div>
       
-      <!-- Profile Content -->
-      <section *ngIf="isProfileCardOpen" class="user-profile-card-section">
-        <mat-card class="user-profile-card">
-          <mat-card-header class="user-header">
-            <mat-card-title>Profile</mat-card-title>
-            <mat-icon (click)="closeUserProfile()">close</mat-icon>
-          </mat-card-header>
-          <div class="user-img">
-            <img src="/assets/profile-pictures/EliasNeumann.png">
-
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">
-  <section *ngIf="isProfileCardOpen" class="user-profile-card-section">
+  <section class="user-profile-card-section">
     <mat-card class="user-profile-card">
       <mat-card-header class="user-header">
         <mat-card-title>Profile</mat-card-title>
@@ -162,5 +155,40 @@
   </section>
 </div>
 
-      <!-- Overlay -->
-      <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+<!-- Edit Channel -->
+<mat-card class="overlay" *ngIf="openEditChannel" (click)="closeEditChannel()">
+  <div class="channel-edit-card">
+      <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2># {{ channel.channelName }}</h2>
+      </div>
+      <div class="frame-edit">
+          
+      </div>
+      <form [formGroup]="channelForm">
+          <h3>Channel-Name</h3>
+          <div class="channel-inputs">
+              <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+                  formControlName="channelName">
+              <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+                  <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+                      required.
+                  </div>
+              </div>
+          </div>
+          <h3>Beschreibung (optinal)</h3>
+          <div class="channel-inputs">
+              <input class="channel-name" type="text" placeholder="Dein Text hier"
+                  formControlName="channelDescription">
+              <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
+                  <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
+                      required.
+                  </div>
+              </div>
+          </div>
+          <div class="btn-area">
+              <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
+          </div>
+      </form>
+  </div>
+</mat-card>
+

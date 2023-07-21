@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
@@ -21,10 +21,31 @@ export class HeaderBarComponent {
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
   isProfilePictureContainerOpen: boolean = false;
+  emailExists: boolean = false;
+  submitted: boolean = false;
   selectedPictureIndex: number | null = null;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
   profilePictures = ['/assets/profile-pictures/avatar1.png', '/assets/profile-pictures/avatar2.png', '/assets/profile-pictures/avatar3.png', '/assets/profile-pictures/avatar4.png', '/assets/profile-pictures/avatar5.png', '/assets/profile-pictures/avatar6.png'];
+
+  editNameForm = new FormGroup({
+    name: new FormControl('', [
+      Validators.minLength(3),
+      Validators.maxLength(25),
+      Validators.pattern(/^[a-zA-Z-]+\s[a-zA-Z-]+$/),
+    ]),
+  });
+
+  editMailForm = new FormGroup({
+    email: new FormControl('', [
+      Validators.email,
+    ]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(8),
+      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
+    ]),
+  });
 
 
   constructor(public validation: ValidationService, public authentication: AuthenticationService, private firestore: Firestore) { }
@@ -35,7 +56,6 @@ export class HeaderBarComponent {
     await this.getUserData();
     this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
   }
-
 
   async getUserData() {
     try {
@@ -58,27 +78,6 @@ export class HeaderBarComponent {
     }
   }
 
-  editNameForm = new FormGroup({
-    name: new FormControl('', [
-      Validators.minLength(3),
-      Validators.maxLength(25),
-      Validators.pattern(/^[a-zA-Z-]+\s[a-zA-Z-]+$/),
-    ]),
-  });
-
-  editMailForm = new FormGroup({
-    email: new FormControl('', [
-      Validators.email,
-    ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8),
-      Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/)
-    ]),
-  });
-
-  emailExists: boolean = false;
-
   async editUserProfile() {
     let name = this.editNameForm.value.name ?? '';
     let email = this.editMailForm.value.email?.toLowerCase() || '';
@@ -91,26 +90,11 @@ export class HeaderBarComponent {
     this.isProfilePictureContainerOpen = true;
   }
 
-
-  disableForm() {
-    this.editNameForm.disable();
-    this.editMailForm.disable();
-  }
-
-  resetForm() {
-    this.editNameForm.enable();
-    this.editNameForm.reset();
-
-    this.editMailForm.enable();
-    this.editMailForm.reset();
-  }
-
   async editUserName(name: string) {
     if (name === '') {
       return;
     }
     if (this.editNameForm.invalid) {
-      console.log('Falsche Eingabe Mail');
       return;
     }
     this.disableForm();
@@ -122,35 +106,32 @@ export class HeaderBarComponent {
   }
 
   async editUserEmail(email: string, password: string) {
-    if (email === '' || password === '') {
+    if (email === '') {
+      return;
+    }
+    if (password === '') {
+      this.submitted = true;
       return;
     }
     if (this.editMailForm.invalid) {
-      console.log('Falsche Eingabe Mail');
       return;
     }
     this.emailExists = false;
     this.emailExists = await this.validation.checkEmailExists(email);
     if (this.emailExists) {
-      console.log('Email existiert!');
+      this.resetEmailExistsError();
       return;
     }
 
+    await this.changeUserMail(email, password);
+  }
+
+  async changeUserMail(email: string, password: string) {
     this.disableForm();
     await this.authentication.changeMail(email, password);
     await this.changeFirebase(email, 'email');
     this.getUserData();
     this.resetForm();
-  }
-
-  async changeMailFirebase(newEmail: string) {
-    const userDocRef = doc(this.firestore, 'users', this.currentUser);
-    try {
-      await updateDoc(userDocRef, { email: newEmail });
-      console.log('E-Mail erfolgreich aktualisiert.');
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren der E-Mail:', error);
-    }
   }
 
   async changeFirebase(newValue: string, type: string) {
@@ -238,5 +219,25 @@ export class HeaderBarComponent {
       this.selectedPictureIndex = index;
     }
   }
-}
 
+  disableForm() {
+    this.editNameForm.disable();
+    this.editMailForm.disable();
+  }
+
+  resetForm() {
+    this.editNameForm.enable();
+    this.editNameForm.reset();
+
+    this.editMailForm.enable();
+    this.editMailForm.reset();
+    this.submitted = false;
+  }
+
+  resetEmailExistsError() {
+    setTimeout(() => {
+      this.emailExists = false;
+    }, 3000);
+  }
+
+}
