@@ -42,15 +42,15 @@
                 </div>
                 <div class="user-status">
                     <p>
-                      <svg *ngIf="active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                      </svg>
-                      <svg *ngIf="!active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#FF0000" />
-                      </svg>
-                      {{ userStatus }}
+                        <svg *ngIf="active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#92C83E" />
+                        </svg>
+                        <svg *ngIf="!active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#FF0000" />
+                        </svg>
+                        {{ userStatus }}
                     </p>
-                  </div>
+                </div>
                 <div class="user-email">
                     <mat-icon>mail_outline</mat-icon>
                     <div class="user-email-link">
@@ -69,7 +69,7 @@
                 <mat-card-title>Edit Profile</mat-card-title>
                 <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
             </mat-card-header>
-            <div class="user-img"(mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
+            <div class="user-img" (mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
                 <img src="{{ userPicture }}">
                 <mat-icon (click)="openPictureContainer()" class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
@@ -96,19 +96,19 @@
             </mat-card-content>
             <mat-card-actions class="edit-buttons">
                 <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
-                <button (click)="editUserProfile()" class="save-button" mat-flat-button
-                    color="primary">Save</button>
+                <button (click)="editUserProfile()" class="save-button" mat-flat-button color="primary">Save</button>
             </mat-card-actions>
         </mat-card>
 
-        <div *ngIf="isProfilePictureContainerOpen"  style="z-index: 99999;">
+        <div *ngIf="isProfilePictureContainerOpen" style="z-index: 99999;">
             <div class="profile-picture-container">
-              <div *ngFor="let picture of profilePictures">
-                <img class="profile-picture" [src]="picture" alt="Profile Picture">
+              <div class="new-profile-picture-container" *ngFor="let picture of profilePictures; let i = index;">
+                <img class="profile-picture" [src]="picture" alt="Profile Picture" [class.selected]="i === selectedPictureIndex" (click)="onPictureClick(i)">
               </div>
-              
-    
-            
+              <div>
+                <button (click)="closeProfilePictureContainer()" class="interrupt-button" mat-stroked-button>Cancel</button>
+                <button (click)="saveProfilePicture()" class="save-button" mat-flat-button color="primary">Save</button>
+              </div>
             </div>
           </div>
 

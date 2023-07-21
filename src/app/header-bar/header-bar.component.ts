@@ -21,6 +21,7 @@ export class HeaderBarComponent {
   isProfileCardOpen: boolean = false;
   isEditProfileCardOpen: boolean = false;
   isProfilePictureContainerOpen: boolean = false;
+  selectedPictureIndex: number | null = null;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
   profilePictures = ['/assets/profile-pictures/avatar1.png', '/assets/profile-pictures/avatar2.png', '/assets/profile-pictures/avatar3.png', '/assets/profile-pictures/avatar4.png', '/assets/profile-pictures/avatar5.png', '/assets/profile-pictures/avatar6.png'];
@@ -89,9 +90,7 @@ export class HeaderBarComponent {
     this.isProfilePictureContainerOpen = true;
   }
 
-  changeProfilePicture() {
 
-  }
 
   async editUserName(name: string) {
     if (name === '') {
@@ -101,7 +100,7 @@ export class HeaderBarComponent {
       console.log('Falsche Eingabe Mail');
       return;
     }
-    
+
     await this.changeFirebase(name, 'name');
     this.getUserData();
   }
@@ -145,7 +144,7 @@ export class HeaderBarComponent {
       console.error('Fehler beim Aktualisieren der E-Mail:', error);
     }
   }
-  
+
   colorStatus() {
     this.active = this.userStatus === 'Active';
   }
@@ -188,6 +187,38 @@ export class HeaderBarComponent {
 
   hideEditIcon() {
     this.showIcon = false;
+  }
+
+  closeProfilePictureContainer() {
+    this.isProfilePictureContainerOpen = false;
+  }
+
+  async saveProfilePicture() {
+    if (this.selectedPictureIndex === null) {
+      return;
+    }
+    const userDocRef = doc(this.firestore, 'users', this.currentUser);
+    const selectedPicture = this.selectedPictureIndex;
+    try {
+      await updateDoc(userDocRef, { picture: `/assets/profile-pictures/avatar${selectedPicture + 1}.png` });
+      this.getUserData();
+      console.log('Bild erfolgreich aktualisiert.', selectedPicture);
+
+      this.selectedPictureIndex = null;
+      this.closeProfilePictureContainer();
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Bildes', error);
+    }
+  }
+
+  onPictureClick(index: number) {
+    if (this.selectedPictureIndex === null) {
+      this.selectedPictureIndex = index;
+    } else if (this.selectedPictureIndex === index) {
+      this.selectedPictureIndex = null;
+    } else {
+      this.selectedPictureIndex = index;
+    }
   }
 }
 
