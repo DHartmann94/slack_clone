@@ -107,11 +107,11 @@
   flex-direction: row;
   cursor: pointer;
 
-  &:hover{
+  &:hover {
     width: auto;
     height: auto;
     background-color: var(--text-hover);
-    border-radius: 20px;  
+    border-radius: 20px;
     height: 45px;
     min-width: 200px;
   }
@@ -366,77 +366,77 @@ section {
 
 
   a {
-      text-decoration: none;
-      color:#1381FF;
+    text-decoration: none;
+    color: #1381FF;
   }
 
   .user-header {
-      display: flex;
-      justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 
-      mat-card-title {
-          font-weight: 700 !important;
-      }
+    mat-card-title {
+      font-weight: 700 !important;
+    }
 
-      mat-icon {
-          cursor: pointer;
-      }
+    mat-icon {
+      cursor: pointer;
+    }
 
   }
 
   .user-img {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
   }
 
   .user-img img {
-      height: 10rem;
-      width: 10rem;
-      border-radius: 50%;
+    height: 10rem;
+    width: 10rem;
+    border-radius: 50%;
   }
 
   .user-contact-info {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
 
-      p {
-          font-size: 1.6rem;
-          font-weight: 700;
-          line-height: 43px;
-          margin: 0;
-      }
+    p {
+      font-size: 1.6rem;
+      font-weight: 700;
+      line-height: 43px;
+      margin: 0;
+    }
   }
 
   .user-status {
-      color: #92C83E;
-      padding-top: 0.2rem;
-      padding-bottom: 0.3rem;
+    color: #92C83E;
+    padding-top: 0.2rem;
+    padding-bottom: 0.3rem;
   }
 
   .user-email {
-      display: flex;
+    display: flex;
 
-      .user-email-link {
-          padding-left: 0.9rem;
-      }
+    .user-email-link {
+      padding-left: 0.9rem;
+    }
   }
 
   .user-message-button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem;
   }
 
   button {
-      width: 154px;
-      height: 45px;
-      border-radius: 50px;
-      background: #444DF2;
+    width: 154px;
+    height: 45px;
+    border-radius: 50px;
+    background: #444DF2;
   }
 }
 
@@ -453,167 +453,178 @@ section {
   z-index: 999;
 
   .channel-edit-card {
-      width: 872px;
-      height: auto;
-      background-color: white;
-      border-radius: 25px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      row-gap: 10px;
+    width: 872px;
+    height: auto;
+    background-color: white;
+    border-radius: 25px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
 
-      img {
-          width: 40px;
-          object-fit: scale-down;
-          cursor: pointer;
-      }
+    img {
+      width: 40px;
+      object-fit: scale-down;
+      cursor: pointer;
+    }
 
-      h2 {
-          font-family: 'Nunito';
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 700;
-      }
+    h2 {
+      font-family: 'Nunito';
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+    }
 
-      h3 {
-          font-family: 'Nunito';
-          margin-top: 20px;
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 700;
-      }
-
-      .channel-introduction {
-          display: flex;
-          flex-direction: row;
-          justify-content: space-between;
-      }
-
-      .channel-name {
-          display: flex;
-          height: 20px;
-          padding: 18px 20px;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
-          width: 95%;
-          border-radius: 20px;
-          border: 1px solid var(--ligth-purple-lines, #adb0d9);
-          padding: 20px;
-          gap: 20px;
-      }
-
-      .btn-area {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 30px;
-
-
-          .btn-channel {
-              border-radius: 25px;
-              background: var(--purple-1, #444df2);
-              color: var(--white, #fff);
-              font-size: 18px;
-              font-style: normal;
-              font-weight: 700;
-              line-height: normal;
-              display: flex;
-              padding: 12px 25px;
-              justify-content: center;
-              align-items: center;
-              gap: 10px;
-              border: none;
-              height: 49px;
-              width: 204px;
-              cursor: pointer;
-          }
-      }
-  }
-
-  .user-edit-card {
-      width: 680px;
-      height: auto;
-      background-color: white;
-      border-radius: 25px;
-      padding: 40px;
-      display: flex;
-      flex-direction: column;
-      row-gap: 10px;
-
-      h2 {
-          font-family: 'Nunito';
-          font-size: 24px;
-          font-style: normal;
-          font-weight: 700;
-          margin: 0;
-      }
-
-      mat-radio-group {
-          display: flex;
-          flex-direction: column;
-      }
-
-      .radio-selection {
-          span {
-              font-family: 'Nunito';
-              font-size: 16px;
-              font-style: normal;
-              font-weight: 700;
-              color: var(--c-mediun-purple);
-              cursor: pointer;
-          }
-      }
-
-      .user-name {
-          display: flex;
-          height: 20px;
-          padding: 18px 20px;
-          flex-direction: column;
-          justify-content: center;
-          align-items: flex-start;
-          width: 95%;
-          border-radius: 30px;
-          border: 1px solid var(--ligth-purple-lines, #adb0d9);
-          padding: 20px;
-          gap: 20px;
-      }
-
-      .btn-area {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 30px;
-
-
-          .btn-channel {
-              border-radius: 25px;
-              background: var(--purple-1, #444df2);
-              color: var(--white, #fff);
-              font-size: 18px;
-              font-style: normal;
-              font-weight: 700;
-              line-height: normal;
-              display: flex;
-              padding: 12px 25px;
-              justify-content: center;
-              align-items: center;
-              gap: 10px;
-              border: none;
-              height: 49px;
-              width: 204px;
-              cursor: pointer;
-          }
-      }
-  }
-
-  .error-massage {
-      position: relative;
-      left: 18px;
+    h3 {
       font-family: 'Nunito';
       margin-top: 20px;
       font-size: 18px;
       font-style: normal;
       font-weight: 700;
-      color: var(--c-mediun-purple);
+    }
+
+    .channel-introduction {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .channel-name {
+      display: flex;
+      height: 20px;
+      padding: 18px 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 95%;
+      border-radius: 20px;
+      border: 1px solid var(--ligth-purple-lines, #adb0d9);
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .btn-area {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 30px;
+
+
+      .btn-channel {
+        border-radius: 25px;
+        background: var(--purple-1, #444df2);
+        color: var(--white, #fff);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        padding: 12px 25px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        height: 49px;
+        width: 204px;
+        cursor: pointer;
+      }
+    }
+
+    .frame-edit {
+      width: 792px;
+      height: 64px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      border: 1px solid var(--c-light-purple);
+    }
+  }
+
+  .user-edit-card {
+    width: 680px;
+    height: auto;
+    background-color: white;
+    border-radius: 25px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    h2 {
+      font-family: 'Nunito';
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    mat-radio-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .radio-selection {
+      span {
+        font-family: 'Nunito';
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        color: var(--c-mediun-purple);
+        cursor: pointer;
+      }
+    }
+
+    .user-name {
+      display: flex;
+      height: 20px;
+      padding: 18px 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 95%;
+      border-radius: 30px;
+      border: 1px solid var(--ligth-purple-lines, #adb0d9);
+      padding: 20px;
+      gap: 20px;
+    }
+
+    .btn-area {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 30px;
+
+
+      .btn-channel {
+        border-radius: 25px;
+        background: var(--purple-1, #444df2);
+        color: var(--white, #fff);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        display: flex;
+        padding: 12px 25px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        border: none;
+        height: 49px;
+        width: 204px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .error-massage {
+    position: relative;
+    left: 18px;
+    font-family: 'Nunito';
+    margin-top: 20px;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    color: var(--c-mediun-purple);
   }
 }
 
@@ -626,7 +637,3 @@ section {
 .time {
   margin-right: 10px;
 }
-
-
-
-
