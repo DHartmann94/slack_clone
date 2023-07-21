@@ -45,7 +45,10 @@
         </div>
         <div class="dropdown-container" *ngIf="openDirect">
             <div class="direct-box" *ngFor="let users of userData; let i = index">
-                <div class="user-icon"></div>
+                <div class="user-icon">
+                    <img class="user-icon" src="{{ users.picture }}" alt="User">
+                    <div class="status"></div>
+                </div>
                 <h3>{{ users.name }}</h3>
             </div>
         </div>
