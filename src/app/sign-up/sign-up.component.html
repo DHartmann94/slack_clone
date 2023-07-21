@@ -58,8 +58,8 @@
                     <div *ngIf="signUpForm.controls['password'].errors && (submitted || signUpForm.controls['password'].dirty || signUpForm.controls['password'].touched)"
                         class="error-notification">
                         <!--- required --->
-                        <mat-error *ngIf="signUpForm.controls['password'].errors['required']">Your password is
-                            required.</mat-error>
+                        <mat-error *ngIf="signUpForm.controls['password'].errors['required']">
+                            Your password is required.</mat-error>
                         <!--- minlength --->
                         <mat-error *ngIf="signUpForm.controls['password'].errors['minlength'] && signUpForm.controls['password'].touched">
                             Min 8 characters.</mat-error>

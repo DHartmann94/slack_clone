@@ -234,18 +234,7 @@ section {
         }
     }
 
-    .edit-buttons {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    button {
-        width: 154px;
-        height: 45px;
-        border-radius: 50px;
-        background: #444DF2;
-    }
+   
 
     .name-field,
     .e-mail-field {
@@ -277,9 +266,6 @@ section {
         }
     }
 
-    .interrupt-button {
-        background-color: white;
-    }
 
 }
 
@@ -287,7 +273,7 @@ section {
     display: flex;
     flex-wrap: wrap;
     width: 35rem;
-    gap: 1rem;
+    gap: 2rem;
     background-color: white;
     border-radius: 15px;
     padding: 3rem;
@@ -301,5 +287,56 @@ section {
         border-radius: 50%;
         cursor: pointer;
     }
+
+    .profile-picture.selected {
+        border: 5px solid var(--c-error);
+    }
 }
 
+.edit-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    width: 154px;
+    height: 45px;
+    border-radius: 50px;
+    background: #444DF2;
+}
+
+
+.interrupt-button {
+    background-color: white;
+}
+
+.error-border {
+    border: 1px solid var(--c-error) !important;
+}
+
+.error-parent {
+    width: 100%;
+    height: 35px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    @media(max-width: 970px) {
+        height: 30px
+    }
+}
+
+mat-error {
+    line-height: 10px;
+}
+
+.error-notification {
+    font-size: 0.6rem !important;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
