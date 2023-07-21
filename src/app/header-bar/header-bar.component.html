@@ -118,7 +118,7 @@
                     <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
                     </div>
                     <!--- password --->
-                    <input formControlName="password" type="password" matInput placeholder="Password"
+                    <input formControlName="password" type="password" matInput placeholder="Confirm with Password"
                     [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
                     <div class="error-parent">
                         <div *ngIf="editMailForm.controls['password'].errors && (submitted ||editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"

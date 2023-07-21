@@ -239,7 +239,6 @@ section {
     .name-field,
     .e-mail-field {
         display: flex;
-        margin-bottom: 0.5rem;
 
         mat-icon {
             margin-right: 0.4rem;
@@ -258,7 +257,6 @@ section {
             padding: 0.3rem;
             padding-left: 1rem;
             border: 0.1rem solid lightgray;
-            margin-bottom: 1rem;
         }
 
         mat-label {
