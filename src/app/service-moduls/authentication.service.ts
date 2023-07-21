@@ -133,8 +133,6 @@ export class AuthenticationService {
   }
 
   async changePassword(code: string, newPassword: string) {
-    console.log('Code: ', code); // TEST
-    console.log('Password: ', newPassword); // TEST
     const auth = getAuth();
 
     await confirmPasswordReset(auth, code, newPassword)
@@ -151,8 +149,8 @@ export class AuthenticationService {
   async changeMail(newEmail: string, password: string) {
     const auth = getAuth();
     const user: any = auth.currentUser;
-    console.log('Mail', newEmail);
-    console.log('currentUser changeEmail', user);
+    console.log('Mail', newEmail); // TEST
+    console.log('currentUser changeEmail', user); // TEST
     if (user) {
       try {
         await updateEmail(user, newEmail);
@@ -197,8 +195,8 @@ export class AuthenticationService {
         localStorage.setItem('currentUser', this.user.uid);
         setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
           this.router.navigateByUrl('/board').then(() => {
-            //window.location.reload();
-            console.log(this.user);
+            //window.location.reload(); // TEST
+            console.log(this.user); // TEST
           });
         });
       } else {
