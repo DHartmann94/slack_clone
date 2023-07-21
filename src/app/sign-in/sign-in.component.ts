@@ -70,12 +70,10 @@ export class SignInComponent implements OnInit {
   checkLoginUser() {
     if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
-      console.log('Email verify weiterleiten..');
       this.authentication.getUserData();
       //this.router.navigateByUrl('/board/' + this.authentication.user.uid);
     } else {
       this.router.navigateByUrl('/sign-in');
-      console.log('Email NICHT verify!');
       this.showError('emailNotVerify');
     }
   }

@@ -20,12 +20,12 @@ export class SignUpComponent implements OnInit {
       Validators.required,
       Validators.minLength(3),
       Validators.maxLength(25),
-      Validators.pattern(/^[a-zA-Z]+\s[a-zA-Z]+$/),
+      Validators.pattern(/^[a-zA-Z-]+\s[a-zA-Z-]+$/),
     ]),
 
     email: new FormControl('', [
       Validators.required,
-      Validators.email,
+      Validators.email, // ^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$
     ]),
 
     password: new FormControl('', [

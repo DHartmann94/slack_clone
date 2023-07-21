@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../service-moduls/validation.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-password-confirm',
@@ -26,7 +26,7 @@ export class PasswordConfirmComponent {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private route: ActivatedRoute, public validation: ValidationService, public authentication: AuthenticationService) { }
+  constructor(private route: ActivatedRoute, private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
 
   /*------ Change-Password ------*/
   async changePassword() {
@@ -42,7 +42,7 @@ export class PasswordConfirmComponent {
 
     this.showsNotificationAnimation();
     this.resetForm();
-    //this.router.navigateByUrl("/sign-in");
+    this.router.navigateByUrl("/sign-in");
   }
 
   showsNotificationAnimation() {
