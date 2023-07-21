@@ -5,7 +5,7 @@
     <div>
         <div (click)="openLogoutContainer()" class="profile">
             <h2>{{ userName }}</h2>
-            <img src="./assets/img/avatar.png" alt="">
+            <img class="user-icon" src="{{ userPicture }}" alt="">
             <mat-icon>keyboard_arrow_down</mat-icon>
             <div class="status"></div>
         </div>
@@ -33,7 +33,7 @@
                 <mat-icon (click)="closeUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img-one">
-                <img src="/assets/profile-pictures/EliasNeumann.png">
+                <img src="{{ userPicture }}">
             </div>
             <mat-card-content>
                 <div class="user-contact-info">
@@ -70,11 +70,11 @@
                 <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img"(mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
-                <img src="/assets/profile-pictures/EliasNeumann.png">
-                <mat-icon class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
+                <img src="{{ userPicture }}">
+                <mat-icon (click)="openPictureContainer()" class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">
-                <form class="name-form">
+                <form class="name-form" [formGroup]="editName">
                     <div class="name-field">
                         <div>
                             <mat-icon>account_circle</mat-icon>
@@ -83,21 +83,34 @@
                             <mat-label>Full Name</mat-label>
                         </div>
                     </div>
-                    <input matInput placeholder="Full Name">
+                    <input formControlName="name" matInput placeholder="Full Name">
                 </form>
-                <form class="email-form">
+                <form class="email-form" [formGroup]="editMail">
                     <div class="e-mail-field">
                         <mat-icon>mail_outline</mat-icon>
                         <mat-label>E-Mail-Address</mat-label>
                     </div>
-                    <input matInput placeholder="E-Mail-Address">
+                    <input formControlName="email" matInput placeholder="E-Mail-Address">
+                    <input formControlName="password" type="password" matInput placeholder="Password">
                 </form>
             </mat-card-content>
             <mat-card-actions class="edit-buttons">
                 <button (click)="closeEditUserProfile()" class="interrupt-button" mat-stroked-button>Cancel</button>
-                <button (click)="closeEditUserProfile()" class="save-button" mat-flat-button
+                <button (click)="editUserProfile()" class="save-button" mat-flat-button
                     color="primary">Save</button>
             </mat-card-actions>
         </mat-card>
+
+        <div *ngIf="isProfilePictureContainerOpen"  style="z-index: 99999;">
+            <div class="profile-picture-container">
+              <div *ngFor="let picture of profilePictures">
+                <img class="profile-picture" [src]="picture" alt="Profile Picture">
+              </div>
+              
+    
+            
+            </div>
+          </div>
+
     </section>
 </div>

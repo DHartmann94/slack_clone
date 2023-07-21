@@ -25,6 +25,13 @@
         column-gap: 8px;
         cursor: pointer;
 
+        .user-icon{
+            height: 60px;
+            width: 60px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+
         h2 {
             font-family: 'Nunito';
             font-size: 28px;
@@ -35,8 +42,8 @@
 
         .status {
             position: absolute;
-            top: 72px;
-            right: 69px;
+            top: 59px;
+            right: 45px;
             width: 16.667px;
             height: 16.667px;
             border-radius: 100%;
@@ -112,7 +119,6 @@ section {
     padding: 1rem;
     flex-direction: column;
     width: 24rem;
-    height: 32rem;
     border-radius: 15px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     line-height: 2;
@@ -121,6 +127,7 @@ section {
         padding: 16px 8px 0;
     }
 
+ 
 
     a {
         text-decoration: none;
@@ -146,8 +153,6 @@ section {
         justify-content: center;
         align-items: center;
         margin: 1rem;
-
-       
     }
 
     .user-img-one img {
@@ -264,6 +269,7 @@ section {
             padding: 0.3rem;
             padding-left: 1rem;
             border: 0.1rem solid lightgray;
+            margin-bottom: 1rem;
         }
 
         mat-label {
@@ -275,5 +281,25 @@ section {
         background-color: white;
     }
 
+}
+
+.profile-picture-container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 35rem;
+    gap: 1rem;
+    background-color: white;
+    border-radius: 15px;
+    padding: 3rem;
+    position: absolute;
+    top: 3rem;
+    right: 3rem;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+
+    .profile-picture {
+        width: 8rem;
+        border-radius: 50%;
+        cursor: pointer;
+    }
 }
 

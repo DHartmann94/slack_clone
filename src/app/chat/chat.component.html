@@ -3,10 +3,10 @@
     <div class="white-box"></div>
     <div class="shadow-box"></div>
     <div class="chat-first-row">
-      <div class="chat-head">
-        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="">
-        <span class="chat-name">Entwicklerteam</span>
-        <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="">
+      <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
+        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
+        <span class="chat-name">{{ channel.channelName }}</span>
+        <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
       </div>
       <div class="right-corner">
         <div class="participant-container">
@@ -18,7 +18,7 @@
           3
         </div>
         <div class="add-participant-background">
-          <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="">
+          <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
         </div>
       </div>
     </div>
@@ -95,13 +95,12 @@
           </div>
         </div>
       </div>
-
-
+    </div>
       <!-- Input field -->
       <div class="message-input-field">
         <div class="text-editor">
           <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
-          </textarea>
+    </textarea>
           <div class="text-editor-bottom">
             <div class="text-editor-left-btns">
               <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
@@ -125,31 +124,43 @@
           </mat-card-header>
           <div class="user-img">
             <img src="/assets/profile-pictures/EliasNeumann.png">
+
+<!-- Profile Content -->
+<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">
+  <section *ngIf="isProfileCardOpen" class="user-profile-card-section">
+    <mat-card class="user-profile-card">
+      <mat-card-header class="user-header">
+        <mat-card-title>Profile</mat-card-title>
+        <mat-icon (click)="closeUserProfile()">close</mat-icon>
+      </mat-card-header>
+      <div class="user-img">
+        <img src="/assets/profile-pictures/EliasNeumann.png">
+      </div>
+      <mat-card-content>
+        <div class="user-contact-info">
+          <p>Elias Neumann</p>
+        </div>
+        <div class="user-status">
+          <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+              <circle cx="4" cy="4" r="4" fill="#92C83E" />
+            </svg>
+            Aktiv
+          </p>
+        </div>
+        <div class="user-email">
+          <mat-icon>mail_outline</mat-icon>
+          <div class="user-email-link">
+            <p>E-Mail-Adresse</p>
+            <a>ichbinelias@beispiel.com</a>
           </div>
-          <mat-card-content>
-            <div class="user-contact-info">
-              <p>Elias Neumann</p>
-            </div>
-            <div class="user-status">
-              <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                  <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                </svg>
-                Aktiv
-              </p>
-            </div>
-            <div class="user-email">
-              <mat-icon>mail_outline</mat-icon>
-              <div class="user-email-link">
-                <p>E-Mail-Adresse</p>
-                <a>ichbinelias@beispiel.com</a>
-              </div>
-            </div>
-          </mat-card-content>
-          <mat-card-actions class="user-message-button">
-            <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
-          </mat-card-actions>
-        </mat-card>
-      </section>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="user-message-button">
+        <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+</div>
 
       <!-- Overlay -->
       <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>

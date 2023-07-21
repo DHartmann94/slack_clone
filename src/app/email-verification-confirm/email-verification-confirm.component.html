@@ -10,5 +10,9 @@
         <img class="arrow-img" routerLink="/sign-in" src="./assets/img/icons/arrow_back_left.png" alt="Arrow">
         <h1>EMail</h1>
         <p>Successfully confirmed</p>
+
+        <div *ngIf="loading" class="loading-parent">
+            <mat-spinner></mat-spinner>
+        </div>
     </mat-card>
 </section>

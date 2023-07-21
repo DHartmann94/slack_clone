@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { addDoc, collection, doc, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
-// import { PickerModule } from "@ctrl/ngx-emoji-mart";
-// import { EmojiPickerComponent } from '../emoji-picker/emoji-picker.component';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { Observable } from 'rxjs';
+import { ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-chat',
@@ -11,17 +13,46 @@ import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 })
 
 export class ChatComponent implements OnInit {
+  channelForm!: FormGroup;
+
+  receivedChannelData$!: Observable<ChannelDataInterface | null>;
+
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
   messageId: string = '';
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
-  constructor(private chatService: ChatService, private firestore: Firestore) {}
+  openEditChannel: boolean = false;
+
+  constructor(
+    private chatService: ChatService,
+    private firestore: Firestore,
+    private ChannelDataResolver: ChannelDataResolverService,
+    private fbChannel: FormBuilder, 
+   
+  ) {}
 
   ngOnInit(): void {
+    this.channelForm = this.fbChannel.group({
+      channelName: ['', [Validators.required]],
+      channelDescription: ['', [Validators.required]],
+    });
     this.getChatData();
-    this.chatService.subscribeToMessageUpdates();
+    this.getDataFromChannel();
+  }
+
+  async getDataFromChannel (): Promise<void> {
+    this.receivedChannelData$ = this.ChannelDataResolver.resolve();
+    this.receivedChannelData$.subscribe(
+      (data: ChannelDataInterface | null) => {
+        console.log('Received data in ChatComponent:', data);
+        // Do whatever you want with the received data here
+      },
+      (error) => {
+        console.error('Error receiving data:', error);
+      }
+    );
   }
 
   async getChatData() {
@@ -98,7 +129,13 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  editChannel() {
+    this.openEditChannel = true
+  }
 
+  closeEditChannel() {
+    this.openEditChannel = false
+  }
 
   openUserProfile() {
     this.isProfileCardOpen = true;
@@ -107,6 +144,10 @@ export class ChatComponent implements OnInit {
 
   closeUserProfile() {
     this.isProfileCardOpen = false;
+  }
+
+  leaveChannel() {
+
   }
 
   formatTimeStamp(time: number | undefined): string {

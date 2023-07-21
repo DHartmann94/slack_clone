@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Firestore } from '@angular/fire/firestore';
 import { ValidationService } from '../service-moduls/validation.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
@@ -11,7 +10,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent implements OnInit {
-  //user: User = new User(); // TEST
   isSignUp: boolean = false;
   submitted: boolean = false;
   showSlideInNotification: boolean = false;
@@ -41,7 +39,7 @@ export class SignUpComponent implements OnInit {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private firestore: Firestore, private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
+  constructor(private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
 
   ngOnInit(): void {
   }
@@ -69,12 +67,20 @@ export class SignUpComponent implements OnInit {
 
   async createUser(name: string, emailLowerCase: string) {
     const password: string = this.signUpForm.value.password ?? '';
+    const picturePath = this.randomPicture();
     const authUID = await this.authentication.sendUserToAuthenticator(emailLowerCase, password);
-    await this.authentication.sendUserToFirebase(name,emailLowerCase, authUID);
+    await this.authentication.sendUserToFirebase(name,emailLowerCase, authUID, picturePath);
 
     this.showsNotificationAnimation();
     this.resetForm();
     //this.router.navigateByUrl("/sign-in");
+  }
+
+  randomPicture() {
+    const numberOfPictures = 5; 
+    const randomIndex = Math.floor(Math.random() * numberOfPictures) + 1;
+    const randomPicture = `./assets/profile-pictures/avatar${randomIndex}.png`;
+    return randomPicture;
   }
 
   showsNotificationAnimation() {
