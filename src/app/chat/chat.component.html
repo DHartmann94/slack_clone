@@ -159,13 +159,18 @@
 <mat-card class="overlay" *ngIf="openEditChannel" (click)="closeEditChannel()">
   <div class="channel-edit-card">
       <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
+        <h1># {{ channel.channelName }}</h1>
+      </div>
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2>Channel-Name</h2>
         <h2># {{ channel.channelName }}</h2>
       </div>
-      <div class="frame-edit">
-          
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2>Beschreibung</h2>
+        <h2># {{ channel.channelName }}</h2>
+        <div class="under-line"></div>
       </div>
-      <form [formGroup]="channelForm">
-          <h3>Channel-Name</h3>
+      <!-- <form [formGroup]="channelForm">
           <div class="channel-inputs">
               <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
                   formControlName="channelName">
@@ -188,7 +193,7 @@
           <div class="btn-area">
               <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
           </div>
-      </form>
+      </form> -->
   </div>
 </mat-card>
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query } from '@angular/fire/firestore';
-import { Observable, from, map } from 'rxjs';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
   id?: any;
@@ -15,6 +15,9 @@ export interface ChannelDataInterface {
 })
 
 export class ChannelDataService {
+
+  private channelDataSubject: BehaviorSubject<ChannelDataInterface[]> = new BehaviorSubject<ChannelDataInterface[]>([]);
+  public channelData$: Observable<ChannelDataInterface[]> = this.channelDataSubject.asObservable();
 
   channelData: ChannelDataInterface[] = [];
   users: string | undefined;
@@ -43,10 +46,50 @@ export class ChannelDataService {
           };
           storedUserData.push(channel);
         });
-
         this.channelData = storedUserData;
         return storedUserData;
       })
     )
+  }
+
+  sendChannelData(channel: ChannelDataInterface): Observable<void> {
+    const channels = collection(this.firestore, 'channels');
+    const channelData = {
+      id: channel.id,
+      channelName: channel.channelName,
+      channelDescription: channel.channelDescription,
+      color: channel.color,
+      users: channel.users,
+    };
+
+    return from(addDoc(channels, channelData)).pipe(
+      map(() => {
+        // Message sent successfully (already updated in local chatData)
+        console.log('Message sent');
+      })
+    );
+  } 
+
+  subscribeToChannel() {
+    const channelCollection = collection(this.firestore, 'channels');
+    const q = query(channelCollection);
+
+    onSnapshot(q, (querySnapshot) => {
+      const storedUserData: ChannelDataInterface[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const { channelName, channelDescription, color, users } = data;
+        const channel: ChannelDataInterface = {
+          id: doc.id,
+          channelName: channelName,
+          channelDescription: channelDescription,
+          color: color,
+          users: users,
+        };
+        storedUserData.push(channel);
+      });
+      this.channelDataSubject.next(storedUserData);
+    });
   }
 }
