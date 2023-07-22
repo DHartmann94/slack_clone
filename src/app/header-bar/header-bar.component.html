@@ -1,4 +1,8 @@
 <div class="header-container">
+    <div class="header-logo-container">
+        <img src="./assets/img/Logo-small.png" alt="Logo">
+        <h2>DABubble</h2>
+    </div>
     <div>
         <input class="search-bar" type="text" placeholder="Code learning durchsuchen" id="searchUser">
     </div>
@@ -119,13 +123,13 @@
                     </div>
                     <!--- password --->
                     <input formControlName="password" type="password" matInput placeholder="Confirm with Password"
-                    [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
+                    [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (submitted || editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
                     <div class="error-parent">
                         <div *ngIf="editMailForm.controls['password'].errors && (submitted ||editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"
                             class="error-notification">
                             <mat-error
                                 *ngIf="(editMailForm.controls['password'].errors['minlength'] && editMailForm.controls['password'].touched) || (editMailForm.controls['password'].errors['pattern'] && editMailForm.controls['password'].touched) || editMailForm.controls['password'].errors['required']">
-                                Your password is required.</mat-error>
+                                Your password is required to change the email.</mat-error>
                         </div>
                     </div>
                 </form>

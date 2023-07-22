@@ -18,14 +18,22 @@ export class PasswordResetComponent {
   resetPasswortForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
-      Validators.email,
+      Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     ]),
   });
 
 
-  constructor(private router: Router, public validation: ValidationService,  public authentication: AuthenticationService) { }
+  constructor(
+    private router: Router, 
+    public validation: ValidationService,  
+    public authentication: AuthenticationService) { }
 
   /*------ Send-Mail ------*/
+
+  /**
+   * Asynchronously sends a change password email to the provided email address.
+   * It checks if the email address exists, and if so, sends the email and shows a notification animation.
+   */
   async sendMail() {
     this.submitted = true;
     if (this.resetPasswortForm.invalid) {
@@ -46,9 +54,10 @@ export class PasswordResetComponent {
 
     this.showsNotificationAnimation();
     this.resetForm();
-    //this.router.navigateByUrl("/sign-in");
+    this.router.navigateByUrl("/sign-in");
   }
 
+  /*------ Help functions ------*/
   showsNotificationAnimation() {
     this.showSlideInNotification = true;
     setTimeout(() => {
@@ -75,4 +84,6 @@ export class PasswordResetComponent {
       this.submitted = false;
     }, 3500);
   }
+
+  
 }

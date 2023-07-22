@@ -6,6 +6,24 @@
     padding: 10px 15px;
     column-gap: 37px;
 
+    .header-logo-container {
+        display: flex;
+        align-items: center;
+
+        h2 {
+            font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
+            margin: 25px;
+    
+            font-size: 28px;
+            font-weight: bold;
+        }
+    
+        img {
+            width: 55px;
+            object-fit: scale-down;
+        }
+    }
+
     .search-bar {
         display: flex;
         min-width: 689px;
@@ -18,6 +36,7 @@
     }
 
     .profile {
+        position: relative;
         display: flex;
         flex-direction: row;
         justify-content: center;
@@ -42,8 +61,8 @@
 
         .status {
             position: absolute;
-            top: 59px;
-            right: 45px;
+            top: 45px;
+            right: 33px;
             width: 16.667px;
             height: 16.667px;
             border-radius: 100%;
@@ -302,6 +321,7 @@ section {
     .profile-picture {
         width: 8rem;
         border-radius: 50%;
+        border: 5px solid transparent;
         cursor: pointer;
     }
 

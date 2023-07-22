@@ -23,7 +23,6 @@ section {
     }
 
     a {
-        // TEST GLOABAL?????
         color: var(--c-purple);
         text-decoration: none;
         transition: all 225ms ease-in-out;
@@ -109,25 +108,26 @@ section {
 
 /*------ Sign-in Card ------*/
 mat-card {
+    position: relative;
     width: 400px;
     border-radius: 15px;
 
     padding: $line-spacing;
-    position: relative;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
 
     h1 {
-        color: var(--c-purple);
         margin: 0px 0px 35px 0px !important;
+
         font-size: 3rem !important;
+        color: var(--c-purple);
     }
 
     p {
         margin: 5px 0px 35px 0px;
+
         text-align: center;
     }
 
@@ -148,18 +148,18 @@ mat-card {
 }
 
 form {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
 
     input {
-        font-family: 'Nunito';
-        padding: 15px 40px;
+        position: relative;
         width: 100%;
         height: 45px;
-        position: relative;
+        padding: 15px 40px;
 
+        font-family: 'Nunito';
         background: var(--bg-color);
         border: 1px solid var(--bg-color);
         border-radius: 42px;
@@ -201,8 +201,8 @@ form {
 }
 
 .or-parent {
-    width: 100%;
     position: relative;
+    width: 100%;
 
     display: flex;
     align-items: center;
@@ -214,17 +214,18 @@ form {
         top: 50%;
         right: 0;
         left: 0;
+
         border: 1px solid var(--c-light-purple);
     }
 
     .or-child {
-        padding: 10px;
-        background-color: #ffffff;
-
         z-index: 2 !important;
         position: absolute;
         top: 50%;
         left: 50%;
+        padding: 10px;
+
+        background-color: #ffffff;
         transform: translate(-50%, -50%);
     }
 }
@@ -241,8 +242,8 @@ form {
     font-size: 1rem;
     color: var(--c-purple);
     background-color: var(--bg-color);
-    border-radius: 42px;
     border: 1px solid transparent;
+    border-radius: 42px;
     transition: all 225ms ease-in-out;
     cursor: pointer;
 
@@ -253,10 +254,11 @@ form {
 
 .button-bottom-parent {
     width: 100%;
+    gap: 16px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 16px;
 
     button,
     a {
@@ -265,20 +267,20 @@ form {
 
         font-size: 1rem;
         font-weight: bold;
-        border-radius: 42px;
         border: 1px solid var(--c-purple);
+        border-radius: 42px;
         box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
         transition: all 225ms ease-in-out;
         cursor: pointer;
     }
 
     .button-sign-in {
-        color: var(--white);
-        background-color: var(--c-purple);
-
         display: flex;
         align-items: center;
         justify-content: center;
+
+        color: var(--white);
+        background-color: var(--c-purple);
 
         &:hover {
             background-color: #575ff7; // TEST IN GLOABL
@@ -290,12 +292,12 @@ form {
     }
 
     .button-guest-login {
-        color: var(--c-purple);
-        background-color: var(--white);
-
         display: flex;
         align-items: center;
         justify-content: center;
+
+        color: var(--c-purple);
+        background-color: var(--white);
 
         &:hover {
             color: var(--white);
@@ -306,11 +308,11 @@ form {
 
 .bottom-container {
     width: 100%;
+    gap: $line-spacing;
 
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: $line-spacing;
 
     @media(max-width: 970px) {
         gap: $line-spacing-mobile;
@@ -335,12 +337,12 @@ mat-error {
 }
 
 .error-notification {
-    font-size: 0.6rem !important;
-
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
+
+    font-size: 0.6rem !important;
 }
 
 .error-border {
@@ -355,13 +357,12 @@ mat-error {
     bottom: 0;
     left: 0;
 
-    border: 1px solid transparent;
-    border-radius: 15px;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 1px solid transparent;
+    border-radius: 15px;
     background: linear-gradient(45deg, rgba(100, 100, 100, 0.4), rgba(112, 112, 112, 0.4), rgba(209, 209, 209, 0.4), rgba(219, 219, 219, 0.4));
 }
 
@@ -381,10 +382,11 @@ mat-spinner {
     position: absolute;
     top: 70%;
     right: 50%;
-    transform: translateX(50%);
-    padding: 15px 25px;
     width: 326px;
     height: 74px;
+    padding: 15px 25px;
+
+    transform: translateX(50%);
     background-color: var(--c-purple);
     border: 1px solid var(--c-purple);
     border-top-left-radius: 10px;
@@ -395,14 +397,14 @@ mat-spinner {
     opacity: 0;
 
     div {
+        width: 100%;
+        height: 100%;
+        
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
         text-align: center;
-
-        width: 100%;
-        height: 100%;
     }
 
     span {

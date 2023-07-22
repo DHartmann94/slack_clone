@@ -128,6 +128,9 @@ export class ChannelsComponent implements OnInit {
         color: this.newColor(),
       };
 
+      this.channelData.push(channel);
+      this.channelDataService.sendChannelData(channel).subscribe();
+
       const channelCollection = collection(this.firestore, 'channels');
       const docRef = await addDoc(channelCollection, channel);
       this.channelId = docRef.id;

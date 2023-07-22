@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { Observable } from 'rxjs';
 import { ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmojisComponent } from '../emojis/emojis.component';
 
 @Component({
   selector: 'app-chat',
@@ -13,6 +14,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class ChatComponent implements OnInit {
+  typedEmoji: string = "";
+
+  [x: string]: any;
   channelForm!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
@@ -24,14 +28,16 @@ export class ChatComponent implements OnInit {
   isLogoutContainerOpen: boolean = false;
 
   openEditChannel: boolean = false;
+  emojipickeractive = false;
 
   constructor(
     private chatService: ChatService,
     private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
-    private fbChannel: FormBuilder, 
-   
-  ) {}
+    private fbChannel: FormBuilder,
+    private elementRef: ElementRef
+
+  ) { }
 
   ngOnInit(): void {
     this.channelForm = this.fbChannel.group({
@@ -42,12 +48,19 @@ export class ChatComponent implements OnInit {
     this.getDataFromChannel();
   }
 
-  async getDataFromChannel (): Promise<void> {
+
+  public typeEmoji($event: any): void {
+    console.log($event);
+    this.messageInput = this.messageInput + $event.character;
+  }
+
+
+
+  async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
         console.log('Received data in ChatComponent:', data);
-        // Do whatever you want with the received data here
       },
       (error) => {
         console.error('Error receiving data:', error);
@@ -71,6 +84,8 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
+
 
   isNewDay(
     currentMessage: MessageInterface,
@@ -127,6 +142,11 @@ export class ChatComponent implements OnInit {
         }
       );
     }
+  }
+
+
+  toggleEmojiPicker() {
+    this.emojipickeractive = !this.emojipickeractive;
   }
 
   editChannel() {

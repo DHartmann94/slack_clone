@@ -43,6 +43,7 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
+import { EmojisComponent } from './emojis/emojis.component';
 // import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 
 @NgModule({
@@ -63,6 +64,7 @@ import { ChannelDataResolverService } from './service-moduls/channel-data-resolv
     PasswordConfirmComponent,
     AuthActionComponent,
     EmailVerificationConfirmComponent,
+    EmojisComponent,
   ],
   imports: [
     BrowserModule,

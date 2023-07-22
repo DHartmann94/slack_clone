@@ -1,0 +1,6 @@
+<div id="emoji-selector">
+    <input placeholder="search your emoji" [(ngModel)]="searchValue" (keydown)="search()" class="input-for-emoji" type="text">
+    <div id="emoji-list">
+      <span class="emoji" *ngFor="let emoji of emojiList" (click)="showInInput(emoji)" >{{ emoji['character'] }}</span>
+    </div>
+  </div> 

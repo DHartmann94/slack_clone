@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { Router } from '@angular/router';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.scss']
 })
-export class SignInComponent implements OnInit {
+export class SignInComponent {
   isSignIn: boolean = false;
   submitted: boolean = false;
   userNotFound: boolean = false;
@@ -16,16 +16,19 @@ export class SignInComponent implements OnInit {
 
 
   signInForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]),
     password: new FormControl('', Validators.required),
   });
 
   constructor(private router: Router, public authentication: AuthenticationService) { }
 
-  ngOnInit(): void {
-  }
-
   /*------ SIGN-IN ------*/
+
+  /**
+   * Asynchronously signs in the user with the provided credentials from the 'signInForm'.
+   * It retrieves data from the form, performs error checks in the user if valid.
+   * @returns 
+   */
   async signIn() {
     this.submitted = true;
     if (this.signInForm.invalid) {
@@ -43,38 +46,49 @@ export class SignInComponent implements OnInit {
     }
 
     this.checkLoginUser();
-    this.resetForm();
+    this.enableForm();
   }
 
+  /**
+   * Asynchronously retrieves the email and password data from the 'signInForm' and uses it to log in the user.
+   */
   async getDataFromForm() {
     const emailLowerCase: string = this.signInForm.value.email?.toLowerCase() || '';
     const password = this.signInForm.value.password ?? '';
     await this.authentication.loginWithEmail(emailLowerCase, password);
   }
 
+  /**
+   * Asynchronously signs in a guest user with the provided email and password.
+   * @param email {string} email - The email address of the guest user.
+   * @param password {string} password - The password of the guest user.
+   */
   async signInGuest(email: string, password: string) {
     this.disableForm();
 
     await this.authentication.loginWithEmail(email, password);
     this.authentication.getUserData();
 
-    this.resetForm();
+    this.enableForm();
   }
 
-  checkError() {
-    if (this.authentication.errorMessage === 'auth/wrong-password' || this.authentication.errorMessage === 'auth/user-not-found') {
-      this.showError('userNotFound')
-    }
-  }
-
+  /**
+   * If the email is verified, it fetches user data using the 'getUserData' method from the 'authentication' service.
+   */
   checkLoginUser() {
     if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
       this.authentication.getUserData();
-      //this.router.navigateByUrl('/board/' + this.authentication.user.uid);
     } else {
       this.router.navigateByUrl('/sign-in');
       this.showError('emailNotVerify');
+    }
+  }
+
+  /*------ Help functions ------*/
+  checkError() {
+    if (this.authentication.errorMessage === 'auth/wrong-password' || this.authentication.errorMessage === 'auth/user-not-found') {
+      this.showError('userNotFound')
     }
   }
 
@@ -90,7 +104,7 @@ export class SignInComponent implements OnInit {
     this.isSignIn = true;
   }
 
-  resetForm() {
+  enableForm() {
     setTimeout(() => {
       this.signInForm.enable();
       this.isSignIn = false;

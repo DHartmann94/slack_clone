@@ -26,9 +26,17 @@ export class PasswordConfirmComponent {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private route: ActivatedRoute, private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    public validation: ValidationService, 
+    public authentication: AuthenticationService) { }
 
   /*------ Change-Password ------*/
+
+  /**
+   * Asynchronously changes the user's password using the provided 'oobCode' from the query parameters int the url and the new password from the 'confirmPasswordForm'.
+   */
   async changePassword() {
     this.submitted = true;
     if (this.confirmPasswortForm.invalid) {
@@ -45,6 +53,7 @@ export class PasswordConfirmComponent {
     this.router.navigateByUrl("/sign-in");
   }
 
+  /*------ Help functions ------*/
   showsNotificationAnimation() {
     this.showSlideInNotification = true;
     setTimeout(() => {
@@ -65,4 +74,6 @@ export class PasswordConfirmComponent {
       this.submitted = false;
     }, 3500);
   }
+
+
 }
