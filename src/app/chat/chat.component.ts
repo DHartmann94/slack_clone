@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -14,8 +14,8 @@ import { EmojisComponent } from '../emojis/emojis.component';
 })
 
 export class ChatComponent implements OnInit {
-  @Input() typedEmoji: string = "";
-  
+  typedEmoji: string = "";
+
   [x: string]: any;
   channelForm!: FormGroup;
 
@@ -35,6 +35,7 @@ export class ChatComponent implements OnInit {
     private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
     private fbChannel: FormBuilder,
+    private elementRef: ElementRef
 
   ) { }
 
@@ -47,12 +48,12 @@ export class ChatComponent implements OnInit {
     this.getDataFromChannel();
   }
 
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['typedEmoji']) {
-  //     const newEmoji = changes['typedEmoji'].currentValue;
-  //     this.emojiChanged(newEmoji);
-  //   }
-  // }
+
+  public typeEmoji($event: any): void {
+    console.log($event);
+    this.messageInput = this.messageInput + $event.character;
+  }
+
 
 
   async getDataFromChannel(): Promise<void> {
@@ -143,10 +144,6 @@ export class ChatComponent implements OnInit {
     }
   }
 
-  // emojiChanged(emoji: string) {
-  //   console.log(emoji);
-  //   this.messageInput.push(this.typedEmoji); 
-  // }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;

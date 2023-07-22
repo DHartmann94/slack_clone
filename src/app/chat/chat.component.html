@@ -102,7 +102,7 @@
 <!-- Input field -->
 <div class="message-input-field">
   <div class="text-editor">
-    <app-emojis class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+    <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
 
     <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
         </textarea>

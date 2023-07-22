@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ChatComponent } from '../chat/chat.component';
 
 @Component({
@@ -9,12 +9,12 @@ import { ChatComponent } from '../chat/chat.component';
 
 export class EmojisComponent implements OnInit{
 
-  constructor(public chat: ChatComponent) {
+  constructor(public chat: ChatComponent) {}
 
-  }
-  typedEmoji: string = "";
-  @Output() emojiChanged = new EventEmitter<string>();
-  
+  @Output() newEmoji = new EventEmitter<string>();
+
+  public typedEmoji: string ='';
+
   searchValue: string = '';
   myEmojis: any;
   emojiSelectorIcon = document.getElementById('emojiSelectorIcon');
@@ -48,14 +48,11 @@ export class EmojisComponent implements OnInit{
     
   }
 
-  showInInput(emoji:string) {
-    this.chat.typedEmoji = emoji;
-    this.emojiChanged.emit(this.typedEmoji);
+  public showInInput(emoji:string): void {
+    this.newEmoji.emit(emoji);
   }
 
   
-  
-
   search() {
     const filteredList = this.allEmojis.filter(emoji => {
       return emoji.unicodeName.toLowerCase().startsWith(this.searchValue.toLowerCase());
