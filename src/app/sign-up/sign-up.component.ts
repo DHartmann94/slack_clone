@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidationService } from '../service-moduls/validation.service';
 import { AuthenticationService } from '../service-moduls/authentication.service';
@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss']
 })
-export class SignUpComponent implements OnInit {
+export class SignUpComponent {
   isSignUp: boolean = false;
   submitted: boolean = false;
   showSlideInNotification: boolean = false;
@@ -39,12 +39,17 @@ export class SignUpComponent implements OnInit {
     ]),
   }, { validators: this.validation.matchPassword.bind(this) });
 
-  constructor(private router: Router, public validation: ValidationService, public authentication: AuthenticationService) { }
-
-  ngOnInit(): void {
-  }
+  constructor(
+    private router: Router, 
+    public validation: ValidationService, 
+    public authentication: AuthenticationService) { }
 
   /*------ SIGN-UP ------*/
+
+  /**
+   * Asynchronously signs up a new user using the data provided in the 'signUpForm'.
+   * If the email is new, it proceeds to create the user account.
+   */
   async signUp() {
     this.submitted = true;
     if (this.signUpForm.invalid) {
@@ -64,6 +69,11 @@ export class SignUpComponent implements OnInit {
     await this.createUser(emailLowerCase);
   }
 
+  /**
+   * Asynchronously creates a new user using the provided email address and other sign-up data.
+   * It uses the given email and password to create an account in the authentication service, and then sends additional user data (name, email, authUID, picturePath) to Firebase.
+   * @param emailLowerCase - The email address of the new user.
+   */
   async createUser(emailLowerCase: string) {
     const name: string = this.signUpForm.value.name ?? '';
     const password: string = this.signUpForm.value.password ?? '';
@@ -76,6 +86,10 @@ export class SignUpComponent implements OnInit {
     this.router.navigateByUrl("/sign-in");
   }
 
+  /**
+   * Generates a random picture path from a set of profile pictures.
+   * @returns {string} A randomly chosen picture path.
+   */
   randomPicture() {
     const numberOfPictures = 5; 
     const randomIndex = Math.floor(Math.random() * numberOfPictures) + 1;
@@ -83,6 +97,7 @@ export class SignUpComponent implements OnInit {
     return randomPicture;
   }
 
+  /*------ Help functions ------*/
   showsNotificationAnimation() {
     this.showSlideInNotification = true;
     setTimeout(() => {
@@ -110,5 +125,5 @@ export class SignUpComponent implements OnInit {
     }, 3500);
   }
 
-  
+
 }

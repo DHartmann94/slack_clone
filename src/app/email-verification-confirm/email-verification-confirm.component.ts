@@ -18,11 +18,15 @@ export class EmailVerificationConfirmComponent implements OnInit {
     this.checkMode();
   }
 
+  /**
+   * Check the mode in the url.
+   * If the mode is 'verifyEmail', it calls the 'handleVerifyEmail' method from the 'authentication' service.
+   */
   async checkMode() {
-    this.route.queryParams.subscribe( async params => {
+    this.route.queryParams.subscribe(async params => {
       this.mode = '';
       this.mode = params['mode'];
-      
+
       if (this.mode === 'verifyEmail') {
         this.loading = true;
         await this.authentication.handleVerifyEmail();

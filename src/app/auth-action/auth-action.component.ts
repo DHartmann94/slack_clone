@@ -11,6 +11,9 @@ export class AuthActionComponent implements OnInit {
 
   constructor(private route: ActivatedRoute) { }
 
+  /**
+   * Subscribes to the 'queryParams' of the 'route' to check and handle the 'mode' parameter int the url.
+   */
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.mode = '';
