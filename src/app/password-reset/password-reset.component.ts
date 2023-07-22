@@ -46,7 +46,7 @@ export class PasswordResetComponent {
 
     this.showsNotificationAnimation();
     this.resetForm();
-    //this.router.navigateByUrl("/sign-in");
+    this.router.navigateByUrl("/sign-in");
   }
 
   showsNotificationAnimation() {
@@ -75,4 +75,6 @@ export class PasswordResetComponent {
       this.submitted = false;
     }, 3500);
   }
+
+  
 }
