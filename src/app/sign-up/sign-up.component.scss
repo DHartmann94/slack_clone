@@ -16,6 +16,7 @@
     top: 35px;
     left: 25px;
     padding: 3px;
+
     border: 1px solid transparent;
     border-radius: 50%;
     transition: all 225ms ease-in-out;
@@ -37,17 +38,16 @@
     width: 125px;
     height: 45px;
 
-    color: var(--white);
-    background-color: var(--c-purple);
-
     display: flex;
     align-items: center;
     justify-content: center;
 
     font-size: 1rem;
     font-weight: bold;
-    border-radius: 42px;
+    color: var(--white);
+    background-color: var(--c-purple);
     border: 1px solid var(--c-purple);
+    border-radius: 42px;
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.1);
     transition: all 225ms ease-in-out;
     cursor: pointer;

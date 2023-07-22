@@ -18,7 +18,7 @@ export class PasswordResetComponent {
   resetPasswortForm = new FormGroup({
     email: new FormControl('', [
       Validators.required,
-      Validators.email,
+      Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     ]),
   });
 

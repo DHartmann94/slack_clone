@@ -127,8 +127,6 @@ section {
         padding: 16px 8px 0;
     }
 
- 
-
     a {
         text-decoration: none;
         color: #1381FF;
@@ -192,6 +190,11 @@ section {
         transition: opacity 0.3s ease-in-out;
     }
 
+    .edit-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
   
     
     .user-img:hover img {
@@ -269,6 +272,8 @@ section {
 
 .profile-picture-container{
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     width: 35rem;
     gap: 2rem;
@@ -280,9 +285,24 @@ section {
     right: 3rem;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 
+    mat-icon {
+        cursor: pointer;
+        position: absolute;
+        right: 25px;
+        top: 25px;
+    }
+
+    .edit-buttons-pictures {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 21rem;
+    }
+
     .profile-picture {
         width: 8rem;
         border-radius: 50%;
+        border: 5px solid transparent;
         cursor: pointer;
     }
 
@@ -291,11 +311,7 @@ section {
     }
 }
 
-.edit-buttons {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
+
 
 button {
     width: 154px;

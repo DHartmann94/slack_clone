@@ -51,7 +51,6 @@ export class ChatComponent implements OnInit {
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
         console.log('Received data in ChatComponent:', data);
-        // Do whatever you want with the received data here
       },
       (error) => {
         console.error('Error receiving data:', error);

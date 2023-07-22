@@ -38,7 +38,7 @@ export class HeaderBarComponent {
 
   editMailForm = new FormGroup({
     email: new FormControl('', [
-      Validators.email,
+      Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/),
     ]),
     password: new FormControl('', [
       Validators.required,

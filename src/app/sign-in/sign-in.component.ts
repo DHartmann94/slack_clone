@@ -16,7 +16,7 @@ export class SignInComponent implements OnInit {
 
 
   signInForm = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.pattern(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)]),
     password: new FormControl('', Validators.required),
   });
 
