@@ -12,8 +12,10 @@ import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit
 import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { AuthActionComponent } from './auth-action/auth-action.component';
+import { StartscreenComponent } from './startscreen/startscreen.component';
 
 const routes: Routes = [
+  { path: '', component: StartscreenComponent },
   { path: 'sign-in', component: SignInComponent },
   { path: 'sign-up', component: SignUpComponent },
   { path: 'reset-password', component: PasswordResetComponent },

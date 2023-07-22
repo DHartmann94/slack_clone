@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,6 +12,8 @@ export class StartscreenComponent implements OnInit {
   toLeft = false;
   workmode = false;
 
+  constructor(private router: Router) {}
+
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -22,7 +25,8 @@ export class StartscreenComponent implements OnInit {
 
   hideBG() {
     setTimeout(() => {
-      this.workmode = true;
+      //this.workmode = true;
+      this.router.navigateByUrl("/sign-in");
     }, 1000);
   }
 } 
