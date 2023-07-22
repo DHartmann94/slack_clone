@@ -5,6 +5,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 import { Observable } from 'rxjs';
 import { ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EmojisComponent } from '../emojis/emojis.component';
 
 @Component({
   selector: 'app-chat',
@@ -13,6 +14,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 })
 
 export class ChatComponent implements OnInit {
+[x: string]: any;
   channelForm!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
@@ -24,6 +26,7 @@ export class ChatComponent implements OnInit {
   isLogoutContainerOpen: boolean = false;
 
   openEditChannel: boolean = false;
+  emojipickeractive = false;
 
   constructor(
     private chatService: ChatService,
@@ -41,6 +44,7 @@ export class ChatComponent implements OnInit {
     this.getChatData();
     this.getDataFromChannel();
   }
+  
 
   async getDataFromChannel (): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
@@ -127,6 +131,10 @@ export class ChatComponent implements OnInit {
         }
       );
     }
+  }
+
+  toggleEmojiPicker() {
+    this.emojipickeractive = !this.emojipickeractive;
   }
 
   editChannel() {
