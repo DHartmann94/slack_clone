@@ -65,4 +65,6 @@ export class PasswordConfirmComponent {
       this.submitted = false;
     }, 3500);
   }
+
+
 }

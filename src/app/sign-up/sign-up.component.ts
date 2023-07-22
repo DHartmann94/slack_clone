@@ -52,7 +52,6 @@ export class SignUpComponent implements OnInit {
     }
     this.disableForm();
 
-    const name: string = this.signUpForm.value.name ?? '';
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
     this.emailExists = await this.validation.checkEmailExists(emailLowerCase);
     if (this.emailExists) {
@@ -62,10 +61,11 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    await this.createUser(name, emailLowerCase);
+    await this.createUser(emailLowerCase);
   }
 
-  async createUser(name: string, emailLowerCase: string) {
+  async createUser(emailLowerCase: string) {
+    const name: string = this.signUpForm.value.name ?? '';
     const password: string = this.signUpForm.value.password ?? '';
     const picturePath = this.randomPicture();
     const authUID = await this.authentication.sendUserToAuthenticator(emailLowerCase, password);
@@ -73,7 +73,7 @@ export class SignUpComponent implements OnInit {
 
     this.showsNotificationAnimation();
     this.resetForm();
-    //this.router.navigateByUrl("/sign-in");
+    this.router.navigateByUrl("/sign-in");
   }
 
   randomPicture() {
@@ -110,5 +110,5 @@ export class SignUpComponent implements OnInit {
     }, 3500);
   }
 
-
+  
 }

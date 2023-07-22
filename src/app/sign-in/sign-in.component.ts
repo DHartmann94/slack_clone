@@ -71,7 +71,6 @@ export class SignInComponent implements OnInit {
     if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
       this.authentication.getUserData();
-      //this.router.navigateByUrl('/board/' + this.authentication.user.uid);
     } else {
       this.router.navigateByUrl('/sign-in');
       this.showError('emailNotVerify');
