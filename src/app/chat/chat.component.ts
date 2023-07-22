@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -14,7 +14,9 @@ import { EmojisComponent } from '../emojis/emojis.component';
 })
 
 export class ChatComponent implements OnInit {
-[x: string]: any;
+  @Input() typedEmoji: string = "";
+  
+  [x: string]: any;
   channelForm!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
@@ -32,9 +34,9 @@ export class ChatComponent implements OnInit {
     private chatService: ChatService,
     private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
-    private fbChannel: FormBuilder, 
-   
-  ) {}
+    private fbChannel: FormBuilder,
+
+  ) { }
 
   ngOnInit(): void {
     this.channelForm = this.fbChannel.group({
@@ -44,9 +46,16 @@ export class ChatComponent implements OnInit {
     this.getChatData();
     this.getDataFromChannel();
   }
-  
 
-  async getDataFromChannel (): Promise<void> {
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['typedEmoji']) {
+  //     const newEmoji = changes['typedEmoji'].currentValue;
+  //     this.emojiChanged(newEmoji);
+  //   }
+  // }
+
+
+  async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
@@ -74,6 +83,8 @@ export class ChatComponent implements OnInit {
       }
     );
   }
+
+
 
   isNewDay(
     currentMessage: MessageInterface,
@@ -131,6 +142,11 @@ export class ChatComponent implements OnInit {
       );
     }
   }
+
+  // emojiChanged(emoji: string) {
+  //   console.log(emoji);
+  //   this.messageInput.push(this.typedEmoji); 
+  // }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;

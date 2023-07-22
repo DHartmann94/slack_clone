@@ -14,6 +14,7 @@
 
 #emoji-list {
     display: flex;
+    justify-content: center;
     flex-wrap: wrap;
     margin-top: 60px;
     margin-left: 10px;
@@ -46,7 +47,11 @@
 
 
 .emoji {
-    margin: 10px;
-    height: 10px;
-    width: 10px;
+    margin: 8px;
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
