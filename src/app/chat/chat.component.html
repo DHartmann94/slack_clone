@@ -33,7 +33,7 @@
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
               <span class="chat-name" (click)="openUserProfile()">Frederik Beck</span>
-              <span class="chat-timeStamp">11:45 am</span>
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
             </div>
             <div>
               <span class="chat-message-right">{{ message.messageText }}</span>
