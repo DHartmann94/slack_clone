@@ -128,9 +128,10 @@
   line-height: normal;
   margin-right: 10px;
   cursor: pointer;
+  transition: color 0.3s;
 
   &:hover {
-    color: var(--c-black);
+    color: var(--purple-2, #797ef3);
   }
 }
 
@@ -148,26 +149,31 @@
 .chat-right {
   display: flex;
   justify-content: flex-end;
-  padding-left: 145px;
+  padding: 10px 40px 10px 145px;
+  margin: 40px -40px;
+  &:hover {
+    background: var(--bg-color, #eceefe);
+  }
 }
 
 .parting-line {
   width: 100%;
   border: 0.5px solid #adb0d97a;
   height: 0px;
-  margin: 37.5px 0;
 }
 
 .time-stamp {
   border-radius: 30px;
   border: 1px solid var(--ligth-purple-lines, #adb0d9);
-  padding: 5px 15px;
+  padding: 0 15px 5px;
   width: fit-content;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   background: white;
+  position: absolute;
+  top: 23px;
 }
 
 .flex-center {
@@ -256,7 +262,7 @@
 
 .time-partLine {
   position: relative;
-  top: -58px;
+  top: -40px;
 }
 
 .like-area {
@@ -652,11 +658,12 @@ section {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
+  padding: 10px 145px 10px 40px;
+  margin: 40px -40px;
   &:hover {
-    background: var(--bg-color, #eceefe);
     cursor: pointer;
-
+    background: var(--bg-color, #eceefe);
     .chat-message-left {
       background-color: white;
     }
