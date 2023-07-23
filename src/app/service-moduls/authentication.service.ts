@@ -130,7 +130,7 @@ export class AuthenticationService {
   /**
  * 
  * Use: http://localhost:4200/auth-action for testing.
- * @param {string} emailLowerCase - The e-mail address where the reset e-mail should be sent.
+ * @param {string} emailLowerCase - The email address where the reset e-mail should be sent.
  */
   async sendChangePasswordMail(emailLowerCase: string) {
     const auth = getAuth();
@@ -161,8 +161,6 @@ export class AuthenticationService {
   async changeMail(newEmail: string, password: string) {
     const auth = getAuth();
     const user: any = auth.currentUser;
-    console.log('Mail', newEmail); // TEST
-    console.log('currentUser changeEmail', user); // TEST
     if (user) {
       try {
         await updateEmail(user, newEmail);
