@@ -124,6 +124,10 @@ export class ChatComponent implements OnInit {
         mentionedUser: 'user_id_here', // Set the mentioned user ID or leave it as null if not applicable
       };
 
+      if (this.emojipickeractive) {
+        this.toggleEmojiPicker(); // Assuming toggleEmojiPicker() is a method in this component to handle the emoji picker's visibility
+      }
+
       // Add the new message locally to chatData
       this.chatData.push(message);
 

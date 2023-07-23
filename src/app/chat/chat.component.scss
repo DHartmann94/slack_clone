@@ -297,6 +297,12 @@
   justify-content: center;
   cursor: pointer;
   width: 36px;
+  height: 36px;
+
+  &:hover {
+    background: #fff;
+    border-radius: 50%;
+  }
 }
 
 .message-input-field {
@@ -425,10 +431,22 @@ $light-blue: #eceefe;
   height: 40px;
   width: 40px;
   cursor: pointer;
-  transition: background-image 0.3s; // Add a slow transition for the background-image change
+  transition: background-image 0.3s; //
 
   &:hover {
     background-image: url(../../assets/img/icons/send_message_hover.svg);
+  }
+}
+
+.reaction-button {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background-image: url(../../assets/img/icons/add_reaction.svg);
+
+  &:hover {
+    transition: background-image 0.3s;
+    background-image: url(../../assets/img/icons/add_reaction_hover.svg);
   }
 }
 
