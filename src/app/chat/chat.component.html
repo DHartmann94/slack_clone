@@ -51,7 +51,7 @@
                 <span class="reaction-counter">1</span>
               </div>
               <div class="reaction-button-container">
-                <img src="./assets/img/icons/add_reaction.svg" alt="">
+                <div class="reaction-button"></div>
               </div>
             </div>
           </div>
@@ -96,28 +96,27 @@
         </div>
       </div>
     </div>
-  </mat-card>
-</div>
 
-<!-- Input field -->
-<div class="message-input-field">
-  <div class="text-editor">
-    <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
 
-    <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+    <!-- Input field -->
+    <div class="message-input-field">
+      <div class="text-editor">
+        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+
+        <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
-    <div class="text-editor-bottom">
-      <div class="text-editor-left-btns">
-        <img class="attach" src="./assets/img/icons/add_gray.svg" alt="">
-        <div class="vertical-line-textEditor"></div>
-        <img (click)="toggleEmojiPicker()" src="./assets/img/icons/sentiment_satisfied.svg" alt="">
-        <img src="./assets/img/icons/alternate_email.svg" alt="">
-      </div>
-      <div class="send-message-btn">
-        <img (click)="sendMessage()" src="./assets/img/icons/send_message.png" alt="">
+        <div class="text-editor-bottom">
+          <div class="text-editor-left-btns">
+            <div class="attach"></div>
+            <div class="vertical-line-textEditor"></div>
+            <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
+            <div class="mail-container"></div>
+          </div>
+          <div class="send-message-btn" (click)="sendMessage()"></div>
+        </div>
       </div>
     </div>
-  </div>
+  </mat-card>
 </div>
 
 <!-- Profile Content -->
@@ -160,19 +159,19 @@
 <!-- Edit Channel -->
 <mat-card class="overlay" *ngIf="openEditChannel" (click)="closeEditChannel()">
   <div class="channel-edit-card">
-      <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
-        <h1># {{ channel.channelName }}</h1>
-      </div>
-      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <h2>Channel-Name</h2>
-        <h2># {{ channel.channelName }}</h2>
-      </div>
-      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <h2>Beschreibung</h2>
-        <h2># {{ channel.channelName }}</h2>
-        <div class="under-line"></div>
-      </div>
-      <!-- <form [formGroup]="channelForm">
+    <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
+      <h1># {{ channel.channelName }}</h1>
+    </div>
+    <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+      <h2>Channel-Name</h2>
+      <h2># {{ channel.channelName }}</h2>
+    </div>
+    <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+      <h2>Beschreibung</h2>
+      <h2># {{ channel.channelName }}</h2>
+      <div class="under-line"></div>
+    </div>
+    <!-- <form [formGroup]="channelForm">
           <div class="channel-inputs">
               <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
                   formControlName="channelName">
@@ -199,29 +198,28 @@
   </div>
 </mat-card>
 
-    
-    <form [formGroup]="channelForm">
-      <h3>Channel-Name</h3>
-      <div class="channel-inputs">
-        <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
-        <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
-          <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
-            required.
-          </div>
-        </div>
+
+<form [formGroup]="channelForm">
+  <h3>Channel-Name</h3>
+  <div class="channel-inputs">
+    <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
+    <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+      <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+        required.
       </div>
-      <h3>Beschreibung (optinal)</h3>
-      <div class="channel-inputs">
-        <input class="channel-name" type="text" placeholder="Dein Text hier" formControlName="channelDescription">
-        <div
-          *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
-          <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
-            required.
-          </div>
-        </div>
+    </div>
+  </div>
+  <h3>Beschreibung (optinal)</h3>
+  <div class="channel-inputs">
+    <input class="channel-name" type="text" placeholder="Dein Text hier" formControlName="channelDescription">
+    <div
+      *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
+      <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
+        required.
       </div>
-      <div class="btn-area">
-        <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
-      </div>
-    </form>
-  
+    </div>
+  </div>
+  <div class="btn-area">
+    <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
+  </div>
+</form>

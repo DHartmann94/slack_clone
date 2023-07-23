@@ -9,7 +9,13 @@ export class ValidationService {
 
   constructor() { }
 
-  /*------ Validator-Functions ------*/
+  /*------ Validation-Functions ------*/
+
+  /**
+   * Asynchronously search of the email address in the authenticator.
+   * @param emailLowerCase - The email address that the user entered.
+   * @returns {boolean} - True if the email address exists.
+   */
   async checkEmailExists(emailLowerCase: string) {
     const auth = getAuth();
 
@@ -28,6 +34,11 @@ export class ValidationService {
     }
   }
 
+  /**
+   * Validates if the password and confirm password fields match.
+   * @param control - The form control representing the entire form group.
+   * @returns {mismatch: true | null} - Returns an object with the 'mismatch' property set to true if the password and confirm password do not match, otherwise returns null.
+   */
   matchPassword(control: AbstractControl): ValidationErrors | null {
     const passwordControl = control.get("password");
     const confirmPasswordControl = control.get("confirmPassword");

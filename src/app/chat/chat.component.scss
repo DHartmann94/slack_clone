@@ -128,9 +128,10 @@
   line-height: normal;
   margin-right: 10px;
   cursor: pointer;
+  transition: color 0.3s;
 
   &:hover {
-    color: var(--c-black);
+    color: var(--purple-2, #797ef3);
   }
 }
 
@@ -138,7 +139,6 @@
   position: absolute;
   bottom: 10px;
 }
-
 
 .chat-left {
   display: flex;
@@ -149,26 +149,31 @@
 .chat-right {
   display: flex;
   justify-content: flex-end;
-  padding-left: 145px;
+  padding: 10px 40px 10px 145px;
+  margin: 40px -40px;
+  &:hover {
+    background: var(--bg-color, #eceefe);
+  }
 }
 
 .parting-line {
   width: 100%;
   border: 0.5px solid #adb0d97a;
   height: 0px;
-  margin: 37.5px 0;
 }
 
 .time-stamp {
   border-radius: 30px;
   border: 1px solid var(--ligth-purple-lines, #adb0d9);
-  padding: 5px 15px;
+  padding: 0 15px 5px;
   width: fit-content;
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
   background: white;
+  position: absolute;
+  top: 23px;
 }
 
 .flex-center {
@@ -247,11 +252,17 @@
   line-height: normal;
   cursor: pointer;
   margin-right: 20px;
+  position: relative;
+  transition: font-weight 0.3s, text-shadow 0.3s;
+  &:hover {
+    font-weight: 500;
+    text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .time-partLine {
   position: relative;
-  top: -58px;
+  top: -40px;
 }
 
 .like-area {
@@ -286,6 +297,12 @@
   justify-content: center;
   cursor: pointer;
   width: 36px;
+  height: 36px;
+
+  &:hover {
+    background: #fff;
+    border-radius: 50%;
+  }
 }
 
 .message-input-field {
@@ -312,14 +329,6 @@ textarea {
   }
 }
 
-.send-message-btn {
-  img {
-    height: 40px;
-    width: 40px;
-    cursor: pointer;
-  }
-}
-
 .text-editor-bottom {
   display: flex;
   flex-direction: row;
@@ -333,20 +342,111 @@ textarea {
   height: 40px;
 }
 
-.attach {
-  height: 24px;
-  width: 24px;
-}
-
 .text-editor-left-btns {
   display: flex;
   align-items: center;
   flex-direction: row;
   gap: 10px;
   padding-left: 5px;
+}
 
-  img {
-    cursor: pointer;
+// Define common variables
+$container-size: 24px;
+$outline-size: $container-size + 6px;
+$light-blue: #eceefe;
+
+// Common styles for all containers
+.container {
+  height: $container-size;
+  width: $container-size;
+  cursor: pointer;
+  border-radius: 50%; // Add border-radius to make them circles
+  position: relative; // Add relative positioning for the absolute pseudo-element
+
+  &:hover {
+    background-color: $light-blue;
+  }
+
+  svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  // Pseudo-element for creating the circle outline
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+    border-radius: inherit;
+    box-shadow: 0 0 0 6px transparent; // Increase the spread radius for a more pronounced shadow
+    opacity: 0; // Hide the pseudo-element by default
+    transition: opacity 0.3s;
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
+}
+
+.attach {
+  @extend .container;
+  background-image: url(../../assets/img/icons/add_gray.svg);
+  background-size: cover;
+  transition: background-image 0.3s;
+
+  &:hover {
+    background-image: url(../../assets/img/icons/add_gray_hover.svg);
+    box-shadow: 0 0 6px 3px $light-blue;
+  }
+}
+
+.emoji-container {
+  @extend .container;
+  background-image: url(../../assets/img/icons/sentiment_satisfied.svg);
+  transition: background-image 0.3s;
+}
+
+.emoji-container:hover {
+  background-image: url(../../assets/img/icons/sentiment_satisfied_hover.svg);
+  box-shadow: 0 0 6px 3px $light-blue;
+}
+
+.mail-container {
+  @extend .container;
+  background-image: url(../../assets/img/icons/alternate_email.svg);
+  transition: background-image 0.3s, box-shadow 0.3s;
+}
+
+.mail-container:hover {
+  background-image: url(../../assets/img/icons/alternate_email_hover.svg);
+  box-shadow: 0 0 6px 3px $light-blue;
+}
+
+.send-message-btn {
+  background-image: url(../../assets/img/icons/send_message.svg);
+  height: 40px;
+  width: 40px;
+  cursor: pointer;
+  transition: background-image 0.3s; //
+
+  &:hover {
+    background-image: url(../../assets/img/icons/send_message_hover.svg);
+  }
+}
+
+.reaction-button {
+  position: relative;
+  height: 24px;
+  width: 24px;
+  background-image: url(../../assets/img/icons/add_reaction.svg);
+
+  &:hover {
+    transition: background-image 0.3s;
+    background-image: url(../../assets/img/icons/add_reaction_hover.svg);
   }
 }
 
@@ -369,10 +469,9 @@ section {
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
   line-height: 2;
 
-
   a {
     text-decoration: none;
-    color: #1381FF;
+    color: #1381ff;
   }
 
   .user-header {
@@ -386,7 +485,6 @@ section {
     mat-icon {
       cursor: pointer;
     }
-
   }
 
   .user-img {
@@ -407,7 +505,6 @@ section {
     justify-content: space-between;
     align-items: center;
 
-
     p {
       font-size: 1.6rem;
       font-weight: 700;
@@ -417,7 +514,7 @@ section {
   }
 
   .user-status {
-    color: #92C83E;
+    color: #92c83e;
     padding-top: 0.2rem;
     padding-bottom: 0.3rem;
   }
@@ -441,7 +538,7 @@ section {
     width: 154px;
     height: 45px;
     border-radius: 50px;
-    background: #444DF2;
+    background: #444df2;
   }
 }
 
@@ -474,14 +571,14 @@ section {
     }
 
     h1 {
-      font-family: 'Nunito';
+      font-family: "Nunito";
       font-size: 18px;
       font-style: normal;
       font-weight: 700;
     }
 
     h3 {
-      font-family: 'Nunito';
+      font-family: "Nunito";
       margin-top: 20px;
       font-size: 18px;
       font-style: normal;
@@ -512,7 +609,6 @@ section {
       display: flex;
       justify-content: flex-end;
       margin-top: 30px;
-
 
       .btn-channel {
         border-radius: 25px;
@@ -548,11 +644,11 @@ section {
       gap: 20px;
 
       h2 {
-        font-family: 'Nunito';
+        font-family: "Nunito";
         margin-top: 20px;
         font-size: 18px;
         font-style: normal;
-        font-weight: 700;       
+        font-weight: 700;
         margin: 0;
       }
 
@@ -567,7 +663,7 @@ section {
   .error-massage {
     position: relative;
     left: 18px;
-    font-family: 'Nunito';
+    font-family: "Nunito";
     margin-top: 20px;
     font-size: 18px;
     font-style: normal;
@@ -580,6 +676,16 @@ section {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  transition: background-color 0.1s;
+  padding: 10px 145px 10px 40px;
+  margin: 40px -40px;
+  &:hover {
+    cursor: pointer;
+    background: var(--bg-color, #eceefe);
+    .chat-message-left {
+      background-color: white;
+    }
+  }
 }
 
 .time {
