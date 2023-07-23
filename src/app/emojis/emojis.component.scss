@@ -26,7 +26,8 @@
 
 #emoji-list {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     margin-top: 60px;
     margin-left: 10px;
