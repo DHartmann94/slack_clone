@@ -1,4 +1,12 @@
-import { Component, ElementRef, HostListener, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -10,11 +18,10 @@ import { EmojisComponent } from '../emojis/emojis.component';
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+  styleUrls: ['./chat.component.scss'],
 })
-
 export class ChatComponent implements OnInit {
-  typedEmoji: string = "";
+  typedEmoji: string = '';
 
   [x: string]: any;
   channelForm!: FormGroup;
@@ -36,8 +43,7 @@ export class ChatComponent implements OnInit {
     private ChannelDataResolver: ChannelDataResolverService,
     private fbChannel: FormBuilder,
     private elementRef: ElementRef
-
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.channelForm = this.fbChannel.group({
@@ -48,13 +54,10 @@ export class ChatComponent implements OnInit {
     this.getDataFromChannel();
   }
 
-
   public typeEmoji($event: any): void {
     console.log($event);
     this.messageInput = this.messageInput + $event.character;
   }
-
-
 
   async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
@@ -85,8 +88,6 @@ export class ChatComponent implements OnInit {
     );
   }
 
-
-
   isNewDay(
     currentMessage: MessageInterface,
     previousMessage: MessageInterface
@@ -114,7 +115,7 @@ export class ChatComponent implements OnInit {
   }
 
   async sendMessage() {
-    if (this.messageInput) {
+    if (this.messageInput.length > 0) {
       const message: MessageInterface = {
         messageText: this.messageInput, // Use the string, not an array
         time: Date.now(),
@@ -145,20 +146,22 @@ export class ChatComponent implements OnInit {
           console.error('Error sending message:', error);
         }
       );
+    } else {
+      // Display a message or handle the situation when messageInput is empty
+      console.log('Message input is empty. Cannot send an empty message.');
     }
   }
-
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
   }
 
   editChannel() {
-    this.openEditChannel = true
+    this.openEditChannel = true;
   }
 
   closeEditChannel() {
-    this.openEditChannel = false
+    this.openEditChannel = false;
   }
 
   openUserProfile() {
@@ -170,9 +173,7 @@ export class ChatComponent implements OnInit {
     this.isProfileCardOpen = false;
   }
 
-  leaveChannel() {
-
-  }
+  leaveChannel() {}
 
   formatTimeStamp(time: number | undefined): string {
     if (typeof time === 'undefined') {
