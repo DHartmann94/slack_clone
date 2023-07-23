@@ -246,6 +246,12 @@
   line-height: normal;
   cursor: pointer;
   margin-right: 20px;
+  position: relative;
+  transition: font-weight 0.3s, text-shadow 0.3s;
+  &:hover {
+    font-weight: 500;
+    text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .time-partLine {
@@ -382,10 +388,9 @@ $light-blue: #eceefe;
 
   &:hover {
     background-image: url(../../assets/img/icons/add_gray_hover.svg);
-      box-shadow: 0 0 6px 3px $light-blue;
+    box-shadow: 0 0 6px 3px $light-blue;
   }
 }
-
 
 .emoji-container {
   @extend .container;
@@ -420,7 +425,6 @@ $light-blue: #eceefe;
     background-image: url(../../assets/img/icons/send_message_hover.svg);
   }
 }
-
 
 // User Profile Card Style
 
@@ -648,6 +652,15 @@ section {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
+  transition: background-color 0.3s;
+  &:hover {
+    background: var(--bg-color, #eceefe);
+    cursor: pointer;
+
+    .chat-message-left {
+      background-color: white;
+    }
+  }
 }
 
 .time {
