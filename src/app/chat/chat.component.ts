@@ -23,7 +23,8 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 })
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
-  reactionEmojis = ['👍','😂','🚀','😥', '😮','🎉'];
+  reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
+  emojisClickedBefore: number | undefined;
 
   [x: string]: any;
   channelForm!: FormGroup;
@@ -168,6 +169,25 @@ export class ChatComponent implements OnInit {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
+
+
+  reaction(messageEmoji: [], index: number) {
+    if (this.emojisClickedBefore === index) {
+        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        this.emojisClickedBefore = undefined; 
+    } else {
+        if (this.emojisClickedBefore !== null) {
+            document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        }
+        document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+        this.emojisClickedBefore = index;
+    }
+}
+
+//***********Zu Interface hinzufügen */
+reactWithEmoji(emoji:string) {
+  
+}
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;

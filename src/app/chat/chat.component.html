@@ -39,16 +39,20 @@
               <span class="chat-message-right">{{ message.messageText }}</span>
             </div>
             <div class="like-area">
-              <div class="reaction-icon-container">
-                <div class="reaction-counter">{{ message.emojis }}</div>
-                <!-- <img src="./assets/img/icons/rocket.svg" alt=""> -->
-                <span class="reaction-counter">2</span>
+              <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+                <div class="reaction-counter">{{ message.emojis[0] }}</div>
+                <span class="reaction-counter">{{ message.emojis.length }}</span>
               </div>
               <div class="reaction-icon-container">
                 <img src="./assets/img/icons/tick_green.svg" alt="">
                 <span class="reaction-counter">1</span>
               </div>
-              <div class="reaction-button-container">
+
+              <div class="reaction-emojis" id="reaction{{index}}">
+                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji)" >{{emoji}}</div>
+              </div>
+
+              <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
                 <div class="reaction-button"></div>
               </div>
             </div>
@@ -179,13 +183,12 @@
       </div>
       <form [formGroup]="channelForm">
         <div class="channel-inputs">
-            <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
-                formControlName="channelName">
-            <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
-                <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
-                    required.
-                </div>
+          <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
+          <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+            <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+              required.
             </div>
+          </div>
         </div>
       </form>
     </div>
@@ -194,7 +197,7 @@
       <div class="channel-edit">
         <h2># {{ channel.channelName }}</h2>
         <span>Bearbeiten</span>
-      </div> 
+      </div>
       <div class="channel-text">
         <p>Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings
           abhalten, Dokumente teilen und Entscheidungen treffen.</p>
