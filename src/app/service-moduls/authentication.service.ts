@@ -107,6 +107,18 @@ export class AuthenticationService {
   }
 
   async logoutAuth() {
+    await this.deleteUserLocalStorage();
+
+    const auth = getAuth();
+    await signOut(auth).then(() => {
+      // Sign-out successful.
+      this.router.navigateByUrl("/sign-in");
+    }).catch((error) => {
+      console.log('ERROR signOut: ', error);
+    });
+  }
+
+  async deleteUserLocalStorage() {
     const currentUserUID = localStorage.getItem('currentUser');
 
     if (currentUserUID) {
@@ -116,15 +128,8 @@ export class AuthenticationService {
       });
 
       localStorage.setItem('currentUser', '');
+      console.log(localStorage.setItem('currentUser', ''));
     }
-
-    const auth = getAuth();
-    await signOut(auth).then(() => {
-      // Sign-out successful.
-      this.router.navigateByUrl("/sign-in");
-    }).catch((error) => {
-      console.log('ERROR signOut: ', error);
-    });
   }
 
   /**
@@ -198,12 +203,13 @@ export class AuthenticationService {
       });
   }
 
-  getUserData() {
+  async getUserData() {
     const auth = getAuth();
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
+        await this.deleteUserLocalStorage();
         localStorage.setItem('currentUser', this.user.uid);
-        setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
+        await setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
           this.router.navigateByUrl('/board').then(() => {
             //window.location.reload(); // TEST
             console.log(this.user); // TEST

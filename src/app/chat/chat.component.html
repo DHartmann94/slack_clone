@@ -28,18 +28,15 @@
         <div class="time-stamp">Thursday, July 13</div>
       </div>
 
-      <div class="chat-right">
+      <div *ngFor="let message of chatData; let index = index" class="chat-right">
         <div class="flex-row ">
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
               <span class="chat-name" (click)="openUserProfile()">Frederik Beck</span>
-              <span class="chat-timeStamp">11:45 am</span>
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
             </div>
             <div>
-              <span class="chat-message-right">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque
-                blandit odio efficitur lectus vestibulum, quis accumsan ante vulputate. Quisque tristique iaculis erat,
-                eu
-                faucibus lacus iaculis ac.</span>
+              <span class="chat-message-right">{{ message.messageText }}</span>
             </div>
             <div class="like-area">
               <div class="reaction-icon-container">

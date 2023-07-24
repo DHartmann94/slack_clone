@@ -151,6 +151,7 @@
   justify-content: flex-end;
   padding: 10px 40px 10px 145px;
   margin: 40px -40px;
+  transition: background-color 0.3s;
   &:hover {
     background: var(--bg-color, #eceefe);
   }
@@ -675,10 +676,11 @@ section {
 .message-container {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  transition: background-color 0.1s;
+  // margin-bottom: 10px;
+  transition: background-color 0.3s;
   padding: 10px 145px 10px 40px;
   margin: 40px -40px;
+  width: 100%;
   &:hover {
     cursor: pointer;
     background: var(--bg-color, #eceefe);

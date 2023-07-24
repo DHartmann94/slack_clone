@@ -27,7 +27,6 @@ export class SignInComponent {
   /**
    * Asynchronously signs in the user with the provided credentials from the 'signInForm'.
    * It retrieves data from the form, performs error checks in the user if valid.
-   * @returns 
    */
   async signIn() {
     this.submitted = true;
@@ -67,7 +66,7 @@ export class SignInComponent {
     this.disableForm();
 
     await this.authentication.loginWithEmail(email, password);
-    this.authentication.getUserData();
+    await this.authentication.getUserData();
 
     this.enableForm();
   }
@@ -75,10 +74,10 @@ export class SignInComponent {
   /**
    * If the email is verified, it fetches user data using the 'getUserData' method from the 'authentication' service.
    */
-  checkLoginUser() {
+  async checkLoginUser() {
     if (this.authentication.user.emailVerified) {
       this.emailNotVerify = false;
-      this.authentication.getUserData();
+      await this.authentication.getUserData();
     } else {
       this.router.navigateByUrl('/sign-in');
       this.showError('emailNotVerify');
