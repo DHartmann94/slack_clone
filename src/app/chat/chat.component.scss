@@ -14,12 +14,22 @@
   justify-content: flex-start;
 }
 
+.chat-text-area {
+  height: 40vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 50vw;
+  padding-top: 20px;
+  background-color: rgba(243, 243, 243, 0.462);
+  border-radius: 5px;
+}
+
 .chat-first-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 112.5px;
+  margin-bottom: 40px;
   background: #fff;
   padding: 0 10px;
   z-index: 3;

@@ -23,6 +23,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 })
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
+  reactionEmojis = ['👍','😂','🚀','😥', '😮','🎉'];
 
   [x: string]: any;
   channelForm!: FormGroup;
@@ -47,7 +48,7 @@ export class ChatComponent implements OnInit {
     private ChannelDataResolver: ChannelDataResolverService,
     private fbChannel: FormBuilder,
     private elementRef: ElementRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.channelForm = this.fbChannel.group({
@@ -60,7 +61,6 @@ export class ChatComponent implements OnInit {
   }
 
   public typeEmoji($event: any): void {
-    console.log($event);
     this.messageInput = this.messageInput + $event.character;
   }
 
@@ -195,10 +195,10 @@ export class ChatComponent implements OnInit {
   }
 
   saveChangesToChannel() {
-    
+
   }
 
-  leaveChannel() {}
+  leaveChannel() { }
 
   formatTimeStamp(time: number | undefined): string {
     if (typeof time === 'undefined') {
@@ -245,5 +245,5 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  
+
 }
