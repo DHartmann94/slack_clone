@@ -20,8 +20,14 @@
     <div class="logout-container" *ngIf="isLogoutContainerOpen" #containerRef>
         <div class="logout">
             <div class="logout-info">
-                <p (click)="openUserProfile()">Profile</p>
-                <p (click)="this.authentication.logoutAuth()">Log out</p>
+                <div>
+                    <mat-icon>person</mat-icon>
+                    <p (click)="openUserProfile()">Profile</p>
+                </div>
+                <div>
+                    <mat-icon>logout</mat-icon>
+                    <p (click)="this.authentication.logoutAuth()">Log out</p>
+                </div>
             </div>
         </div>
     </div>
