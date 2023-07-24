@@ -52,6 +52,10 @@
             height: 20px;
             object-fit: contain;
         }
+
+        @media(max-width: 970px) {
+            display: none;
+        }
     }
 
     .profile {
@@ -83,6 +87,10 @@
             white-space: nowrap;
             overflow: hidden;
             width: 100%;
+
+            @media(max-width: 970px) {
+                display: none;
+            }
         }
 
         .status {
@@ -101,6 +109,13 @@
             h2,
             mat-icon {
                 color: var(--text-hover);
+            }
+        }
+
+        
+        mat-icon {
+            @media(max-width: 970px) {
+                display: none;
             }
         }
     }
@@ -126,15 +141,31 @@
             font-weight: 600;
         }
 
-        mat-icon {
-            cursor: pointer;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-        }
-
         .logout-info {
             cursor: pointer;
+
+            div {
+                display: flex;
+                align-items: center;
+
+                p {
+                    margin: 0;
+                }
+            }
+
+            mat-icon {
+                margin-right: 8px;
+            }
+        }
+
+        @media(max-width: 970px) {
+            top: unset;
+            right: 0;
+            bottom: 0;
+            left: 0;
+
+            width: 100%;
+            border-radius: 25px 25px 0px 0px;
         }
     }
 }
@@ -157,6 +188,12 @@ section {
     top: 50px;
     right: 50px;
     z-index: 999;
+
+    @media(max-width: 970px) {
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+    }
 }
 
 .user-profile-card {
@@ -225,7 +262,6 @@ section {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 2rem;
         color: #ffffff;
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 50%;
@@ -312,7 +348,9 @@ section {
         }
     }
 
-
+    @media(max-width: 970px) {
+        width: 19rem;
+    }
 }
 
 .profile-picture-container {
@@ -325,8 +363,8 @@ section {
     border-radius: 15px;
     padding: 3rem;
     position: absolute;
-    top: 3rem;
-    right: 3rem;
+    top: 0rem;
+    right: 0rem;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     z-index: 999;
 
@@ -342,6 +380,10 @@ section {
         justify-content: space-between;
         align-items: center;
         width: 21rem;
+
+        @media(max-width: 970px) {
+            width: 15rem;
+        }
     }
 
     .profile-picture {
@@ -349,14 +391,28 @@ section {
         border-radius: 50%;
         border: 5px solid transparent;
         cursor: pointer;
+
+        @media(max-width: 970px) {
+            width: 6rem;
+        }
     }
 
     .profile-picture.selected {
         border: 5px solid var(--c-error);
     }
+
+    @media(max-width: 970px) {
+        padding: 1.5rem;
+        gap: 1rem;
+        width: 19rem;
+        height: 80%;
+        overflow-y: scroll;
+
+        top: 50%;
+        right: 50%;
+        transform: translate(50%, -50%);
+    }
 }
-
-
 
 button {
     width: 154px;
