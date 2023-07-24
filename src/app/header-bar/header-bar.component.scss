@@ -1,7 +1,7 @@
 .header-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
@@ -13,26 +13,45 @@
         h2 {
             font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
             margin: 25px;
-    
+
             font-size: 28px;
             font-weight: bold;
         }
-    
+
         img {
             width: 55px;
             object-fit: scale-down;
         }
     }
 
-    .search-bar {
+    .search-bar-parent {
+        position: relative;
+        width: 35%;
+
         display: flex;
-        min-width: 689px;
-        padding: 17.5px 45px;
-        justify-content: space-between;
         align-items: center;
-        border-radius: 42px;
-        background: var(--white, #FFF);
-        border-style: none;
+        justify-content: center;
+
+        input {
+            display: flex;
+            min-width: 100%;
+            padding: 17.5px 45px;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 42px;
+            background: var(--white, #FFF);
+            border-style: none;
+        }
+
+        img {
+            position: absolute;
+            top: 14px;
+            right: -27px;
+
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
     }
 
     .profile {
@@ -42,9 +61,10 @@
         justify-content: center;
         align-items: center;
         column-gap: 8px;
+        max-width: 242px;
         cursor: pointer;
 
-        .user-icon{
+        .user-icon {
             height: 60px;
             width: 60px;
             object-fit: cover;
@@ -55,8 +75,14 @@
             font-family: 'Nunito';
             font-size: 28px;
             font-style: normal;
-            font-weight: 700;
+            font-weight: bold;
             margin: 0;
+
+            text-align: right;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 100%;
         }
 
         .status {
@@ -186,14 +212,14 @@ section {
         margin: 1rem;
         position: relative;
     }
-    
+
     .user-img img {
         height: 10rem;
         width: 10rem;
         border-radius: 50%;
         transition: filter 0.3s ease-in-out;
     }
-    
+
     .edit-icon {
         position: absolute;
         top: 50%;
@@ -214,16 +240,16 @@ section {
         justify-content: space-between;
         align-items: center;
     }
-  
-    
+
+
     .user-img:hover img {
         filter: brightness(80%);
     }
-    
+
     .user-img:hover .edit-icon {
         opacity: 1;
     }
-    
+
     .user-contact-info {
         display: flex;
         justify-content: space-between;
@@ -256,7 +282,7 @@ section {
         }
     }
 
-   
+
 
     .name-field,
     .e-mail-field {
@@ -289,7 +315,7 @@ section {
 
 }
 
-.profile-picture-container{
+.profile-picture-container {
     display: flex;
     justify-content: center;
     align-items: center;
