@@ -162,18 +162,38 @@
         <img src="./assets/img/icons/close.png" alt="#" (click)="closeEditChannel()">
       </div>
     </div>
-    <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+    <div *ngIf="!(editChannelOpen)">
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <div class="channel-edit">
+          <h2>Channel-Name</h2>
+          <span (click)="updateChannels()">Bearbeiten</span>
+        </div>
+        <h2># {{ channel.channelName }}</h2>
+      </div>
+    </div>
+    <div *ngIf="editChannelOpen">
       <div class="channel-edit">
         <h2>Channel-Name</h2>
-        <span>Bearbeiten</span>
+        <span (click)="saveChangesToChannel()">Bearbeiten</span>
       </div>
-      <h2># {{ channel.channelName }}</h2>
+      <form [formGroup]="channelForm">
+        <div class="channel-inputs">
+            <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+                formControlName="channelName">
+            <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+                <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+                    required.
+                </div>
+            </div>
+        </div>
+      </form>
     </div>
+
     <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
       <div class="channel-edit">
         <h2># {{ channel.channelName }}</h2>
         <span>Bearbeiten</span>
-      </div>
+      </div> 
       <div class="channel-text">
         <p>Dieser Channel ist für alles rund um #dfsdf vorgesehen. Hier kannst du zusammen mit deinem Team Meetings
           abhalten, Dokumente teilen und Entscheidungen treffen.</p>
@@ -187,27 +207,5 @@
     <div class="btn-area">
       <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
     </div>
-    <!-- <form [formGroup]="channelForm">
-          <div class="channel-inputs">
-              <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
-                  formControlName="channelName">
-              <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
-                  <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
-                      required.
-                  </div>
-              </div>
-          </div>
-          <h3>Beschreibung (optinal)</h3>
-          <div class="channel-inputs">
-              <input class="channel-name" type="text" placeholder="Dein Text hier"
-                  formControlName="channelDescription">
-              <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
-                  <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
-                      required.
-                  </div>
-              </div>
-          </div>
-        
-      </form> -->
   </div>
 </mat-card>

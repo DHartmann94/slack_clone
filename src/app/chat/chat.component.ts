@@ -35,6 +35,8 @@ export class ChatComponent implements OnInit {
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
+  editChannelOpen: boolean = false;
+
   openEditChannel: boolean = false;
   emojipickeractive = false;
 
@@ -186,6 +188,14 @@ export class ChatComponent implements OnInit {
 
   closeEditChannel() {
     this.openEditChannel = false;
+  }
+
+  updateChannels() {
+    this.editChannelOpen = true;
+  }
+
+  saveChangesToChannel() {
+    
   }
 
   leaveChannel() {}
