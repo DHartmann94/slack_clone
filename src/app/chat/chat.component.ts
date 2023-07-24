@@ -14,6 +14,7 @@ import { Observable } from 'rxjs';
 import { ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmojisComponent } from '../emojis/emojis.component';
+import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 
 @Component({
   selector: 'app-chat',
@@ -27,18 +28,21 @@ export class ChatComponent implements OnInit {
   channelForm!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-
+  userData: UserDataInterface[] = [];
   chatData: MessageInterface[] = [];
   messageInput: string[] = [];
   messageId: string = '';
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
+  editChannelOpen: boolean = false;
+
   openEditChannel: boolean = false;
   emojipickeractive = false;
 
   constructor(
     private chatService: ChatService,
+    private userDataService: UserDataService,
     private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
     private fbChannel: FormBuilder,
@@ -52,11 +56,24 @@ export class ChatComponent implements OnInit {
     });
     this.getChatData();
     this.getDataFromChannel();
+    this.getUserData();
   }
 
   public typeEmoji($event: any): void {
     console.log($event);
     this.messageInput = this.messageInput + $event.character;
+  }
+
+  async getUserData() {
+    this.userDataService.getUserData().subscribe(
+      userData => {
+        this.userData = userData;
+        console.log('Subscribed data users:', userData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
   }
 
   async getDataFromChannel(): Promise<void> {
@@ -160,10 +177,6 @@ export class ChatComponent implements OnInit {
     this.openEditChannel = true;
   }
 
-  closeEditChannel() {
-    this.openEditChannel = false;
-  }
-
   openUserProfile() {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
@@ -171,6 +184,18 @@ export class ChatComponent implements OnInit {
 
   closeUserProfile() {
     this.isProfileCardOpen = false;
+  }
+
+  closeEditChannel() {
+    this.openEditChannel = false;
+  }
+
+  updateChannels() {
+    this.editChannelOpen = true;
+  }
+
+  saveChangesToChannel() {
+    
   }
 
   leaveChannel() {}

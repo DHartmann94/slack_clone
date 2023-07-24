@@ -62,7 +62,7 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
-    this.updateUsers();
+/*     this.updateUsers(); */
   }
 
   async getUserData() {
@@ -77,13 +77,13 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
-  async updateUsers() {
+ /*  async updateUsers() {
     const collectionUsersRef = collection(this.firestore, 'users');
     onSnapshot(collectionUsersRef, (snapshot) => {
       this.getUserData();
     });
   }
-
+ */
   async getChannelData() {
     this.channelDataService.getChannelData().subscribe(
       channelData => {
