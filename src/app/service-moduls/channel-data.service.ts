@@ -6,7 +6,7 @@ export interface ChannelDataInterface {
   id?: any;
   channelName: string;
   channelDescription: string;
-  color: any;
+  color?: any;
   users?: any;
 }
 
