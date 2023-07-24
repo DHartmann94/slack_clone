@@ -1,11 +1,7 @@
 .header-container {
     display: flex;
     flex-direction: row;
-<<<<<<< HEAD
-    justify-content: flex-start;
-=======
     justify-content: space-between;
->>>>>>> 2d922f494dbd1e27cf243c81939d13d4cf8b509e
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
@@ -57,6 +53,7 @@
             object-fit: contain;
         }
     }
+}
 
     .profile {
         position: relative;
@@ -141,7 +138,8 @@
             cursor: pointer;
         }
     }
-}
+
+
 
 //Overlay Styles
 
