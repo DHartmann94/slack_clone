@@ -44,8 +44,6 @@ export class EmojisComponent implements OnInit{
       this.emojiList.push(emoji);
       this.allEmojis.push(emoji);
     });
-    console.log(this.emojiList);
-    
   }
 
   public showInInput(emoji:string): void {

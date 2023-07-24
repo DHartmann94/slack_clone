@@ -24,6 +24,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 })
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
+  reactionEmojis = ['👍','😂','🚀','😥', '😮','🎉'];
 
   [x: string]: any;
   channelName!: FormGroup;
@@ -55,7 +56,7 @@ export class ChatComponent implements OnInit {
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.channelName = this.fbChannelName.group({
@@ -70,7 +71,6 @@ export class ChatComponent implements OnInit {
   }
 
   public typeEmoji($event: any): void {
-    console.log($event);
     this.messageInput = this.messageInput + $event.character;
   }
 
@@ -242,7 +242,7 @@ export class ChatComponent implements OnInit {
 
   }
 
-  leaveChannel() {}
+  leaveChannel() { }
 
   formatTimeStamp(time: number | undefined): string {
     if (typeof time === 'undefined') {
@@ -289,5 +289,5 @@ export class ChatComponent implements OnInit {
     });
   }
 
-  
+
 }
