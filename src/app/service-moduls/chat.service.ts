@@ -8,6 +8,7 @@ import {
   query,
   addDoc,
   onSnapshot,
+  where,
 } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
@@ -30,7 +31,7 @@ export class ChatService {
   public messageData$: Observable<MessageInterface[]> =
     this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) {}
+  constructor(public firestore: Firestore) { }
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
@@ -105,5 +106,35 @@ export class ChatService {
       // Update the BehaviorSubject with real-time data
       this.messageDataSubject.next(updatedMessageData);
     });
+  }
+
+  getThreadData(channelId: string): Observable<MessageInterface[]> {
+    const messages = collection(this.firestore, 'messages');
+
+    // Folgender String müsste angepasst werden. 
+    const q = query(messages, where('channel', '==', channelId));
+
+    return from(getDocs(q)).pipe(
+      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+        const threadData: MessageInterface[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          const { messageText, time, thread, emojis, channel, mentionedUser } =
+            data;
+          const message: MessageInterface = {
+            messageText: messageText,
+            time: time,
+            thread: thread,
+            emojis: emojis,
+            channel: channel,
+            mentionedUser: mentionedUser,
+          };
+          threadData.push(message);
+        });
+
+        return threadData;
+      })
+    );
   }
 }
