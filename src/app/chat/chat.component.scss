@@ -14,12 +14,22 @@
   justify-content: flex-start;
 }
 
+.chat-text-area {
+  height: 40vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  width: 50vw;
+  padding-top: 20px;
+  background-color: rgba(243, 243, 243, 0.462);
+  border-radius: 5px;
+}
+
 .chat-first-row {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 112.5px;
+  margin-bottom: 40px;
   background: #fff;
   padding: 0 10px;
   z-index: 3;
@@ -572,14 +582,12 @@ section {
       justify-content: space-between;
       width: 100%;
 
-      h3 {
+      h2 {
         font-family: "Nunito";
         margin-top: 20px;
         font-size: 18px;
         font-style: normal;
         font-weight: 700;
-       
-        margin: 0;
       }
 
       span {
@@ -662,7 +670,7 @@ section {
         gap: 10px;
         border: none;
         height: 49px;
-        width: 204px;
+        width: 226px;
         cursor: pointer;
       }
     }
