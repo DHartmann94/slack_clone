@@ -5,7 +5,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -62,6 +62,7 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
+    this.updateUsers();
   }
 
   async getUserData() {
@@ -74,6 +75,13 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+  }
+
+  async updateUsers() {
+    const collectionUsersRef = collection(this.firestore, 'users');
+    onSnapshot(collectionUsersRef, (snapshot) => {
+      this.getUserData();
+    });
   }
 
   async getChannelData() {
