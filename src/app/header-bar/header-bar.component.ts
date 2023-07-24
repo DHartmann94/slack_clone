@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
-import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { UserDataService } from '../service-moduls/user-data.service';
 
 @Component({
   selector: 'app-header-bar',
@@ -48,7 +49,10 @@ export class HeaderBarComponent {
   });
 
 
-  constructor(public validation: ValidationService, public authentication: AuthenticationService, private firestore: Firestore) { }
+  constructor(
+    public validation: ValidationService, 
+    public authentication: AuthenticationService, 
+    private firestore: Firestore) { }
 
 
   async ngOnInit() {
