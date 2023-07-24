@@ -17,6 +17,15 @@ export class ThreadsComponent implements OnInit {
     
   }
 
+
+
+
+
+
+
+
+
+  
   close() {
     this.closeFiller = false;
   }

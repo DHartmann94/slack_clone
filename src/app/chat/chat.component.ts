@@ -219,4 +219,6 @@ export class ChatComponent implements OnInit {
       day: 'numeric',
     });
   }
+
+  
 }
