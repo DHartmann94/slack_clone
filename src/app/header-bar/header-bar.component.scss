@@ -262,7 +262,6 @@ section {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 2rem;
         color: #ffffff;
         background-color: rgba(0, 0, 0, 0.7);
         border-radius: 50%;
@@ -364,8 +363,8 @@ section {
     border-radius: 15px;
     padding: 3rem;
     position: absolute;
-    top: 3rem;
-    right: 3rem;
+    top: 0rem;
+    right: 0rem;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
     z-index: 999;
 
@@ -414,8 +413,6 @@ section {
         transform: translate(50%, -50%);
     }
 }
-
-
 
 button {
     width: 154px;
