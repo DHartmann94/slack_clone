@@ -167,35 +167,51 @@
         <img src="./assets/img/icons/close.png" alt="#" (click)="closeEditChannel()">
       </div>
     </div>
-    <div *ngIf="!(editChannelOpen)">
+
+    <div *ngIf="!(editChannelName)">
       <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <div class="channel-edit">
           <h2>Channel-Name</h2>
-          <span (click)="updateChannels()">Bearbeiten</span>
+          <span (click)="updateChannelName()">Edit</span>
         </div>
         <h2># {{ channel.channelName }}</h2>
       </div>
     </div>
-    <div *ngIf="editChannelOpen">
-      <div class="channel-edit">
+
+    <div *ngIf="editChannelName">
+      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <h2>Channel-Name</h2>
-        <span (click)="saveChangesToChannel()">Bearbeiten</span>
+        <span (click)="saveChangesToChannelName()">Save</span>
       </div>
-      <form [formGroup]="channelForm">
+      <form [formGroup]="channelName">
         <div class="channel-inputs">
           <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
-          <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
-            <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
-              required.
-            </div>
-          </div>
         </div>
       </form>
     </div>
+    
 
-    <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+    <div *ngIf="!(editChannelDescription)">
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <div class="channel-edit">
+          <h2># {{ channel.channelName }}</h2>
+          <span (click)="updateChannelDiscription()">Edit</span>
+        </div> 
+        <div class="channel-text">
+          <p>
+            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents and make decisions.</p>
+        </div>
+        <div class="under-line"></div>
+        <div class="channel-creator">
+          <h2>Created by</h2>
+          <span>Frederik Beck</span>
+        </div>
+      </div>
+    </div> 
+    
+    <div *ngIf="editChannelDescription">
       <div class="channel-edit">
-        <h2># {{ channel.channelName }}</h2>
+        <h2># {{ 'channel'.channelName }}</h2>
         <span>Bearbeiten</span>
       </div>
       <div class="channel-text">
@@ -206,8 +222,16 @@
       <div class="channel-creator">
         <h2>Erstellt von</h2>
         <span>Frederik Beck</span>
+        <h2>Beschreibung</h2>
+        <span (click)="saveChangesToChannelDescription()">Save</span>
       </div>
+      <form [formGroup]="channelDescription">
+        <div class="channel-inputs">
+            <input class="channel-description" type="text" placeholder="Enter your text..." formControlName="channelDescription">
+        </div>
+      </form>
     </div>
+    
     <div class="btn-area">
       <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
     </div>

@@ -1,7 +1,7 @@
 .header-container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
@@ -57,6 +57,7 @@
             display: none;
         }
     }
+}
 
     .profile {
         position: relative;
@@ -114,6 +115,8 @@
 
         
         mat-icon {
+            overflow: unset;
+
             @media(max-width: 970px) {
                 display: none;
             }
@@ -168,7 +171,8 @@
             border-radius: 25px 25px 0px 0px;
         }
     }
-}
+
+
 
 //Overlay Styles
 

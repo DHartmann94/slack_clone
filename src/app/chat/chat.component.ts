@@ -11,10 +11,11 @@ import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { Observable } from 'rxjs';
-import { ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { take, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmojisComponent } from '../emojis/emojis.component';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 
 @Component({
   selector: 'app-chat',
@@ -27,17 +28,22 @@ export class ChatComponent implements OnInit {
   emojisClickedBefore: number | undefined;
 
   [x: string]: any;
-  channelForm!: FormGroup;
+  channelName!: FormGroup;
+  channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   userData: UserDataInterface[] = [];
   chatData: MessageInterface[] = [];
+
+  currentChannelData: ChannelDataInterface | null = null;
+
   messageInput: string[] = [];
   messageId: string = '';
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
-  editChannelOpen: boolean = false;
+  editChannelName: boolean = false;
+  editChannelDescription: boolean = false;
 
   openEditChannel: boolean = false;
   emojipickeractive = false;
@@ -45,15 +51,19 @@ export class ChatComponent implements OnInit {
   constructor(
     private chatService: ChatService,
     private userDataService: UserDataService,
+    private channelDataService: ChannelDataService,
     private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
-    private fbChannel: FormBuilder,
+    private fbChannelName: FormBuilder,
+    private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
-    this.channelForm = this.fbChannel.group({
+    this.channelName = this.fbChannelName.group({
       channelName: ['', [Validators.required]],
+    });
+    this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
     this.getChatData();
@@ -195,8 +205,16 @@ reactWithEmoji(emoji:string) {
 
   editChannel() {
     this.openEditChannel = true;
+    this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
+      if (data) {
+        const channelId = data.id;
+        const currentChannelData = channelId;
+        console.log('Received Channel ID:', currentChannelData);
+      }
+      this.currentChannelData = this.currentChannelData;
+    });
   }
-
+  
   openUserProfile() {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
@@ -210,11 +228,37 @@ reactWithEmoji(emoji:string) {
     this.openEditChannel = false;
   }
 
-  updateChannels() {
-    this.editChannelOpen = true;
+  updateChannelName() {
+    this.editChannelName = true;
   }
 
-  saveChangesToChannel() {
+  updateChannelDiscription() {
+    this.editChannelDescription = true;
+  }
+
+  saveChangesToChannelName() {
+    if (this.channelName.valid && this.currentChannelData) {
+      const newChannelName: string = this.channelName.value.channelName;
+      let partialDetails: Partial<ChannelDataInterface> = {id: false};
+
+      const updatedChannelData: Partial<ChannelDataInterface> = {
+        channelName: newChannelName,
+      };
+
+      this.currentChannelData.channelName = newChannelName;
+  
+     /*  this.channelDataService.sendChannelData(updatedChannelData).subscribe(
+        () => {
+          console.log('Channel name updated successfully.');
+        },
+        (error) => {
+          console.error('Error updating channel name:', error);
+        }
+      ); */
+    }
+  }
+
+  saveChangesToChannelDescription() {
 
   }
 
