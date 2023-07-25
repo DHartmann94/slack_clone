@@ -310,45 +310,47 @@ export class ChatComponent implements OnInit {
   async compareIds() {
     this.chatService.messageData$.subscribe(
       (messages) => {
-        // Extract all non-null sentBy values
         const allSentBy: string[] = messages
           .map((message) => message.sentBy)
           .filter((sentBy): sentBy is string => !!sentBy);
 
         console.log('All User IDs:', allSentBy);
 
-        // Get the array of user IDs from userDataService
         this.userDataService.getUserData().pipe(
           map((userData) => userData.map(user => user.id))
         ).subscribe(
           (userIds: string[]) => {
             console.log('Subscribed data users ids:', userIds);
 
+            // Create a mapping of user IDs to names
+            const userIdToNameMap: { [id: string]: string } = {};
+            this.userData.forEach(user => {
+              if (userIds.includes(user.id)) {
+                userIdToNameMap[user.id] = user.name;
+              }
+            });
+
+            console.log('User ID to Name Map:', userIdToNameMap);
+
+            // Now you can use userIdToNameMap to display names in the template
+
             // Compare arrays and find matches
             const matches: string[] = [];
-            const sentByName: string[] = [];
 
-            allSentBy.forEach((sentBy: string) => {
-              if (userIds.includes(sentBy)) {
-                matches.push(sentBy);
-
-                // Find the user data with matching ID and get the name
-                const user = this.userData.find(user => user.id === sentBy);
-                if (user) {
-                  sentByName.push(user.name);
-                }
+            messages.forEach((message) => {
+              if (message.sentBy && userIdToNameMap.hasOwnProperty(message.sentBy)) {
+                const senderName = userIdToNameMap[message.sentBy];
+                matches.push(message.sentBy);
+                message.senderName = senderName;
               }
             });
 
             console.log('Matching User IDs:', matches);
-            console.log('Matching User Names:', sentByName);
-
-            // Now you have the matching user names in the sentByName array
-            // You can use this array as needed.
-            this.sentByName = sentByName;
           }
         );
       }
     );
   }
+
+
 }

@@ -10,6 +10,7 @@ export interface MessageInterface {
   channel?: string;
   sentBy?: string;
   mentionedUser?: string; //ID from mentioned user
+  senderName?: string;
 }
 
 @Injectable({

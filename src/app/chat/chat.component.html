@@ -32,7 +32,7 @@
         <div class="flex-row ">
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
-              <span class="chat-name" (click)="openUserProfile()">{{ sentByName[index] }}</span>
+              <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
             </div>
             <div>
@@ -49,7 +49,7 @@
               </div>
 
               <div class="reaction-emojis" id="reaction{{index}}">
-                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji)" >{{emoji}}</div>
+                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji)">{{ emoji }}</div>
               </div>
 
               <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
@@ -63,7 +63,7 @@
         </div>
       </div>
 
-      <!-- ngfor generated text -->
+
       <div class="chat-container">
         <!-- ngFor loop to display each message -->
         <div *ngFor="let message of messageData; let index = index">
@@ -82,7 +82,7 @@
               </div>
               <div class="messages-left">
                 <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">{{ sentByName[index] }}</span>
+                  <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
                   <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
                 </div>
                 <div>
@@ -97,6 +97,8 @@
           </div>
         </div>
       </div>
+
+
     </div>
 
 
