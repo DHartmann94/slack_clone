@@ -26,7 +26,7 @@ export class ChatComponent implements OnInit {
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   userData: UserDataInterface[] = [];
-  chatData: MessageInterface[] = [];
+  messageData: MessageInterface[] = [];
 
   currentChannelData: ChannelDataInterface | null = null;
 
@@ -94,14 +94,14 @@ export class ChatComponent implements OnInit {
 
   async getChatData() {
     this.chatService.getMessage().subscribe(
-      (chatData) => {
-        const filteredData = chatData.filter(
+      (messageData) => {
+        const filteredData = messageData.filter(
           (message) => message.time !== undefined && message.time !== null
         );
-        this.chatData = filteredData.sort((a, b) =>
+        this.messageData = filteredData.sort((a, b) =>
           a.time! > b.time! ? 1 : -1
         );
-        console.log('Subscribed data users:', chatData);
+        console.log('Subscribed data users:', messageData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -139,6 +139,7 @@ export class ChatComponent implements OnInit {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
         messageText: this.messageInput, // Use the string, not an array
+        sentBy: localStorage.getItem('currentUser') ?? '',
         time: Date.now(),
         emojis: [],
         thread: null,
@@ -150,8 +151,8 @@ export class ChatComponent implements OnInit {
         this.toggleEmojiPicker(); // Assuming toggleEmojiPicker() is a method in this component to handle the emoji picker's visibility
       }
 
-      // Add the new message locally to chatData
-      this.chatData.push(message);
+      // Add the new message locally to messageData
+      this.messageData.push(message);
 
       // Update the message input to clear the textbox
       this.messageInput = [''];
@@ -159,7 +160,7 @@ export class ChatComponent implements OnInit {
       // Send the message to Firestore using the service
       this.chatService.sendMessage(message).subscribe(
         () => {
-          // Message sent successfully (already updated in local chatData)
+          // Message sent successfully (already updated in local messageData)
           console.log('Message sent');
         },
         (error) => {
@@ -176,8 +177,8 @@ export class ChatComponent implements OnInit {
 
   reaction(messageEmoji: [], index: number) {
     if (this.emojisClickedBefore === index) {
-      document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-      this.emojisClickedBefore = undefined;
+        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
         document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
@@ -200,7 +201,9 @@ export class ChatComponent implements OnInit {
     this.openEditChannel = true;
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
-        this.currentChannelData = data;
+        const channelId = data.id;
+        const currentChannelData = channelId; 
+        this.currentChannelData = currentChannelData;
       }
       console.log('Received Channel Data:', this.currentChannelData);
     });
@@ -231,6 +234,7 @@ export class ChatComponent implements OnInit {
     if (this.channelName.valid && this.currentChannelData) {
       console.log("Saving changes to channel", this.currentChannelData);
       const newChannelName: string = this.channelName.value.channelName;
+      
       this.currentChannelData.channelName = newChannelName;
       this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
         () => {
