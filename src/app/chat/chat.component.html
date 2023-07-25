@@ -28,7 +28,7 @@
         <div class="time-stamp">Thursday, July 13</div>
       </div>
 
-      <div *ngFor="let message of chatData; let index = index" class="chat-right">
+      <div *ngFor="let message of messageData; let index = index" class="chat-right">
         <div class="flex-row ">
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
@@ -66,12 +66,12 @@
       <!-- ngfor generated text -->
       <div class="chat-container">
         <!-- ngFor loop to display each message -->
-        <div *ngFor="let message of chatData; let index = index">
+        <div *ngFor="let message of messageData; let index = index">
           <!-- Add a horizontal line after each message except the first one -->
-          <div class="parting-line" *ngIf="isNewDay(message, chatData[index - 1])"></div>
+          <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
 
           <!-- Format and display the date only if it's a new day -->
-          <div class="flex-center time-partLine" *ngIf="isNewDay(message, chatData[index - 1])">
+          <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
             <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
           </div>
 
@@ -82,7 +82,7 @@
               </div>
               <div class="messages-left">
                 <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">Noah Braun</span>
+                  <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
                   <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
                 </div>
                 <div>
@@ -189,13 +189,13 @@
         </div>
       </form>
     </div>
-    
+
     <div *ngIf="!(editChannelDescription)">
       <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <div class="channel-edit">
           <h2># {{ channel.channelName }}</h2>
           <span (click)="updateChannelDiscription()">Edit</span>
-        </div> 
+        </div>
         <div class="channel-text">
           <p>
             This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents and make decisions.</p>
@@ -206,8 +206,8 @@
           <span>Frederik Beck</span>
         </div>
       </div>
-    </div> 
-    
+    </div>
+
     <div *ngIf="editChannelDescription">
       <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <h2>Bearbeiten</h2>
@@ -219,7 +219,7 @@
         </div>
       </form>
     </div>
-    
+
     <div class="btn-area">
       <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
     </div>
