@@ -210,9 +210,7 @@ export class ChatComponent implements OnInit {
     this.openEditChannel = true;
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
-        const channelId = data.id;
-        const currentChannelData = channelId;
-        this.currentChannelData = currentChannelData;
+        this.currentChannelData = data;
       }
       console.log('Received Channel Data:', this.currentChannelData);
     });
