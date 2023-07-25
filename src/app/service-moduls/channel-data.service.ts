@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
@@ -62,11 +62,20 @@ export class ChannelDataService {
       users: channel.users,
     };
 
-    return from(addDoc(channels, channelData)).pipe(
-      map(() => {
-        console.log('Message sent');
-      })
-    );
+    if (channel.id) {
+      const docRef = doc(channels, channel.id);
+      return from(setDoc(docRef, channelData)).pipe(
+        map(() => {
+          this.channelDataSubject.next(this.channelData);
+        })
+      );
+    } else {
+      return from(addDoc(channels, channelData)).pipe(
+        map(() => {
+          this.channelDataSubject.next(this.channelData);
+        })
+      );
+    } 
   } 
 
   subscribeToChannel() {

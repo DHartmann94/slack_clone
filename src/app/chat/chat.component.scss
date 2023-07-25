@@ -24,6 +24,35 @@
   border-radius: 5px;
 }
 
+.reaction-emojis {
+    display: none;
+    align-items: center;
+    width: 0;
+    border-radius: 20px;
+    background-color: white;
+    padding: 5px;
+}
+
+.showEmojis {
+  display: flex !important;
+  animation: all  500ms ease-in-out;
+  width: auto !important;
+}
+
+
+.r-emoji {
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+  margin: 5px;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.5);
+  }
+}
+
 .chat-first-row {
   display: flex;
   flex-direction: row;

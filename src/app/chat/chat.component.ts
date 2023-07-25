@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -24,7 +16,8 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 })
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
-  reactionEmojis = ['👍','😂','🚀','😥', '😮','🎉'];
+  reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
+  emojisClickedBefore: number | undefined;
 
   [x: string]: any;
   channelName!: FormGroup;
@@ -179,6 +172,25 @@ export class ChatComponent implements OnInit {
     }
   }
 
+
+  reaction(messageEmoji: [], index: number) {
+    if (this.emojisClickedBefore === index) {
+        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        this.emojisClickedBefore = undefined; 
+    } else {
+        if (this.emojisClickedBefore !== null) {
+            document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        }
+        document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+        this.emojisClickedBefore = index;
+    }
+}
+
+//***********Zu Interface hinzufügen */
+reactWithEmoji(emoji:string) {
+  
+}
+
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
   }
@@ -188,10 +200,10 @@ export class ChatComponent implements OnInit {
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
         const channelId = data.id;
-        const currentChannelData = channelId;
-        console.log('Received Channel ID:', currentChannelData);
+        const currentChannelData = channelId; 
+        this.currentChannelData = currentChannelData;
       }
-      this.currentChannelData = this.currentChannelData;
+      console.log('Received Channel ID:', this.currentChannelData);
     });
   }
   
@@ -219,22 +231,17 @@ export class ChatComponent implements OnInit {
   saveChangesToChannelName() {
     if (this.channelName.valid && this.currentChannelData) {
       const newChannelName: string = this.channelName.value.channelName;
-      let partialDetails: Partial<ChannelDataInterface> = {id: false};
-
-      const updatedChannelData: Partial<ChannelDataInterface> = {
-        channelName: newChannelName,
-      };
-
+      
       this.currentChannelData.channelName = newChannelName;
-  
-     /*  this.channelDataService.sendChannelData(updatedChannelData).subscribe(
+
+      this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
         () => {
           console.log('Channel name updated successfully.');
         },
         (error) => {
           console.error('Error updating channel name:', error);
         }
-      ); */
+      );
     }
   }
 
