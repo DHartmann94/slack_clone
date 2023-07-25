@@ -6,15 +6,20 @@ import { Observable } from 'rxjs';
 import { take, map, filter } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { EmojisComponent } from '../emojis/emojis.component';
-import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
-import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import {
+  UserDataService,
+  UserDataInterface,
+} from '../service-moduls/user-data.service';
+import {
+  ChannelDataService,
+  ChannelDataInterface,
+} from '../service-moduls/channel-data.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
@@ -32,6 +37,8 @@ export class ChatComponent implements OnInit {
 
   messageInput: string[] = [];
   messageId: string = '';
+  sentByName: string[] = [];
+  usersFromUserData: string[] = [];
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
 
@@ -50,7 +57,7 @@ export class ChatComponent implements OnInit {
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.channelName = this.fbChannelName.group({
@@ -62,6 +69,7 @@ export class ChatComponent implements OnInit {
     this.getChatData();
     this.getDataFromChannel();
     this.getUserData();
+    this.compareIds();
   }
 
   public typeEmoji($event: any): void {
@@ -70,11 +78,11 @@ export class ChatComponent implements OnInit {
 
   async getUserData() {
     this.userDataService.getUserData().subscribe(
-      userData => {
+      (userData) => {
         this.userData = userData;
         console.log('Subscribed data users:', userData);
       },
-      error => {
+      (error) => {
         console.error('Error retrieving user data:', error);
       }
     );
@@ -174,14 +182,17 @@ export class ChatComponent implements OnInit {
     }
   }
 
-
   reaction(messageEmoji: [], index: number) {
     if (this.emojisClickedBefore === index) {
-        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-        this.emojisClickedBefore = undefined;
+      document
+        .getElementById(`reaction${this.emojisClickedBefore}`)
+        ?.classList.remove('showEmojis');
+      this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
-        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        document
+          .getElementById(`reaction${this.emojisClickedBefore}`)
+          ?.classList.remove('showEmojis');
       }
       document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
       this.emojisClickedBefore = index;
@@ -189,9 +200,7 @@ export class ChatComponent implements OnInit {
   }
 
   //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string) {
-
-  }
+  reactWithEmoji(emoji: string) {}
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -202,7 +211,7 @@ export class ChatComponent implements OnInit {
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
         const channelId = data.id;
-        const currentChannelData = channelId; 
+        const currentChannelData = channelId;
         this.currentChannelData = currentChannelData;
       }
       console.log('Received Channel Data:', this.currentChannelData);
@@ -232,28 +241,26 @@ export class ChatComponent implements OnInit {
 
   saveChangesToChannelName() {
     if (this.channelName.valid && this.currentChannelData) {
-      console.log("Saving changes to channel", this.currentChannelData);
+      console.log('Saving changes to channel', this.currentChannelData);
       const newChannelName: string = this.channelName.value.channelName;
-      
+
       this.currentChannelData.channelName = newChannelName;
-      this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
-        () => {
-          console.log('Channel name updated successfully.');
-        },
-        (error) => {
-          console.error('Error updating channel name:', error);
-        }
-      );
+      this.channelDataService
+        .sendChannelData(this.currentChannelData)
+        .subscribe(
+          () => {
+            console.log('Channel name updated successfully.');
+          },
+          (error) => {
+            console.error('Error updating channel name:', error);
+          }
+        );
     }
   }
 
-  saveChangesToChannelDescription() {
+  saveChangesToChannelDescription() {}
 
-  }
-
-  leaveChannel() { 
-
-  }
+  leaveChannel() {}
 
   formatTimeStamp(time: number | undefined): string {
     if (typeof time === 'undefined') {
@@ -300,4 +307,48 @@ export class ChatComponent implements OnInit {
     });
   }
 
+  async compareIds() {
+    this.chatService.messageData$.subscribe(
+      (messages) => {
+        // Extract all non-null sentBy values
+        const allSentBy: string[] = messages
+          .map((message) => message.sentBy)
+          .filter((sentBy): sentBy is string => !!sentBy);
+
+        console.log('All User IDs:', allSentBy);
+
+        // Get the array of user IDs from userDataService
+        this.userDataService.getUserData().pipe(
+          map((userData) => userData.map(user => user.id))
+        ).subscribe(
+          (userIds: string[]) => {
+            console.log('Subscribed data users ids:', userIds);
+
+            // Compare arrays and find matches
+            const matches: string[] = [];
+            const sentByName: string[] = [];
+
+            allSentBy.forEach((sentBy: string) => {
+              if (userIds.includes(sentBy)) {
+                matches.push(sentBy);
+
+                // Find the user data with matching ID and get the name
+                const user = this.userData.find(user => user.id === sentBy);
+                if (user) {
+                  sentByName.push(user.name);
+                }
+              }
+            });
+
+            console.log('Matching User IDs:', matches);
+            console.log('Matching User Names:', sentByName);
+
+            // Now you have the matching user names in the sentByName array
+            // You can use this array as needed.
+            this.sentByName = sentByName;
+          }
+        );
+      }
+    );
+  }
 }

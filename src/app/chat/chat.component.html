@@ -32,7 +32,7 @@
         <div class="flex-row ">
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
-              <span class="chat-name" (click)="openUserProfile()">Frederik Beck</span>
+              <span class="chat-name" (click)="openUserProfile()">{{ sentByName[index] }}</span>
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
             </div>
             <div>
@@ -82,7 +82,7 @@
               </div>
               <div class="messages-left">
                 <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
+                  <span class="chat-name" (click)="openUserProfile()">{{ sentByName[index] }}</span>
                   <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
                 </div>
                 <div>
@@ -189,7 +189,7 @@
         </div>
       </form>
     </div>
-    
+
     <div *ngIf="!(editChannelDescription)">
       <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <div class="channel-edit">
