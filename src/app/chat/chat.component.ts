@@ -201,9 +201,7 @@ export class ChatComponent implements OnInit {
     this.openEditChannel = true;
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
-        const channelId = data.id;
-        const currentChannelData = channelId; 
-        this.currentChannelData = currentChannelData;
+        this.currentChannelData = data;
       }
       console.log('Received Channel Data:', this.currentChannelData);
     });
@@ -232,9 +230,7 @@ export class ChatComponent implements OnInit {
 
   saveChangesToChannelName() {
     if (this.channelName.valid && this.currentChannelData) {
-      console.log("Saving changes to channel", this.currentChannelData);
       const newChannelName: string = this.channelName.value.channelName;
-      
       this.currentChannelData.channelName = newChannelName;
       this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
         () => {
@@ -245,10 +241,23 @@ export class ChatComponent implements OnInit {
         }
       );
     }
+    this.channelName.reset();
   }
 
   saveChangesToChannelDescription() {
-
+    if (this.channelDescription.valid && this.currentChannelData) {
+      const newchannelDescription: string = this.channelDescription.value.channelDescription;
+      this.currentChannelData.channelDescription = newchannelDescription;
+      this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
+        () => {
+          console.log('Channel description updated successfully.');
+        },
+        (error) => {
+          console.error('Error updating channel name:', error);
+        } 
+      );  
+    }
+    this.channelDescription.reset();
   }
 
   leaveChannel() { 

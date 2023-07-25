@@ -52,6 +52,21 @@ export class ChannelDataService {
     )
   }
 
+  addChannelData(channel: ChannelDataInterface): Observable<string> {
+    const channels = collection(this.firestore, 'channels');
+    const { id, ...channelDataWithoutId } = channel;
+    const channelData = {
+      ...channelDataWithoutId,
+      users: channel.users || []
+    };
+  
+    return from(addDoc(channels, channelData)).pipe(
+      map((docRef) => {
+        return docRef.id;
+      })
+    );
+  }
+  
   sendChannelData(channel: ChannelDataInterface): Observable<void> {
     const channels = collection(this.firestore, 'channels');
     const channelData = {
