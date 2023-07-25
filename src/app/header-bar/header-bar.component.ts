@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
 import { Firestore, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
-import { UserDataService } from '../service-moduls/user-data.service';
+import { UserDataInterface, UserDataService } from '../service-moduls/user-data.service';
 
 @Component({
   selector: 'app-header-bar',
@@ -29,6 +29,8 @@ export class HeaderBarComponent {
   coll = collection(this.firestore, 'users');
   profilePictures = ['/assets/profile-pictures/avatar1.png', '/assets/profile-pictures/avatar2.png', '/assets/profile-pictures/avatar3.png', '/assets/profile-pictures/avatar4.png', '/assets/profile-pictures/avatar5.png', '/assets/profile-pictures/avatar6.png'];
 
+  userData: UserDataInterface[] = [];
+
   editNameForm = new FormGroup({
     name: new FormControl('', [
       Validators.minLength(3),
@@ -50,15 +52,18 @@ export class HeaderBarComponent {
 
 
   constructor(
+    private userDataService: UserDataService,
     public validation: ValidationService, 
     public authentication: AuthenticationService, 
-    private firestore: Firestore) { }
+    private firestore: Firestore
+  ) { }
 
 
   async ngOnInit() {
     this.currentUser = localStorage.getItem('currentUser') ?? '';
     await this.getUserData();
     this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
+    this.getUserData();
   }
 
   async getUserData() {

@@ -14,6 +14,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
+
 export class ChatComponent implements OnInit {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
@@ -175,21 +176,21 @@ export class ChatComponent implements OnInit {
 
   reaction(messageEmoji: [], index: number) {
     if (this.emojisClickedBefore === index) {
-        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-        this.emojisClickedBefore = undefined; 
+      document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+      this.emojisClickedBefore = undefined;
     } else {
-        if (this.emojisClickedBefore !== null) {
-            document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-        }
-        document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
-        this.emojisClickedBefore = index;
+      if (this.emojisClickedBefore !== null) {
+        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+      }
+      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+      this.emojisClickedBefore = index;
     }
-}
+  }
 
-//***********Zu Interface hinzufügen */
-reactWithEmoji(emoji:string) {
-  
-}
+  //***********Zu Interface hinzufügen */
+  reactWithEmoji(emoji: string) {
+
+  }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -199,14 +200,12 @@ reactWithEmoji(emoji:string) {
     this.openEditChannel = true;
     this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
       if (data) {
-        const channelId = data.id;
-        const currentChannelData = channelId; 
-        this.currentChannelData = currentChannelData;
+        this.currentChannelData = data;
       }
-      console.log('Received Channel ID:', this.currentChannelData);
+      console.log('Received Channel Data:', this.currentChannelData);
     });
   }
-  
+
   openUserProfile() {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
@@ -230,10 +229,9 @@ reactWithEmoji(emoji:string) {
 
   saveChangesToChannelName() {
     if (this.channelName.valid && this.currentChannelData) {
+      console.log("Saving changes to channel", this.currentChannelData);
       const newChannelName: string = this.channelName.value.channelName;
-      
       this.currentChannelData.channelName = newChannelName;
-
       this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
         () => {
           console.log('Channel name updated successfully.');
@@ -249,7 +247,9 @@ reactWithEmoji(emoji:string) {
 
   }
 
-  leaveChannel() { }
+  leaveChannel() { 
+
+  }
 
   formatTimeStamp(time: number | undefined): string {
     if (typeof time === 'undefined') {
@@ -295,6 +295,5 @@ reactWithEmoji(emoji:string) {
       day: 'numeric',
     });
   }
-
 
 }
