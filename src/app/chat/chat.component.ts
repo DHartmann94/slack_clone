@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -20,7 +20,7 @@ import {
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -58,6 +58,9 @@ export class ChatComponent implements OnInit {
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
   ) {}
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('changes here', this.sentByName)
+  }
 
   ngOnInit(): void {
     this.channelName = this.fbChannelName.group({
@@ -81,7 +84,7 @@ export class ChatComponent implements OnInit {
     this.userDataService.getUserData().subscribe(
       (userData) => {
         this.userData = userData;
-        console.log('Subscribed data users:', userData);
+        // console.log('Subscribed data users:', userData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -164,7 +167,7 @@ export class ChatComponent implements OnInit {
       this.messageInput = [''];
       this.chatService.sendMessage(message).subscribe(
         () => {
-          // user.id = doc.id;  
+          // user.id = doc.id;
           console.log('Message sent');
         },
         (error) => {
@@ -261,13 +264,13 @@ export class ChatComponent implements OnInit {
         },
         (error) => {
           console.error('Error updating channel name:', error);
-        } 
-      );  
+        }
+      );
     }
     this.channelDescription.reset();
   }
 
-  leaveChannel() { 
+  leaveChannel() {
 
   }
 
@@ -323,13 +326,13 @@ export class ChatComponent implements OnInit {
           .map((message) => message.sentBy)
           .filter((sentBy): sentBy is string => !!sentBy);
 
-        console.log('All User IDs:', allSentBy);
+        // console.log('All User IDs:', allSentBy);
 
         this.userDataService.getUserData().pipe(
           map((userData) => userData.map(user => user.id))
         ).subscribe(
           (userIds: string[]) => {
-            console.log('Subscribed data users ids:', userIds);
+            // console.log('Subscribed data users ids:', userIds);
 
             // Create a mapping of user IDs to names
             const userIdToNameMap: { [id: string]: string } = {};
@@ -339,7 +342,7 @@ export class ChatComponent implements OnInit {
               }
             });
 
-            console.log('User ID to Name Map:', userIdToNameMap);
+            // console.log('User ID to Name Map:', userIdToNameMap);
 
             // Now you can use userIdToNameMap to display names in the template
 
@@ -354,7 +357,7 @@ export class ChatComponent implements OnInit {
               }
             });
 
-            console.log('Matching User IDs:', matches);
+            // console.log('Matching User IDs:', matches);
           }
         );
       }
