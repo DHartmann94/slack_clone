@@ -70,6 +70,7 @@ export class ChatComponent implements OnInit {
     this.getDataFromChannel();
     this.getUserData();
     this.compareIds();
+    this.chatService.subscribeToMessageUpdates();
   }
 
   public typeEmoji($event: any): void {
@@ -152,32 +153,25 @@ export class ChatComponent implements OnInit {
         emojis: [],
         thread: null,
         channel: 'your_channel_value_here', // Set the channel value to an appropriate value
-        mentionedUser: 'user_id_here', // Set the mentioned user ID or leave it as null if not applicable
+        mentionedUser: 'user_id_here',
+        /* senderName: senderName; */
+         // Set the mentioned user ID or leave it as null if not applicable
       };
-
       if (this.emojipickeractive) {
-        this.toggleEmojiPicker(); // Assuming toggleEmojiPicker() is a method in this component to handle the emoji picker's visibility
+        this.toggleEmojiPicker();
       }
-
-      // Add the new message locally to messageData
       this.messageData.push(message);
-
-      // Update the message input to clear the textbox
       this.messageInput = [''];
-
-      // Send the message to Firestore using the service
       this.chatService.sendMessage(message).subscribe(
         () => {
-          // Message sent successfully (already updated in local messageData)
+          // user.id = doc.id;  
           console.log('Message sent');
         },
         (error) => {
-          // Handle any errors if needed
           console.error('Error sending message:', error);
         }
       );
     } else {
-      // Display a message or handle the situation when messageInput is empty
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
