@@ -1,11 +1,7 @@
 .header-container {
     display: flex;
     flex-direction: row;
-<<<<<<< HEAD
     justify-content: space-between;
-=======
-    justify-content: flex-start;
->>>>>>> aa70d035f708387a95a2c26510e878a78b562e72
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
@@ -31,7 +27,6 @@
     .search-bar-parent {
         position: relative;
         width: 35%;
-
         display: flex;
         align-items: center;
         justify-content: center;
