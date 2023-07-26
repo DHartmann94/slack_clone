@@ -7,7 +7,6 @@ import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { ChatExtendComponent } from '../chat-extend/chat-extend.component'; 
 
 @Component({
   selector: 'app-chat',
@@ -15,7 +14,7 @@ import { ChatExtendComponent } from '../chat-extend/chat-extend.component';
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
+export class ChatComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -55,6 +54,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
   ) { }
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
