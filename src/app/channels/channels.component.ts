@@ -108,12 +108,22 @@ export class ChannelsComponent implements OnInit {
   selectChannel(channelId: any) {
     this.selectedChannel = this.getChannelById(channelId);
     this.channelDataResolver.sendData(this.selectedChannel);
+    this.updateChannelName(this.selectedChannel);
   }
 
   getChannelById(channelId: any) {
     return this.channelData.find(channel => channel.id === channelId) || null;
   }
 
+  updateChannelName(channelToUpdate: any) {
+    if (channelToUpdate && channelToUpdate.channelName) {
+      const channelIndex = this.channelData.findIndex(channel => channel.id === channelToUpdate.id);
+      if (channelIndex !== -1) {
+        this.channelData[channelIndex].channelName = channelToUpdate.channelName;
+      }
+    }
+  }
+  
   newColor() {
     var randomColor = "#000000".replace(/0/g, () => {
       return (~~(Math.random() * 16)).toString(16);
@@ -151,25 +161,25 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-/*   async submitChannel() {
-    if (this.channelForm.valid) {
-      const channel: ChannelDataInterface = {
-        channelName: this.channelForm.value.channelName,
-        channelDescription: this.channelForm.value.channelDescription,
-        color: this.newColor(),
-      };
-
-      const channelCollection = collection(this.firestore, 'channels');
-      const docRef = await addDoc(channelCollection, channel);
-      this.channelId = docRef.id;
-      console.log(this.channelId);
-
-      this.channelForm.reset();
-      this.channelCard = false;
-      this.userCard = true;
+  /*   async submitChannel() {
+      if (this.channelForm.valid) {
+        const channel: ChannelDataInterface = {
+          channelName: this.channelForm.value.channelName,
+          channelDescription: this.channelForm.value.channelDescription,
+          color: this.newColor(),
+        };
+  
+        const channelCollection = collection(this.firestore, 'channels');
+        const docRef = await addDoc(channelCollection, channel);
+        this.channelId = docRef.id;
+        console.log(this.channelId);
+  
+        this.channelForm.reset();
+        this.channelCard = false;
+        this.userCard = true;
+      }
     }
-  }
- */
+   */
   close() {
     this.channelCard = false;
   }
