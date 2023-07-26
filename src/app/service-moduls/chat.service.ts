@@ -13,15 +13,18 @@ export interface MessageInterface {
   senderName?: string;
 }
 
+export interface ChatInterface {
+  id?: string;
+  
+}
+
 @Injectable({
   providedIn: 'root',
 })
 
 export class ChatService {
-  private messageDataSubject: BehaviorSubject<MessageInterface[]> =
-    new BehaviorSubject<MessageInterface[]>([]);
-  public messageData$: Observable<MessageInterface[]> =
-    this.messageDataSubject.asObservable();
+  private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
+  public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
 
   constructor(public firestore: Firestore) { }
 

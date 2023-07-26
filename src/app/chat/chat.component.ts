@@ -255,8 +255,8 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
             console.error('Error updating channel name:', error);
           }
         );
+      this.channelName.reset();
     }
-    this.channelName.reset();
   }
 
   saveChangesToChannelDescription() {
@@ -271,8 +271,8 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
           console.error('Error updating channel name:', error);
         }
       );
-    }
     this.channelDescription.reset();
+    }
   }
 
   leaveChannel() {
@@ -366,6 +366,4 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
       }
     );
   }
-
-
 }
