@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc,} from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -16,7 +16,7 @@ export interface MessageInterface {
 
 export interface ChatInterface {
   id?: string;
-  
+
 }
 
 @Injectable({
@@ -39,9 +39,11 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+
           const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
+            id: doc.id, 
             messageText: messageText,
             time: time,
             thread: thread,
@@ -61,6 +63,7 @@ export class ChatService {
   sendMessage(message: MessageInterface): Observable<void> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
+      id: message.id,
       messageText: message.messageText,
       time: message.time,
       thread: message.thread,
@@ -106,20 +109,28 @@ export class ChatService {
     });
   }
 
-  async updateMessageData(update:any) {
-    await this.changeFirebase(update , 'messages');
-  }
-  
-  async changeFirebase(newValue: Array<any>, type: string) {
+
+
+
+// ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
+  async updateMessageData(update: object) {
     debugger
-    const userDocRef = doc(this.firestore, 'messages');
+    await this.changeFirebase(update, '2mWSkWVtnVnIn83EpDci');
+  }
+
+  async changeFirebase(update:object, id: string) {
+    const docInstance = doc(this.firestore, 'messages', id);
     try {
-      await updateDoc(userDocRef, { [type]: newValue });
-      console.log('Chat wurde aktualisiert');
+      await updateDoc(docInstance, update);
+  
+      console.log('Daten erfolgreich aktualisiert');
     } catch (error) {
-      console.error('Fehler beim Aktualisieren des Chats', error);
+      console.error('Fehler beim Aktualisieren der Daten:', error);
     }
   }
+  ////***************** */
+
+
 
 
 
@@ -135,7 +146,7 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis,sentBy, channel, mentionedUser } =
+          const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
             messageText: messageText,
