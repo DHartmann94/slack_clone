@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
@@ -52,6 +52,21 @@ export class ChannelDataService {
     )
   }
 
+  addChannelData(channel: ChannelDataInterface): Observable<string> {
+    const channels = collection(this.firestore, 'channels');
+    const { id, ...channelDataWithoutId } = channel;
+    const channelData = {
+      ...channelDataWithoutId,
+      users: channel.users || []
+    };
+  
+    return from(addDoc(channels, channelData)).pipe(
+      map((docRef) => {
+        return docRef.id;
+      })
+    );
+  }
+  
   sendChannelData(channel: ChannelDataInterface): Observable<void> {
     const channels = collection(this.firestore, 'channels');
     const channelData = {
@@ -62,11 +77,20 @@ export class ChannelDataService {
       users: channel.users,
     };
 
-    return from(addDoc(channels, channelData)).pipe(
-      map(() => {
-        console.log('Message sent');
-      })
-    );
+    if (channel.id) {
+      const docRef = doc(channels, channel.id);
+      return from(updateDoc(docRef, channelData)).pipe(
+        map(() => {
+          this.channelDataSubject.next(this.channelData);
+        })
+      );
+    } else {
+      return from(addDoc(channels, channelData)).pipe(
+        map(() => {
+          this.channelDataSubject.next(this.channelData);
+        })
+      );
+    } 
   } 
 
   subscribeToChannel() {

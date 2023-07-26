@@ -5,7 +5,7 @@
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
-
+    
     .header-logo-container {
         display: flex;
         align-items: center;
@@ -13,7 +13,6 @@
         h2 {
             font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
             margin: 25px;
-
             font-size: 28px;
             font-weight: bold;
         }
@@ -27,7 +26,6 @@
     .search-bar-parent {
         position: relative;
         width: 35%;
-
         display: flex;
         align-items: center;
         justify-content: center;
@@ -57,7 +55,6 @@
             display: none;
         }
     }
-}
 
     .profile {
         position: relative;
@@ -169,8 +166,7 @@
             border-radius: 25px 25px 0px 0px;
         }
     }
-
-
+}
 
 //Overlay Styles
 

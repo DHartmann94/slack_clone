@@ -4,8 +4,9 @@
 }
 
 .chat-card {
+  position: relative;
   min-width: 500px;
-  min-height: 100vh;
+  min-height: calc(100vh - 130px);
   border-radius: 15px;
   padding: 25px 35px 40px;
   margin: 15px 10px 10px 10px;
@@ -15,13 +16,43 @@
 }
 
 .chat-text-area {
-  height: 40vh;
+  height: 50vh;
   overflow-y: scroll;
   overflow-x: hidden;
   width: 50vw;
   padding-top: 20px;
   background-color: rgba(243, 243, 243, 0.462);
   border-radius: 5px;
+}
+
+.reaction-emojis {
+    display: none;
+    height: 24px;
+    align-items: center;
+    width: 0;
+    border-radius: 20px;
+    background-color: white;
+    padding: 5px;
+}
+
+.showEmojis {
+  display: flex !important;
+  animation: all  500ms ease-in-out;
+  width: auto !important;
+}
+
+
+.r-emoji {
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease-in-out;
+  margin: 5px;
+  &:hover {
+    cursor: pointer;
+    transform: scale(1.2);
+  }
 }
 
 .chat-first-row {
@@ -317,8 +348,11 @@
 }
 
 .message-input-field {
-  width: 100%;
+  width: calc(100% - 40px);
   margin-top: 25px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 }
 
 .text-editor {
@@ -734,12 +768,12 @@ section {
 }
 
 .message-container {
+  position: relative;
   display: flex;
   align-items: center;
-  // margin-bottom: 10px;
+  padding: 10px 0px;
   transition: background-color 0.3s;
-  padding: 10px 145px 10px 40px;
-  margin: 40px -40px;
+  margin: 40px 0px;
   width: 100%;
   &:hover {
     cursor: pointer;
@@ -747,6 +781,20 @@ section {
     .chat-message-left {
       background-color: white;
     }
+  }
+}
+
+.delete-message-right-corner {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0.1;
+  font-size: 20px;
+  transition: transform ease-in-out 200ms;
+  &:hover {
+    color: rgb(147, 23, 23);
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 

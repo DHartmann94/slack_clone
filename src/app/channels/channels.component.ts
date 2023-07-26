@@ -5,7 +5,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Firestore, addDoc, arrayUnion, collection, doc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -62,6 +62,7 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
+    this.channelDataService.subscribeToChannel();
   }
 
   async getUserData() {
@@ -107,12 +108,22 @@ export class ChannelsComponent implements OnInit {
   selectChannel(channelId: any) {
     this.selectedChannel = this.getChannelById(channelId);
     this.channelDataResolver.sendData(this.selectedChannel);
+    this.updateChannelName(this.selectedChannel);
   }
 
   getChannelById(channelId: any) {
     return this.channelData.find(channel => channel.id === channelId) || null;
   }
 
+  updateChannelName(channelToUpdate: any) {
+    if (channelToUpdate && channelToUpdate.channelName) {
+      const channelIndex = this.channelData.findIndex(channel => channel.id === channelToUpdate.id);
+      if (channelIndex !== -1) {
+        this.channelData[channelIndex].channelName = channelToUpdate.channelName;
+      }
+    }
+  }
+  
   newColor() {
     var randomColor = "#000000".replace(/0/g, () => {
       return (~~(Math.random() * 16)).toString(16);
@@ -127,22 +138,48 @@ export class ChannelsComponent implements OnInit {
         channelDescription: this.channelForm.value.channelDescription,
         color: this.newColor(),
       };
-
-      /*   this.channelData.push(channel);
-      this.channelDataService.sendChannelData(channel).subscribe();
-      */
-     
-      const channelCollection = collection(this.firestore, 'channels');
-      const docRef = await addDoc(channelCollection, channel);
-      this.channelId = docRef.id;
-      console.log(this.channelId);
-
+      this.channelDataService.addChannelData(channel).subscribe(
+        (docId) => {
+          this.channelId = docId;
+          this.channelData.push(channel);
+          console.log('Channel created with ID:', docId);
+        },
+        (error) => {
+          console.error('Error creating channel:', error);
+        }
+      );
       this.channelForm.reset();
       this.channelCard = false;
       this.userCard = true;
     }
   }
 
+  async getDocRef() {
+    if (this.channelId) {
+      const docRef = doc(this.firestore, 'channels', this.channelId);
+      console.log('DocRef:', docRef);
+    }
+  }
+
+  /*   async submitChannel() {
+      if (this.channelForm.valid) {
+        const channel: ChannelDataInterface = {
+          channelName: this.channelForm.value.channelName,
+          channelDescription: this.channelForm.value.channelDescription,
+          color: this.newColor(),
+        };
+  
+        const channelCollection = collection(this.firestore, 'channels');
+        const docRef = await addDoc(channelCollection, channel);
+        this.channelId = docRef.id;
+        console.log(this.channelId);
+  
+        this.channelForm.reset();
+        this.channelCard = false;
+        this.userCard = true;
+      }
+    }
+   */
   close() {
     this.channelCard = false;
   }
@@ -167,12 +204,12 @@ export class ChannelsComponent implements OnInit {
         if (!(matchingUser && this.selectedUserType === 'addByUser')) {
           console.log('User not found.');
           return
-        } 
+        }
         const users: string[] = [matchingUser.id];
         await this.addUserToChannel(users, userName);
       } catch (error) {
         console.error('Error adding user:', error);
-      } finally{
+      } finally {
         this.userForm.reset();
         this.userCard = false;
       }

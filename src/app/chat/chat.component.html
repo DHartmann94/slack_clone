@@ -28,27 +28,32 @@
         <div class="time-stamp">Thursday, July 13</div>
       </div>
 
-      <div *ngFor="let message of chatData; let index = index" class="chat-right">
+      <div *ngFor="let message of messageData; let index = index" class="chat-right">
         <div class="flex-row ">
           <div class="messages-right">
             <div class="chat-bubble-head right-bubble">
-              <span class="chat-name" (click)="openUserProfile()">Frederik Beck</span>
+              <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
             </div>
             <div>
               <span class="chat-message-right">{{ message.messageText }}</span>
             </div>
             <div class="like-area">
-              <div class="reaction-icon-container">
-                <div class="reaction-counter">{{ message.emojis }}</div>
-                <!-- <img src="./assets/img/icons/rocket.svg" alt=""> -->
-                <span class="reaction-counter">2</span>
+              <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+                <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
+                <span class="reaction-counter">{{ message.emojis.length }}</span>
               </div>
               <div class="reaction-icon-container">
                 <img src="./assets/img/icons/tick_green.svg" alt="">
                 <span class="reaction-counter">1</span>
               </div>
-              <div class="reaction-button-container">
+
+              <div class="reaction-emojis" id="reaction{{index}}">
+                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index)">{{
+                  emoji }}</div>
+              </div>
+
+              <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
                 <div class="reaction-button"></div>
               </div>
             </div>
@@ -59,26 +64,27 @@
         </div>
       </div>
 
-      <!-- ngfor generated text -->
+
       <div class="chat-container">
         <!-- ngFor loop to display each message -->
-        <div *ngFor="let message of chatData; let index = index">
+        <div *ngFor="let message of messageData; let index = index">
           <!-- Add a horizontal line after each message except the first one -->
-          <div class="parting-line" *ngIf="isNewDay(message, chatData[index - 1])"></div>
+          <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
 
           <!-- Format and display the date only if it's a new day -->
-          <div class="flex-center time-partLine" *ngIf="isNewDay(message, chatData[index - 1])">
+          <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
             <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
           </div>
 
           <div class="message-container">
+            <mat-icon class="delete-message-right-corner">delete</mat-icon>
             <div class="chat-left">
               <div>
                 <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
               </div>
               <div class="messages-left">
                 <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">Noah Braun</span>
+                  <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
                   <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
                 </div>
                 <div>
@@ -93,6 +99,8 @@
           </div>
         </div>
       </div>
+
+
     </div>
 
 
@@ -185,17 +193,17 @@
         </div>
       </form>
     </div>
-    
 
     <div *ngIf="!(editChannelDescription)">
       <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
         <div class="channel-edit">
           <h2># {{ channel.channelName }}</h2>
           <span (click)="updateChannelDiscription()">Edit</span>
-        </div> 
+        </div>
         <div class="channel-text">
           <p>
-            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents and make decisions.</p>
+            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents
+            and make decisions.</p>
         </div>
         <div class="under-line"></div>
         <div class="channel-creator">
@@ -203,20 +211,20 @@
           <span>Frederik Beck</span>
         </div>
       </div>
-    </div> 
-    
+    </div>
+
     <div *ngIf="editChannelDescription">
-      <div class="channel-edit">
-        <h2>Beschreibung</h2>
+      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2>Bearbeiten</h2>
         <span (click)="saveChangesToChannelDescription()">Save</span>
       </div>
       <form [formGroup]="channelDescription">
         <div class="channel-inputs">
-            <input class="channel-description" type="text" placeholder="Enter your text..." formControlName="channelDescription">
+          <input class="channel-name" type="text" placeholder="Enter your text..." formControlName="channelDescription">
         </div>
       </form>
     </div>
-    
+
     <div class="btn-area">
       <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
     </div>
