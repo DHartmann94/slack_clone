@@ -165,25 +165,6 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  /*   async submitChannel() {
-      if (this.channelForm.valid) {
-        const channel: ChannelDataInterface = {
-          channelName: this.channelForm.value.channelName,
-          channelDescription: this.channelForm.value.channelDescription,
-          color: this.newColor(),
-        };
-  
-        const channelCollection = collection(this.firestore, 'channels');
-        const docRef = await addDoc(channelCollection, channel);
-        this.channelId = docRef.id;
-        console.log(this.channelId);
-  
-        this.channelForm.reset();
-        this.channelCard = false;
-        this.userCard = true;
-      }
-    }
-   */
   close() {
     this.channelCard = false;
   }

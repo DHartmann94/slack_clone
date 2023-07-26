@@ -1,7 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { ChatExtendService } from '../service-moduls/chat-extend.service';
 import { Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -51,7 +50,6 @@ export class ChatComponent implements OnInit, OnChanges {
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
-    private chatExtendService: ChatExtendService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder
   ) { }
@@ -72,8 +70,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getUserData();
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
-    this.getCurrentUserId();
-    this.receivedChannelData$ = this.chatExtendService.receivedChannelData$;    
+    this.getCurrentUserId();   
   }
 
   selectMessage(messageId: any) {
@@ -142,7 +139,7 @@ export class ChatComponent implements OnInit, OnChanges {
     previousMessage: MessageInterface
   ): boolean {
     if (!previousMessage) {
-      return true; // If there is no previous message, it's a new day
+      return true; 
     }
 
     const currentDate = new Date(currentMessage.time!);
@@ -181,7 +178,6 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageInput = [''];
       this.chatService.sendMessage(message).subscribe(
         () => {
-          // user.id = doc.id;
           console.log('Message sent');
         },
         (error) => {
@@ -192,7 +188,6 @@ export class ChatComponent implements OnInit, OnChanges {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
-
 
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
@@ -211,15 +206,12 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-
   //***********Zu Interface hinzufügen */
   reactWithEmoji(emoji: string , index:number) {
     this.messageData[index].emojis.push(
       {'emoji':emoji, 'reaction-from':this.currentUser});
       this.chatService.updateMessageData(this.messageData);
   }
-
-
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -333,7 +325,6 @@ export class ChatComponent implements OnInit, OnChanges {
       return 'Yesterday';
     }
 
-    // For other dates, return the formatted date in 'mediumDate' format
     return messageDate.toLocaleDateString('en-US', {
       weekday: 'long',
       month: 'long',
@@ -348,29 +339,18 @@ export class ChatComponent implements OnInit, OnChanges {
           .map((message) => message.sentBy)
           .filter((sentBy): sentBy is string => !!sentBy);
 
-        // console.log('All User IDs:', allSentBy);
-
         this.userDataService.getUserData().pipe(
           map((userData) => userData.map(user => user.id))
         ).subscribe(
           (userIds: string[]) => {
-            // console.log('Subscribed data users ids:', userIds);
 
-            // Create a mapping of user IDs to names
             const userIdToNameMap: { [id: string]: string } = {};
             this.userData.forEach(user => {
               if (userIds.includes(user.id)) {
                 userIdToNameMap[user.id] = user.name;
               }
             });
-
-            // console.log('User ID to Name Map:', userIdToNameMap);
-
-            // Now you can use userIdToNameMap to display names in the template
-
-            // Compare arrays and find matches
             const matches: string[] = [];
-
             messages.forEach((message) => {
               if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
                 const senderName = userIdToNameMap[this.currentUserId];
@@ -385,12 +365,12 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   async deleteMessage(message: MessageInterface[])  {
-    if (this.messageId !== null) {
+    if (this.messageId) {
       try {
         const messageData = await firstValueFrom(this.chatService.getMessage());
         const matchingId = messageData.find(message => message.id === this.messageId);
         if (matchingId) {
-          console.log('User not found.');
+          console.log('FINDED message');
           return;
         }
       } catch (error) {
