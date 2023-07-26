@@ -40,7 +40,7 @@
             </div>
             <div class="like-area">
               <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
-                <div class="reaction-counter">{{ message.emojis[0] }}</div>
+                <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
                 <span class="reaction-counter">{{ message.emojis.length }}</span>
               </div>
               <div class="reaction-icon-container">
@@ -49,7 +49,8 @@
               </div>
 
               <div class="reaction-emojis" id="reaction{{index}}">
-                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji)">{{ emoji }}</div>
+                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index)">{{
+                  emoji }}</div>
               </div>
 
               <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
@@ -201,7 +202,8 @@
         </div>
         <div class="channel-text">
           <p>
-            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents and make decisions.</p>
+            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents
+            and make decisions.</p>
         </div>
         <div class="under-line"></div>
         <div class="channel-creator">
