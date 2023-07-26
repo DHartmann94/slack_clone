@@ -111,6 +111,10 @@ export class ChannelsComponent implements OnInit {
     this.updateChannelName(this.selectedChannel);
   }
 
+  createChat() {
+    this.channelDataResolver.sendData(this.selectedChannel);
+  }
+
   getChannelById(channelId: any) {
     return this.channelData.find(channel => channel.id === channelId) || null;
   }

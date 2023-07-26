@@ -78,7 +78,7 @@ export class HeaderBarComponent {
         this.userEmail = userData['email'];
         this.userStatus = userData['status'];
         this.userPicture = userData['picture'];
-        this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
+        this.colorStatus(); 
       } else {
         console.log('The document does not exist.');
       }
@@ -131,7 +131,6 @@ export class HeaderBarComponent {
       this.resetEmailExistsError();
       return;
     }
-
     await this.changeUserMail(email, password);
   }
 
