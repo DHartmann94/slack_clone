@@ -10,7 +10,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
-  mentionedUser?: string; //ID from mentioned user
+  mentionedUser?: string;
   senderName?: string;
 }
 
@@ -72,7 +72,6 @@ export class ChatService {
 
     return from(addDoc(messages, messageData)).pipe(
       map(() => {
-        // Message sent successfully (already updated in local messageData)
         console.log('Message sent');
       })
     );
