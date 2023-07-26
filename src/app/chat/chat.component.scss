@@ -4,8 +4,9 @@
 }
 
 .chat-card {
+  position: relative;
   min-width: 500px;
-  min-height: 100vh;
+  min-height: calc(100vh - 130px);
   border-radius: 15px;
   padding: 25px 35px 40px;
   margin: 15px 10px 10px 10px;
@@ -15,7 +16,7 @@
 }
 
 .chat-text-area {
-  height: 40vh;
+  height: 50vh;
   overflow-y: scroll;
   overflow-x: hidden;
   width: 50vw;
@@ -26,6 +27,7 @@
 
 .reaction-emojis {
     display: none;
+    height: 24px;
     align-items: center;
     width: 0;
     border-radius: 20px;
@@ -41,7 +43,7 @@
 
 
 .r-emoji {
-  font-size: 24px;
+  font-size: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -49,7 +51,7 @@
   margin: 5px;
   &:hover {
     cursor: pointer;
-    transform: scale(1.5);
+    transform: scale(1.2);
   }
 }
 
@@ -346,8 +348,11 @@
 }
 
 .message-input-field {
-  width: 100%;
+  width: calc(100% - 40px);
   margin-top: 25px;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 }
 
 .text-editor {
@@ -766,7 +771,7 @@ section {
   position: relative;
   display: flex;
   align-items: center;
-  // margin-bottom: 10px;
+  padding: 10px 0px;
   transition: background-color 0.3s;
   margin: 40px 0px;
   width: 100%;

@@ -184,7 +184,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     }
   }
 
-  reaction(messageEmoji: [], index: number) {
+  reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
         .getElementById(`reaction${this.emojisClickedBefore}`)
@@ -201,8 +201,14 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     }
   }
 
+
   //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string) { }
+  reactWithEmoji(emoji: string , index:number) {
+    this.messageData[index].emojis.push(
+      {'emoji':emoji, 'reaction-from':this.currentUser});
+  }
+
+
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
