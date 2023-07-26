@@ -39,12 +39,11 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const id = doc.id;
 
           const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
-            // id: id, 
+            id: doc.id, 
             messageText: messageText,
             time: time,
             thread: thread,
@@ -64,6 +63,7 @@ export class ChatService {
   sendMessage(message: MessageInterface): Observable<void> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
+      id: message.id,
       messageText: message.messageText,
       time: message.time,
       thread: message.thread,
