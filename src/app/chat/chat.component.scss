@@ -763,12 +763,12 @@ section {
 }
 
 .message-container {
+  position: relative;
   display: flex;
   align-items: center;
   // margin-bottom: 10px;
   transition: background-color 0.3s;
-  padding: 10px 145px 10px 40px;
-  margin: 40px -40px;
+  margin: 40px 0px;
   width: 100%;
   &:hover {
     cursor: pointer;
@@ -776,6 +776,20 @@ section {
     .chat-message-left {
       background-color: white;
     }
+  }
+}
+
+.delete-message-right-corner {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  opacity: 0.1;
+  font-size: 20px;
+  transition: transform ease-in-out 200ms;
+  &:hover {
+    color: rgb(147, 23, 23);
+    opacity: 1;
+    transform: scale(1.2);
   }
 }
 

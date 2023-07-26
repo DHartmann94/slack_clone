@@ -71,7 +71,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     this.getUserData();
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
-    this.getCurrentUserId();
+    this.getCurrentUserId();    
   }
 
   getCurrentUserId() {
