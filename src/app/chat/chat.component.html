@@ -82,7 +82,7 @@
               </div>
               <div class="messages-left">
                 <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
+                  <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
                   <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
                 </div>
                 <div>
