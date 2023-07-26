@@ -77,7 +77,7 @@
           </div>
 
           <div class="message-container">
-            <mat-icon class="delete-message-right-corner">delete</mat-icon>
+            <mat-icon class="delete-message-right-corner" (click)="selectMessage(message.id)">delete</mat-icon>
             <div class="chat-left">
               <div>
                 <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
@@ -124,6 +124,8 @@
     </div>
   </mat-card>
 </div>
+
+<app-chat-extend></app-chat-extend>
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">

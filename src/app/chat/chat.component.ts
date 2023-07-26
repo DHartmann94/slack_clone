@@ -1,8 +1,8 @@
-import { Component, ElementRef, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { Observable } from 'rxjs';
+import { ChatExtendService } from '../service-moduls/chat-extend.service';
+import { Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
@@ -27,6 +27,8 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
 
+  selectedMessage: MessageInterface | null = null;
+
   currentChannelData: ChannelDataInterface | null = null;
 
   messageInput: string[] = [];
@@ -48,11 +50,10 @@ export class ChatComponent implements OnInit, OnChanges {
     private chatService: ChatService,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private firestore: Firestore,
     private ChannelDataResolver: ChannelDataResolverService,
+    private chatExtendService: ChatExtendService,
     private fbChannelName: FormBuilder,
-    private fbChannelDescription: FormBuilder,
-    private elementRef: ElementRef
+    private fbChannelDescription: FormBuilder
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,7 +72,17 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getUserData();
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
-    this.getCurrentUserId();    
+    this.getCurrentUserId();
+    this.receivedChannelData$ = this.chatExtendService.receivedChannelData$;    
+  }
+
+  selectMessage(messageId: any) {
+    this.selectedMessage = this.getMessageId(messageId);
+    console.log(this.selectedMessage);
+  }
+
+  getMessageId(messageId: any) {
+    return this.messageData.find(message => message.id === messageId) || null;
   }
 
   getCurrentUserId() {
@@ -155,15 +166,13 @@ export class ChatComponent implements OnInit, OnChanges {
   async sendMessage() {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
-        messageText: this.messageInput, // Use the string, not an array
-        sentBy: this.currentUser, // localStorage.getItem('currentUser') ?? ''
+        messageText: this.messageInput,
+        sentBy: this.currentUser,
         time: Date.now(),
         emojis: [],
         thread: null,
-        channel: 'your_channel_value_here', // Set the channel value to an appropriate value
+        channel: 'your_channel_value_here',
         mentionedUser: 'user_id_here',
-        /* senderName: senderName; */
-        // Set the mentioned user ID or leave it as null if not applicable
       };
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
@@ -371,5 +380,20 @@ export class ChatComponent implements OnInit, OnChanges {
         );
       }
     );
+  }
+
+  async deleteMessage(message: MessageInterface[])  {
+    if (this.messageId !== null) {
+      try {
+        const messageData = await firstValueFrom(this.chatService.getMessage());
+        const matchingId = messageData.find(message => message.id === this.messageId);
+        if (matchingId) {
+          console.log('User not found.');
+          return;
+        }
+      } catch (error) {
+        console.error('Error adding user:', error);
+      }
+    }
   }
 }

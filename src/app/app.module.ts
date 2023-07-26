@@ -41,6 +41,7 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
+import { ChatExtendComponent } from './chat/chat-extend.component';
 import { EmojisComponent } from './emojis/emojis.component';
 
 @NgModule({
@@ -62,6 +63,7 @@ import { EmojisComponent } from './emojis/emojis.component';
     AuthActionComponent,
     EmailVerificationConfirmComponent,
     EmojisComponent,
+    ChatExtendComponent,
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,9 @@ import { EmojisComponent } from './emojis/emojis.component';
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
   ],
-  providers: [ChannelDataResolverService],
+  providers: [
+    ChannelDataResolverService,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
