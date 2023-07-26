@@ -3,24 +3,19 @@ import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { Observable } from 'rxjs';
-import { take, map, filter } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { EmojisComponent } from '../emojis/emojis.component';
-import {
-  UserDataService,
-  UserDataInterface,
-} from '../service-moduls/user-data.service';
-import {
-  ChannelDataService,
-  ChannelDataInterface,
-} from '../service-moduls/channel-data.service';
+import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChatExtendComponent } from '../chat-extend/chat-extend.component'; 
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
-export class ChatComponent implements OnInit, OnChanges {
+
+export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -57,7 +52,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
-  ) {}
+  ) { }
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
@@ -158,7 +153,7 @@ export class ChatComponent implements OnInit, OnChanges {
         channel: 'your_channel_value_here', // Set the channel value to an appropriate value
         mentionedUser: 'user_id_here',
         /* senderName: senderName; */
-         // Set the mentioned user ID or leave it as null if not applicable
+        // Set the mentioned user ID or leave it as null if not applicable
       };
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
@@ -197,7 +192,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string) {}
+  reactWithEmoji(emoji: string) { }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
