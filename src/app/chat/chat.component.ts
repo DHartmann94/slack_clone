@@ -156,7 +156,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
         messageText: this.messageInput, // Use the string, not an array
-        sentBy: this.currentUser, // localStorage.getItem('currentUser') ?? ''
+        sentBy: this.currentUser, 
         time: Date.now(),
         emojis: [],
         thread: null,
@@ -184,6 +184,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
     }
   }
 
+
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -206,6 +207,7 @@ export class ChatComponent implements OnInit, OnChanges, ChatExtendComponent {
   reactWithEmoji(emoji: string , index:number) {
     this.messageData[index].emojis.push(
       {'emoji':emoji, 'reaction-from':this.currentUser});
+      this.chatService.updateMessageData(this.messageData);
   }
 
 
