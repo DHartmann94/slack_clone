@@ -1,10 +1,13 @@
+
+
+
 .grid-view-component {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(10, 1fr);
     height: 100vh;
 
-    .board-flex {
+    .board-flex {        
         display: flex;
         flex-direction: row;
         justify-content: space-between;

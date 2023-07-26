@@ -3,6 +3,7 @@ import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, add
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
+  id?: any;
   messageText: any;
   time?: number;
   emojis?: any;
