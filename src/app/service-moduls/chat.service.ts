@@ -39,9 +39,12 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          const id = doc.id;
+
           const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
+            // id: id, 
             messageText: messageText,
             time: time,
             thread: thread,
