@@ -41,6 +41,8 @@ export class ChatComponent implements OnInit, OnChanges {
   usersFromUserData: string[] = [];
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
+  currentUser: string = '';
+  currentUserId: string = '';
 
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
@@ -57,7 +59,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private elementRef: ElementRef
-  ) {}
+  ) { }
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
@@ -74,6 +76,14 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getUserData();
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
+    this.getCurrentUserId();
+  }
+
+  getCurrentUserId() {
+    const currentUserString = localStorage.getItem('currentUser');
+    if (currentUserString) {
+      this.currentUserId = currentUserString;
+    }
   }
 
   public typeEmoji($event: any): void {
@@ -151,14 +161,14 @@ export class ChatComponent implements OnInit, OnChanges {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
         messageText: this.messageInput, // Use the string, not an array
-        sentBy: localStorage.getItem('currentUser') ?? '',
+        sentBy: this.currentUser, // localStorage.getItem('currentUser') ?? ''
         time: Date.now(),
         emojis: [],
         thread: null,
         channel: 'your_channel_value_here', // Set the channel value to an appropriate value
         mentionedUser: 'user_id_here',
         /* senderName: senderName; */
-         // Set the mentioned user ID or leave it as null if not applicable
+        // Set the mentioned user ID or leave it as null if not applicable
       };
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
@@ -197,7 +207,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string) {}
+  reactWithEmoji(emoji: string) { }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -350,14 +360,12 @@ export class ChatComponent implements OnInit, OnChanges {
             const matches: string[] = [];
 
             messages.forEach((message) => {
-              if (message.sentBy && userIdToNameMap.hasOwnProperty(message.sentBy)) {
-                const senderName = userIdToNameMap[message.sentBy];
-                matches.push(message.sentBy);
-                message.senderName = senderName;
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
+                const senderName = userIdToNameMap[this.currentUserId];
+                matches.push(this.currentUserId);
+                this.currentUser = senderName;
               }
             });
-
-            // console.log('Matching User IDs:', matches);
           }
         );
       }
