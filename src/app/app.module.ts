@@ -39,7 +39,6 @@ import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
 import { EmojisComponent } from './emojis/emojis.component';
-import { ChatExtendComponent } from './chat-extend/chat-extend.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +56,6 @@ import { ChatExtendComponent } from './chat-extend/chat-extend.component';
     AuthActionComponent,
     EmailVerificationConfirmComponent,
     EmojisComponent,
-    ChatExtendComponent,
   ],
   imports: [
     BrowserModule,

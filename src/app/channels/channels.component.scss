@@ -57,6 +57,7 @@ mat-card {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
+    padding-bottom: 5px;
 
     .channel-in-out {
         padding: 35px;
@@ -80,12 +81,28 @@ mat-card {
         align-items: center;
         column-gap: 10px;
 
-        h2 {
-            font-family: 'Nunito';
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 500;
-            margin: 0;
+        .channel-info {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            column-gap: 25px;
+
+            h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 500;
+                margin: 0;
+            }
+
+            .shape {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: lightgray;
+            }
+
         }
 
         .shape {
