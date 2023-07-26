@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 
 export interface ChannelDataInterface {
@@ -79,7 +79,7 @@ export class ChannelDataService {
 
     if (channel.id) {
       const docRef = doc(channels, channel.id);
-      return from(setDoc(docRef, channelData)).pipe(
+      return from(updateDoc(docRef, channelData)).pipe(
         map(() => {
           this.channelDataSubject.next(this.channelData);
         })
