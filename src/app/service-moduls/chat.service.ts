@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where,} from '@angular/fire/firestore';
+import {DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc,} from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -106,6 +106,23 @@ export class ChatService {
       this.messageDataSubject.next(updatedMessageData);
     });
   }
+
+  async updateMessageData(update:any) {
+    await this.changeFirebase(update , 'messages');
+  }
+  
+  async changeFirebase(newValue: Array<any>, type: string) {
+    debugger
+    const userDocRef = doc(this.firestore, 'messages');
+    try {
+      await updateDoc(userDocRef, { [type]: newValue });
+      console.log('Chat wurde aktualisiert');
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Chats', error);
+    }
+  }
+
+
 
   getThreadData(channelId: string): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
