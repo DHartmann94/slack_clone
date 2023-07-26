@@ -63,7 +63,7 @@
         justify-content: center;
         align-items: center;
         column-gap: 8px;
-        max-width: 242px;
+        //max-width: 242px;
         cursor: pointer;
 
         .user-icon {
@@ -71,6 +71,10 @@
             width: 60px;
             object-fit: cover;
             border-radius: 50%;
+        }
+
+        mat-icon {
+            padding-right: 13px;
         }
 
         h2 {
@@ -371,6 +375,7 @@ section {
         position: absolute;
         right: 25px;
         top: 25px;
+       
     }
 
     .edit-buttons-pictures {

@@ -32,9 +32,6 @@ import { BoardComponent } from './board/board.component';
 import { HeaderBarComponent } from './header-bar/header-bar.component';
 import { ChannelsComponent } from './channels/channels.component';
 import { ThreadsComponent } from './threads/threads.component';
-import { EditUserProfileCardComponent } from './user/edit-user-profile-card/edit-user-profile-card.component';
-import { UserProfileCardComponent } from './user/user-profile-card/user-profile-card.component';
-import { LogoutUserProfileCardComponent } from './user/logout-user-profile-card/logout-user-profile-card.component';
 import { ChatComponent } from './chat/chat.component';
 import { PasswordResetComponent } from './password-reset/password-reset.component';
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
@@ -47,7 +44,6 @@ import { ChatExtendComponent } from './chat-extend/chat-extend.component';
 @NgModule({
   declarations: [
     AppComponent,
-    UserProfileCardComponent,
     StartscreenComponent,
     SignInComponent,
     SignUpComponent,
@@ -55,8 +51,6 @@ import { ChatExtendComponent } from './chat-extend/chat-extend.component';
     HeaderBarComponent,
     ChannelsComponent,
     ThreadsComponent,
-    EditUserProfileCardComponent,
-    LogoutUserProfileCardComponent,
     ChatComponent,
     PasswordResetComponent,
     PasswordConfirmComponent,
