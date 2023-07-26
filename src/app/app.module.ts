@@ -23,8 +23,6 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatMenuModule } from '@angular/material/menu';
 import { HttpClientModule } from '@angular/common/http';
-// import { PickerModule } from "@ctrl/ngx-emoji-mart";
-// import { EmojiPickerComponent } from './emoji-picker/emoji-picker.component';
 
 //<-----Components----->//
 import { StartscreenComponent } from './startscreen/startscreen.component';
@@ -44,7 +42,7 @@ import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
 import { EmojisComponent } from './emojis/emojis.component';
-// import { PickerComponent } from '@ctrl/ngx-emoji-mart';
+import { ChatExtendComponent } from './chat-extend/chat-extend.component';
 
 @NgModule({
   declarations: [
@@ -65,11 +63,10 @@ import { EmojisComponent } from './emojis/emojis.component';
     AuthActionComponent,
     EmailVerificationConfirmComponent,
     EmojisComponent,
+    ChatExtendComponent,
   ],
   imports: [
     BrowserModule,
-    // PickerComponent,
-    // EmojiPickerComponent,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,
