@@ -58,7 +58,7 @@ export class HeaderBarComponent {
   async ngOnInit() {
     this.currentUser = localStorage.getItem('currentUser') ?? '';
     await this.getUserData();
-    this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
+    this.colorStatus(); 
   }
 
   async getUserData() {
@@ -73,7 +73,7 @@ export class HeaderBarComponent {
         this.userEmail = userData['email'];
         this.userStatus = userData['status'];
         this.userPicture = userData['picture'];
-        this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
+        this.colorStatus(); 
       } else {
         console.log('The document does not exist.');
       }
@@ -126,7 +126,6 @@ export class HeaderBarComponent {
       this.resetEmailExistsError();
       return;
     }
-
     await this.changeUserMail(email, password);
   }
 
