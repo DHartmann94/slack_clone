@@ -1,34 +1,36 @@
-
-
-
 .grid-view-component {
     display: grid;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(10, 1fr);
     height: 100vh;
 
-    .board-flex {        
+    .board-flex {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
 
         .grid-view-header {
             grid-column: 1/7;
             grid-row: 1/1;
         }
-    
+
         .grid-view-channels {
             grid-row: 2/11;
         }
-    
+
         .grid-view-threads {
             grid-column: 5/7;
             grid-row: 2/11;
         }
-    
+
         .grid-view-chat {
             grid-row: 2/11;
             grid-column: 2/5;
+            width: 100%;
+
+
+            @media (max-width: 840px) {
+                display: none;
+            }
         }
     }
 }
