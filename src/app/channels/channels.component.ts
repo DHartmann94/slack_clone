@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -43,12 +44,15 @@ export class ChannelsComponent implements OnInit {
   selectedUserType: string = '';
   selectedChannel: ChannelDataInterface | null = null;
 
+  @Output() crudTriggered = new EventEmitter<void>();
+
   constructor(
     private router: Router,
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
   ) { }
@@ -112,8 +116,9 @@ export class ChannelsComponent implements OnInit {
     this.updateChannelName(this.selectedChannel);
   }
 
-  createChat() {
-    
+  triggerCRUD() {
+    this.chatBehavior.triggerCRUD();
+   /*  this.crudTriggered.emit(); */
   }
 
   getChannelById(channelId: any) {
@@ -128,7 +133,7 @@ export class ChannelsComponent implements OnInit {
       }
     }
   }
-  
+
   newColor() {
     var randomColor = "#000000".replace(/0/g, () => {
       return (~~(Math.random() * 16)).toString(16);

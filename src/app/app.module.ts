@@ -37,7 +37,6 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
-import { ChatExtendComponent } from './chat/chat-extend.component';
 import { EmojisComponent } from './emojis/emojis.component';
 
 @NgModule({
@@ -56,7 +55,6 @@ import { EmojisComponent } from './emojis/emojis.component';
     AuthActionComponent,
     EmailVerificationConfirmComponent,
     EmojisComponent,
-    ChatExtendComponent,
   ],
   imports: [
     BrowserModule,

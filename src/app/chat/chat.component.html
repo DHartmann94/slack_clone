@@ -1,7 +1,7 @@
 <mat-card class="chat-card">
   <div class="white-box"></div>
   <div class="shadow-box"></div>
-  <div class="chat-first-row">
+  <div class="chat-first-row" *ngIf="triggerCRUDHTML">
     <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
       <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
       <span class="chat-name">{{ channel.channelName }}</span>

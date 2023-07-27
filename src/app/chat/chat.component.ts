@@ -1,7 +1,9 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { Observable, firstValueFrom } from 'rxjs';
+import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
+import { ChannelsComponent } from '../channels/channels.component';
+import { Observable, firstValueFrom, Subscription  } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
@@ -13,7 +15,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges {
+export class ChatComponent implements OnInit, OnChanges  {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -27,7 +29,6 @@ export class ChatComponent implements OnInit, OnChanges {
   messageData: MessageInterface[] = [];
 
   selectedMessage: MessageInterface | null = null;
-
   currentChannelData: ChannelDataInterface | null = null;
 
   messageInput: string[] = [];
@@ -44,14 +45,22 @@ export class ChatComponent implements OnInit, OnChanges {
   openEditChannel: boolean = false;
   emojipickeractive = false;
 
+  private crudTriggeredSubscription: Subscription;
+  triggerCRUDHTML: boolean = true;
+
   constructor(
     private chatService: ChatService,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
+    private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder
-  ) { }
+  ) { 
+    this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+      this.performCRUD();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
@@ -70,6 +79,14 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
     this.getCurrentUserId();
+  }
+
+  ngOnDestroy() {
+    this.crudTriggeredSubscription.unsubscribe();
+  }
+
+  performCRUD() {
+    console.trace("Something to perform"); 
   }
 
   selectMessage(messageId: any) {
