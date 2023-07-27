@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { ChatSharedService } from '../service-moduls/chat-shared.service';
 
 @Component({
   selector: 'app-chat-extend',
@@ -10,22 +9,20 @@ import { ChatSharedService } from '../service-moduls/chat-shared.service';
   styleUrls: ['./chat-extend.component.scss']
 })
 export class ChatExtendComponent implements OnInit {
-
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  showChatExtended: boolean = false;
+
+  openNewChat: boolean = false;
 
   constructor(
     private ChannelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
-    private chatSharedService: ChatSharedService,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.getDataFromChannel();
-    this.showChatExtended = this.chatSharedService.getChatCreated();
   }
 
-  getDataFromChannel(): void{
+  getDataFromChannel(): void {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
@@ -36,4 +33,5 @@ export class ChatExtendComponent implements OnInit {
       }
     );
   }
+
 }

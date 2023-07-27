@@ -22,9 +22,10 @@ const routes: Routes = [
     { path: 'header', component: HeaderBarComponent },
     { path: 'channels', component: ChannelsComponent },
     { path: 'chat', component: ChatComponent },
-    { path: 'chat-extended', component: ChatExtendComponent },
+    /* { path: 'chat-extended', component: ChatExtendComponent }, */
     { path: 'threads', component: ThreadsComponent },
   ]},
+  
 ];
 
 @NgModule({
