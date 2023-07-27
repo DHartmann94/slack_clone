@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { ChatDataResolverService } from '../service-moduls/chat-data-resolver.service';
 
 @Component({
   selector: 'app-chat-extend',
@@ -9,6 +9,9 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
   styleUrls: ['./chat-extend.component.scss']
 })
 export class ChatExtendComponent implements OnInit {
+
+  openChatCard: boolean = false;
+
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
   ngOnInit(): void {
@@ -16,15 +19,16 @@ export class ChatExtendComponent implements OnInit {
   }
 
   constructor(
-    private channelDataResolver: ChannelDataResolverService,
+    private chatDataResolver: ChatDataResolverService,
     private channelDataService: ChannelDataService,
   ) { }
 
-  async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.channelDataResolver.resolve();
+  getDataFromChannel(): void{
+    this.receivedChannelData$ = this.chatDataResolver.resolve();
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
-        console.log('Received data in ChatExtendService:', data);
+        console.log('Received data in ChatExtendService:', data)
+        this.openChatCard = data !== null;
       },
       (error) => {
         console.error('Error receiving data:', error);
