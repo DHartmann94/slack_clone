@@ -208,7 +208,8 @@ export class ChatComponent implements OnInit, OnChanges {
   reactWithEmoji(emoji: string , index:number) {
     this.messageData[index].emojis.push(
       {'emoji':emoji, 'reaction-from':this.currentUser});
-      this.chatService.updateMessageData(this.messageData);
+    this.chatService.updateMessageData(this.messageData);
+    this.chatService.subscribeToMessageUpdates();
   }
 
   toggleEmojiPicker() {

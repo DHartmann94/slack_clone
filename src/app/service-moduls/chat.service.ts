@@ -113,19 +113,30 @@ export class ChatService {
 
 
 // ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
-  async updateMessageData(update: object) {
-    debugger
-    await this.changeFirebase(update, '2mWSkWVtnVnIn83EpDci');
+  async updateMessageData(update:MessageInterface[]) {
+    await this.updateFirebase(update);
   }
 
-  async changeFirebase(update:object, id: string) {
-    const docInstance = doc(this.firestore, 'messages', id);
+  async updateFirebase(update:MessageInterface[]) {
+    const jsonData = JSON.stringify(update);
+    console.log('is this my oject?', jsonData);
+
+
     try {
-      await updateDoc(docInstance, update);
+      const messagesRef = collection(this.firestore, "messages");
+      const q = query(messagesRef);
   
-      console.log('Daten erfolgreich aktualisiert');
+      const querySnapshot = await getDocs(q);
+
+      const promises = querySnapshot.docs.map(async (docSnapshot) => {
+        const docRef = doc(this.firestore, "messages", docSnapshot.id);
+        // await updateDoc(docRef, update);
+      });
+      
+      await Promise.all(promises);
+      console.log('Sammlung "messages" erfolgreich aktualisiert');
     } catch (error) {
-      console.error('Fehler beim Aktualisieren der Daten:', error);
+      console.error('Fehler beim Aktualisieren der Sammlung "messages":', error);
     }
   }
   ////***************** */
@@ -166,3 +177,7 @@ export class ChatService {
     );
   }
 }
+function $any(update: string[]): any {
+  throw new Error('Function not implemented.');
+}
+
