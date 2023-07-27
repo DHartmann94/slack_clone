@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -10,7 +10,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
-  mentionedUser?: string; //ID from mentioned user
+  mentionedUser?: string;
   senderName?: string;
 }
 
@@ -43,7 +43,7 @@ export class ChatService {
           const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
-            id: doc.id, 
+            id: doc.id,
             messageText: messageText,
             time: time,
             thread: thread,
@@ -63,7 +63,6 @@ export class ChatService {
   sendMessage(message: MessageInterface): Observable<void> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
-      id: message.id,
       messageText: message.messageText,
       time: message.time,
       thread: message.thread,
@@ -75,13 +74,11 @@ export class ChatService {
 
     return from(addDoc(messages, messageData)).pipe(
       map(() => {
-        // Message sent successfully (already updated in local messageData)
-        console.log('Message sent');
+        // console.log('Message sent');
       })
     );
   }
 
-  // Add this method to subscribe to real-time updates
   subscribeToMessageUpdates() {
     const messagesCollection = collection(this.firestore, 'messages');
     const q = query(messagesCollection);
@@ -91,9 +88,10 @@ export class ChatService {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+        const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
           data;
         const message: MessageInterface = {
+          id: id,
           messageText: messageText,
           time: time,
           thread: thread,
@@ -105,28 +103,43 @@ export class ChatService {
         updatedMessageData.push(message);
       });
 
-      // Update the BehaviorSubject with real-time data
       this.messageDataSubject.next(updatedMessageData);
     });
   }
 
+  deleteMessage(messageId: any): Observable<void> {
+    const messagesCollection = collection(this.firestore, 'messages');
+    const messageDoc = doc(messagesCollection, messageId);
 
+    return from(deleteDoc(messageDoc));
+  }
 
 
 // ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
-  async updateMessageData(update: object) {
-    debugger
-    await this.changeFirebase(update, '2mWSkWVtnVnIn83EpDci');
+  async updateMessageData(update:MessageInterface[]) {
+    await this.updateFirebase(update);
   }
 
-  async changeFirebase(update:object, id: string) {
-    const docInstance = doc(this.firestore, 'messages', id);
+  async updateFirebase(update:MessageInterface[]) {
+    const jsonData = JSON.stringify(update);
+    console.log('is this my oject?', jsonData);
+
+
     try {
-      await updateDoc(docInstance, update);
-  
-      console.log('Daten erfolgreich aktualisiert');
+      const messagesRef = collection(this.firestore, "messages");
+      const q = query(messagesRef);
+
+      const querySnapshot = await getDocs(q);
+
+      const promises = querySnapshot.docs.map(async (docSnapshot) => {
+        const docRef = doc(this.firestore, "messages", docSnapshot.id);
+        // await updateDoc(docRef, update);
+      });
+
+      await Promise.all(promises);
+      console.log('Sammlung "messages" erfolgreich aktualisiert');
     } catch (error) {
-      console.error('Fehler beim Aktualisieren der Daten:', error);
+      console.error('Fehler beim Aktualisieren der Sammlung "messages":', error);
     }
   }
   ////***************** */
@@ -147,9 +160,10 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+          const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
+            id: id,
             messageText: messageText,
             time: time,
             thread: thread,
@@ -166,3 +180,7 @@ export class ChatService {
     );
   }
 }
+function $any(update: string[]): any {
+  throw new Error('Function not implemented.');
+}
+

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatExtendService } from '../service-moduls/chat-extend.service';
 import { Observable } from 'rxjs';
-import { ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 
 @Component({
   selector: 'app-chat-extend',
@@ -11,10 +11,27 @@ import { ChannelDataInterface } from '../service-moduls/channel-data.service';
 export class ChatExtendComponent implements OnInit {
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
-  constructor(private chatExtendService: ChatExtendService) { }
+  openNewChat: boolean = false;
 
-  ngOnInit(): void {
-    this.chatExtendService.getDataFromChannel();
-    this.receivedChannelData$ = this.chatExtendService.receivedChannelData$;
+  constructor(
+    private ChannelDataResolver: ChannelDataResolverService,
+    private channelDataService: ChannelDataService,
+  ) { }
+
+  ngOnInit() {
+    this.getDataFromChannel();
   }
+
+  getDataFromChannel(): void {
+    this.receivedChannelData$ = this.ChannelDataResolver.resolve();
+    this.receivedChannelData$.subscribe(
+      (data: ChannelDataInterface | null) => {
+        console.log('Received data in ChatComponent:', data);
+      },
+      (error) => {
+        console.error('Error receiving data:', error);
+      }
+    );
+  }
+
 }

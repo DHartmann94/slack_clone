@@ -37,7 +37,6 @@ import { PasswordResetComponent } from './password-reset/password-reset.componen
 import { PasswordConfirmComponent } from './password-confirm/password-confirm.component';
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
-import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
 import { ChatExtendComponent } from './chat/chat-extend.component';
 import { EmojisComponent } from './emojis/emojis.component';
 
@@ -83,7 +82,6 @@ import { EmojisComponent } from './emojis/emojis.component';
     provideAuth(() => getAuth()),
   ],
   providers: [
-    ChannelDataResolverService,
   ],
   bootstrap: [AppComponent],
 })

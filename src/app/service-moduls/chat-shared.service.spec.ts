@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { ChatSharedService } from './chat-shared.service';
 
-import { ChatExtendService } from './chat-extend.service';
-
-describe('ChatExtendService', () => {
-  let service: ChatExtendService;
+describe('ChatDataResolverService', () => {
+  let service: ChatSharedService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ChatExtendService);
+    service = TestBed.inject(ChatSharedService);
   });
 
   it('should be created', () => {

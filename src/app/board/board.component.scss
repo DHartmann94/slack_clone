@@ -32,5 +32,16 @@
                 display: none;
             }
         }
+
+        .grid-view-chat-extend {
+            grid-row: 2/11;
+            grid-column: 2/5;
+            width: 100%;
+
+
+            @media (max-width: 840px) {
+                display: none;
+            }
+        }
     }
 }
