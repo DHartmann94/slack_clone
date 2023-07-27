@@ -1,5 +1,6 @@
 <div class="chat-wrapper-main">
-  <mat-card class="chat-card">
+  <app-chat-extend></app-chat-extend>
+  <mat-card class="chat-card" *ngIf="resolveChat">
     <div class="white-box"></div>
     <div class="shadow-box"></div>
     <div class="chat-first-row">
@@ -124,8 +125,6 @@
     </div>
   </mat-card>
 </div>
-
-<app-chat-extend></app-chat-extend>
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">

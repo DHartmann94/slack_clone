@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ChatExtendService } from '../service-moduls/chat-extend.service';
 import { Observable } from 'rxjs';
-import { ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChatDataResolverService } from '../service-moduls/chat-data-resolver.service';
 
 @Component({
   selector: 'app-chat-extend',
@@ -9,12 +9,30 @@ import { ChannelDataInterface } from '../service-moduls/channel-data.service';
   styleUrls: ['./chat-extend.component.scss']
 })
 export class ChatExtendComponent implements OnInit {
+
+  openChatCard: boolean = false;
+
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
-  constructor(private chatExtendService: ChatExtendService) { }
-
   ngOnInit(): void {
-    this.chatExtendService.getDataFromChannel();
-    this.receivedChannelData$ = this.chatExtendService.receivedChannelData$;
+    this.getDataFromChannel();
+  }
+
+  constructor(
+    private chatDataResolver: ChatDataResolverService,
+    private channelDataService: ChannelDataService,
+  ) { }
+
+  getDataFromChannel(): void{
+    this.receivedChannelData$ = this.chatDataResolver.resolve();
+    this.receivedChannelData$.subscribe(
+      (data: ChannelDataInterface | null) => {
+        console.log('Received data in ChatExtendService:', data)
+        this.openChatCard = data !== null;
+      },
+      (error) => {
+        console.error('Error receiving data:', error);
+      }
+    );
   }
 }

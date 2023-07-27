@@ -38,6 +38,7 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { ChannelDataResolverService } from './service-moduls/channel-data-resolver.service';
+import { ChatDataResolverService } from './service-moduls/chat-data-resolver.service';
 import { ChatExtendComponent } from './chat/chat-extend.component';
 import { EmojisComponent } from './emojis/emojis.component';
 
@@ -84,6 +85,7 @@ import { EmojisComponent } from './emojis/emojis.component';
   ],
   providers: [
     ChannelDataResolverService,
+    ChatDataResolverService,
   ],
   bootstrap: [AppComponent],
 })

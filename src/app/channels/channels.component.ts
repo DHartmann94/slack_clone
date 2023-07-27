@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-
+import { ChatDataResolverService } from '../service-moduls/chat-data-resolver.service';
+import {  } from '../service-moduls/channel-data-resolver.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
@@ -48,6 +49,7 @@ export class ChannelsComponent implements OnInit {
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private chatDataResolver: ChatDataResolverService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
   ) { }
@@ -112,7 +114,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   createChat() {
-    this.channelDataResolver.sendData(this.selectedChannel);
+    this.chatDataResolver.sendData(this.selectedChannel);
   }
 
   getChannelById(channelId: any) {
@@ -165,25 +167,6 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  /*   async submitChannel() {
-      if (this.channelForm.valid) {
-        const channel: ChannelDataInterface = {
-          channelName: this.channelForm.value.channelName,
-          channelDescription: this.channelForm.value.channelDescription,
-          color: this.newColor(),
-        };
-  
-        const channelCollection = collection(this.firestore, 'channels');
-        const docRef = await addDoc(channelCollection, channel);
-        this.channelId = docRef.id;
-        console.log(this.channelId);
-  
-        this.channelForm.reset();
-        this.channelCard = false;
-        this.userCard = true;
-      }
-    }
-   */
   close() {
     this.channelCard = false;
   }
