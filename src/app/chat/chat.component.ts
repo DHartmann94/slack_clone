@@ -69,7 +69,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getUserData();
     this.compareIds();
     this.chatService.subscribeToMessageUpdates();
-    this.getCurrentUserId();   
+    this.getCurrentUserId();
   }
 
   selectMessage(messageId: any) {
@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit, OnChanges {
     previousMessage: MessageInterface
   ): boolean {
     if (!previousMessage) {
-      return true; 
+      return true;
     }
 
     const currentDate = new Date(currentMessage.time!);
@@ -154,15 +154,15 @@ export class ChatComponent implements OnInit, OnChanges {
       currentDate.getMonth() !== previousDate.getMonth() ||
       currentDate.getDate() !== previousDate.getDate() ||
       currentDate.getTime() === today.getTime() ||
-      currentDate.getTime() === yesterday.getTime() 
+      currentDate.getTime() === yesterday.getTime()
     );
   }
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
-        messageText: this.messageInput, 
-        sentBy: this.currentUser, 
+        messageText: this.messageInput,
+        sentBy: this.currentUser,
         time: Date.now(),
         emojis: [],
         thread: null,
@@ -176,7 +176,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageInput = [''];
       this.chatService.sendMessage(message).subscribe(
         () => {
-          console.log('Message sent');
+          // console.log('Message sent');
         },
         (error) => {
           console.error('Error sending message:', error);
@@ -363,18 +363,16 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  async deleteMessage(message: MessageInterface[])  {
-    if (this.messageId) {
-      try {
-        const messageData = await firstValueFrom(this.chatService.getMessage());
-        const matchingId = messageData.find(message => message.id === this.messageId);
-        if (matchingId) {
-          console.log('FINDED message');
-          return;
-        }
-      } catch (error) {
-        console.error('Error adding user:', error);
-      }
+  async deleteMessage(messageId: any) {
+    if (!messageId) {
+      return;
+    }
+    try {
+      await this.chatService.deleteMessage(messageId);
+      this.messageData = this.messageData.filter(message => message.id !== messageId);
+    } catch (error) {
+      console.error('Error deleting message:', error);
     }
   }
+
 }
