@@ -1,130 +1,128 @@
-<div class="chat-wrapper-main">
-  <app-chat-extend></app-chat-extend>
-  <mat-card class="chat-card" *ngIf="resolveChat">
-    <div class="white-box"></div>
-    <div class="shadow-box"></div>
-    <div class="chat-first-row">
-      <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
-        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
-        <span class="chat-name">{{ channel.channelName }}</span>
-        <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
+<mat-card class="chat-card">
+  <div class="white-box"></div>
+  <div class="shadow-box"></div>
+  <div class="chat-first-row">
+    <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
+      <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
+      <span class="chat-name">{{ channel.channelName }}</span>
+      <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
+    </div>
+    <div class="right-corner">
+      <div class="participant-container">
+        <img class="participant-icon" src="./assets/img/avatar.png" alt="">
+        <img class="participant-icon" src="./assets/img/avatar.png" alt="">
+        <img class="participant-icon" src="./assets/img/avatar.png" alt="">
       </div>
-      <div class="right-corner">
-        <div class="participant-container">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-        </div>
-        <div class="participant-amount">
-          3
-        </div>
-        <div class="add-participant-background">
-          <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
-        </div>
+      <div class="participant-amount">
+        3
+      </div>
+      <div class="add-participant-background">
+        <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
       </div>
     </div>
-    <div class="chat-text-area">
-      <div class="parting-line"></div>
-      <div class="flex-center time-partLine">
-        <div class="time-stamp">Thursday, July 13</div>
-      </div>
+  </div>
+  <div class="chat-text-area">
+    <div class="parting-line"></div>
+    <div class="flex-center time-partLine">
+      <div class="time-stamp">Thursday, July 13</div>
+    </div>
 
-      <div *ngFor="let message of messageData; let index = index" class="chat-right">
-        <div class="flex-row ">
-          <div class="messages-right">
-            <div class="chat-bubble-head right-bubble">
-              <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
-              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-            </div>
-            <div>
-              <span class="chat-message-right">{{ message.messageText }}</span>
-            </div>
-            <div class="like-area">
-              <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
-                <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
-                <span class="reaction-counter">{{ message.emojis.length }}</span>
-              </div>
-              <div class="reaction-icon-container">
-                <img src="./assets/img/icons/tick_green.svg" alt="">
-                <span class="reaction-counter">1</span>
-              </div>
-
-              <div class="reaction-emojis" id="reaction{{index}}">
-                <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index)">{{
-                  emoji }}</div>
-              </div>
-
-              <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
-                <div class="reaction-button"></div>
-              </div>
-            </div>
+    <div *ngFor="let message of messageData; let index = index" class="chat-right">
+      <div class="flex-row ">
+        <div class="messages-right">
+          <div class="chat-bubble-head right-bubble">
+            <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
+            <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div>
-            <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+            <span class="chat-message-right">{{ message.messageText }}</span>
+          </div>
+          <div class="like-area">
+            <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+              <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
+              <span class="reaction-counter">{{ message.emojis.length }}</span>
+            </div>
+            <div class="reaction-icon-container">
+              <img src="./assets/img/icons/tick_green.svg" alt="">
+              <span class="reaction-counter">1</span>
+            </div>
+
+            <div class="reaction-emojis" id="reaction{{index}}">
+              <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index)">{{
+                emoji }}</div>
+            </div>
+
+            <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
+              <div class="reaction-button"></div>
+            </div>
           </div>
         </div>
+        <div>
+          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+        </div>
       </div>
+    </div>
 
 
-      <div class="chat-container">
-        <!-- ngFor loop to display each message -->
-        <div *ngFor="let message of messageData; let index = index">
-          <!-- Add a horizontal line after each message except the first one -->
-          <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
+    <div class="chat-container">
+      <!-- ngFor loop to display each message -->
+      <div *ngFor="let message of messageData; let index = index">
+        <!-- Add a horizontal line after each message except the first one -->
+        <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
 
-          <!-- Format and display the date only if it's a new day -->
-          <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
-            <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
-          </div>
+        <!-- Format and display the date only if it's a new day -->
+        <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
+          <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
+        </div>
 
-          <div class="message-container">
-            <mat-icon class="delete-message-right-corner" (click)="selectMessage(message.id)">delete</mat-icon>
-            <div class="chat-left">
-              <div>
-                <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+        <div class="message-container">
+          <mat-icon class="delete-message-right-corner" (click)="selectMessage(message.id)">delete</mat-icon>
+          <div class="chat-left">
+            <div>
+              <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+            </div>
+            <div class="messages-left">
+              <div class="chat-bubble-head">
+                <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
+                <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
               </div>
-              <div class="messages-left">
-                <div class="chat-bubble-head">
-                  <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
-                  <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-                </div>
-                <div>
-                  <span class="chat-message-left">{{ message.messageText }}</span>
-                </div>
-                <div>
-                  <span class="responses-left">2 Responses</span>
-                  <span class="chat-timeStamp">Last reply {{ formatTimeStamp(message.time) }}</span>
-                </div>
+              <div>
+                <span class="chat-message-left">{{ message.messageText }}</span>
+              </div>
+              <div>
+                <span class="responses-left">2 Responses</span>
+                <span class="chat-timeStamp">Last reply {{ formatTimeStamp(message.time) }}</span>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-
     </div>
 
 
-    <!-- Input field -->
-    <div class="message-input-field">
-      <div class="text-editor">
-        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+  </div>
 
-        <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+
+  <!-- Input field -->
+  <div class="message-input-field">
+    <div class="text-editor">
+      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+
+      <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
-        <div class="text-editor-bottom">
-          <div class="text-editor-left-btns">
-            <div class="attach"></div>
-            <div class="vertical-line-textEditor"></div>
-            <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
-            <div class="mail-container"></div>
-          </div>
-          <div class="send-message-btn" (click)="sendMessage()"></div>
+      <div class="text-editor-bottom">
+        <div class="text-editor-left-btns">
+          <div class="attach"></div>
+          <div class="vertical-line-textEditor"></div>
+          <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
+          <div class="mail-container"></div>
         </div>
+        <div class="send-message-btn" (click)="sendMessage()"></div>
       </div>
     </div>
-  </mat-card>
-</div>
+  </div>
+</mat-card>
+
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">

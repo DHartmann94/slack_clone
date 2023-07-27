@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { ChatDataResolverService } from '../service-moduls/chat-data-resolver.service';
-import {  } from '../service-moduls/channel-data-resolver.service';
+import { ChatSharedService } from '../service-moduls/chat-shared.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-channels',
@@ -45,11 +45,12 @@ export class ChannelsComponent implements OnInit {
   selectedChannel: ChannelDataInterface | null = null;
 
   constructor(
+    private router: Router,
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
-    private chatDataResolver: ChatDataResolverService,
+    private chatSharedService: ChatSharedService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
   ) { }
@@ -114,7 +115,10 @@ export class ChannelsComponent implements OnInit {
   }
 
   createChat() {
-    this.chatDataResolver.sendData(this.selectedChannel);
+    setTimeout(() => {
+      this.chatSharedService.setChatCreated(true)
+      this.router.navigateByUrl('/board/chat-extended');
+    }, 250);
   }
 
   getChannelById(channelId: any) {

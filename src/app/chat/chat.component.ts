@@ -1,7 +1,6 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { ChatDataResolverService } from '../service-moduls/chat-data-resolver.service';
 import { Observable, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -24,8 +23,6 @@ export class ChatComponent implements OnInit, OnChanges {
   channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  triggerExtendedChat$!: Observable<ChannelDataInterface | null>;
-
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
 
@@ -44,7 +41,6 @@ export class ChatComponent implements OnInit, OnChanges {
 
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
-  resolveChat: boolean = true;	
   openEditChannel: boolean = false;
   emojipickeractive = false;
 
@@ -53,7 +49,6 @@ export class ChatComponent implements OnInit, OnChanges {
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
-    private chatDataResolver: ChatDataResolverService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder
   ) { }
@@ -101,7 +96,6 @@ export class ChatComponent implements OnInit, OnChanges {
     this.userDataService.getUserData().subscribe(
       (userData) => {
         this.userData = userData;
-        // console.log('Subscribed data users:', userData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -111,7 +105,6 @@ export class ChatComponent implements OnInit, OnChanges {
 
   async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve();
-    this.triggerExtendedChat$ = this.chatDataResolver.resolve();
     this.receivedChannelData$.subscribe(
       (data: ChannelDataInterface | null) => {
         console.log('Received data in ChatComponent:', data);
@@ -120,22 +113,7 @@ export class ChatComponent implements OnInit, OnChanges {
         console.error('Error receiving data:', error);
       }
     );
-   
   }
-
-  reoslveChatService() {
-    if (this.triggerExtendedChat$) {
-      this.triggerExtendedChat$.subscribe(
-        (data: ChannelDataInterface | null) => {
-          console.log('Received data in ChatComponent:', data);
-          this.resolveChat = false;
-        },
-        (error) => {
-          console.error('Error receiving data:', error);
-        }  
-      );
-    }
-  }  
 
   async getChatData() {
     this.chatService.getMessage().subscribe(
@@ -175,15 +153,15 @@ export class ChatComponent implements OnInit, OnChanges {
       currentDate.getFullYear() !== previousDate.getFullYear() ||
       currentDate.getMonth() !== previousDate.getMonth() ||
       currentDate.getDate() !== previousDate.getDate() ||
-      currentDate.getTime() === today.getTime() || // Check if currentDate is today
-      currentDate.getTime() === yesterday.getTime() // Check if currentDate is yesterday
+      currentDate.getTime() === today.getTime() ||
+      currentDate.getTime() === yesterday.getTime() 
     );
   }
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
       const message: MessageInterface = {
-        messageText: this.messageInput, // Use the string, not an array
+        messageText: this.messageInput, 
         sentBy: this.currentUser, 
         time: Date.now(),
         emojis: [],
