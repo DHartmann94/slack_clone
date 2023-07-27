@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -43,7 +43,7 @@ export class ChatService {
           const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
-            id: doc.id, 
+            id: doc.id,
             messageText: messageText,
             time: time,
             thread: thread,
@@ -74,12 +74,11 @@ export class ChatService {
 
     return from(addDoc(messages, messageData)).pipe(
       map(() => {
-        console.log('Message sent');
+        // console.log('Message sent');
       })
     );
   }
 
-  // Add this method to subscribe to real-time updates
   subscribeToMessageUpdates() {
     const messagesCollection = collection(this.firestore, 'messages');
     const q = query(messagesCollection);
@@ -104,12 +103,16 @@ export class ChatService {
         updatedMessageData.push(message);
       });
 
-      // Update the BehaviorSubject with real-time data
       this.messageDataSubject.next(updatedMessageData);
     });
   }
 
+  deleteMessage(messageId: any): Observable<void> {
+    const messagesCollection = collection(this.firestore, 'messages');
+    const messageDoc = doc(messagesCollection, messageId);
 
+    return from(deleteDoc(messageDoc));
+  }
 
 
 // ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
@@ -125,14 +128,14 @@ export class ChatService {
     try {
       const messagesRef = collection(this.firestore, "messages");
       const q = query(messagesRef);
-  
+
       const querySnapshot = await getDocs(q);
 
       const promises = querySnapshot.docs.map(async (docSnapshot) => {
         const docRef = doc(this.firestore, "messages", docSnapshot.id);
         // await updateDoc(docRef, update);
       });
-      
+
       await Promise.all(promises);
       console.log('Sammlung "messages" erfolgreich aktualisiert');
     } catch (error) {
