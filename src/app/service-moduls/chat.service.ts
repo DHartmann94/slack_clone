@@ -10,6 +10,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
+  sentById?: string,
   mentionedUser?: string;
   senderName?: string;
 }
@@ -40,7 +41,7 @@ export class ChatService {
         querySnapshot.forEach((doc) => {
           const data = doc.data();
 
-          const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
             id: doc.id,
@@ -50,6 +51,7 @@ export class ChatService {
             emojis: emojis,
             channel: channel,
             sentBy: sentBy,
+            sentById: sentById,
             mentionedUser: mentionedUser,
           };
           storedMessageData.push(message);
@@ -68,6 +70,7 @@ export class ChatService {
       thread: message.thread,
       emojis: message.emojis,
       sentBy: message.sentBy,
+      sentById: message.sentById,
       channel: message.channel,
       mentionedUser: message.mentionedUser,
     };
@@ -160,7 +163,7 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+          const { id, messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
             id: id,
@@ -169,6 +172,7 @@ export class ChatService {
             thread: thread,
             emojis: emojis,
             sentBy: sentBy,
+            sentById: sentById,
             channel: channel,
             mentionedUser: mentionedUser,
           };

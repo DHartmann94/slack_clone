@@ -21,17 +21,18 @@
       </div>
     </div>
   </div>
+
+  <!-- Chat right -->
   <div class="chat-text-area">
     <div class="parting-line"></div>
     <div class="flex-center time-partLine">
       <div class="time-stamp">Thursday, July 13</div>
     </div>
-
-    <div *ngFor="let message of messageData; let index = index" class="chat-right">
-      <div class="flex-row ">
+    <div class="chat-right" *ngFor="let message of messageData; let index = index">
+      <div *ngIf="message.sentById === currentUserId" class="flex-row">
         <div class="messages-right">
           <div class="chat-bubble-head right-bubble">
-            <span class="chat-name" (click)="openUserProfile()">{{ message.senderName }}</span>
+            <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div>
@@ -63,19 +64,14 @@
       </div>
     </div>
 
-
+    <!-- Chat left -->
     <div class="chat-container">
-      <!-- ngFor loop to display each message -->
       <div *ngFor="let message of messageData; let index = index">
-        <!-- Add a horizontal line after each message except the first one -->
         <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
-
-        <!-- Format and display the date only if it's a new day -->
         <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
           <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
         </div>
-
-        <div class="message-container">
+        <div class="message-container" *ngIf="message.sentById !== currentUserId">
           <mat-icon class="delete-message-right-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
           <div class="chat-left">
             <div>
@@ -98,10 +94,7 @@
         </div>
       </div>
     </div>
-
-
   </div>
-
 
   <!-- Input field -->
   <div class="message-input-field">

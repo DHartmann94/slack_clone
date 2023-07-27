@@ -47,6 +47,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
+  
 
   constructor(
     private chatService: ChatService,
@@ -56,7 +57,7 @@ export class ChatComponent implements OnInit, OnChanges  {
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder
-  ) { 
+  ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.performCRUD();
     });
@@ -86,7 +87,7 @@ export class ChatComponent implements OnInit, OnChanges  {
   }
 
   performCRUD() {
-    console.trace("Something to perform"); 
+    console.trace("Something to perform");
   }
 
   selectMessage(messageId: any) {
@@ -180,6 +181,7 @@ export class ChatComponent implements OnInit, OnChanges  {
       const message: MessageInterface = {
         messageText: this.messageInput,
         sentBy: this.currentUser,
+        sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         thread: null,
@@ -391,5 +393,6 @@ export class ChatComponent implements OnInit, OnChanges  {
       console.error('Error deleting message:', error);
     }
   }
+
 
 }
