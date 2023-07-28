@@ -62,7 +62,7 @@ export class HeaderBarComponent {
   async ngOnInit() {
     this.currentUser = localStorage.getItem('currentUser') ?? '';
     await this.getUserData();
-    this.colorStatus(); // Call the function to set 'active' based on 'userStatus'
+    this.colorStatus(); 
     this.getUserData();
   }
 
