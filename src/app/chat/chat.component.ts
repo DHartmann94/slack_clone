@@ -47,7 +47,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
-  
+
 
   constructor(
     private chatService: ChatService,
@@ -346,11 +346,12 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
 
     return messageDate.toLocaleDateString('en-US', {
-      weekday: 'long',
+      year: 'numeric', // Change to 'numeric' to display all four digits of the year
       month: 'long',
       day: 'numeric',
     });
   }
+
 
   async compareIds() {
     this.chatService.messageData$.subscribe(
