@@ -22,16 +22,16 @@
     </div>
   </div>
 
-  <!-- Time stamp parting line -->
-  <div *ngFor="let message of messageData; let index = index">
-    <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
-    <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
-      <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
-    </div>
-  </div>
-
   <div class="chat-text-area">
     <ng-container *ngFor="let message of messageData; let index = index">
+      <!-- Time stamp parting line -->
+      <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
+        <div class="parting-line"></div>
+        <div class="flex-center time-partLine">
+          <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
+        </div>
+      </ng-container>
+
       <div class="chat-message" [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
@@ -74,9 +74,8 @@
         </div>
       </div>
     </ng-container>
-
-
   </div>
+
 
   <!-- Input field -->
   <div class="message-input-field">
