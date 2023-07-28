@@ -49,7 +49,7 @@
             </div>
 
             <div class="reaction-emojis" id="reaction{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index)">{{
+              <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index, message.id)">{{
                 emoji }}</div>
             </div>
 
