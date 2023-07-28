@@ -77,9 +77,9 @@ export class ChatComponent implements OnInit, OnChanges  {
     this.getChatData();
     this.getDataFromChannel();
     this.getUserData();
-    this.compareIds();
     this.chatService.subscribeToMessageUpdates();
     this.getCurrentUserId();
+    this.compareIds();
   }
 
   ngOnDestroy() {
@@ -365,9 +365,6 @@ export class ChatComponent implements OnInit, OnChanges  {
   async compareIds() {
     this.chatService.messageData$.subscribe(
       (messages) => {
-        const allSentBy: string[] = messages
-          .map((message) => message.sentBy)
-          .filter((sentBy): sentBy is string => !!sentBy);
 
         this.userDataService.getUserData().pipe(
           map((userData) => userData.map(user => user.id))

@@ -28,13 +28,43 @@ export class ChatService {
   private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
   public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) {
-    this.subscribeToMessageUpdates();
-  }
+  constructor(public firestore: Firestore) { }
 
   getMessage(): Observable<MessageInterface[]> {
-    return this.messageData$;
+    const messages = collection(this.firestore, 'messages');
+    const q = query(messages);
+
+    return new Observable<MessageInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const storedMessageData: MessageInterface[] = [];
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+
+          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
+            data;
+          const message: MessageInterface = {
+            id: doc.id,
+            messageText: messageText,
+            time: time,
+            thread: thread,
+            emojis: emojis,
+            channel: channel,
+            sentBy: sentBy,
+            sentById: sentById,
+            mentionedUser: mentionedUser,
+          };
+          storedMessageData.push(message);
+        });
+
+        this.messageDataSubject.next(storedMessageData);
+        observer.next(storedMessageData);
+      });
+
+      return () => unsubscribe();
+    });
   }
+
 
   sendMessage(message: MessageInterface): Observable<MessageInterface> {
     const messages = collection(this.firestore, 'messages');
