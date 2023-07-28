@@ -188,14 +188,22 @@ export class ChatComponent implements OnInit, OnChanges  {
         channel: 'your_channel_value_here',
         mentionedUser: 'user_id_here',
       };
+
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
+
       this.messageData.push(message);
       this.messageInput = [''];
+
       this.chatService.sendMessage(message).subscribe(
-        () => {
-          // console.log('Message sent');
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.messageData.findIndex((msg) => msg === message);
+            if (index !== -1) {
+              this.messageData[index].id = newMessage.id;
+            }
+          }
         },
         (error) => {
           console.error('Error sending message:', error);
@@ -205,6 +213,7 @@ export class ChatComponent implements OnInit, OnChanges  {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
+
 
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {

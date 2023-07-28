@@ -62,7 +62,7 @@ export class ChatService {
     );
   }
 
-  sendMessage(message: MessageInterface): Observable<void> {
+  sendMessage(message: MessageInterface): Observable<MessageInterface> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
       messageText: message.messageText,
@@ -76,8 +76,12 @@ export class ChatService {
     };
 
     return from(addDoc(messages, messageData)).pipe(
-      map(() => {
-        // console.log('Message sent');
+      map((docRef) => {
+        const newMessage: MessageInterface = {
+          ...message,
+          id: docRef.id,
+        };
+        return newMessage;
       })
     );
   }
