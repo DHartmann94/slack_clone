@@ -22,21 +22,20 @@
 }
 
 .reaction-emojis {
-    display: none;
-    height: 24px;
-    align-items: center;
-    width: 0;
-    border-radius: 20px;
-    background-color: white;
-    padding: 5px;
+  display: none;
+  height: 24px;
+  align-items: center;
+  width: 0;
+  border-radius: 20px;
+  background-color: white;
+  padding: 5px;
 }
 
 .showEmojis {
   display: flex !important;
-  animation: all  500ms ease-in-out;
+  animation: all 500ms ease-in-out;
   width: auto !important;
 }
-
 
 .r-emoji {
   font-size: 20px;
@@ -180,15 +179,24 @@
 .chat-left {
   display: flex;
   flex-direction: row;
-  width: 75%;
+  padding: 0 145px 0 45px;
+  transition: background-color 0.3s;
+  &:hover {
+    cursor: pointer;
+    background: var(--bg-color, #eceefe);
+    .chat-message-left {
+      background-color: white;
+    }
+  }
 }
 
 .chat-right {
   display: flex;
-  justify-content: flex-end;
-  padding: 10px 40px 10px 145px;
-  margin: 40px -40px;
+  justify-content: flex-start;
+  margin: 40px 0;
+  padding: 0 45px 0 145px;
   transition: background-color 0.3s;
+  flex-direction: row-reverse;
   &:hover {
     background: var(--bg-color, #eceefe);
   }
@@ -219,6 +227,11 @@
   justify-content: center;
 }
 
+.chat-message {
+  padding-top: 20px;
+  padding-bottom: 25px;
+}
+
 .chat-message-left {
   font-size: 18px;
   font-style: normal;
@@ -230,7 +243,7 @@
   display: flex;
   padding: 15px;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
   align-self: stretch;
   margin: 8px 0;
@@ -244,13 +257,24 @@
   color: #fff;
   border-radius: 30px 0px 30px 30px;
   background: var(--purple-2, #797ef3);
-  display: flex;
+  display: inline-flex; /* Änderung hier */
   padding: 15px;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
   align-self: stretch;
   margin: 8px 0;
+}
+
+.message-content-left {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.message-content-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .chat-timeStamp {
@@ -268,18 +292,26 @@
 }
 
 .right-bubble {
-  flex-direction: row-reverse;
+  flex-direction: row;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.wid-max {
+  width: 100%;
+}
+
+.flex-right {
+  justify-content: flex-end;
 }
 
 .messages-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  margin-right: 15px;
-}
-
-.messages-left {
-  margin-left: 15px;
+  gap: 8px;
 }
 
 .responses-left {
@@ -290,6 +322,20 @@
   line-height: normal;
   cursor: pointer;
   margin-right: 20px;
+  position: relative;
+  transition: font-weight 0.3s, text-shadow 0.3s;
+  &:hover {
+    font-weight: 500;
+    text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+  }
+}
+.responses-right {
+  color: var(--purple-3, #535af1);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
   position: relative;
   transition: font-weight 0.3s, text-shadow 0.3s;
   &:hover {
@@ -349,6 +395,7 @@
   position: absolute;
   bottom: 20px;
   left: 20px;
+  background: #fff;
 }
 
 .text-editor {
@@ -643,7 +690,7 @@ section {
         object-fit: scale-down;
         cursor: pointer;
       }
-  
+
       h1 {
         font-family: "Nunito";
         font-size: 20px;
@@ -651,7 +698,7 @@ section {
         font-weight: 700;
       }
     }
-  
+
     h3 {
       font-family: "Nunito";
       margin-top: 20px;
@@ -763,27 +810,21 @@ section {
   }
 }
 
-.message-container {
-  position: relative;
+
+
+.chat-right-first-row-right {
+  gap: 20px;
   display: flex;
-  align-items: center;
-  padding: 10px 0px;
-  transition: background-color 0.3s;
-  margin: 40px 0px;
-  width: 100%;
-  &:hover {
-    cursor: pointer;
-    background: var(--bg-color, #eceefe);
-    .chat-message-left {
-      background-color: white;
-    }
-  }
+    align-items: center;
+    justify-content: flex-end;
 }
 
-.delete-message-right-corner {
-  position: absolute;
+.delete-message-left-corner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 15px;
-  right: 15px;
+  left: 15px;
   opacity: 0.1;
   font-size: 20px;
   transition: transform ease-in-out 200ms;

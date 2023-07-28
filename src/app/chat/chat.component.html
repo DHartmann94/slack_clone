@@ -22,21 +22,36 @@
     </div>
   </div>
 
-  <!-- Chat right -->
-  <div class="chat-text-area">
-    <div class="parting-line"></div>
-    <div class="flex-center time-partLine">
-      <div class="time-stamp">Thursday, July 13</div>
+  <!-- Time stamp parting line -->
+  <div *ngFor="let message of messageData; let index = index">
+    <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
+    <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
+      <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
     </div>
-    <div class="chat-right" *ngFor="let message of messageData; let index = index">
-      <div *ngIf="message.sentById === currentUserId" class="flex-row">
-        <div class="messages-right">
-          <div class="chat-bubble-head right-bubble">
+  </div>
+
+  <div class="chat-text-area">
+    <ng-container *ngFor="let message of messageData; let index = index">
+      <div class="chat-message" [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+        <div class="profile-picture-container">
+          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+        </div>
+        <div class="message-content" [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+          <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
             <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
+          <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
+            <div>
+              <mat-icon class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+            </div>
+            <div class="chat-right-first-row-right">
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+              <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
+            </div>
+          </div>
           <div>
-            <span class="chat-message-right">{{ message.messageText }}</span>
+            <span class="chat-message" [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{ message.messageText }}</span>
           </div>
           <div class="like-area">
             <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
@@ -47,53 +62,20 @@
               <img src="./assets/img/icons/tick_green.svg" alt="">
               <span class="reaction-counter">1</span>
             </div>
-
             <div class="reaction-emojis" id="reaction{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index, message.id)">{{
-                emoji }}</div>
+              <div *ngFor="let emoji of reactionEmojis" class="r-emoji" (click)="reactWithEmoji(emoji, index, message.id)">{{ emoji }}</div>
             </div>
-
             <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>
-        </div>
-        <div>
-          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+          <span class="responses" [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">2 Responses</span>
+          <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{ formatTimeStamp(message.time) }}</span>
         </div>
       </div>
-    </div>
+    </ng-container>
 
-    <!-- Chat left -->
-    <div class="chat-container">
-      <div *ngFor="let message of messageData; let index = index">
-        <div class="parting-line" *ngIf="isNewDay(message, messageData[index - 1])"></div>
-        <div class="flex-center time-partLine" *ngIf="isNewDay(message, messageData[index - 1])">
-          <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
-        </div>
-        <div class="message-container" *ngIf="message.sentById !== currentUserId">
-          <mat-icon class="delete-message-right-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
-          <div class="chat-left">
-            <div>
-              <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
-            </div>
-            <div class="messages-left">
-              <div class="chat-bubble-head">
-                <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
-                <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              </div>
-              <div>
-                <span class="chat-message-left">{{ message.messageText }}</span>
-              </div>
-              <div>
-                <span class="responses-left">2 Responses</span>
-                <span class="chat-timeStamp">Last reply {{ formatTimeStamp(message.time) }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
 
   <!-- Input field -->
