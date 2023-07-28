@@ -206,6 +206,7 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
+  // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -223,13 +224,14 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
-  //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string , index:number) {
+  reactWithEmoji(emoji: string , index:number, messageId:string) {
     this.messageData[index].emojis.push(
       {'emoji':emoji, 'reaction-from':this.currentUser});
-    this.chatService.updateMessageData(this.messageData);
-    this.chatService.subscribeToMessageUpdates();
+    this.chatService.updateMessage(messageId, this.messageData[index].emojis);
   }
+
+  //***** */
+
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -393,6 +395,4 @@ export class ChatComponent implements OnInit, OnChanges  {
       console.error('Error deleting message:', error);
     }
   }
-
-
 }

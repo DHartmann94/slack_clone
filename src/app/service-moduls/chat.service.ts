@@ -117,38 +117,11 @@ export class ChatService {
     return from(deleteDoc(messageDoc));
   }
 
-
-// ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
-  async updateMessageData(update:MessageInterface[]) {
-    await this.updateFirebase(update);
+  updateMessage(messageId: any, emojiUpdate:object): Observable<void> {
+    const messagesCollection = collection(this.firestore, 'messages');
+    const messageDoc = doc(messagesCollection, messageId);
+    return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
   }
-
-  async updateFirebase(update:MessageInterface[]) {
-    const jsonData = JSON.stringify(update);
-    console.log('is this my oject?', jsonData);
-
-
-    try {
-      const messagesRef = collection(this.firestore, "messages");
-      const q = query(messagesRef);
-
-      const querySnapshot = await getDocs(q);
-
-      const promises = querySnapshot.docs.map(async (docSnapshot) => {
-        const docRef = doc(this.firestore, "messages", docSnapshot.id);
-        // await updateDoc(docRef, update);
-      });
-
-      await Promise.all(promises);
-      console.log('Sammlung "messages" erfolgreich aktualisiert');
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren der Sammlung "messages":', error);
-    }
-  }
-  ////***************** */
-
-
-
 
 
   getThreadData(channelId: string): Observable<MessageInterface[]> {
