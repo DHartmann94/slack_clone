@@ -99,8 +99,9 @@
 
 
 <!-- Profile Content -->
-<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()">
-  <section class="user-profile-card-section">
+<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+
+  <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
     <mat-card class="user-profile-card">
       <mat-card-header class="user-header">
         <mat-card-title>Profile</mat-card-title>
@@ -137,7 +138,6 @@
       </mat-card-actions>
     </mat-card>
   </section>
-</div>
 
 <!-- Edit Channel -->
 <mat-card class="overlay" *ngIf="openEditChannel">

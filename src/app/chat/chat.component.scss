@@ -542,8 +542,9 @@ $light-blue: #eceefe;
 
 section {
   position: absolute;
-  right: 35rem;
-  top: 15rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 999;
 }
 
@@ -632,6 +633,10 @@ section {
     border-radius: 50px;
     background: #444df2;
   }
+
+  @media(min-width: 970px) {
+    width: 19rem;
+}
 }
 
 .overlay {
