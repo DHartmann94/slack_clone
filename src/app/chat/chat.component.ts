@@ -51,7 +51,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   constructor(
     private chatService: ChatService,
-    private userDataService: UserDataService,
+    public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
@@ -256,9 +256,10 @@ export class ChatComponent implements OnInit, OnChanges  {
     });
   }
 
-  openUserProfile() {
+  openUserProfile(id: any) {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
+    this.userDataService.getCurrentUserData(id);
   }
 
   closeUserProfile() {

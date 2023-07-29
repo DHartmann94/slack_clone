@@ -602,9 +602,13 @@ section {
   }
 
   .user-status {
-    color: #92c83e;
+    color: #808080;
     padding-top: 0.2rem;
     padding-bottom: 0.3rem;
+  }
+
+  .user-active {
+    color: #92C83E !important; 
   }
 
   .user-email {

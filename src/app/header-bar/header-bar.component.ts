@@ -11,11 +11,6 @@ import { UserDataInterface, UserDataService } from '../service-moduls/user-data.
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
-  currentUser: string = '';
-  userName = '';
-  userEmail = '';
-  userStatus = '';
-  userPicture = '';
   showIcon = false;
   statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
@@ -52,7 +47,7 @@ export class HeaderBarComponent {
 
 
   constructor(
-    private userDataService: UserDataService,
+    public userDataService: UserDataService,
     public validation: ValidationService, 
     public authentication: AuthenticationService, 
     private firestore: Firestore
@@ -60,32 +55,13 @@ export class HeaderBarComponent {
 
 
   async ngOnInit() {
-    this.currentUser = localStorage.getItem('currentUser') ?? '';
-    await this.getUserData();
+    this.userDataService.currentUser = localStorage.getItem('currentUser') ?? '';
+    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.colorStatus(); 
-    this.getUserData();
+    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
   }
 
-  async getUserData() {
-    try {
-      const userDocRef = doc(this.firestore, 'users', this.currentUser);
-      const docSnapshot = await getDoc(userDocRef);
 
-      if (docSnapshot.exists()) {
-        const userData = docSnapshot.data();
-        console.log('User data:', userData);
-        this.userName = userData['name'];
-        this.userEmail = userData['email'];
-        this.userStatus = userData['status'];
-        this.userPicture = userData['picture'];
-        this.colorStatus(); 
-      } else {
-        console.log('The document does not exist.');
-      }
-    } catch (error) {
-      console.log('Error retrieving user data:', error);
-    }
-  }
 
   async editUserProfile() {
     let name = this.editNameForm.value.name ?? '';
@@ -109,7 +85,7 @@ export class HeaderBarComponent {
     this.disableForm();
 
     await this.changeFirebase(name, 'name');
-    this.getUserData();
+    this.userDataService.getCurrentUserData(this.userDataService.currentUser);
 
     this.resetForm();
   }
@@ -138,12 +114,12 @@ export class HeaderBarComponent {
     this.disableForm();
     await this.authentication.changeMail(email, password);
     await this.changeFirebase(email, 'email');
-    this.getUserData();
+    this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.resetForm();
   }
 
   async changeFirebase(newValue: string, type: string) {
-    const userDocRef = doc(this.firestore, 'users', this.currentUser);
+    const userDocRef = doc(this.firestore, 'users', this.userDataService.currentUser);
     try {
       await updateDoc(userDocRef, { [type]: newValue });
       console.log('E-Mail erfolgreich aktualisiert.');
@@ -153,7 +129,7 @@ export class HeaderBarComponent {
   }
 
   colorStatus() {
-    this.active = this.userStatus === 'Active';
+    this.active = this.userDataService.userStatus === 'Active';
   }
 
   openLogoutContainer() {
@@ -204,11 +180,11 @@ export class HeaderBarComponent {
     if (this.selectedPictureIndex === null) {
       return;
     }
-    const userDocRef = doc(this.firestore, 'users', this.currentUser);
+    const userDocRef = doc(this.firestore, 'users', this.userDataService.currentUser);
     const selectedPicture = this.selectedPictureIndex;
     try {
       await updateDoc(userDocRef, { picture: `/assets/profile-pictures/avatar${selectedPicture + 1}.png` });
-      this.getUserData();
+      this.userDataService.getCurrentUserData(this.userDataService.currentUser);
       console.log('Bild erfolgreich aktualisiert.', selectedPicture);
 
       this.selectedPictureIndex = null;

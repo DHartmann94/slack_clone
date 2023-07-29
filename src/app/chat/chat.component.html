@@ -38,7 +38,7 @@
         </div>
         <div class="message-content" [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
-            <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
+            <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
@@ -47,7 +47,7 @@
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              <span class="chat-name" (click)="openUserProfile()">{{ message.sentBy }}</span>
+              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
             </div>
           </div>
           <div>
@@ -107,24 +107,28 @@
         <mat-icon (click)="closeUserProfile()">close</mat-icon>
       </mat-card-header>
       <div class="user-img">
-        <img src="/assets/profile-pictures/EliasNeumann.png">
+        <img src="{{ this.userDataService.chatUserPicture }}">
       </div>
       <mat-card-content>
         <div class="user-contact-info">
-          <p>zz</p>
+          <p>{{ this.userDataService.chatUserName }}</p>
         </div>
-        <div class="user-status">
-          <p><svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+        <div class="user-status" [ngClass]="{'user-active': this.userDataService.chatUserStatus === 'Active'}">
+          <p>
+            <svg *ngIf="this.userDataService.chatUserStatus === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
               <circle cx="4" cy="4" r="4" fill="#92C83E" />
-            </svg>
-            Aktiv
+          </svg>
+          <svg *ngIf="this.userDataService.chatUserStatus === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+              <circle cx="4" cy="4" r="4" fill="#808080" />
+          </svg>
+          {{ this.userDataService.chatUserStatus }}
           </p>
         </div>
         <div class="user-email">
           <mat-icon>mail_outline</mat-icon>
           <div class="user-email-link">
             <p>E-Mail-Adresse</p>
-            <a>ichbinelias@beispiel.com</a>
+            <a>{{ this.userDataService.chatUserEmail }}</a>
           </div>
         </div>
       </mat-card-content>
