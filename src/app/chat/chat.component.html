@@ -80,7 +80,7 @@
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id)">{{ emoji }}</div>
             </div>
-            <div (click)="reaction(message.emojis, index)" class="reaction-button-container">
+            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)" class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>

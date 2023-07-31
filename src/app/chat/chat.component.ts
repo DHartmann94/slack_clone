@@ -100,10 +100,13 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   getCurrentUserId() {
-    const currentUserString = localStorage.getItem('currentUser');
-    if (currentUserString) {
-      this.currentUserId = currentUserString;
-    }
+    // const currentUserString = localStorage.getItem('currentUser');
+    // if (currentUserString) {
+    //   this.currentUserId = currentUserString;
+    // }
+
+    this.currentUserId = this.userDataService.currentUser;
+    console.log('Current User is', this.currentUserId);
   }
 
   public typeEmoji($event: any): void {
