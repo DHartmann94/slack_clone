@@ -2,7 +2,6 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } fro
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { ChannelsComponent } from '../channels/channels.component';
 import { Observable, firstValueFrom, Subscription  } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -48,15 +47,16 @@ export class ChatComponent implements OnInit, OnChanges  {
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
 
+
   constructor(
     private chatService: ChatService,
-    private userDataService: UserDataService,
+    public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder
-  ) { 
+  ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.performCRUD();
     });
@@ -76,9 +76,9 @@ export class ChatComponent implements OnInit, OnChanges  {
     this.getChatData();
     this.getDataFromChannel();
     this.getUserData();
-    this.compareIds();
     this.chatService.subscribeToMessageUpdates();
     this.getCurrentUserId();
+    this.compareIds();
   }
 
   ngOnDestroy() {
@@ -181,20 +181,29 @@ export class ChatComponent implements OnInit, OnChanges  {
       const message: MessageInterface = {
         messageText: this.messageInput,
         sentBy: this.currentUser,
+        sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         thread: null,
         channel: 'your_channel_value_here',
         mentionedUser: 'user_id_here',
       };
+
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
+
       this.messageData.push(message);
       this.messageInput = [''];
+
       this.chatService.sendMessage(message).subscribe(
-        () => {
-          // console.log('Message sent');
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.messageData.findIndex((msg) => msg === message);
+            if (index !== -1) {
+              this.messageData[index].id = newMessage.id;
+            }
+          }
         },
         (error) => {
           console.error('Error sending message:', error);
@@ -205,6 +214,8 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
+
+  // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -222,13 +233,14 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
-  //***********Zu Interface hinzufügen */
-  reactWithEmoji(emoji: string , index:number) {
+  reactWithEmoji(emoji: string , index:number, messageId:string) {
     this.messageData[index].emojis.push(
       {'emoji':emoji, 'reaction-from':this.currentUser});
-    this.chatService.updateMessageData(this.messageData);
-    this.chatService.subscribeToMessageUpdates();
+    this.chatService.updateMessage(messageId, this.messageData[index].emojis);
   }
+
+  //***** */
+
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -244,9 +256,10 @@ export class ChatComponent implements OnInit, OnChanges  {
     });
   }
 
-  openUserProfile() {
+  openUserProfile(id: any) {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
+    this.userDataService.getCurrentUserData(id);
   }
 
   closeUserProfile() {
@@ -343,18 +356,16 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
 
     return messageDate.toLocaleDateString('en-US', {
-      weekday: 'long',
+      year: 'numeric', // Change to 'numeric' to display all four digits of the year
       month: 'long',
       day: 'numeric',
     });
   }
 
+
   async compareIds() {
     this.chatService.messageData$.subscribe(
       (messages) => {
-        const allSentBy: string[] = messages
-          .map((message) => message.sentBy)
-          .filter((sentBy): sentBy is string => !!sentBy);
 
         this.userDataService.getUserData().pipe(
           map((userData) => userData.map(user => user.id))
@@ -392,5 +403,4 @@ export class ChatComponent implements OnInit, OnChanges  {
       console.error('Error deleting message:', error);
     }
   }
-
 }

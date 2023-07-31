@@ -9,8 +9,8 @@
     </div>
     <div>
         <div (click)="openLogoutContainer()" class="profile">
-            <h2>{{ userName }}</h2>
-            <img class="user-icon" src="{{ userPicture }}" alt="">
+            <h2>{{ this.userDataService.userName }}</h2>
+            <img class="user-icon" src="{{ this.userDataService.userPicture }}" alt="">
             <mat-icon>keyboard_arrow_down</mat-icon>
             <div class="status"></div>
         </div>
@@ -44,11 +44,11 @@
                 <mat-icon (click)="closeUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img-one">
-                <img src="{{ userPicture }}">
+                <img src="{{ this.userDataService.userPicture }}">
             </div>
             <mat-card-content>
                 <div class="user-contact-info">
-                    <p>{{ userName }}</p>
+                    <p>{{ this.userDataService.userName }}</p>
                     <a (click)="openEditProfileCard()">Edit</a>
                 </div>
                 <div class="user-status">
@@ -59,14 +59,14 @@
                         <svg *ngIf="!active" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
                             <circle cx="4" cy="4" r="4" fill="#808080" />
                         </svg>
-                        {{ userStatus }}
+                        {{ this.userDataService.userStatus }}
                     </p>
                 </div>
                 <div class="user-email">
                     <mat-icon>mail_outline</mat-icon>
                     <div class="user-email-link">
                         <p>E-Mail-Address</p>
-                        <a>{{ userEmail }}</a>
+                        <a>{{ this.userDataService.userEmail }}</a>
                     </div>
                 </div>
             </mat-card-content>
@@ -81,7 +81,7 @@
                 <mat-icon (click)="closeEditUserProfile()">close</mat-icon>
             </mat-card-header>
             <div class="user-img" (mouseenter)="showEditIcon()" (mouseleave)="hideEditIcon()">
-                <img src="{{ userPicture }}">
+                <img src="{{ this.userDataService.userPicture }}">
                 <mat-icon (click)="openPictureContainer()" class="edit-icon" *ngIf="showIcon">edit_outline</mat-icon>
             </div>
             <mat-card-content class="user-edit-input">

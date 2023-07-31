@@ -10,6 +10,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
+  sentById?: string,
   mentionedUser?: string;
   senderName?: string;
 }
@@ -33,14 +34,14 @@ export class ChatService {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
 
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+    return new Observable<MessageInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const storedMessageData: MessageInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
 
-          const { messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
             id: doc.id,
@@ -50,17 +51,22 @@ export class ChatService {
             emojis: emojis,
             channel: channel,
             sentBy: sentBy,
+            sentById: sentById,
             mentionedUser: mentionedUser,
           };
           storedMessageData.push(message);
         });
-        this.messageDataSubject.next(storedMessageData); // Update BehaviorSubject with the latest data
-        return storedMessageData;
-      })
-    );
+
+        this.messageDataSubject.next(storedMessageData);
+        observer.next(storedMessageData);
+      });
+
+      return () => unsubscribe();
+    });
   }
 
-  sendMessage(message: MessageInterface): Observable<void> {
+
+  sendMessage(message: MessageInterface): Observable<MessageInterface> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
       messageText: message.messageText,
@@ -68,13 +74,18 @@ export class ChatService {
       thread: message.thread,
       emojis: message.emojis,
       sentBy: message.sentBy,
+      sentById: message.sentById,
       channel: message.channel,
       mentionedUser: message.mentionedUser,
     };
 
     return from(addDoc(messages, messageData)).pipe(
-      map(() => {
-        // console.log('Message sent');
+      map((docRef) => {
+        const newMessage: MessageInterface = {
+          ...message,
+          id: docRef.id,
+        };
+        return newMessage;
       })
     );
   }
@@ -114,38 +125,11 @@ export class ChatService {
     return from(deleteDoc(messageDoc));
   }
 
-
-// ********* Noch nicht ganz fertig: update ist ein Array, kein Objekt??
-  async updateMessageData(update:MessageInterface[]) {
-    await this.updateFirebase(update);
+  updateMessage(messageId: any, emojiUpdate:object): Observable<void> {
+    const messagesCollection = collection(this.firestore, 'messages');
+    const messageDoc = doc(messagesCollection, messageId);
+    return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
   }
-
-  async updateFirebase(update:MessageInterface[]) {
-    const jsonData = JSON.stringify(update);
-    console.log('is this my oject?', jsonData);
-
-
-    try {
-      const messagesRef = collection(this.firestore, "messages");
-      const q = query(messagesRef);
-
-      const querySnapshot = await getDocs(q);
-
-      const promises = querySnapshot.docs.map(async (docSnapshot) => {
-        const docRef = doc(this.firestore, "messages", docSnapshot.id);
-        // await updateDoc(docRef, update);
-      });
-
-      await Promise.all(promises);
-      console.log('Sammlung "messages" erfolgreich aktualisiert');
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren der Sammlung "messages":', error);
-    }
-  }
-  ////***************** */
-
-
-
 
 
   getThreadData(channelId: string): Observable<MessageInterface[]> {
@@ -160,7 +144,7 @@ export class ChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
+          const { id, messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
             data;
           const message: MessageInterface = {
             id: id,
@@ -169,6 +153,7 @@ export class ChatService {
             thread: thread,
             emojis: emojis,
             sentBy: sentBy,
+            sentById: sentById,
             channel: channel,
             mentionedUser: mentionedUser,
           };
@@ -179,8 +164,5 @@ export class ChatService {
       })
     );
   }
-}
-function $any(update: string[]): any {
-  throw new Error('Function not implemented.');
 }
 
