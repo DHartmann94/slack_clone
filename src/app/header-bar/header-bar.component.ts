@@ -78,9 +78,8 @@ export class HeaderBarComponent {
       });
 
       // localStorage.setItem('currentUser', ''); // TEST
+      await this.authentication.logoutAuth();
     }
-
-    await this.authentication.logoutAuth();
   }
 
   async editUserProfile() {
