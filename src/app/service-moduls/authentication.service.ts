@@ -107,7 +107,7 @@ export class AuthenticationService {
   }
 
   async logoutAuth() {
-    await this.deleteUserLocalStorage();
+    // await this.deleteUserLocalStorage(); TEST
 
     const auth = getAuth();
     await signOut(auth).then(() => {
@@ -206,10 +206,10 @@ export class AuthenticationService {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        await this.deleteUserLocalStorage();
-        localStorage.setItem('currentUser', this.user.uid);
+        // await this.deleteUserLocalStorage(); // Test
+        //localStorage.setItem('currentUser', this.user.uid); // TEST
         await setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
-          this.router.navigateByUrl('/board').then(() => {
+          this.router.navigateByUrl('/board/'+this.user.uid).then(() => {
             //window.location.reload(); // TEST
             console.log(this.user); // TEST
           });
