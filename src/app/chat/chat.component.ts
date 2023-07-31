@@ -86,6 +86,7 @@ export class ChatComponent implements OnInit, OnChanges  {
   }
 
   performCRUD() {
+    this.triggerCRUDHTML = false;
     console.trace("Something to perform"); 
   }
 
