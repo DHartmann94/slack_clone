@@ -55,7 +55,7 @@ export class HeaderBarComponent {
 
 
   async ngOnInit() {
-    this.userDataService.currentUser = localStorage.getItem('currentUser') ?? '';
+    this.userDataService.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.colorStatus(); 
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
