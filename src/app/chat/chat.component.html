@@ -84,7 +84,7 @@
               <div class="reaction-button"></div>
             </div>
           </div>
-          <span class="responses"
+          <span (click)="openThread()" class="responses"
             [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">2
             Responses</span>
           <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{

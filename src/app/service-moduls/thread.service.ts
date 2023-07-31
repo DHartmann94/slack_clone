@@ -25,7 +25,7 @@ export interface MessageInterface {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService {
+export class ThreadService {
   private messageDataSubject: BehaviorSubject<MessageInterface[]> =
     new BehaviorSubject<MessageInterface[]>([]);
   public messageData$: Observable<MessageInterface[]> =
@@ -33,11 +33,15 @@ export class ChatService {
 
   constructor(public firestore: Firestore) { }
 
+  openThread() {
+    console.log('create/open thread');
+  }
+
 
   getThreadData(channelId: string): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
 
-    // Folgender String müsste angepasst werden. 
+    // Folgender String müsste angepasst werden.
     const q = query(messages, where('channel', '==', channelId));
 
     return from(getDocs(q)).pipe(

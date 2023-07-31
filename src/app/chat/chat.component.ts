@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ThreadService } from '../service-moduls/thread.service';
 
 @Component({
   selector: 'app-chat',
@@ -55,7 +56,8 @@ export class ChatComponent implements OnInit, OnChanges {
     private ChannelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
-    private fbChannelDescription: FormBuilder
+    private fbChannelDescription: FormBuilder,
+    private threadService: ThreadService
   ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.performCRUD();
@@ -247,7 +249,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.chatService.updateMessage(messageId, emojiArray);
     // console.log(emojiArray);
   }
-  
+
 
   existReaction(index: number): boolean {
     return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
@@ -417,5 +419,9 @@ export class ChatComponent implements OnInit, OnChanges {
     } catch (error) {
       console.error('Error deleting message:', error);
     }
+  }
+
+  openThread() {
+    this.threadService.openThread();
   }
 }
