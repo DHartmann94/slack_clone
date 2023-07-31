@@ -244,7 +244,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.chatService.updateMessage(messageId, emojiArray);
     // console.log(emojiArray);
   }
-  
+
 
   existReaction(index: number): boolean {
     return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
@@ -252,6 +252,7 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
   //***** */
+
 
 
   toggleEmojiPicker() {
@@ -374,7 +375,7 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
 
-
+  
   async compareIds() {
     this.chatService.messageData$.subscribe(
       (messages) => {
