@@ -49,25 +49,38 @@ export class HeaderBarComponent {
 
   constructor(
     public userDataService: UserDataService,
-    public validation: ValidationService, 
-    public authentication: AuthenticationService, 
+    public validation: ValidationService,
+    public authentication: AuthenticationService,
     private firestore: Firestore,
     private route: ActivatedRoute,
   ) { }
 
 
   async ngOnInit() {
-    await this.getCurrentUserId();
+    this.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
-    this.colorStatus(); 
+    this.colorStatus();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
   }
 
-  async getCurrentUserId() {
+  getCurrentUserId() {
     // this.currentUser = localStorage.getItem('currentUser') ?? ''; // TEST
     this.route.params.subscribe((params) => {
       this.userDataService.currentUser = params['id'];
+    });
+  }
+
+  async logoutUser() {
+    if (this.userDataService.currentUser) {
+      const userRef = doc(this.firestore, 'users', this.userDataService.currentUser);
+      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+        console.log('ERROR updateDoc:', error);
       });
+
+      // localStorage.setItem('currentUser', ''); // TEST
+    }
+
+    await this.authentication.logoutAuth();
   }
 
   async editUserProfile() {
