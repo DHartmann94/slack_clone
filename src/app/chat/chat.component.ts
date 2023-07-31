@@ -43,6 +43,7 @@ export class ChatComponent implements OnInit, OnChanges {
   editChannelDescription: boolean = false;
   openEditChannel: boolean = false;
   emojipickeractive = false;
+  reactionListOpen = false;
 
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
@@ -246,6 +247,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
     this.chatService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
+    this.reactionListOpen = false;
   }
 
 
@@ -253,6 +255,21 @@ export class ChatComponent implements OnInit, OnChanges {
     return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
       return reaction['reaction-from'] === this.currentUser;
     });
+  }
+
+
+  showReaction(index: number) {
+    let item = document.getElementById(`reactionlist${index}`);
+    this.messageData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist${i}`);
+      hideItems?.classList.remove('show-list-of-reactions');
+    });
+    if (!this.reactionListOpen) {
+      item?.classList.add('show-list-of-reactions');
+      this.reactionListOpen = true;
+    } else {
+      this.reactionListOpen = false;
+    }
   }
   //***** */
 

@@ -370,6 +370,29 @@
   align-items: center;
 }
 
+.list-of-reactions {
+  min-width: 200px;
+  min-height: 100px;
+  max-height: 500px;
+  background-color: #68686831;
+  border-radius: 20px;
+  display: none;
+}
+
+.show-list-of-reactions {
+  display: unset;
+}
+
+.list-item-reaction {
+  width: calc(90% - 20px);
+  height: 30px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  margin: 10px;
+}
+
+
 .reaction-icon-container {
   display: flex;
   padding: 5px 10px;
@@ -380,7 +403,11 @@
   width: 44px;
   gap: 10px;
   cursor: pointer;
+  &:hover {
+    background-color: #adb0d947;
+  }
 }
+
 
 .reaction-counter {
   font-size: 16px;
