@@ -51,24 +51,18 @@ export class UserDataService {
 
   /*------ Current-User / Chat-Card ------*/
   currentUser: string = '';
-  userName = '';
-  userEmail = '';
-  userStatus = '';
-  userPicture = '';
+  userName: string = '';
+  userEmail: string = '';
+  userStatus: string = '';
+  userPicture: string = '';
 
-  chatUserName = '';
-  chatUserEmail = '';
-  chatUserStatus = '';
-  chatUserPicture = '';
+  chatUserName: string = '';
+  chatUserEmail: string = '';
+  chatUserStatus: string = '';
+  chatUserPicture: string = '';
 
-
-  getCurrentUserId() {
-    this.currentUser = localStorage.getItem('currentUser') ?? '';
-  }
 
   async getCurrentUserData(userID: string) {
-    this.getCurrentUserId();
-    
     try {
       const userDocRef = doc(this.firestore, 'users', userID);
       const docSnapshot = await getDoc(userDocRef);
@@ -76,7 +70,7 @@ export class UserDataService {
       if (docSnapshot.exists()) {
         const userData = docSnapshot.data();
         if (this.currentUser === userID) {
-          this.currentUserData(userData)
+          this.currentUserData(userData);
           console.log('User data: ', userData);
         }
         this.chatUserData(userData);
@@ -85,7 +79,7 @@ export class UserDataService {
         console.log('The document does not exist.');
       }
     } catch (error) {
-      console.log('Error retrieving user data:', error);
+      console.log('ERROR retrieving user data:', error);
     }
   }
 
@@ -103,5 +97,5 @@ export class UserDataService {
     this.chatUserPicture = userData['picture'];
   }
 
-
+  
 }
