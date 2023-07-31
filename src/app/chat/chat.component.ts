@@ -247,7 +247,7 @@ export class ChatComponent implements OnInit, OnChanges {
       emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
     }
     this.chatService.updateMessage(messageId, emojiArray);
-    // console.log(emojiArray);
+    this.emojisClickedBefore = undefined;
   }
 
 
@@ -257,6 +257,7 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
   //***** */
+
 
 
   toggleEmojiPicker() {
