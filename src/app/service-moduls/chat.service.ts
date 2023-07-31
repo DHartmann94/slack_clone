@@ -15,11 +15,6 @@ export interface MessageInterface {
   senderName?: string;
 }
 
-export interface ChatInterface {
-  id?: string;
-
-}
-
 @Injectable({
   providedIn: 'root',
 })
