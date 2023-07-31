@@ -107,7 +107,7 @@ export class AuthenticationService {
   }
 
   async logoutAuth() {
-    await this.deleteUserLocalStorage();
+    // await this.deleteUser(); TEST
 
     const auth = getAuth();
     await signOut(auth).then(() => {
@@ -118,19 +118,22 @@ export class AuthenticationService {
     });
   }
 
-  async deleteUserLocalStorage() {
-    const currentUserUID = localStorage.getItem('currentUser');
+  /*async deleteUser() { // TEST
+    //const currentUserUID = localStorage.getItem('currentUser');
 
-    if (currentUserUID) {
-      const userRef = doc(this.firestore, 'users', currentUserUID);
-      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
-        console.log('ERROR updateDoc:', error);
-      });
+    this.route.params.subscribe(async (params) => {
+      const currentUserUID = params['id'];
 
-      localStorage.setItem('currentUser', '');
-      console.log(localStorage.setItem('currentUser', ''));
-    }
-  }
+      if (currentUserUID) {
+        const userRef = doc(this.firestore, 'users', currentUserUID);
+        await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+          console.log('ERROR updateDoc:', error);
+        });
+
+        // localStorage.setItem('currentUser', ''); // TEST
+      }
+    });
+  }*/
 
   /**
  * 
@@ -207,16 +210,12 @@ export class AuthenticationService {
     const auth = getAuth();
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        await this.deleteUserLocalStorage();
-        localStorage.setItem('currentUser', this.user.uid);
+        //localStorage.setItem('currentUser', this.user.uid); // TEST
         await setDoc(doc(collection(this.firestore, 'users'), this.user.uid), { status: 'Active' }, { merge: true }).then(() => {
-          this.router.navigateByUrl('/board').then(() => {
-            //window.location.reload(); // TEST
-            console.log(this.user); // TEST
+          this.router.navigateByUrl('/board/' + this.user.uid).then(() => {
+
           });
         });
-      } else {
-        // User is signed out
       }
     });
   }

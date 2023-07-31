@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
-import { Firestore, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
+import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { UserDataInterface, UserDataService } from '../service-moduls/user-data.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header-bar',
@@ -48,17 +49,37 @@ export class HeaderBarComponent {
 
   constructor(
     public userDataService: UserDataService,
-    public validation: ValidationService, 
-    public authentication: AuthenticationService, 
-    private firestore: Firestore
+    public validation: ValidationService,
+    public authentication: AuthenticationService,
+    private firestore: Firestore,
+    private route: ActivatedRoute,
   ) { }
 
 
   async ngOnInit() {
-    this.userDataService.currentUser = localStorage.getItem('currentUser') ?? '';
+    this.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
-    this.colorStatus(); 
+    this.colorStatus();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
+  }
+
+  getCurrentUserId() {
+    // this.currentUser = localStorage.getItem('currentUser') ?? ''; // TEST
+    this.route.params.subscribe((params) => {
+      this.userDataService.currentUser = params['id'];
+    });
+  }
+
+  async logoutUser() {
+    if (this.userDataService.currentUser) {
+      const userRef = doc(this.firestore, 'users', this.userDataService.currentUser);
+      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+        console.log('ERROR updateDoc:', error);
+      });
+
+      // localStorage.setItem('currentUser', ''); // TEST
+      await this.authentication.logoutAuth();
+    }
   }
 
   async editUserProfile() {

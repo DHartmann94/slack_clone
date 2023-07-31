@@ -2,12 +2,13 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } fro
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { Observable, firstValueFrom, Subscription, from } from 'rxjs';
+import { Observable, firstValueFrom, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { Firestore, arrayRemove, collection, deleteDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { ThreadService } from '../service-moduls/thread.service';
+import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-chat',
@@ -59,8 +60,9 @@ export class ChatComponent implements OnInit, OnChanges {
     private ChannelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
+    private fbChannelDescription: FormBuilder,
+    private threadService: ThreadService,
     private firestore: Firestore,
-    private fbChannelDescription: FormBuilder
   ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.performCRUD();
@@ -106,10 +108,13 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   getCurrentUserId() {
-    const currentUserString = localStorage.getItem('currentUser');
-    if (currentUserString) {
-      this.currentUserId = currentUserString;
-    }
+    // const currentUserString = localStorage.getItem('currentUser');
+    // if (currentUserString) {
+    //   this.currentUserId = currentUserString;
+    // }
+
+    this.currentUserId = this.userDataService.currentUser;
+    console.log('Current User is', this.currentUserId);
   }
 
   async deleteUserFromChannel() {
@@ -273,13 +278,20 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  reactWithEmoji(emoji: string, index: number, messageId: string) {
+  reactWithEmoji(emoji: string , index:number, messageId:string) {
     this.messageData[index].emojis.push(
-      { 'emoji': emoji, 'reaction-from': this.currentUser });
+      {'emoji':emoji, 'reaction-from':this.currentUser});
     this.chatService.updateMessage(messageId, this.messageData[index].emojis);
   }
 
+
+  existReaction(index: number): boolean {
+    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
+      return reaction['reaction-from'] === this.currentUser;
+    });
+  }
   //***** */
+
 
 
   toggleEmojiPicker() {
@@ -438,5 +450,9 @@ export class ChatComponent implements OnInit, OnChanges {
     } catch (error) {
       console.error('Error deleting message:', error);
     }
+  }
+
+  openThread() {
+    this.threadService.openThread();
   }
 }

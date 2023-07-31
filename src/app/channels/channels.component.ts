@@ -45,7 +45,6 @@ export class ChannelsComponent implements OnInit {
   selectedChannel: ChannelDataInterface | null = null;
 
   constructor(
-    private router: Router,
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
