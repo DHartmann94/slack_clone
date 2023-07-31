@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/firestore';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode, signInWithRedirect, getRedirectResult } from '@angular/fire/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserDataService } from '../service-moduls/user-data.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,12 @@ export class AuthenticationService {
   guestUID: string = 'VkLP7dYflLeKFtjvyqmZbPltJy13';
 
 
-  constructor(private firestore: Firestore, private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private firestore: Firestore,
+    private router: Router,
+    private route: ActivatedRoute,
+    private userDataService: UserDataService,
+  ) { }
 
   async loginWithEmail(email: string, password: string) {
     const auth = getAuth();
@@ -106,35 +112,6 @@ export class AuthenticationService {
       });
   }
 
-  async logoutAuth() {
-    // await this.deleteUser(); TEST
-
-    const auth = getAuth();
-    await signOut(auth).then(() => {
-      // Sign-out successful.
-      this.router.navigateByUrl("/sign-in");
-    }).catch((error) => {
-      console.log('ERROR signOut: ', error);
-    });
-  }
-
-  /*async deleteUser() { // TEST
-    //const currentUserUID = localStorage.getItem('currentUser');
-
-    this.route.params.subscribe(async (params) => {
-      const currentUserUID = params['id'];
-
-      if (currentUserUID) {
-        const userRef = doc(this.firestore, 'users', currentUserUID);
-        await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
-          console.log('ERROR updateDoc:', error);
-        });
-
-        // localStorage.setItem('currentUser', ''); // TEST
-      }
-    });
-  }*/
-
   /**
  * 
  * Use: http://localhost:4200/auth-action for testing.
@@ -204,6 +181,31 @@ export class AuthenticationService {
       }).catch((error) => {
         console.log('ERROR verify EMail: ', error);
       });
+  }
+
+  async logoutAuth() {
+    await this.setUserInactive();
+
+    const auth = getAuth();
+    await signOut(auth).then(() => {
+      // Sign-out successful.
+      this.router.navigateByUrl("/sign-in");
+    }).catch((error) => {
+      console.log('ERROR signOut: ', error);
+    });
+  }
+
+  async setUserInactive() {
+    //const currentUserUID = localStorage.getItem('currentUser');
+
+    if (this.userDataService.currentUser) {
+      const userRef = doc(this.firestore, 'users', this.userDataService.currentUser);
+      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
+        console.log('ERROR setUserInactive:', error);
+      });
+
+      // localStorage.setItem('currentUser', ''); // TEST
+    }
   }
 
   async getUserData() {

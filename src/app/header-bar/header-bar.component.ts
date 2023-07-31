@@ -70,18 +70,6 @@ export class HeaderBarComponent {
     });
   }
 
-  async logoutUser() {
-    if (this.userDataService.currentUser) {
-      const userRef = doc(this.firestore, 'users', this.userDataService.currentUser);
-      await updateDoc(userRef, { status: 'Inactive' }).catch((error) => {
-        console.log('ERROR updateDoc:', error);
-      });
-
-      // localStorage.setItem('currentUser', ''); // TEST
-      await this.authentication.logoutAuth();
-    }
-  }
-
   async editUserProfile() {
     let name = this.editNameForm.value.name ?? '';
     let email = this.editMailForm.value.email?.toLowerCase() || '';
