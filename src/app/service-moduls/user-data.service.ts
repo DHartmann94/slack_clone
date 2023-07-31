@@ -61,7 +61,14 @@ export class UserDataService {
   chatUserStatus = '';
   chatUserPicture = '';
 
+
+  getCurrentUserId() {
+    this.currentUser = localStorage.getItem('currentUser') ?? '';
+  }
+
   async getCurrentUserData(userID: string) {
+    this.getCurrentUserId();
+    
     try {
       const userDocRef = doc(this.firestore, 'users', userID);
       const docSnapshot = await getDoc(userDocRef);
@@ -70,7 +77,7 @@ export class UserDataService {
         const userData = docSnapshot.data();
         if (this.currentUser === userID) {
           this.currentUserData(userData)
-          console.log('User data:', userData);
+          console.log('User data: ', userData);
         }
         this.chatUserData(userData);
         //this.colorStatus(); 
@@ -95,5 +102,6 @@ export class UserDataService {
     this.chatUserStatus = userData['status'];
     this.chatUserPicture = userData['picture'];
   }
+
 
 }

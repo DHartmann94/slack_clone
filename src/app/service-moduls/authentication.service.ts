@@ -128,7 +128,6 @@ export class AuthenticationService {
       });
 
       localStorage.setItem('currentUser', '');
-      console.log(localStorage.setItem('currentUser', ''));
     }
   }
 
