@@ -2,11 +2,12 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } fro
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { Observable, firstValueFrom, Subscription  } from 'rxjs';
+import { Observable, firstValueFrom, Subscription, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { Firestore, arrayRemove, collection, deleteDoc, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-chat',
@@ -14,7 +15,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges  {
+export class ChatComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -26,6 +27,7 @@ export class ChatComponent implements OnInit, OnChanges  {
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
 
   selectedMessage: MessageInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
@@ -38,6 +40,8 @@ export class ChatComponent implements OnInit, OnChanges  {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
+
+  deleteUserFormChannel: any;
 
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
@@ -55,6 +59,7 @@ export class ChatComponent implements OnInit, OnChanges  {
     private ChannelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
+    private firestore: Firestore,
     private fbChannelDescription: FormBuilder
   ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
@@ -79,6 +84,7 @@ export class ChatComponent implements OnInit, OnChanges  {
     this.chatService.subscribeToMessageUpdates();
     this.getCurrentUserId();
     this.compareIds();
+    this.deleteUserFromChannel();
   }
 
   ngOnDestroy() {
@@ -87,7 +93,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   performCRUD() {
     this.triggerCRUDHTML = false;
-    console.trace("Something to perform"); 
+    console.trace("Something to perform");
   }
 
   selectMessage(messageId: any) {
@@ -106,6 +112,40 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
+  async deleteUserFromChannel() {
+    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
+    this.deleteUserFormChannel = this.userDataService.currentUser;
+  }
+
+  async leaveChannel() {
+    if (this.deleteUserFormChannel && this.currentChannelData) {
+      console.log("Im logged in", this.deleteUserFormChannel);
+      try {
+        const matchingChannel = this.currentChannelData.id;
+        console.log(matchingChannel);
+        if (matchingChannel) {
+          const channelCollection = collection(this.firestore, 'channels');
+          const channelDoc = doc(channelCollection, matchingChannel);
+          const channelDocSnapshot = await getDoc(channelDoc);
+  
+          if (channelDocSnapshot.exists()) {
+            const usersArray = channelDocSnapshot.data()['users'] || [];
+            const updatedUsersArray = usersArray.filter((user: any) => user !== this.deleteUserFormChannel);
+            await updateDoc(channelDoc, {
+              users: updatedUsersArray
+            });
+  
+            console.log("User removed from the channel.");
+          } else {
+            console.log("Matching channel not found.");
+          }
+        }
+      } catch (error) {
+        console.error('Error removing user:', error);
+      }
+    }
+  }
+  
   public typeEmoji($event: any): void {
     this.messageInput = this.messageInput + $event.character;
   }
@@ -233,9 +273,9 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
-  reactWithEmoji(emoji: string , index:number, messageId:string) {
+  reactWithEmoji(emoji: string, index: number, messageId: string) {
     this.messageData[index].emojis.push(
-      {'emoji':emoji, 'reaction-from':this.currentUser});
+      { 'emoji': emoji, 'reaction-from': this.currentUser });
     this.chatService.updateMessage(messageId, this.messageData[index].emojis);
   }
 
@@ -310,12 +350,8 @@ export class ChatComponent implements OnInit, OnChanges  {
           console.error('Error updating channel name:', error);
         }
       );
-    this.channelDescription.reset();
+      this.channelDescription.reset();
     }
-  }
-
-  leaveChannel() {
-
   }
 
   formatTimeStamp(time: number | undefined): string {

@@ -61,8 +61,6 @@ export class HeaderBarComponent {
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
   }
 
-
-
   async editUserProfile() {
     let name = this.editNameForm.value.name ?? '';
     let email = this.editMailForm.value.email?.toLowerCase() || '';

@@ -131,7 +131,6 @@ export class ChatService {
     return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
   }
 
-
   getThreadData(channelId: string): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
 

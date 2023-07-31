@@ -125,7 +125,6 @@ export class ChannelsComponent implements OnInit {
 
   triggerCRUD() {
     this.chatBehavior.triggerCRUD();
-   /*  this.crudTriggered.emit(); */
   }
 
   getChannelById(channelId: any) {
