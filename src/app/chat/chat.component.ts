@@ -87,7 +87,7 @@ export class ChatComponent implements OnInit, OnChanges  {
 
   performCRUD() {
     this.triggerCRUDHTML = false;
-    console.trace("Something to perform"); 
+    console.trace("Something to perform");
   }
 
   selectMessage(messageId: any) {
@@ -100,10 +100,13 @@ export class ChatComponent implements OnInit, OnChanges  {
   }
 
   getCurrentUserId() {
-    const currentUserString = localStorage.getItem('currentUser');
-    if (currentUserString) {
-      this.currentUserId = currentUserString;
-    }
+    // const currentUserString = localStorage.getItem('currentUser');
+    // if (currentUserString) {
+    //   this.currentUserId = currentUserString;
+    // }
+
+    this.currentUserId = this.userDataService.currentUser;
+    console.log('Current User is', this.currentUserId);
   }
 
   public typeEmoji($event: any): void {
