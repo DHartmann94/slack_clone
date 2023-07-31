@@ -2,7 +2,7 @@ import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } fro
 import { ChatService, MessageInterface } from '../service-moduls/chat.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { Observable, firstValueFrom, Subscription  } from 'rxjs';
+import { Observable, firstValueFrom, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
@@ -14,7 +14,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges  {
+export class ChatComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -236,12 +236,24 @@ export class ChatComponent implements OnInit, OnChanges  {
     }
   }
 
-  reactWithEmoji(emoji: string , index:number, messageId:string) {
-    this.messageData[index].emojis.push(
-      {'emoji':emoji, 'reaction-from':this.currentUser});
-    this.chatService.updateMessage(messageId, this.messageData[index].emojis);
+  reactWithEmoji(emoji: string, index: number, messageId: string) {
+    let emojiArray = this.messageData[index].emojis;
+    if (this.existReaction(index)) {
+      let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
+      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+    } else {
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+    }
+    this.chatService.updateMessage(messageId, emojiArray);
+    // console.log(emojiArray);
   }
+  
 
+  existReaction(index: number): boolean {
+    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
+      return reaction['reaction-from'] === this.currentUser;
+    });
+  }
   //***** */
 
 
@@ -313,7 +325,7 @@ export class ChatComponent implements OnInit, OnChanges  {
           console.error('Error updating channel name:', error);
         }
       );
-    this.channelDescription.reset();
+      this.channelDescription.reset();
     }
   }
 

@@ -67,6 +67,8 @@ export class UserDataService {
   }
 
   async getCurrentUserData(userID: string) {
+    this.getCurrentUserId();
+    
     try {
       const userDocRef = doc(this.firestore, 'users', userID);
       const docSnapshot = await getDoc(userDocRef);
@@ -100,6 +102,6 @@ export class UserDataService {
     this.chatUserStatus = userData['status'];
     this.chatUserPicture = userData['picture'];
   }
-  
+
 
 }
