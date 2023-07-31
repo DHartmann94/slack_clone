@@ -68,7 +68,15 @@
               message.messageText }}</span>
           </div>
           <div class="like-area">
-            <div *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+
+            <div id="reactionlist{{index}}" class="list-of-reactions">
+              <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
+                <span>{{ emoji['emoji'] }} :</span>
+                <span>&nbsp;{{ emoji['reaction-from'] }}</span>
+              </div>
+            </div>
+
+            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
