@@ -45,15 +45,25 @@ export class ThreadService {
     const messageData = docSnap.data();
 
     if (messageData && !messageData['thread']) {
-      const newThread = {};
-      console.log('created new thread')
+      const newThreadData = {
+
+        messageText: messageData['messageText'],
+        time: messageData['time'],
+        emojis: messageData['emojis'],
+        sentBy: messageData['sentBy'],
+        sentById: messageData['sentById'],
+        mentionedUser: messageData['mentionedUser'],
+      };
+
+      console.log('created new thread:', newThreadData);
 
       const threadCollectionRef = collection(this.firestore, 'threads');
-      const threadDocRef = await addDoc(threadCollectionRef, newThread);
+      const threadDocRef = await addDoc(threadCollectionRef, newThreadData);
 
       await setDoc(docRef, { thread: threadDocRef.id }, { merge: true });
+      
     } else if (messageData && messageData['thread']) {
-      console.log('upened existing  thread')
+      console.log('opened existing thread');
     }
   }
 
