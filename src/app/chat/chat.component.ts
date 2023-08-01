@@ -30,11 +30,8 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
-<<<<<<< HEAD
   directChatData: DirectChatInterface[] = [];
-=======
   threadData: ThreadInterface[] = [];
->>>>>>> 1df8ed1d55d4252109b66b1eb824531ee9e8d13b
 
   selectedMessage: MessageInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
