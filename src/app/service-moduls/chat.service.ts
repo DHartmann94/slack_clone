@@ -1,5 +1,19 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
+import {
+  DocumentData,
+  Firestore,
+  QuerySnapshot,
+  collection,
+  getDocs,
+  query,
+  addDoc,
+  onSnapshot,
+  where,
+  doc,
+  updateDoc,
+  setDoc,
+  deleteDoc,
+} from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -10,7 +24,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
-  sentById?: string,
+  sentById?: string;
   mentionedUser?: string;
   senderName?: string;
 }
@@ -18,12 +32,13 @@ export interface MessageInterface {
 @Injectable({
   providedIn: 'root',
 })
-
 export class ChatService {
-  private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
-  public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
+  private messageDataSubject: BehaviorSubject<MessageInterface[]> =
+    new BehaviorSubject<MessageInterface[]>([]);
+  public messageData$: Observable<MessageInterface[]> =
+    this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) { }
+  constructor(public firestore: Firestore) {}
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
@@ -36,8 +51,16 @@ export class ChatService {
         querySnapshot.forEach((doc) => {
           const data = doc.data();
 
-          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
+          const {
+            messageText,
+            time,
+            thread,
+            emojis,
+            sentBy,
+            sentById,
+            channel,
+            mentionedUser,
+          } = data;
           const message: MessageInterface = {
             id: doc.id,
             messageText: messageText,
@@ -59,7 +82,6 @@ export class ChatService {
       return () => unsubscribe();
     });
   }
-
 
   sendMessage(message: MessageInterface): Observable<MessageInterface> {
     const messages = collection(this.firestore, 'messages');
@@ -94,8 +116,16 @@ export class ChatService {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
-          data;
+        const {
+          id,
+          messageText,
+          time,
+          thread,
+          emojis,
+          sentBy,
+          channel,
+          mentionedUser,
+        } = data;
         const message: MessageInterface = {
           id: id,
           messageText: messageText,
@@ -120,43 +150,9 @@ export class ChatService {
     return from(deleteDoc(messageDoc));
   }
 
-  updateMessage(messageId: any, emojiUpdate:object): Observable<void> {
+  updateMessage(messageId: any, emojiUpdate: object): Observable<void> {
     const messagesCollection = collection(this.firestore, 'messages');
     const messageDoc = doc(messagesCollection, messageId);
-    return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
-  }
-
-  getThreadData(channelId: string): Observable<MessageInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-
-    // Folgender String müsste angepasst werden.
-    const q = query(messages, where('channel', '==', channelId));
-
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: MessageInterface[] = [];
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const { id, messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
-          const message: MessageInterface = {
-            id: id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            sentBy: sentBy,
-            sentById: sentById,
-            channel: channel,
-            mentionedUser: mentionedUser,
-          };
-          threadData.push(message);
-        });
-
-        return threadData;
-      })
-    );
+    return from(updateDoc(messageDoc, { emojis: emojiUpdate }));
   }
 }
-

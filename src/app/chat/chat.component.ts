@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
-import { ThreadService } from '../service-moduls/thread.service';
+import { ThreadInterface, ThreadService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 
@@ -30,7 +30,11 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
+<<<<<<< HEAD
   directChatData: DirectChatInterface[] = [];
+=======
+  threadData: ThreadInterface[] = [];
+>>>>>>> 1df8ed1d55d4252109b66b1eb824531ee9e8d13b
 
   selectedMessage: MessageInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
@@ -95,6 +99,9 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getCurrentUserId();
     this.compareIds();
     this.deleteUserFromChannel();
+    this.threadService.getThreadData().subscribe((data) => {
+      this.threadData = data.filter((thread) => thread.thread !== null);
+    });
   }
 
   ngOnDestroy() {
@@ -217,7 +224,7 @@ export class ChatComponent implements OnInit, OnChanges {
           const channelCollection = collection(this.firestore, 'channels');
           const channelDoc = doc(channelCollection, matchingChannel);
           const channelDocSnapshot = await getDoc(channelDoc);
-  
+
           if (channelDocSnapshot.exists()) {
             const usersArray = channelDocSnapshot.data()['users'] || [];
             const updatedUsersArray = usersArray.filter((user: any) => user !== this.deleteUserFormChannel);
@@ -234,12 +241,12 @@ export class ChatComponent implements OnInit, OnChanges {
       }
     }
   }
-  
+
   public typeEmoji($event: any): void {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  
+
 
   isNewDay(
     currentMessage: MessageInterface,
@@ -520,7 +527,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  openThread() {
-    this.threadService.openThread();
+  openThread(messageId: string) {
+    this.threadService.openThread(messageId);
   }
 }
