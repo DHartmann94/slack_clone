@@ -9,6 +9,10 @@ import {
   addDoc,
   onSnapshot,
   where,
+  updateDoc,
+  doc,
+  getDoc,
+  setDoc,
 } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
@@ -35,25 +39,22 @@ export class ThreadService {
 
   constructor(public firestore: Firestore) {}
 
-  openThread() {
-    console.log('create/open thread');
-    const threads = collection(this.firestore, 'threads');
+  async openThread(messageId: string) {
+    const docRef = doc(this.firestore, 'messages', messageId);
+    const docSnap = await getDoc(docRef);
+    const messageData = docSnap.data();
 
-    // You can define the properties of the new thread here, e.g., messageText, time, etc.
-    const newThread: ThreadInterface = {
-      messageText: 'Your initial message for the new thread',
-      time: Date.now(),
-      // Add other properties as needed
-    };
+    if (messageData && !messageData['thread']) {
+      const newThread = {};
+      console.log('created new thread')
 
-    // Use the addDoc function to create a new document (thread) in the "threads" collection
-    addDoc(threads, newThread)
-      .then((docRef) => {
-        console.log('New thread created with ID:', docRef.id);
-      })
-      .catch((error) => {
-        console.error('Error creating thread:', error);
-      });
+      const threadCollectionRef = collection(this.firestore, 'threads');
+      const threadDocRef = await addDoc(threadCollectionRef, newThread);
+
+      await setDoc(docRef, { thread: threadDocRef.id }, { merge: true });
+    } else if (messageData && messageData['thread']) {
+      console.log('upened existing  thread')
+    }
   }
 
   getThreadData(): Observable<ThreadInterface[]> {
@@ -79,7 +80,7 @@ export class ThreadService {
           threadData.push(message);
         });
 
-        console.log('thread messages', threadData); // Corrected logging
+        console.log('thread messages', threadData);
 
         return threadData;
       })
