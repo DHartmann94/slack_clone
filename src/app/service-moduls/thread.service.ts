@@ -23,9 +23,9 @@ export interface ThreadInterface {
   thread?: any;
   channel?: string;
   userId?: string;
-  mentionedUser?: string; // ID from the mentioned user
+  mentionedUser?: string;
   channelId?: string;
-  users?: string[]; // Add the 'users' property
+  users?: string[];
 }
 
 @Injectable({
