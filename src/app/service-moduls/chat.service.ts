@@ -73,7 +73,7 @@ export class ChatService {
               userPicture = userData['picture'];
             } else {
               userName = 'Unknown User';
-              userPicture = './assets/img/avatar.png';
+              userPicture = '/assets/profile-pictures/avatar1.png';
             }
   
             const message: MessageInterface = {
