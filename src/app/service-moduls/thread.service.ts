@@ -19,7 +19,9 @@ export interface ThreadInterface {
   thread?: any;
   channel?: string;
   userId?: string;
-  mentionedUser?: string; //ID from mentioned user
+  mentionedUser?: string; // ID from the mentioned user
+  channelId?: string;
+  users?: string[]; // Add the 'users' property
 }
 
 @Injectable({
@@ -35,6 +37,23 @@ export class ThreadService {
 
   openThread() {
     console.log('create/open thread');
+    const threads = collection(this.firestore, 'threads');
+
+    // You can define the properties of the new thread here, e.g., messageText, time, etc.
+    const newThread: ThreadInterface = {
+      messageText: 'Your initial message for the new thread',
+      time: Date.now(),
+      // Add other properties as needed
+    };
+
+    // Use the addDoc function to create a new document (thread) in the "threads" collection
+    addDoc(threads, newThread)
+      .then((docRef) => {
+        console.log('New thread created with ID:', docRef.id);
+      })
+      .catch((error) => {
+        console.error('Error creating thread:', error);
+      });
   }
 
   getThreadData(): Observable<ThreadInterface[]> {
