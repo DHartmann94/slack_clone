@@ -15,6 +15,7 @@ import {
   deleteDoc,
 } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
+import { UserDataService } from '../service-moduls/user-data.service';
 
 export interface MessageInterface {
   id?: any;
@@ -24,6 +25,7 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
+  picture?: string;
   sentById?: string;
   mentionedUser?: string;
   senderName?: string;
@@ -38,19 +40,18 @@ export class ChatService {
   public messageData$: Observable<MessageInterface[]> =
     this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) {}
+  constructor(public firestore: Firestore, private userDataService: UserDataService,) {}
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
-
+  
     return new Observable<MessageInterface[]>((observer) => {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: MessageInterface[] = [];
-
-        querySnapshot.forEach((doc) => {
+  
+        for (const doc of querySnapshot.docs) {
           const data = doc.data();
-
           const {
             messageText,
             time,
@@ -61,24 +62,42 @@ export class ChatService {
             channel,
             mentionedUser,
           } = data;
-          const message: MessageInterface = {
-            id: doc.id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            channel: channel,
-            sentBy: sentBy,
-            sentById: sentById,
-            mentionedUser: mentionedUser,
-          };
-          storedMessageData.push(message);
-        });
-
+  
+          try {
+            const userData = await this.userDataService.usersDataBackend(sentById);
+            let userName: string;
+            let userPicture: string;
+  
+            if (userData !== null) {
+              userName = userData['name'];
+              userPicture = userData['picture'];
+            } else {
+              userName = 'Unknown User';
+              userPicture = './assets/img/avatar.png';
+            }
+  
+            const message: MessageInterface = {
+              id: doc.id,
+              messageText: messageText,
+              time: time,
+              thread: thread,
+              emojis: emojis,
+              channel: channel,
+              sentBy: userName,
+              picture: userPicture,
+              sentById: sentById,
+              mentionedUser: mentionedUser,
+            };
+            storedMessageData.push(message);
+          } catch (error) {
+            console.log('ERROR retrieving user data:', error);
+          }
+        }
+  
         this.messageDataSubject.next(storedMessageData);
         observer.next(storedMessageData);
       });
-
+  
       return () => unsubscribe();
     });
   }
