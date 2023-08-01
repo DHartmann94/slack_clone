@@ -53,6 +53,8 @@ export class ChatComponent implements OnInit, OnChanges {
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
 
+  inviteUserOrChannel!: string;
+  searchResults: UserDataInterface[] = [];
 
   constructor(
     private chatService: ChatService,
@@ -94,71 +96,9 @@ export class ChatComponent implements OnInit, OnChanges {
     this.crudTriggeredSubscription.unsubscribe();
   }
 
-  performCRUD() {
-    this.triggerCRUDHTML = false;
-    console.trace("Something to perform");
-  }
-
-  selectMessage(messageId: any) {
-    this.selectedMessage = this.getMessageId(messageId);
-    console.log(this.selectedMessage);
-  }
-
-  getMessageId(messageId: any) {
-    return this.messageData.find(message => message.id === messageId) || null;
-  }
-
-  getCurrentUserId() {
-    // const currentUserString = localStorage.getItem('currentUser');
-    // if (currentUserString) {
-    //   this.currentUserId = currentUserString;
-    // }
-
-    this.currentUserId = this.userDataService.currentUser;
-    console.log('Current User is', this.currentUserId);
-  }
-
-  async deleteUserFromChannel() {
-    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
-    this.deleteUserFormChannel = this.userDataService.currentUser;
-  }
-
-  async leaveChannel() {
-    if (this.deleteUserFormChannel && this.currentChannelData) {
-      console.log("Im logged in", this.deleteUserFormChannel);
-      try {
-        const matchingChannel = this.currentChannelData.id;
-        console.log(matchingChannel);
-        if (matchingChannel) {
-          const channelCollection = collection(this.firestore, 'channels');
-          const channelDoc = doc(channelCollection, matchingChannel);
-          const channelDocSnapshot = await getDoc(channelDoc);
-  
-          if (channelDocSnapshot.exists()) {
-            const usersArray = channelDocSnapshot.data()['users'] || [];
-            const updatedUsersArray = usersArray.filter((user: any) => user !== this.deleteUserFormChannel);
-            await updateDoc(channelDoc, {
-              users: updatedUsersArray
-            });
-  
-            console.log("User removed from the channel.");
-          } else {
-            console.log("Matching channel not found.");
-          }
-        }
-      } catch (error) {
-        console.error('Error removing user:', error);
-      }
-    }
-  }
-  
-  public typeEmoji($event: any): void {
-    this.messageInput = this.messageInput + $event.character;
-  }
-
   async getUserData() {
     this.userDataService.getUserData().subscribe(
-      (userData) => {
+      (userData: UserDataInterface[]) => {
         this.userData = userData;
       },
       (error) => {
@@ -195,6 +135,79 @@ export class ChatComponent implements OnInit, OnChanges {
       }
     );
   }
+
+  performCRUD() {
+    this.triggerCRUDHTML = false;
+    console.trace("Something to perform");
+  }
+
+  selectMessage(messageId: any) {
+    this.selectedMessage = this.getMessageId(messageId);
+    console.log(this.selectedMessage);
+  }
+
+  getMessageId(messageId: any) {
+    return this.messageData.find(message => message.id === messageId) || null;
+  }
+
+  searchUsers(): void {
+    if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('@')) {
+      const searchBy = this.inviteUserOrChannel.substr(1).toLowerCase();
+      this.searchResults = this.userDataService.userData.filter(user =>
+        user.name.toLowerCase().includes(searchBy) || user.email.toLowerCase().includes(searchBy)
+      );
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface):void {
+
+  }
+
+  getCurrentUserId() {
+    this.currentUserId = this.userDataService.currentUser;
+    console.log('Current User is', this.currentUserId);
+  }
+
+  async deleteUserFromChannel() {
+    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
+    this.deleteUserFormChannel = this.userDataService.currentUser;
+  }
+
+  async leaveChannel() {
+    if (this.deleteUserFormChannel && this.currentChannelData) {
+      console.log("Im logged in", this.deleteUserFormChannel);
+      try {
+        const matchingChannel = this.currentChannelData.id;
+        console.log(matchingChannel);
+        if (matchingChannel) {
+          const channelCollection = collection(this.firestore, 'channels');
+          const channelDoc = doc(channelCollection, matchingChannel);
+          const channelDocSnapshot = await getDoc(channelDoc);
+  
+          if (channelDocSnapshot.exists()) {
+            const usersArray = channelDocSnapshot.data()['users'] || [];
+            const updatedUsersArray = usersArray.filter((user: any) => user !== this.deleteUserFormChannel);
+            await updateDoc(channelDoc, {
+              users: updatedUsersArray
+            });
+            console.log("User removed from the channel.");
+          } else {
+            console.log("Matching channel not found.");
+          }
+        }
+      } catch (error) {
+        console.error('Error removing user:', error);
+      }
+    }
+  }
+  
+  public typeEmoji($event: any): void {
+    this.messageInput = this.messageInput + $event.character;
+  }
+
+  
 
   isNewDay(
     currentMessage: MessageInterface,

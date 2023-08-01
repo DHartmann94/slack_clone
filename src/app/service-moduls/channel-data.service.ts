@@ -46,7 +46,7 @@ export class ChannelDataService {
           };
           storedUserData.push(channel);
         });
-        this.channelData = storedUserData;
+        this.channelDataSubject.next(storedUserData);
         return storedUserData;
       })
     )
@@ -98,7 +98,7 @@ export class ChannelDataService {
     const q = query(channelCollection);
 
     onSnapshot(q, (querySnapshot) => {
-      const storedUserData: ChannelDataInterface[] = [];
+      const storedChannelData: ChannelDataInterface[] = [];
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -110,9 +110,9 @@ export class ChannelDataService {
           color: color,
           users: users,
         };
-        storedUserData.push(channel);
+        storedChannelData.push(channel);
       });
-      this.channelDataSubject.next(storedUserData);
+      this.channelDataSubject.next(storedChannelData);
     });
   }
 }

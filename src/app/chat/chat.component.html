@@ -22,13 +22,18 @@
     </div>
 
     <div class="search-input-channels" *ngIf="!(triggerCRUDHTML)">
-      <h2>New Message</h2>
-      <form [formGroup]="channelDescription">
+        <h2>New Message</h2>
         <div class="channel-inputs">
-          <input class="channel-name" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse"
-            formControlName="channelDescription">
+          <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
         </div>
-      </form>
+        <div *ngIf="searchResults.length > 0">
+          <ul>
+            <li *ngFor="let user of searchResults">
+              {{ user.name }} ({{ user.email }})
+              <button (click)="inviteUser(user)">Invite</button>
+            </li>
+          </ul>
+        </div>
     </div>
   </div>
 

@@ -20,8 +20,8 @@ export interface DirectChatInterface {
 })
 
 export class DirectChatService {
-  private messageDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
-  public messageData$: Observable<DirectChatInterface[]> = this.messageDataSubject.asObservable();
+  private directMessageDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
+  public messageData$: Observable<DirectChatInterface[]> = this.directMessageDataSubject.asObservable();
 
   constructor(public firestore: Firestore) { }
 
@@ -35,7 +35,6 @@ export class DirectChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-
           const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } = data;
           const directMessage: DirectChatInterface = {
             id: doc.id,
@@ -51,11 +50,38 @@ export class DirectChatService {
           storedDirectMessageData.push(directMessage);
         });
 
-        this.messageDataSubject.next(storedDirectMessageData);
+        this.directMessageDataSubject.next(storedDirectMessageData);
         observer.next(storedDirectMessageData);
       });
 
       return () => unsubscribe();
+    });
+  }
+
+  subscribeToDirectMessageUpdates() {
+    const directchat = collection(this.firestore, 'messages');
+    const q = query(directchat);
+
+    onSnapshot(q, (querySnapshot) => {
+      const updatedDirectMessageData: DirectChatInterface[] = [];
+
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } = data;
+        const directMessage: DirectChatInterface = {
+          id: id,
+          messageText: messageText,
+          time: time,
+          thread: thread,
+          emojis: emojis,
+          sentBy: sentBy,
+          channel: channel,
+          mentionedUser: mentionedUser,
+        };
+        updatedDirectMessageData.push(directMessage);
+      });
+
+      this.directMessageDataSubject.next(updatedDirectMessageData);
     });
   }
 }
