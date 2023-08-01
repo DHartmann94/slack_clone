@@ -26,19 +26,18 @@ export class DirectChatService {
   constructor(public firestore: Firestore) { }
 
   getDirectMessages(): Observable<DirectChatInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-    const q = query(messages);
+    const directchat = collection(this.firestore, 'directchat');
+    const q = query(directchat);
 
     return new Observable<DirectChatInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const storedMessageData: DirectChatInterface[] = [];
+        const storedDirectMessageData: DirectChatInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
 
-          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
-          const message: DirectChatInterface = {
+          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } = data;
+          const directMessage: DirectChatInterface = {
             id: doc.id,
             messageText: messageText,
             time: time,
@@ -49,16 +48,14 @@ export class DirectChatService {
             sentById: sentById,
             mentionedUser: mentionedUser,
           };
-          storedMessageData.push(message);
+          storedDirectMessageData.push(directMessage);
         });
 
-        this.messageDataSubject.next(storedMessageData);
-        observer.next(storedMessageData);
+        this.messageDataSubject.next(storedDirectMessageData);
+        observer.next(storedDirectMessageData);
       });
 
       return () => unsubscribe();
     });
   }
-
-
 }
