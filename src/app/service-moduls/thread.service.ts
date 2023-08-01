@@ -12,7 +12,7 @@ import {
 } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
-export interface MessageInterface {
+export interface ThreadInterface {
   messageText: any;
   time?: number;
   emojis?: any;
@@ -26,33 +26,30 @@ export interface MessageInterface {
   providedIn: 'root',
 })
 export class ThreadService {
-  private messageDataSubject: BehaviorSubject<MessageInterface[]> =
-    new BehaviorSubject<MessageInterface[]>([]);
-  public messageData$: Observable<MessageInterface[]> =
+  private messageDataSubject: BehaviorSubject<ThreadInterface[]> =
+    new BehaviorSubject<ThreadInterface[]>([]);
+  public messageData$: Observable<ThreadInterface[]> =
     this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) { }
+  constructor(public firestore: Firestore) {}
 
   openThread() {
     console.log('create/open thread');
   }
 
-
-  getThreadData(channelId: string): Observable<MessageInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-
-    // Folgender String müsste angepasst werden.
-    const q = query(messages, where('channel', '==', channelId));
+  getThreadData(): Observable<ThreadInterface[]> {
+    const threads = collection(this.firestore, 'messages');
+    const q = query(threads);
 
     return from(getDocs(q)).pipe(
       map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: MessageInterface[] = [];
+        const threadData: ThreadInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           const { messageText, time, thread, emojis, channel, mentionedUser } =
             data;
-          const message: MessageInterface = {
+          const message: ThreadInterface = {
             messageText: messageText,
             time: time,
             thread: thread,
@@ -62,6 +59,8 @@ export class ThreadService {
           };
           threadData.push(message);
         });
+
+        console.log('thread messages', threadData); // Corrected logging
 
         return threadData;
       })
