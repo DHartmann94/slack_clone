@@ -535,6 +535,12 @@ $light-blue: #eceefe;
   }
 }
 
+//multiple selection
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
 .attach {
   @extend .container;
   background-image: url(../../assets/img/icons/add_gray.svg);
@@ -664,7 +670,7 @@ section {
   }
 
   .user-active {
-    color: #92C83E !important; 
+    color: #92C83E !important;
   }
 
   .user-email {

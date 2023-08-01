@@ -4,7 +4,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, firstValueFrom, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ThreadInterface, ThreadService } from '../service-moduls/thread.service';
@@ -32,6 +32,10 @@ export class ChatComponent implements OnInit, OnChanges {
   channelData: ChannelDataInterface[] = [];
   directChatData: DirectChatInterface[] = [];
   threadData: ThreadInterface[] = [];
+
+  /// new multiple selection option for mention users
+  mentionUser = new FormControl('');
+  userList: string[] = [];
 
   selectedMessage: MessageInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
@@ -108,7 +112,8 @@ export class ChatComponent implements OnInit, OnChanges {
   async getUserData() {
     this.userDataService.getUserData().subscribe(
       (userData: UserDataInterface[]) => {
-        this.userData = userData;
+        this.userData = userData; // Store all users in the component's userData array
+        this.userList = userData.map(user => user.name); // Fill the userList array with user names
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -200,7 +205,7 @@ export class ChatComponent implements OnInit, OnChanges {
       );
     }
   }
-  
+
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
     console.log('Current User is', this.currentUserId);
