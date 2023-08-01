@@ -125,38 +125,5 @@ export class ChatService {
     const messageDoc = doc(messagesCollection, messageId);
     return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
   }
-
-  getThreadData(channelId: string): Observable<MessageInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-
-    // Folgender String müsste angepasst werden.
-    const q = query(messages, where('channel', '==', channelId));
-
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: MessageInterface[] = [];
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const { id, messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
-          const message: MessageInterface = {
-            id: id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            sentBy: sentBy,
-            sentById: sentById,
-            channel: channel,
-            mentionedUser: mentionedUser,
-          };
-          threadData.push(message);
-        });
-
-        return threadData;
-      })
-    );
-  }
 }
 
