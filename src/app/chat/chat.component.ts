@@ -9,6 +9,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user-data.
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
 import { ThreadService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -29,6 +30,7 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
+  directChatData: DirectChatInterface[] = [];
 
   selectedMessage: MessageInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
@@ -49,6 +51,7 @@ export class ChatComponent implements OnInit, OnChanges {
   openEditChannel: boolean = false;
   emojipickeractive = false;
   reactionListOpen = false;
+  toggleUserList: boolean = true;
 
   private crudTriggeredSubscription: Subscription;
   triggerCRUDHTML: boolean = true;
@@ -58,6 +61,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   constructor(
     private chatService: ChatService,
+    private directChatService: DirectChatService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private ChannelDataResolver: ChannelDataResolverService,
@@ -86,6 +90,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getChatData();
     this.getDataFromChannel();
     this.getUserData();
+    this.getDirectChatData();
     this.chatService.subscribeToMessageUpdates();
     this.getCurrentUserId();
     this.compareIds();
@@ -136,9 +141,19 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
+  async getDirectChatData() {
+    this.directChatService.getDirectMessages().subscribe(
+      (directChatData: DirectChatInterface[]) => {
+        this.directChatData = directChatData;
+      },
+      (error) => {
+        console.error('Error fetching direct chat data:', error);
+      }
+    );
+  }
+
   performCRUD() {
     this.triggerCRUDHTML = false;
-    console.trace("Something to perform");
   }
 
   selectMessage(messageId: any) {
@@ -151,20 +166,37 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   searchUsers(): void {
-    if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('@')) {
-      const searchBy = this.inviteUserOrChannel.substr(1).toLowerCase();
-      this.searchResults = this.userDataService.userData.filter(user =>
-        user.name.toLowerCase().includes(searchBy) || user.email.toLowerCase().includes(searchBy)
-      );
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResults = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+      } else {
+        this.searchResults = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
     } else {
       this.searchResults = [];
     }
   }
 
-  inviteUser(user: UserDataInterface):void {
-
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      this.directChatService.addUserToDirectChat(user).subscribe(
+        (docId) => {
+          console.log('User added to the chat with ID:', docId);
+        },
+        (error) => {
+          console.error('Error adding user to the chat:', error);
+        }
+      );
+    }
   }
-
+  
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
     console.log('Current User is', this.currentUserId);

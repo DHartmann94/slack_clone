@@ -6,9 +6,9 @@ export interface UserDataInterface {
   id: string;
   name: string;
   email: string;
-  picture: string;
+  picture?: string;
   createdAt?: any;
-  status: any;
+  status?: any;
 }
 
 @Injectable({

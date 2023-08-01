@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
+import { UserDataInterface } from './user-data.service';
 
 export interface DirectChatInterface {
   id?: any;
-  messageText: any;
+  messageText?: any;
   time?: number;
   emojis?: any;
   thread?: any;
@@ -13,6 +14,7 @@ export interface DirectChatInterface {
   sentById?: string,
   mentionedUser?: string;
   senderName?: string;
+  users?: UserDataInterface[];
 }
 
 @Injectable({
@@ -56,6 +58,19 @@ export class DirectChatService {
 
       return () => unsubscribe();
     });
+  }
+
+  addUserToDirectChat(user: UserDataInterface): Observable<string> {
+    const directChatCollection = collection(this.firestore, 'directchat');
+    const newDirectChat: DirectChatInterface = {
+      users: [user], 
+    };
+
+    return from(addDoc(directChatCollection, newDirectChat)).pipe(
+      map((docRef) => {
+        return docRef.id;
+      })
+    );
   }
 
   subscribeToDirectMessageUpdates() {

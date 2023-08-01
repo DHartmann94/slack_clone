@@ -27,10 +27,11 @@
           <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
         </div>
         <div *ngIf="searchResults.length > 0">
-          <ul>
-            <li *ngFor="let user of searchResults">
-              {{ user.name }} ({{ user.email }})
-              <button (click)="inviteUser(user)">Invite</button>
+          <ul *ngIf="toggleUserList">
+            <li *ngFor="let user of searchResults" (click)="inviteUser(user)">
+              <div class="user-list">
+                {{ user.name }} ({{ user.email }})
+              </div>
             </li>
           </ul>
         </div>
