@@ -83,6 +83,25 @@ export class UserDataService {
     }
   }
 
+  async usersDataBackend(userID: string) {
+    try {
+      const userDocRef = doc(this.firestore, 'users', userID);
+      const docSnapshot = await getDoc(userDocRef);
+
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        return userData;
+        //this.colorStatus(); 
+      } else {
+        console.log('The document does not exist.');
+        return null;
+      }
+    } catch (error) {
+      console.log('ERROR retrieving user data:', error);
+      return null;
+    }
+  }
+
   currentUserData(userData: any) {
     this.userName = userData['name'];
     this.userEmail = userData['email'];

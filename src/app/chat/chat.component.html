@@ -52,7 +52,7 @@
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
-          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="#">
+          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="">
         </div>
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
@@ -241,3 +241,19 @@
     </div>
   </div>
 </mat-card>
+
+<!-- Mention user -->
+<div>
+  <mat-form-field>
+    <mat-label>Mention user</mat-label>
+    <mat-select [formControl]="mentionUser" multiple>
+      <mat-select-trigger>
+        {{mentionUser.value?.[0] || ''}}
+        <span *ngIf="(mentionUser.value?.length || 0) > 1" class="example-additional-selection">
+          (+{{(mentionUser.value?.length || 0) - 1}} {{mentionUser.value?.length === 2 ? 'other' : 'others'}})
+        </span>
+      </mat-select-trigger>
+      <mat-option *ngFor="let topping of userList" [value]="topping">{{topping}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
