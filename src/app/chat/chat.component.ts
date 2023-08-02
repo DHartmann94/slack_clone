@@ -131,8 +131,8 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
-        } 
-        /* console.log("Data from channel", data); */
+        }
+        console.log("Data from channel", data);
         return data;
       })
     );
@@ -317,12 +317,13 @@ export class ChatComponent implements OnInit, OnChanges {
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
+      const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
-        thread: null,
+        thread: threadId,
         channel: this.channelId,
         mentionedUser: 'user_id_here',
       };
@@ -567,7 +568,10 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  openThread(messageId: string) {
-    this.threadDataService.openThread(messageId);
+  openThread(threadId: string) {
+    // Eine globale variable mit einer ID befüllen. (Um zu verhindern das eine neue Thread Id beim senden der message entsteht!)
+    // Zweites Textfeld holt sich die globale Variable.
+    
+    /*this.threadDataService.openThread(messageId);*/
   }
 }
