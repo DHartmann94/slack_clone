@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ChannelDataService } from './channel-data.service';
+import { ChannelDataService } from './channel.service';
 
 describe('ChannelDataService', () => {
   let service: ChannelDataService;

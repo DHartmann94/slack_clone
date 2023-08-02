@@ -2,11 +2,11 @@ import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataInterface } from './user-data.service';
-import { MessageInterface } from './message.service';
+import { MessageDataInterface } from './message.service';
 
 export interface DirectChatInterface {
   id?: any;
-  messages?: MessageInterface[]; 
+  messages?: MessageDataInterface[]; 
   users?: UserDataInterface[];
 }
 

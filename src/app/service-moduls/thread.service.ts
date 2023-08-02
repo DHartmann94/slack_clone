@@ -1,22 +1,8 @@
 import { Injectable } from '@angular/core';
-import {
-  DocumentData,
-  Firestore,
-  QuerySnapshot,
-  collection,
-  getDocs,
-  query,
-  addDoc,
-  onSnapshot,
-  where,
-  updateDoc,
-  doc,
-  getDoc,
-  setDoc,
-} from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, updateDoc, doc, getDoc, setDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
-export interface ThreadInterface {
+export interface ThreadDataInterface {
   messageText: any;
   time?: number;
   emojis?: any;
@@ -31,11 +17,9 @@ export interface ThreadInterface {
 @Injectable({
   providedIn: 'root',
 })
-export class ThreadService {
-  private messageDataSubject: BehaviorSubject<ThreadInterface[]> =
-    new BehaviorSubject<ThreadInterface[]>([]);
-  public messageData$: Observable<ThreadInterface[]> =
-    this.messageDataSubject.asObservable();
+export class ThreadDataService {
+  private threadDataSubject: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
+  public messageData$: Observable<ThreadDataInterface[]> = this.threadDataSubject.asObservable();
 
   constructor(public firestore: Firestore) {}
 
@@ -55,8 +39,6 @@ export class ThreadService {
         mentionedUser: messageData['mentionedUser'],
       };
 
-      console.log('created new thread:', newThreadData);
-
       const threadCollectionRef = collection(this.firestore, 'threads');
       const threadDocRef = await addDoc(threadCollectionRef, newThreadData);
 
@@ -67,19 +49,18 @@ export class ThreadService {
     }
   }
 
-  getThreadData(): Observable<ThreadInterface[]> {
-    const threads = collection(this.firestore, 'messages');
-    const q = query(threads);
+  getThreadData(): Observable<ThreadDataInterface[]> {
+    const threadCollection = collection(this.firestore, 'messages');
+    const q = query(threadCollection);
 
     return from(getDocs(q)).pipe(
       map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: ThreadInterface[] = [];
+        const threadData: ThreadDataInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, channel, mentionedUser } =
-            data;
-          const message: ThreadInterface = {
+          const { messageText, time, thread, emojis, channel, mentionedUser } = data;
+          const message: ThreadDataInterface = {
             messageText: messageText,
             time: time,
             thread: thread,
@@ -89,8 +70,6 @@ export class ThreadService {
           };
           threadData.push(message);
         });
-
-        console.log('thread messages', threadData);
 
         return threadData;
       })

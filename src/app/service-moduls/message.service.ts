@@ -3,7 +3,7 @@ import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, add
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataService } from '../service-moduls/user-data.service';
 
-export interface MessageInterface {
+export interface MessageDataInterface {
   id?: any;
   messageText: any;
   time?: number;
@@ -21,22 +21,22 @@ export interface MessageInterface {
   providedIn: 'root',
 })
 
-export class MessageService {
-  private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
-  public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
+export class MessageDataService {
+  private messageDataSubject: BehaviorSubject<MessageDataInterface[]> = new BehaviorSubject<MessageDataInterface[]>([]);
+  public messageData$: Observable<MessageDataInterface[]> = this.messageDataSubject.asObservable();
 
   constructor(
     public firestore: Firestore,
     private userDataService: UserDataService,
   ) { }
 
-  getMessageData(): Observable<MessageInterface[]> {
+  getMessageData(): Observable<MessageDataInterface[]> {
     const messageCollection = collection(this.firestore, 'messages');
     const q = query(messageCollection);
 
-    return new Observable<MessageInterface[]>((observer) => {
+    return new Observable<MessageDataInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
-        const storedMessageData: MessageInterface[] = [];
+        const storedMessageData: MessageDataInterface[] = [];
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
@@ -63,7 +63,7 @@ export class MessageService {
               userPicture = '/assets/profile-pictures/avatar1.png';
             }
 
-            const message: MessageInterface = {
+            const message: MessageDataInterface = {
               id: doc.id,
               messageText: messageText,
               time: time,
@@ -89,7 +89,7 @@ export class MessageService {
     });
   }
 
-  sendMessage(message: MessageInterface): Observable<MessageInterface> {
+  sendMessage(message: MessageDataInterface): Observable<MessageDataInterface> {
     const messages = collection(this.firestore, 'messages');
     const messageData = {
       messageText: message.messageText,
@@ -104,7 +104,7 @@ export class MessageService {
 
     return from(addDoc(messages, messageData)).pipe(
       map((docRef) => {
-        const newMessage: MessageInterface = {
+        const newMessage: MessageDataInterface = {
           ...message,
           id: docRef.id,
         };
