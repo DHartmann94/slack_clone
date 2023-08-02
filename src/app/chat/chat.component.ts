@@ -11,6 +11,7 @@ import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
+import { AppModule } from '../app.module';
 
 @Component({
   selector: 'app-chat',
@@ -41,6 +42,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
+
+  channelId: string= "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -125,7 +128,10 @@ export class ChatComponent implements OnInit, OnChanges {
   async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
       map((data: ChannelDataInterface | null) => {
-       /*  console.log('Received data in ChatComponent:', data); */
+        if (data && data.id) {
+          this.processChannelData(data.id);
+        } 
+        console.log("Data from channel", data);
         return data;
       })
     );
@@ -183,6 +189,11 @@ export class ChatComponent implements OnInit, OnChanges {
 
   getMessageId(messageId: any) {
     return this.messageData.find(message => message.id === messageId) || null;
+  }
+
+  processChannelData(channelId: string) {
+    this.channelId = channelId;
+    console.log("Channel ID: ", channelId);
   }
 
   searchUsers(): void {
@@ -292,7 +303,7 @@ export class ChatComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         thread: null,
-        channel: 'your_channel_value_here',
+        channel: this.channelId,
         mentionedUser: 'user_id_here',
       };
 
@@ -316,18 +327,7 @@ export class ChatComponent implements OnInit, OnChanges {
           console.error('Error sending message:', error);
         }
       );
-
-      this.chatDataService.addMessageToChat(message).subscribe(
-        (newChat) => {
-          console.log("Send message to chat service", newChat)
-        },
-        (error) => {
-          console.error('Error sending message:', error);
-        }
-
-
-      );
-
+      this.chatDataService.addMessageToChat(message).subscribe();
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
