@@ -50,7 +50,7 @@ export class ThreadDataService {
   }
 
   getThreadData(): Observable<ThreadDataInterface[]> {
-    const threadCollection = collection(this.firestore, 'messages');
+    const threadCollection = collection(this.firestore, 'threads');
     const q = query(threadCollection);
 
     return from(getDocs(q)).pipe(
