@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
-import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel-data.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
@@ -64,7 +64,6 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
-    this.channelDataService.subscribeToChannel();
   }
 
   async getUserData() {
