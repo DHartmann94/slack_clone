@@ -1,19 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  DocumentData,
-  Firestore,
-  QuerySnapshot,
-  collection,
-  getDocs,
-  query,
-  addDoc,
-  onSnapshot,
-  where,
-  doc,
-  updateDoc,
-  setDoc,
-  deleteDoc,
-} from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface MessageInterface {
@@ -32,11 +18,10 @@ export interface MessageInterface {
 @Injectable({
   providedIn: 'root',
 })
-export class ChatService {
-  private messageDataSubject: BehaviorSubject<MessageInterface[]> =
-    new BehaviorSubject<MessageInterface[]>([]);
-  public messageData$: Observable<MessageInterface[]> =
-    this.messageDataSubject.asObservable();
+
+export class MessageService {
+  private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
+  public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
 
   constructor(public firestore: Firestore) {}
 
