@@ -30,9 +30,9 @@ export class MessageService {
     private userDataService: UserDataService,
   ) { }
 
-  getMessage(): Observable<MessageInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-    const q = query(messages);
+  getMessageData(): Observable<MessageInterface[]> {
+    const messageCollection = collection(this.firestore, 'messages');
+    const q = query(messageCollection);
 
     return new Observable<MessageInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
@@ -45,7 +45,6 @@ export class MessageService {
             time,
             thread,
             emojis,
-            sentBy,
             sentById,
             channel,
             mentionedUser,
