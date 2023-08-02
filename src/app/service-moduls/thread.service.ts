@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, updateDoc, doc, getDoc, setDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
+import { UserDataInterface } from './user.service';
+import { MessageDataInterface } from './message.service';
+import { ChatDataInterface } from './chat.service';
 
 export interface ThreadDataInterface {
-  threads: any;
   id: any;
-  messageText: any;
-  time?: number;
-  emojis?: any;
-  thread?: any;
-  channel?: string;
-  userId?: string;
-  mentionedUser?: string;
-  channelId?: string;
-  users?: string[];
+  users?: UserDataInterface[];
+  messages?: MessageDataInterface[];
+  chats: ChatDataInterface[];
 }
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThreadDataService {
-  private threadDataSubject: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
-  public messageData$: Observable<ThreadDataInterface[]> = this.threadDataSubject.asObservable();
+  private threadDataSubject$: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
+  public threadData: Observable<ThreadDataInterface[]> = this.threadDataSubject$.asObservable();
 
   constructor(public firestore: Firestore) { }
 
@@ -61,21 +57,17 @@ export class ThreadDataService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, channel, mentionedUser } = data;
-          const message: ThreadDataInterface = {
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            channel: channel,
-            mentionedUser: mentionedUser,
-            threads: undefined,
-            id: undefined
+          const { users, messages, chats } = data;
+          const thread: ThreadDataInterface = {
+            id: doc.id,
+            users: users,
+            messages: messages,
+            chats: chats,
           };
-          threadData.push(message);
+          threadData.push(thread);
         });
 
-        this.threadDataSubject.next(threadData);
+        this.threadDataSubject$.next(threadData);
         observer.next(threadData);
       });
 

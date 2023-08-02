@@ -4,7 +4,7 @@ import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { MessageDataInterface } from './message.service';
 import { UserDataInterface } from './user.service';
 
-export interface ChatInterface {
+export interface ChatDataInterface {
   id?: any,
   messages?: MessageDataInterface[],
   users?: UserDataInterface[],
@@ -15,25 +15,25 @@ export interface ChatInterface {
 })
 export class ChatService {
 
-  private chatDataSubject: BehaviorSubject<ChatInterface[]> = new BehaviorSubject<ChatInterface[]>([]);
-  public chatData$: Observable<ChatInterface[]> = this.chatDataSubject.asObservable();
+  private chatDataSubject: BehaviorSubject<ChatDataInterface[]> = new BehaviorSubject<ChatDataInterface[]>([]);
+  public chatData$: Observable<ChatDataInterface[]> = this.chatDataSubject.asObservable();
 
   constructor(
     public firestore: Firestore,
   ) { }
 
-  getChatData(): Observable<ChatInterface[]> {
+  getChatData(): Observable<ChatDataInterface[]> {
     const chatCollection = collection(this.firestore, 'chats');
     const q = query(chatCollection);
 
-    return new Observable<ChatInterface[]>((observer) => {
+    return new Observable<ChatDataInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const storedChatData: ChatInterface[] = [];
+        const storedChatData: ChatDataInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           const { users, messages } = data;
-          const directMessage: ChatInterface = {
+          const directMessage: ChatDataInterface = {
             id: doc.id,
             users: users,
             messages: messages
