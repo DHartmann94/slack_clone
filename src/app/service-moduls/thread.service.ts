@@ -1,24 +1,10 @@
 import { Injectable } from '@angular/core';
-import {
-  DocumentData,
-  Firestore,
-  QuerySnapshot,
-  collection,
-  getDocs,
-  query,
-  addDoc,
-  onSnapshot,
-  where,
-  updateDoc,
-  doc,
-  getDoc,
-  setDoc,
-} from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, updateDoc, doc, getDoc, setDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
-export interface ThreadInterface {
-threads: any;
-id: any;
+export interface ThreadDataInterface {
+  threads: any;
+  id: any;
   messageText: any;
   time?: number;
   emojis?: any;
@@ -33,13 +19,11 @@ id: any;
 @Injectable({
   providedIn: 'root',
 })
-export class ThreadService {
-  private messageDataSubject: BehaviorSubject<ThreadInterface[]> =
-    new BehaviorSubject<ThreadInterface[]>([]);
-  public messageData$: Observable<ThreadInterface[]> =
-    this.messageDataSubject.asObservable();
+export class ThreadDataService {
+  private threadDataSubject: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
+  public messageData$: Observable<ThreadDataInterface[]> = this.threadDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) {}
+  constructor(public firestore: Firestore) { }
 
   async openThread(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
@@ -57,45 +41,45 @@ export class ThreadService {
         mentionedUser: messageData['mentionedUser'],
       };
 
-      console.log('created new thread:', newThreadData);
-
       const threadCollectionRef = collection(this.firestore, 'threads');
       const threadDocRef = await addDoc(threadCollectionRef, newThreadData);
 
       await setDoc(docRef, { thread: threadDocRef.id }, { merge: true });
-      
+
     } else if (messageData && messageData['thread']) {
       console.log('opened existing thread');
     }
   }
 
-  getThreadData(): Observable<ThreadInterface[]> {
-    const threads = collection(this.firestore, 'messages');
-    const q = query(threads);
+  getThreadData(): Observable<ThreadDataInterface[]> {
+    const threadCollection = collection(this.firestore, 'threads');
+    const q = query(threadCollection);
 
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: ThreadInterface[] = [];
+    return new Observable<ThreadDataInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const threadData: ThreadDataInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, channel, mentionedUser } =
-            data;
-          const message: ThreadInterface = {
+          const { messageText, time, thread, emojis, channel, mentionedUser } = data;
+          const message: ThreadDataInterface = {
             messageText: messageText,
             time: time,
             thread: thread,
             emojis: emojis,
             channel: channel,
             mentionedUser: mentionedUser,
+            threads: undefined,
+            id: undefined
           };
           threadData.push(message);
         });
 
-        console.log('thread messages', threadData);
+        this.threadDataSubject.next(threadData);
+        observer.next(threadData);
+      });
 
-        return threadData;
-      })
-    );
+      return () => unsubscribe();
+    });
   }
 }

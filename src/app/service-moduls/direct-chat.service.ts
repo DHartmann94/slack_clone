@@ -2,18 +2,11 @@ import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataInterface } from './user-data.service';
+import { MessageDataInterface } from './message.service';
 
 export interface DirectChatInterface {
   id?: any;
-  messageText?: any;
-  time?: number;
-  emojis?: any;
-  thread?: any;
-  channel?: string;
-  sentBy?: string;
-  sentById?: string,
-  mentionedUser?: string;
-  senderName?: string;
+  messages?: MessageDataInterface[]; 
   users?: UserDataInterface[];
 }
 
@@ -22,14 +15,14 @@ export interface DirectChatInterface {
 })
 
 export class DirectChatService {
-  private directMessageDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
-  public messageData$: Observable<DirectChatInterface[]> = this.directMessageDataSubject.asObservable();
+  private directChatDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
+  public directChateData$: Observable<DirectChatInterface[]> = this.directChatDataSubject.asObservable();
 
   constructor(public firestore: Firestore) { }
 
-  getDirectMessages(): Observable<DirectChatInterface[]> {
-    const directchat = collection(this.firestore, 'directchat');
-    const q = query(directchat);
+  getDirectChatData(): Observable<DirectChatInterface[]> {
+    const directChatCollection = collection(this.firestore, 'directchat');
+    const q = query(directChatCollection);
 
     return new Observable<DirectChatInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -37,22 +30,16 @@ export class DirectChatService {
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } = data;
+          const { users, messages } = data;
           const directMessage: DirectChatInterface = {
             id: doc.id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            channel: channel,
-            sentBy: sentBy,
-            sentById: sentById,
-            mentionedUser: mentionedUser,
+            users: users,
+            messages: messages
           };
           storedDirectMessageData.push(directMessage);
         });
 
-        this.directMessageDataSubject.next(storedDirectMessageData);
+        this.directChatDataSubject.next(storedDirectMessageData);
         observer.next(storedDirectMessageData);
       });
 
@@ -71,32 +58,5 @@ export class DirectChatService {
         return docRef.id;
       })
     );
-  }
-
-  subscribeToDirectMessageUpdates() {
-    const directchat = collection(this.firestore, 'messages');
-    const q = query(directchat);
-
-    onSnapshot(q, (querySnapshot) => {
-      const updatedDirectMessageData: DirectChatInterface[] = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } = data;
-        const directMessage: DirectChatInterface = {
-          id: id,
-          messageText: messageText,
-          time: time,
-          thread: thread,
-          emojis: emojis,
-          sentBy: sentBy,
-          channel: channel,
-          mentionedUser: mentionedUser,
-        };
-        updatedDirectMessageData.push(directMessage);
-      });
-
-      this.directMessageDataSubject.next(updatedDirectMessageData);
-    });
   }
 }

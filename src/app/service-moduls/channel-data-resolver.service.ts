@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { ChannelDataInterface } from './channel-data.service';
+import { ChannelDataInterface } from './channel.service';
 
 @Injectable({
   providedIn: 'root'
