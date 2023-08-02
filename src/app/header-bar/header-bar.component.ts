@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
 import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
-import { UserDataInterface, UserDataService } from '../service-moduls/user-data.service';
+import { UserDataInterface, UserDataService } from '../service-moduls/user.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

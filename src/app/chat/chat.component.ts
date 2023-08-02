@@ -5,7 +5,7 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, firstValueFrom, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserDataService, UserDataInterface } from '../service-moduls/user-data.service';
+import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
@@ -217,7 +217,6 @@ export class ChatComponent implements OnInit, OnChanges {
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
-    console.log('Current User is', this.currentUserId);
   }
 
   async deleteUserFromChannel() {
