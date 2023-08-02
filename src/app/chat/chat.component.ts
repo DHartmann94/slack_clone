@@ -427,6 +427,7 @@ export class ChatComponent implements OnInit, OnChanges {
           }
         );
       this.channelName.reset();
+      this.editChannelName = false;
     }
   }
 
@@ -443,6 +444,7 @@ export class ChatComponent implements OnInit, OnChanges {
         }
       );
       this.channelDescription.reset();
+      this.editChannelDescription = false;
     }
   }
 
