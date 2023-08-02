@@ -7,7 +7,6 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-channels',

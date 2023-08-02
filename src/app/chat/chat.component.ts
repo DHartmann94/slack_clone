@@ -111,7 +111,8 @@ export class ChatComponent implements OnInit, OnChanges {
     this.userDataService.getUserData().subscribe(
       (userData: UserDataInterface[]) => {
         this.userData = userData; // Store all users in the component's userData array
-        this.userList = userData.map(user => user.name); // Fill the userList array with user names
+        this.userList = userData.map(user => user.name);
+        console.log('Subscribed data users:', userData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -122,7 +123,7 @@ export class ChatComponent implements OnInit, OnChanges {
   async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.ChannelDataResolver.resolve().pipe(
       map((data: ChannelDataInterface | null) => {
-        console.log('Received data in ChatComponent:', data);
+       /*  console.log('Received data in ChatComponent:', data); */
         return data;
       })
     );
@@ -140,7 +141,7 @@ export class ChatComponent implements OnInit, OnChanges {
         console.log('Subscribed data messages:', messageData);
       },
       (error) => {
-        console.error('Error retrieving user data:', error);
+        console.error('Error retrieving messages data:', error);
       }
     );
   }
@@ -149,7 +150,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.directChatService.getDirectChatData().subscribe(
       (directChatData: DirectChatInterface[]) => {
         this.directChatData = directChatData;
-        console.log("Get direct chat data", this.directChatData);
+        console.log("Get direct chat data", directChatData);
       },
       (error) => {
         console.error('Error fetching direct chat data:', error);
@@ -158,9 +159,15 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   async getThreadData() {
-    this.threadDataService.getThreadData().subscribe((data) => {
-      this.threadData = data.filter((thread) => thread.thread !== null);
-    });
+    this.threadDataService.getThreadData().subscribe(
+      (threadData: ThreadDataInterface[]) => {
+        this.threadData = threadData;
+        console.log("Get thread data", threadData);
+      },
+      (error) => {
+        console.error('Error fetching thread data:', error);
+      }
+    );
   }
 
   performCRUD() {
