@@ -13,6 +13,10 @@ a {
   color: var(--c-light-purple);
 }
 
+li {
+  list-style: none;
+}
+
 :root {
   --c-darkblue: rgb(42, 54, 71);
   --c-text-grey: #686868;

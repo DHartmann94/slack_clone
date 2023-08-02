@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
+import { UserDataService } from '../service-moduls/user-data.service';
 
 export interface MessageInterface {
   id?: any;
@@ -10,7 +11,8 @@ export interface MessageInterface {
   thread?: any;
   channel?: string;
   sentBy?: string;
-  sentById?: string,
+  picture?: string;
+  sentById?: string;
   mentionedUser?: string;
   senderName?: string;
 }
@@ -19,47 +21,71 @@ export interface MessageInterface {
   providedIn: 'root',
 })
 
-export class ChatService {
+export class MessageService {
   private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
   public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) { }
+  constructor(public firestore: Firestore, private userDataService: UserDataService,) {}
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
-
+  
     return new Observable<MessageInterface[]>((observer) => {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: MessageInterface[] = [];
-
-        querySnapshot.forEach((doc) => {
+  
+        for (const doc of querySnapshot.docs) {
           const data = doc.data();
-
-          const { messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
-          const message: MessageInterface = {
-            id: doc.id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            channel: channel,
-            sentBy: sentBy,
-            sentById: sentById,
-            mentionedUser: mentionedUser,
-          };
-          storedMessageData.push(message);
-        });
-
+          const {
+            messageText,
+            time,
+            thread,
+            emojis,
+            sentBy,
+            sentById,
+            channel,
+            mentionedUser,
+          } = data;
+  
+          try {
+            const userData = await this.userDataService.usersDataBackend(sentById);
+            let userName: string;
+            let userPicture: string;
+  
+            if (userData !== null) {
+              userName = userData['name'];
+              userPicture = userData['picture'];
+            } else {
+              userName = 'Unknown User';
+              userPicture = '/assets/profile-pictures/avatar1.png';
+            }
+  
+            const message: MessageInterface = {
+              id: doc.id,
+              messageText: messageText,
+              time: time,
+              thread: thread,
+              emojis: emojis,
+              channel: channel,
+              sentBy: userName,
+              picture: userPicture,
+              sentById: sentById,
+              mentionedUser: mentionedUser,
+            };
+            storedMessageData.push(message);
+          } catch (error) {
+            console.log('ERROR retrieving user data:', error);
+          }
+        }
+  
         this.messageDataSubject.next(storedMessageData);
         observer.next(storedMessageData);
       });
-
+  
       return () => unsubscribe();
     });
   }
-
 
   sendMessage(message: MessageInterface): Observable<MessageInterface> {
     const messages = collection(this.firestore, 'messages');
@@ -94,8 +120,16 @@ export class ChatService {
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
-        const { id, messageText, time, thread, emojis, sentBy, channel, mentionedUser } =
-          data;
+        const {
+          id,
+          messageText,
+          time,
+          thread,
+          emojis,
+          sentBy,
+          channel,
+          mentionedUser,
+        } = data;
         const message: MessageInterface = {
           id: id,
           messageText: messageText,
@@ -120,43 +154,9 @@ export class ChatService {
     return from(deleteDoc(messageDoc));
   }
 
-  updateMessage(messageId: any, emojiUpdate:object): Observable<void> {
+  updateMessage(messageId: any, emojiUpdate: object): Observable<void> {
     const messagesCollection = collection(this.firestore, 'messages');
     const messageDoc = doc(messagesCollection, messageId);
-    return from(updateDoc(messageDoc, { 'emojis': emojiUpdate}));
-  }
-
-  getThreadData(channelId: string): Observable<MessageInterface[]> {
-    const messages = collection(this.firestore, 'messages');
-
-    // Folgender String müsste angepasst werden.
-    const q = query(messages, where('channel', '==', channelId));
-
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
-        const threadData: MessageInterface[] = [];
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          const { id, messageText, time, thread, emojis, sentBy, sentById, channel, mentionedUser } =
-            data;
-          const message: MessageInterface = {
-            id: id,
-            messageText: messageText,
-            time: time,
-            thread: thread,
-            emojis: emojis,
-            sentBy: sentBy,
-            sentById: sentById,
-            channel: channel,
-            mentionedUser: mentionedUser,
-          };
-          threadData.push(message);
-        });
-
-        return threadData;
-      })
-    );
+    return from(updateDoc(messageDoc, { emojis: emojiUpdate }));
   }
 }
-

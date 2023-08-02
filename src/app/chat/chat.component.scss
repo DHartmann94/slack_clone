@@ -83,6 +83,19 @@
     font-weight: 700;
   }
 
+  .user-list {
+    padding: 10px 0;
+    font-family: "Nunito";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+     color: var(--c-purple);
+    }
+  }
+
   .channel-name {
     display: flex;
     height: 20px;
@@ -112,6 +125,7 @@
   width: 70px;
   object-fit: cover;
   margin: 0 15px;
+  border-radius: 50%;
 }
 
 .participant-icon {
@@ -521,6 +535,12 @@ $light-blue: #eceefe;
   }
 }
 
+//multiple selection
+.example-additional-selection {
+  opacity: 0.75;
+  font-size: 0.75em;
+}
+
 .attach {
   @extend .container;
   background-image: url(../../assets/img/icons/add_gray.svg);
@@ -650,7 +670,7 @@ section {
   }
 
   .user-active {
-    color: #92C83E !important; 
+    color: #92C83E !important;
   }
 
   .user-email {

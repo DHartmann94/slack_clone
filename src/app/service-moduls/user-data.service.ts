@@ -6,9 +6,9 @@ export interface UserDataInterface {
   id: string;
   name: string;
   email: string;
-  picture: string;
+  picture?: string;
   createdAt?: any;
-  status: any;
+  status?: any;
 }
 
 @Injectable({
@@ -80,6 +80,25 @@ export class UserDataService {
       }
     } catch (error) {
       console.log('ERROR retrieving user data:', error);
+    }
+  }
+
+  async usersDataBackend(userID: string) {
+    try {
+      const userDocRef = doc(this.firestore, 'users', userID);
+      const docSnapshot = await getDoc(userDocRef);
+
+      if (docSnapshot.exists()) {
+        const userData = docSnapshot.data();
+        return userData;
+        //this.colorStatus(); 
+      } else {
+        console.log('The document does not exist.');
+        return null;
+      }
+    } catch (error) {
+      console.log('ERROR retrieving user data:', error);
+      return null;
     }
   }
 
