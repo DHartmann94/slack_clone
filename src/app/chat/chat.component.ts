@@ -11,7 +11,6 @@ import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
-import { AppModule } from '../app.module';
 
 @Component({
   selector: 'app-chat',
@@ -34,6 +33,7 @@ export class ChatComponent implements OnInit, OnChanges {
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
   directChatData: DirectChatInterface[] = [];
+  chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
   /// new multiple selection option for mention users
@@ -43,7 +43,8 @@ export class ChatComponent implements OnInit, OnChanges {
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
 
-  channelId: string= "";
+  channelId: string = "";
+  updateChatById: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -131,7 +132,7 @@ export class ChatComponent implements OnInit, OnChanges {
         if (data && data.id) {
           this.processChannelData(data.id);
         } 
-        console.log("Data from channel", data);
+        /* console.log("Data from channel", data); */
         return data;
       })
     );
@@ -193,7 +194,26 @@ export class ChatComponent implements OnInit, OnChanges {
 
   processChannelData(channelId: string) {
     this.channelId = channelId;
-    console.log("Channel ID: ", channelId);
+    this.updateChatById = channelId;
+    this.renderChatByChannelId(this.updateChatById);
+  }
+
+  renderChatByChannelId(channel: string) {
+    if (channel && this.receivedChannelData$) {
+        console.log(channel);
+        this.chatDataService.getChatData().subscribe(
+        (chatData: ChatDataInterface[]) => {
+          this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
+          console.log("The filterd channel id", this.chatData);
+          console.log("Get chat data", chatData);
+        },
+        (error) => {
+          console.error('Error direct chat data:', error);
+        }
+      );
+    } else {
+      this.chatData = [];
+    }
   }
 
   searchUsers(): void {
