@@ -55,7 +55,10 @@ export class HeaderBarComponent {
     private route: ActivatedRoute,
   ) { }
 
-
+/**
+ * Lifecycle hook that is called after Angular has initialized the component.
+ * Fetches the current user ID, gets the user data, and sets the status color.
+ */
   async ngOnInit() {
     this.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
@@ -63,6 +66,9 @@ export class HeaderBarComponent {
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
   }
 
+/**
+ * Gets the current user ID from the route parameters and updates the `currentUser` in the `userDataService`.
+ */
   getCurrentUserId() {
     // this.currentUser = localStorage.getItem('currentUser') ?? ''; // TEST
     this.route.params.subscribe((params) => {
@@ -70,6 +76,10 @@ export class HeaderBarComponent {
     });
   }
 
+  /**
+ * Edits the user profile by updating the name and email.
+ * @async
+ */
   async editUserProfile() {
     let name = this.editNameForm.value.name ?? '';
     let email = this.editMailForm.value.email?.toLowerCase() || '';
@@ -82,6 +92,11 @@ export class HeaderBarComponent {
     this.isProfilePictureContainerOpen = true;
   }
 
+  /**
+ * Edits the user name and updates it in the database.
+ * @async
+ * @param {string} name - The new name to be updated.
+ */
   async editUserName(name: string) {
     if (name === '') {
       return;
@@ -97,6 +112,12 @@ export class HeaderBarComponent {
     this.resetForm();
   }
 
+  /**
+ * Edits the user email and updates it in the database.
+ * @async
+ * @param {string} email - The new email to be updated.
+ * @param {string} password - The user's password for verification.
+ */
   async editUserEmail(email: string, password: string) {
     if (email === '') {
       return;
@@ -117,6 +138,12 @@ export class HeaderBarComponent {
     await this.changeUserMail(email, password);
   }
 
+  /**
+ * Changes the user email and updates it in the database.
+ * @async
+ * @param {string} email - The new email to be updated.
+ * @param {string} password - The user's password for verification.
+ */
   async changeUserMail(email: string, password: string) {
     this.disableForm();
     await this.authentication.changeMail(email, password);
@@ -125,6 +152,12 @@ export class HeaderBarComponent {
     this.resetForm();
   }
 
+  /**
+ * Updates the provided value in the database.
+ * @async
+ * @param {string} newValue - The new value to be updated.
+ * @param {string} type - The type of data to be updated ('name' or 'email').
+ */
   async changeFirebase(newValue: string, type: string) {
     const userDocRef = doc(this.firestore, 'users', this.userDataService.currentUser);
     try {
@@ -135,6 +168,9 @@ export class HeaderBarComponent {
     }
   }
 
+  /**
+ * Sets the `active` property based on the userStatus from `userDataService`.
+ */
   colorStatus() {
     this.active = this.userDataService.userStatus === 'Active';
   }
@@ -183,6 +219,10 @@ export class HeaderBarComponent {
     this.isProfilePictureContainerOpen = false;
   }
 
+  /**
+ * Saves the selected profile picture to the database.
+ * @async
+ */
   async saveProfilePicture() {
     if (this.selectedPictureIndex === null) {
       return;
@@ -201,6 +241,10 @@ export class HeaderBarComponent {
     }
   }
 
+  /**
+ * Handles the click event on a picture, allowing the user to select or deselect a profile picture.
+ * @param {number} index - The index of the picture clicked.
+ */
   onPictureClick(index: number) {
     if (this.selectedPictureIndex === null) {
       this.selectedPictureIndex = index;
@@ -216,6 +260,9 @@ export class HeaderBarComponent {
     this.editMailForm.disable();
   }
 
+  /**
+ * Resets the editNameForm and editMailForm to their initial state.
+ */
   resetForm() {
     this.editNameForm.enable();
     this.editNameForm.reset();

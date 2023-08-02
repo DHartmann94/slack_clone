@@ -3,6 +3,8 @@ import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, add
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface ThreadDataInterface {
+  threads: any;
+  id: any;
   messageText: any;
   time?: number;
   emojis?: any;
@@ -67,6 +69,8 @@ export class ThreadDataService {
             emojis: emojis,
             channel: channel,
             mentionedUser: mentionedUser,
+            threads: undefined,
+            id: undefined
           };
           threadData.push(message);
         });
