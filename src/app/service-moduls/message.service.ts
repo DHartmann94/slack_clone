@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
-import { UserDataService } from '../service-moduls/user-data.service';
+import { UserDataService } from './user.service';
 
 export interface MessageDataInterface {
   id?: any;

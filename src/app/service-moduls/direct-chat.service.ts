@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
-import { UserDataInterface } from './user-data.service';
+import { UserDataInterface } from './user.service';
 import { MessageDataInterface } from './message.service';
 
 export interface DirectChatInterface {
@@ -18,7 +18,9 @@ export class DirectChatService {
   private directChatDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
   public directChateData$: Observable<DirectChatInterface[]> = this.directChatDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) { }
+  constructor(
+    public firestore: Firestore
+  ) { }
 
   getDirectChatData(): Observable<DirectChatInterface[]> {
     const directChatCollection = collection(this.firestore, 'directchat');

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { MessageDataInterface } from './message.service';
-import { UserDataInterface } from './user-data.service';
+import { UserDataInterface } from './user.service';
 
 export interface ChatInterface {
   id?: any,

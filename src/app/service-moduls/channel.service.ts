@@ -20,8 +20,7 @@ export class ChannelDataService {
   public channelData$: Observable<ChannelDataInterface[]> = this.channelDataSubject.asObservable();
 
   channelData: ChannelDataInterface[] = [];
-  users: string | undefined;
-
+  
   constructor(
     public firestore: Firestore
   ) { }

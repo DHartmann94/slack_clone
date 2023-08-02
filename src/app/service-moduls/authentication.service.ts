@@ -3,7 +3,7 @@ import { Firestore, collection, doc, setDoc, updateDoc } from '@angular/fire/fir
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, confirmPasswordReset, sendPasswordResetEmail, signOut, onAuthStateChanged, updateEmail, reauthenticateWithCredential, EmailAuthProvider, applyActionCode } from '@angular/fire/auth';
 import { User } from 'src/models/user.class';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserDataService } from '../service-moduls/user-data.service';
+import { UserDataService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
