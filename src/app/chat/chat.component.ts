@@ -10,6 +10,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
+import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -70,7 +71,8 @@ export class ChatComponent implements OnInit, OnChanges {
     private directChatService: DirectChatService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private ChannelDataResolver: ChannelDataResolverService,
+    private channelDataResolver: ChannelDataResolverService,
+    private chatDataService: ChatDataService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
@@ -121,7 +123,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.ChannelDataResolver.resolve().pipe(
+    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
       map((data: ChannelDataInterface | null) => {
        /*  console.log('Received data in ChatComponent:', data); */
         return data;
@@ -286,7 +288,6 @@ export class ChatComponent implements OnInit, OnChanges {
     if (this.messageInput.length > 0) {
       const message: MessageDataInterface = {
         messageText: this.messageInput,
-        sentBy: this.currentUser,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
@@ -315,6 +316,18 @@ export class ChatComponent implements OnInit, OnChanges {
           console.error('Error sending message:', error);
         }
       );
+
+      this.chatDataService.addMessageToChat(message).subscribe(
+        (newChat) => {
+          console.log("Send message to chat service", newChat)
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+
+
+      );
+
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }

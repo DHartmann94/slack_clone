@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="chat-text-area" *ngIf="(receivedChannelData$ | async) as channel">
+  <div class="chat-text-area">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
