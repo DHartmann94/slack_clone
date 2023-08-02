@@ -110,7 +110,7 @@
                 <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
                   Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName || channel.channelName }}</span> hinzufügen
                   <mat-menu #channelMenu="matMenu">
-                    <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannel(channel.id)">{{ channel.channelName }}</button>
+                    <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannelFromList(channel.id)">{{ channel.channelName }}</button>
                   </mat-menu>                 
                 </mat-radio-button>
                 <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">

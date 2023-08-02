@@ -115,6 +115,10 @@ export class ChannelsComponent implements OnInit {
     this.updateChannelName(this.selectedChannel);
   }
 
+  selectChannelFromList(channelGroupId: any) {
+    this.selectedChannel = this.getChannelById(channelGroupId);
+  }
+
   triggerCRUD() {
     this.chatBehavior.triggerCRUD();
   }
@@ -162,13 +166,6 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async getDocRef() {
-    if (this.channelId) {
-      const docRef = doc(this.firestore, 'channels', this.channelId);
-      console.log('DocRef:', docRef);
-    }
-  }
-
   close() {
     this.channelCard = false;
   }
@@ -204,17 +201,18 @@ export class ChannelsComponent implements OnInit {
       }
     }
 
-    if (this.selectedChannel !== null) {
+    if (this.selectedChannel) {
       try {
-        const channelData = await firstValueFrom(this.channelDataService.getChannelData());
-        const matchingChannel = channelData.find(channel => channel.id === this.channelId);
-
-        if (!(matchingChannel && this.selectedUserType === 'addFromGroup')) {
+        const matchingChannelFromList = this.selectedChannel;
+        const users = matchingChannelFromList.users;
+        console.log("User can be added", users);
+        if (!(matchingChannelFromList && this.selectedUserType === 'addFromGroup')) {
           console.log('User not found.');
           return;
         }
-        const userGroup: string[] = [matchingChannel.id];
-        await this.addGroupToChannel(userGroup, matchingChannel.id);
+        const userGroup: string[] = users;
+        console.log(userGroup);
+        await this.addGroupToChannel(userGroup)
       } catch (error) {
         console.error('Error adding user:', error);
       }
@@ -235,13 +233,12 @@ export class ChannelsComponent implements OnInit {
     }
   }
 
-  async addGroupToChannel(userGroup: string[], matchingUser: ChannelDataInterface) {
+  async addGroupToChannel(userGroup: string[]) {
     try {
       const channelDoc = doc(this.firestore, 'channels', this.channelId);
-      const usersToAdd = userGroup.filter((channel: string) => channel !== matchingUser.users);
-      console.log("The users should be added", usersToAdd);
+      const usersToAdd = userGroup;
       await updateDoc(channelDoc, {
-        userGroup: arrayUnion(...usersToAdd)
+        users: arrayUnion(...usersToAdd)
       });
       console.log('Users added successfully.');
     } catch (error) {

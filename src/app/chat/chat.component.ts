@@ -432,8 +432,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   saveChangesToChannelDescription() {
     if (this.channelDescription.valid && this.currentChannelData) {
-      const newchannelDescription: string = this.channelDescription.value.channelDescription;
-      this.currentChannelData.channelDescription = newchannelDescription;
+      const newChannelDescription: string = this.channelDescription.value.channelDescription;
+      this.currentChannelData.channelDescription = newChannelDescription;
       this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
         () => {
           console.log('Channel description updated successfully.');
