@@ -91,18 +91,7 @@ export class MessageDataService {
 
   sendMessage(message: MessageDataInterface): Observable<MessageDataInterface> {
     const messages = collection(this.firestore, 'messages');
-    const messageData = {
-      messageText: message.messageText,
-      time: message.time,
-      thread: message.thread,
-      emojis: message.emojis,
-      sentBy: message.sentBy,
-      sentById: message.sentById,
-      channel: message.channel,
-      mentionedUser: message.mentionedUser,
-    };
-
-    return from(addDoc(messages, messageData)).pipe(
+    return from(addDoc(messages, message)).pipe(
       map((docRef) => {
         const newMessage: MessageDataInterface = {
           ...message,
