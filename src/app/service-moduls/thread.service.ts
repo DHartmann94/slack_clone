@@ -21,7 +21,7 @@ export class ThreadDataService {
   private threadDataSubject: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
   public messageData$: Observable<ThreadDataInterface[]> = this.threadDataSubject.asObservable();
 
-  constructor(public firestore: Firestore) {}
+  constructor(public firestore: Firestore) { }
 
   async openThread(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
@@ -43,7 +43,7 @@ export class ThreadDataService {
       const threadDocRef = await addDoc(threadCollectionRef, newThreadData);
 
       await setDoc(docRef, { thread: threadDocRef.id }, { merge: true });
-      
+
     } else if (messageData && messageData['thread']) {
       console.log('opened existing thread');
     }
@@ -53,8 +53,8 @@ export class ThreadDataService {
     const threadCollection = collection(this.firestore, 'threads');
     const q = query(threadCollection);
 
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+    return new Observable<ThreadDataInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const threadData: ThreadDataInterface[] = [];
 
         querySnapshot.forEach((doc) => {
@@ -71,8 +71,11 @@ export class ThreadDataService {
           threadData.push(message);
         });
 
-        return threadData;
-      })
-    );
+        this.threadDataSubject.next(threadData);
+        observer.next(threadData);
+      });
+
+      return () => unsubscribe();
+    });
   }
 }
