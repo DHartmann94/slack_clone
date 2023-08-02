@@ -17,6 +17,8 @@ import {
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 
 export interface ThreadInterface {
+threads: any;
+id: any;
   messageText: any;
   time?: number;
   emojis?: any;
