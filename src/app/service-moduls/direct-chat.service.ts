@@ -20,7 +20,7 @@ export class DirectChatService {
 
   constructor(public firestore: Firestore) { }
 
-  getDirectChat(): Observable<DirectChatInterface[]> {
+  getDirectChatData(): Observable<DirectChatInterface[]> {
     const directChatCollection = collection(this.firestore, 'directchat');
     const q = query(directChatCollection);
 

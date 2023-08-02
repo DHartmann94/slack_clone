@@ -30,8 +30,8 @@ export class ChannelDataService {
     const channelCollection = collection(this.firestore, 'channels');
     const q = query(channelCollection);
 
-    return from(getDocs(q)).pipe(
-      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+    return new Observable<ChannelDataInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const storedUserData: ChannelDataInterface[] = [];
 
         querySnapshot.forEach(doc => {
@@ -46,10 +46,13 @@ export class ChannelDataService {
           };
           storedUserData.push(channel);
         });
+
         this.channelDataSubject.next(storedUserData);
-        return storedUserData;
+        observer.next(storedUserData);
       })
-    )
+
+      return () => unsubscribe();
+    });
   }
 
   addChannelData(channel: ChannelDataInterface): Observable<string> {
@@ -59,14 +62,14 @@ export class ChannelDataService {
       ...channelDataWithoutId,
       users: channel.users || []
     };
-  
+
     return from(addDoc(channels, channelData)).pipe(
       map((docRef) => {
         return docRef.id;
       })
     );
   }
-  
+
   sendChannelData(channel: ChannelDataInterface): Observable<void> {
     const channels = collection(this.firestore, 'channels');
     const channelData = {
@@ -90,29 +93,6 @@ export class ChannelDataService {
           this.channelDataSubject.next(this.channelData);
         })
       );
-    } 
-  } 
-
-  subscribeToChannel() {
-    const channelCollection = collection(this.firestore, 'channels');
-    const q = query(channelCollection);
-
-    onSnapshot(q, (querySnapshot) => {
-      const storedChannelData: ChannelDataInterface[] = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const { channelName, channelDescription, color, users } = data;
-        const channel: ChannelDataInterface = {
-          id: doc.id,
-          channelName: channelName,
-          channelDescription: channelDescription,
-          color: color,
-          users: users,
-        };
-        storedChannelData.push(channel);
-      });
-      this.channelDataSubject.next(storedChannelData);
-    });
+    }
   }
 }
