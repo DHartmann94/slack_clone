@@ -25,16 +25,19 @@ export class MessageService {
   private messageDataSubject: BehaviorSubject<MessageInterface[]> = new BehaviorSubject<MessageInterface[]>([]);
   public messageData$: Observable<MessageInterface[]> = this.messageDataSubject.asObservable();
 
-  constructor(public firestore: Firestore, private userDataService: UserDataService,) {}
+  constructor(
+    public firestore: Firestore,
+    private userDataService: UserDataService,
+  ) { }
 
   getMessage(): Observable<MessageInterface[]> {
     const messages = collection(this.firestore, 'messages');
     const q = query(messages);
-  
+
     return new Observable<MessageInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: MessageInterface[] = [];
-  
+
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
           const {
@@ -47,12 +50,12 @@ export class MessageService {
             channel,
             mentionedUser,
           } = data;
-  
+
           try {
             const userData = await this.userDataService.usersDataBackend(sentById);
             let userName: string;
             let userPicture: string;
-  
+
             if (userData !== null) {
               userName = userData['name'];
               userPicture = userData['picture'];
@@ -60,7 +63,7 @@ export class MessageService {
               userName = 'Unknown User';
               userPicture = '/assets/profile-pictures/avatar1.png';
             }
-  
+
             const message: MessageInterface = {
               id: doc.id,
               messageText: messageText,
@@ -78,11 +81,11 @@ export class MessageService {
             console.log('ERROR retrieving user data:', error);
           }
         }
-  
+
         this.messageDataSubject.next(storedMessageData);
         observer.next(storedMessageData);
       });
-  
+
       return () => unsubscribe();
     });
   }
@@ -109,42 +112,6 @@ export class MessageService {
         return newMessage;
       })
     );
-  }
-
-  subscribeToMessageUpdates() {
-    const messagesCollection = collection(this.firestore, 'messages');
-    const q = query(messagesCollection);
-
-    onSnapshot(q, (querySnapshot) => {
-      const updatedMessageData: MessageInterface[] = [];
-
-      querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        const {
-          id,
-          messageText,
-          time,
-          thread,
-          emojis,
-          sentBy,
-          channel,
-          mentionedUser,
-        } = data;
-        const message: MessageInterface = {
-          id: id,
-          messageText: messageText,
-          time: time,
-          thread: thread,
-          emojis: emojis,
-          sentBy: sentBy,
-          channel: channel,
-          mentionedUser: mentionedUser,
-        };
-        updatedMessageData.push(message);
-      });
-
-      this.messageDataSubject.next(updatedMessageData);
-    });
   }
 
   deleteMessage(messageId: any): Observable<void> {
