@@ -21,24 +21,25 @@
       </div>
     </div>
 
-    <div class="search-input-channels" *ngIf="!(triggerCRUDHTML)">
-        <h2>New Message</h2>
-        <div class="channel-inputs">
-          <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text" placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
-        </div>
-        <div *ngIf="searchResults.length > 0">
-          <ul *ngIf="toggleUserList">
-            <li *ngFor="let user of searchResults" (click)="inviteUser(user)">
-              <div class="user-list">
-                {{ user.name }} ({{ user.email }})
-              </div>
-            </li>
-          </ul>
-        </div>
+    <div class="search-input-channels" *ngIf="!triggerCRUDHTML">
+      <h2>New Message</h2>
+      <div class="channel-inputs">
+        <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text"
+          placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+      </div>
+      <div *ngIf="searchResults.length > 0">
+        <ul *ngIf="toggleUserList">
+          <li *ngFor="let user of searchResults" (click)="inviteUser(user)">
+            <div class="user-list">
+              {{ user.name }} ({{ user.email }})
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
-  <div class="chat-text-area" *ngIf="triggerCRUDHTML">
+  <div class="chat-text-area" *ngIf="(receivedChannelData$ | async) as channel">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -51,7 +52,7 @@
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
-          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="">
+          <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="#">
         </div>
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
@@ -94,7 +95,8 @@
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id)">{{ emoji }}</div>
             </div>
-            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)" class="reaction-button-container">
+            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
+              class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>
