@@ -36,7 +36,7 @@ export class ChatDataService {
           const directMessage: ChatDataInterface = {
             id: doc.id,
             users: users,
-            messages: messages
+            messages: messages,
           };
           storedChatData.push(directMessage);
         });
@@ -50,13 +50,13 @@ export class ChatDataService {
   }
 
   addMessageToChat(chat: ChatDataInterface) : Observable<ChatDataInterface> {
-    const chatsCOllection  = collection(this.firestore, 'chats');
-    return from(addDoc(chatsCOllection, chat)).pipe(
+    const chatsCollection  = collection(this.firestore, 'chats');
+    return from(addDoc(chatsCollection, chat)).pipe(
       map((docRef) => {
         const newChat: MessageDataInterface = {
           ...chat,
           id: docRef.id,
-          messageText: undefined,
+          messageText: [],
         };
         return newChat;
       })

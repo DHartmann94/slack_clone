@@ -40,16 +40,8 @@ export class MessageDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const {
-            messageText,
-            time,
-            thread,
-            emojis,
-            sentById,
-            channel,
-            mentionedUser,
-          } = data;
-
+          const { messageText,time, thread, emojis, sentById, channel, mentionedUser } = data;
+          
           try {
             const userData = await this.userDataService.usersDataBackend(sentById);
             let userName: string;
