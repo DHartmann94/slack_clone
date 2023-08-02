@@ -71,7 +71,6 @@ export class UserDataService {
         const userData = docSnapshot.data();
         if (this.currentUser === userID) {
           this.currentUserData(userData);
-          /* console.log('User data of current user: ', userData); */
         }
         this.chatUserData(userData);
         //this.colorStatus(); 
