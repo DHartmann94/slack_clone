@@ -115,7 +115,7 @@
     <div class="text-editor">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
 
-      <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+      <textarea placeholder="Message to # {{ channelId }}" [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
