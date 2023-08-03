@@ -114,7 +114,7 @@
   <div class="message-input-field">
     <div class="text-editor">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-
+<!--TODO: hier müsste man statt channelId den tatsächlichen Channel Namen einfügen, davor ich eine extra funktion in chat component schreibe, habt ihr eine andere Idee?^^-->
       <textarea placeholder="Message to # {{ channelId }}" [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
       <div class="text-editor-bottom">

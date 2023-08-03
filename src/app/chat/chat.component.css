@@ -1,37 +1,4 @@
 @charset "UTF-8";
-.threads-card {
-  /*min-width: 200px;*/
-  width: 485px;
-  height: calc(100vh - 130px);
-  border-radius: 15px;
-  padding: 32px 30px;
-  margin: 15px 10px 0 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-.threads-card .threads-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  column-gap: 65px;
-}
-.threads-card .threads-header .thread-info {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  column-gap: 10px;
-}
-.threads-card .threads-header .thread-info h2 {
-  margin: 0;
-}
-@media (max-width: 1600px) {
-  .threads-card {
-    display: none;
-  }
-}
-
 .chat-card {
   position: relative;
   min-width: 500px;
@@ -39,7 +6,7 @@
   border-radius: 15px;
   padding: 25px 35px 111px;
   margin: 15px 10px 10px 10px;
-  /*    border-radius: 30px;*/
+  /*  border-radius: 30px;*/
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,8 +19,6 @@
   padding-top: 20px;
   background-color: rgba(243, 243, 243, 0.462);
   border-radius: 5px;
-  top: 82px;
-  position: relative;
 }
 
 .reaction-emojis {
@@ -229,15 +194,6 @@
   color: var(--purple-2, #797ef3);
 }
 
-.chat-name-blue {
-  color: var(--purple-2, #797EF3);
-  font-family: Nunito;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
 .app-emojis {
   position: absolute;
   bottom: 10px;
@@ -246,7 +202,7 @@
 .chat-left {
   display: flex;
   flex-direction: row;
-  padding: 0 40px 0 40px;
+  padding: 0 145px 0 45px;
   transition: background-color 0.3s;
 }
 .chat-left:hover {
@@ -261,7 +217,7 @@
   display: flex;
   justify-content: flex-start;
   margin: 40px 0;
-  padding: 0 40px 0 40px;
+  padding: 0 45px 0 145px;
   transition: background-color 0.3s;
   flex-direction: row-reverse;
 }
@@ -273,29 +229,6 @@
   width: 100%;
   border: 0.5px solid rgba(173, 176, 217, 0.4784313725);
   height: 0px;
-}
-
-.parting-line-padding {
-  margin-left: 32px;
-  margin-right: 32px;
-}
-
-.parting-line-firstMessage {
-  width: 100%;
-  border: 0.5px solid rgba(173, 176, 217, 0.4784313725);
-  height: 0;
-}
-.parting-line-firstMessage span {
-  color: var(--ligth-purple-lines, #ADB0D9);
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  cursor: pointer;
-  position: relative;
-  top: -13px;
-  z-index: 10;
-  background: #fff;
 }
 
 .time-stamp {
@@ -402,6 +335,37 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+}
+
+.responses-left {
+  color: var(--purple-3, #535af1);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  margin-right: 20px;
+  position: relative;
+  transition: font-weight 0.3s, text-shadow 0.3s;
+}
+.responses-left:hover {
+  font-weight: 500;
+  text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.responses-right {
+  color: var(--purple-3, #535af1);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  position: relative;
+  transition: font-weight 0.3s, text-shadow 0.3s;
+}
+.responses-right:hover {
+  font-weight: 500;
+  text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
 }
 
 .time-partLine {
@@ -884,4 +848,4 @@ section {
   margin-right: 10px;
 }
 
-/*# sourceMappingURL=threads.component.css.map */
+/*# sourceMappingURL=chat.component.css.map */

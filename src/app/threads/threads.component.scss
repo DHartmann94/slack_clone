@@ -1,5 +1,6 @@
 .threads-card {
-    min-width: 200px;
+    /*min-width: 200px;*/
+    width: 485px;
     height: calc(100vh - 130px);
     border-radius: 15px;
     padding: 32px 30px;
@@ -39,7 +40,7 @@
     border-radius: 15px;
     padding: 25px 35px 111px;
     margin: 15px 10px 10px 10px;
-    border-radius: 30px;
+/*    border-radius: 30px;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -52,6 +53,8 @@
     padding-top: 20px;
     background-color: rgba(243, 243, 243, 0.462);
     border-radius: 5px;
+    top: 82px;
+    position: relative;
 }
 
 .reaction-emojis {
@@ -220,7 +223,7 @@
 }
 
 .chat-name {
-    font-size: 24px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
@@ -233,6 +236,15 @@
     }
 }
 
+.chat-name-blue {
+    color: var(--purple-2, #797EF3);
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
 .app-emojis {
     position: absolute;
     bottom: 10px;
@@ -241,7 +253,7 @@
 .chat-left {
     display: flex;
     flex-direction: row;
-    padding: 0 145px 0 45px;
+    padding: 0 40px 0 40px;
     transition: background-color 0.3s;
     &:hover {
         cursor: pointer;
@@ -256,7 +268,7 @@
     display: flex;
     justify-content: flex-start;
     margin: 40px 0;
-    padding: 0 45px 0 145px;
+    padding: 0 40px 0 40px;
     transition: background-color 0.3s;
     flex-direction: row-reverse;
     &:hover {
@@ -268,6 +280,30 @@
     width: 100%;
     border: 0.5px solid #adb0d97a;
     height: 0px;
+}
+
+.parting-line-padding {
+    margin-left: 32px;
+    margin-right: 32px;
+}
+
+.parting-line-firstMessage {
+    width: 100%;
+    border: 0.5px solid #adb0d97a;
+    height: 0;
+
+    span {
+        color: var(--ligth-purple-lines, #ADB0D9);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        cursor: pointer;
+        position: relative;
+        top: -13px;
+        z-index: 10;
+        background: #fff;
+    }
 }
 
 .time-stamp {

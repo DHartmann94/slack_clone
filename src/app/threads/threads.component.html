@@ -1,48 +1,12 @@
 <mat-card *ngIf="closeFiller" class="threads-card">
-    <mat-card-content class="threads-header">
-        <div class="thread-info">
-            <h2>Thread</h2>
-            <a href="#"># Entwicklerteam</a>
-        </div>
-        <div class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close()"></div>
-    </mat-card-content>
-
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="triggerCRUDHTML">
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
-        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
-        <span class="chat-name">{{ channel.channelName }}</span>
-        <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
+        <span class="chat-name">Thread</span>
+        <span class="chat-name-blue"># {{ channel.channelName }}</span>
       </div>
       <div class="right-corner">
-        <div class="participant-container">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-        </div>
-        <div class="participant-amount">
-          3
-        </div>
-        <div class="add-participant-background">
-          <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
-        </div>
-      </div>
-    </div>
-
-    <div class="search-input-channels" *ngIf="!triggerCRUDHTML">
-      <h2>New Message</h2>
-      <div class="channel-inputs">
-        <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text"
-               placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
-      </div>
-      <div *ngIf="searchResults.length > 0">
-        <ul *ngIf="toggleUserList">
-          <li *ngFor="let user of searchResults" (click)="inviteUser(user)">
-            <div class="user-list">
-              {{ user.name }} ({{ user.email }})
-            </div>
-          </li>
-        </ul>
+        <div class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close()"></div>
       </div>
     </div>
   </div>
@@ -55,7 +19,47 @@
         <div class="flex-center time-partLine">
           <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
         </div>
+
+        <!-- First message field -->
+          <div class="chat-message"
+               [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+              <div class="profile-picture-container">
+                  <img class="profile-pictures-chat" src="./assets/img/avatar.png" alt="#">
+              </div>
+          <div class="message-content"
+               [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+            <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
+              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+            </div>
+            <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
+              <div>
+                <mat-icon class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              </div>
+              <div class="chat-right-first-row-right">
+                <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+                <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              </div>
+            </div>
+            <div>
+<!--            <span class="chat-message"
+                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
+              message.messageText }}</span>    -->
+                <span class="chat-message"
+                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">First Message - Test</span>
+            </div>
+        </div>
+        </div>
+
+        <!--TODO: Adding responses counter-->
+        <div class="parting-line-padding"></div>
+        <div class="parting-line-firstMessage">
+          <span>2 Responses</span>
+        </div>
+
       </ng-container>
+
+
 
       <div class="chat-message"
            [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
