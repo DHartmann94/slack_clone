@@ -5,6 +5,7 @@ import { UserDataInterface } from './user.service';
 import { MessageDataInterface } from './message.service';
 import { ChatDataInterface } from './chat.service';
 
+
 export interface ThreadDataInterface {
   id: any;
   users?: UserDataInterface[];
