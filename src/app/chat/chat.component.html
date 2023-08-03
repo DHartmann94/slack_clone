@@ -78,7 +78,7 @@
 
             <div id="reactionlist{{index}}" class="list-of-reactions">
               <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
-                <span>{{ emoji['emoji'] }} :</span>
+                <span>{{ emoji['emoji'][0] }} :</span>
                 <span>&nbsp;{{ emoji['reaction-from'] }}</span>
               </div>
             </div>

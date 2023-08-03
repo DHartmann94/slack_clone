@@ -88,9 +88,11 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
 
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
+
 
   ngOnInit(): void {
     this.channelName = this.fbChannelName.group({
@@ -109,9 +111,11 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getThreadData();
   }
 
+
   ngOnDestroy() {
     this.crudTriggeredSubscription.unsubscribe();
   }
+
 
   async getUserData() {
     this.userDataService.getUserData().subscribe(
@@ -200,8 +204,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   renderChatByChannelId(channel: string) {
     if (channel && this.receivedChannelData$) {
-        console.log(channel);
-        this.chatDataService.getChatData().subscribe(
+      console.log(channel);
+      this.chatDataService.getChatData().subscribe(
         (chatData: ChatDataInterface[]) => {
           this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
           console.log("The filterd channel id", this.chatData);
@@ -372,17 +376,39 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
+
   reactWithEmoji(emoji: string, index: number, messageId: string) {
     let emojiArray = this.messageData[index].emojis;
     if (this.existReaction(index)) {
       let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+      emojiArray[indexWithCurrentUser] = { 'emoji': [emoji], 'reaction-from': this.currentUser };
+
+      
+
+
+      // if (emojiArray['emoji'].includes(emoji)) {
+      //   console.log('Jetzt eingreifen');
+      // }
+      
+      // let indexOfTypedEmoji = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['emoji'][0] === emoji);
+      // emojiArray[indexOfTypedEmoji]['emoji'].push(emoji);
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.currentUser] });
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.currentUser] });
     }
+    
+    console.log('emojiArray', emojiArray);
+
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+  }
+
+
+  existEmoji(index: number, typedEmoji: string) {
+    return this.messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
+      return emoji['emoji'] === typedEmoji;
+    });
   }
 
 
@@ -571,7 +597,7 @@ export class ChatComponent implements OnInit, OnChanges {
   openThread(threadId: string) {
     // Eine globale variable mit einer ID befüllen. (Um zu verhindern das eine neue Thread Id beim senden der message entsteht!)
     // Zweites Textfeld holt sich die globale Variable.
-    
+
     /*this.threadDataService.openThread(messageId);*/
   }
 }
