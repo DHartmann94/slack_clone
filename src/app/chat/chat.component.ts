@@ -70,6 +70,7 @@ export class ChatComponent implements OnInit, OnChanges {
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
 
+
   constructor(
     private messageDataService: MessageDataService,
     private directChatService: DirectChatService,

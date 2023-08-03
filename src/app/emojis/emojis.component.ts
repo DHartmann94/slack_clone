@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ChatComponent } from '../chat/chat.component';
+import {ThreadsComponent} from "../threads/threads.component";
+
 
 @Component({
   selector: 'app-emojis',
@@ -25,7 +27,7 @@ export class EmojisComponent implements OnInit{
 
   url = 'https://emoji-api.com/emojis?access_key=60ede231f07183acd1dbb4bdd7dde0797f62e95e'
 
-  
+
   /**
    * Lifecycle hook called after Angular initializes the component.
    */
