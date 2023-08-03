@@ -39,6 +39,8 @@ import { PasswordConfirmComponent } from './password-confirm/password-confirm.co
 import { AuthActionComponent } from './auth-action/auth-action.component';
 import { EmailVerificationConfirmComponent } from './email-verification-confirm/email-verification-confirm.component';
 import { EmojisComponent } from './emojis/emojis.component';
+import { ImprintComponent } from './imprint/imprint.component';
+import { LegalComponent } from './legal/legal.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +58,8 @@ import { EmojisComponent } from './emojis/emojis.component';
     AuthActionComponent,
     EmailVerificationConfirmComponent,
     EmojisComponent,
+    ImprintComponent,
+    LegalComponent,
   ],
   imports: [
     BrowserModule,

@@ -54,6 +54,8 @@
                         </button>
                         <a (click)="signInGuest('guest@guest.com','Guest123!')" class="button-guest-login">Guest-Login</a>
                     </div>
+
+                   
     
                     <div *ngIf="isSignIn" class="loading-parent">
                         <mat-spinner></mat-spinner>
@@ -65,5 +67,10 @@
         <div class="mobile-header-link-container">
             <p>New to DABubble?</p>
             <a routerLink="/sign-up">Create account</a>
+        </div>
+
+        <div class="legal-container">
+            <a routerLink="/imprint">Imprint | </a> 
+            <a routerLink="/legal">Legal</a>
         </div>
 </section>
