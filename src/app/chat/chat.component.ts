@@ -343,6 +343,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
+            this.chatDataService.addMessageToChat(newMessage).subscribe();
             const index = this.messageData.findIndex((msg) => msg === message);
             if (index !== -1) {
               this.messageData[index].id = newMessage.id;
@@ -353,7 +354,6 @@ export class ChatComponent implements OnInit, OnChanges {
           console.error('Error sending message:', error);
         }
       );
-      this.chatDataService.addMessageToChat(message).subscribe();
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
