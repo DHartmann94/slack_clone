@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { MessageDataInterface } from './message.service';
 import { UserDataInterface } from './user.service';
@@ -13,7 +13,7 @@ export interface ChatDataInterface {
 @Injectable({
   providedIn: 'root'
 })
-export class ChatService {
+export class ChatDataService {
 
   private chatDataSubject: BehaviorSubject<ChatDataInterface[]> = new BehaviorSubject<ChatDataInterface[]>([]);
   public chatData$: Observable<ChatDataInterface[]> = this.chatDataSubject.asObservable();
@@ -36,7 +36,7 @@ export class ChatService {
           const directMessage: ChatDataInterface = {
             id: doc.id,
             users: users,
-            messages: messages
+            messages: messages,
           };
           storedChatData.push(directMessage);
         });
@@ -47,5 +47,19 @@ export class ChatService {
 
       return () => unsubscribe();
     });
+  }
+
+  addMessageToChat(chat: ChatDataInterface) : Observable<ChatDataInterface> {
+    const chatsCollection  = collection(this.firestore, 'chats');
+    return from(addDoc(chatsCollection, chat)).pipe(
+      map((docRef) => {
+        const newChat: MessageDataInterface = {
+          ...chat,
+          id: docRef.id,
+          messageText: [],
+        };
+        return newChat;
+      })
+    );
   }
 }

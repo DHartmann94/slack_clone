@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="chat-text-area" *ngIf="(receivedChannelData$ | async) as channel">
+  <div class="chat-text-area" *ngIf="chatData">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -52,7 +52,7 @@
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
-          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="">
+          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
@@ -78,7 +78,7 @@
 
             <div id="reactionlist{{index}}" class="list-of-reactions">
               <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
-                <span>{{ emoji['emoji'] }} :</span>
+                <span>{{ emoji['emoji'][0] }} :</span>
                 <span>&nbsp;{{ emoji['reaction-from'] }}</span>
               </div>
             </div>
@@ -100,7 +100,7 @@
               <div class="reaction-button"></div>
             </div>
           </div>
-          <span (click)="openThread(message.id)" class="responses"
+          <span (click)="openThread(message.thread)" class="responses"
             [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">2
             Responses</span>
           <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
@@ -112,10 +112,10 @@
 
   <!-- Input field -->
   <div class="message-input-field">
-    <div class="text-editor">
+    <div class="text-editor"  *ngIf="(receivedChannelData$ | async) as channel" >
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-
-      <textarea placeholder="Message to # ..." [(ngModel)]="messageInput" name="" rows="4">
+<!--TODO: hier müsste man statt channelId den tatsächlichen Channel Namen einfügen, davor ich eine extra funktion in chat component schreibe, habt ihr eine andere Idee?^^-->
+      <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
@@ -241,19 +241,3 @@
     </div>
   </div>
 </mat-card>
-
-<!-- Mention user -->
-<div>
-  <mat-form-field>
-    <mat-label>Mention user</mat-label>
-    <mat-select [formControl]="mentionUser" multiple>
-      <mat-select-trigger>
-        {{mentionUser.value?.[0] || ''}}
-        <span *ngIf="(mentionUser.value?.length || 0) > 1" class="example-additional-selection">
-          (+{{(mentionUser.value?.length || 0) - 1}} {{mentionUser.value?.length === 2 ? 'other' : 'others'}})
-        </span>
-      </mat-select-trigger>
-      <mat-option *ngFor="let topping of userList" [value]="topping">{{topping}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</div>

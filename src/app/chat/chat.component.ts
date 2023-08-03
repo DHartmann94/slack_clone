@@ -10,6 +10,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
+import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -32,6 +33,7 @@ export class ChatComponent implements OnInit, OnChanges {
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
   directChatData: DirectChatInterface[] = [];
+  chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
   /// new multiple selection option for mention users
@@ -40,6 +42,9 @@ export class ChatComponent implements OnInit, OnChanges {
 
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
+
+  channelId: string = "";
+  updateChatById: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -65,12 +70,14 @@ export class ChatComponent implements OnInit, OnChanges {
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
 
+
   constructor(
     private messageDataService: MessageDataService,
     private directChatService: DirectChatService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private ChannelDataResolver: ChannelDataResolverService,
+    private channelDataResolver: ChannelDataResolverService,
+    private chatDataService: ChatDataService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
@@ -82,9 +89,11 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
 
+
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
+
 
   ngOnInit(): void {
     this.channelName = this.fbChannelName.group({
@@ -103,9 +112,11 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getThreadData();
   }
 
+
   ngOnDestroy() {
     this.crudTriggeredSubscription.unsubscribe();
   }
+
 
   async getUserData() {
     this.userDataService.getUserData().subscribe(
@@ -121,9 +132,12 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.ChannelDataResolver.resolve().pipe(
+    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
       map((data: ChannelDataInterface | null) => {
-       /*  console.log('Received data in ChatComponent:', data); */
+        if (data && data.id) {
+          this.processChannelData(data.id);
+        }
+        console.log("Data from channel", data);
         return data;
       })
     );
@@ -181,6 +195,30 @@ export class ChatComponent implements OnInit, OnChanges {
 
   getMessageId(messageId: any) {
     return this.messageData.find(message => message.id === messageId) || null;
+  }
+
+  processChannelData(channelId: string) {
+    this.channelId = channelId;
+    this.updateChatById = channelId;
+    this.renderChatByChannelId(this.updateChatById);
+  }
+
+  renderChatByChannelId(channel: string) {
+    if (channel && this.receivedChannelData$) {
+      console.log(channel);
+      this.chatDataService.getChatData().subscribe(
+        (chatData: ChatDataInterface[]) => {
+          this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
+          console.log("The filterd channel id", this.chatData);
+          console.log("Get chat data", chatData);
+        },
+        (error) => {
+          console.error('Error direct chat data:', error);
+        }
+      );
+    } else {
+      this.chatData = [];
+    }
   }
 
   searchUsers(): void {
@@ -284,14 +322,14 @@ export class ChatComponent implements OnInit, OnChanges {
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
+      const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
         messageText: this.messageInput,
-        sentBy: this.currentUser,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
-        thread: null,
-        channel: 'your_channel_value_here',
+        thread: threadId,
+        channel: this.channelId,
         mentionedUser: 'user_id_here',
       };
 
@@ -305,6 +343,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
+            this.chatDataService.addMessageToChat(newMessage).subscribe();
             const index = this.messageData.findIndex((msg) => msg === message);
             if (index !== -1) {
               this.messageData[index].id = newMessage.id;
@@ -338,6 +377,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
+
   reactWithEmoji(emoji: string, index: number, messageId: string) {
     let emojiArray = this.messageData[index].emojis;
     if (this.existReaction(index)) {
@@ -349,6 +389,13 @@ export class ChatComponent implements OnInit, OnChanges {
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+  }
+
+
+  existEmoji(index: number, typedEmoji: string) {
+    return this.messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
+      return emoji['emoji'] === typedEmoji;
+    });
   }
 
 
@@ -534,7 +581,10 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  openThread(messageId: string) {
-    this.threadDataService.openThread(messageId);
+  openThread(threadId: string) {
+    // Eine globale variable mit einer ID befüllen. (Um zu verhindern das eine neue Thread Id beim senden der message entsteht!)
+    // Zweites Textfeld holt sich die globale Variable.
+
+    /*this.threadDataService.openThread(messageId);*/
   }
 }

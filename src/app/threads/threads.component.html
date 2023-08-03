@@ -1,9 +1,252 @@
 <mat-card *ngIf="closeFiller" class="threads-card">
-    <mat-card-content class="threads-header">
-        <div class="thread-info">
-            <h2>Thread</h2>
-            <a href="#"># Entwicklerteam</a>
-        </div>
+  <div class="shadow-box">
+    <div class="chat-first-row" *ngIf="triggerCRUDHTML">
+      <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
+        <span class="chat-name">Thread</span>
+        <span class="chat-name-blue"># {{ channel.channelName }}</span>
+      </div>
+      <div class="right-corner">
         <div class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close()"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-text-area" *ngIf="chatData">
+    <ng-container *ngFor="let message of messageData; let index = index">
+      <!-- Time stamp parting line -->
+      <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
+        <div class="parting-line"></div>
+        <div class="flex-center time-partLine">
+          <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
+        </div>
+
+        <!-- First message field -->
+          <div class="chat-message"
+               [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+              <div class="profile-picture-container">
+                  <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
+              </div>
+          <div class="message-content"
+               [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+            <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
+              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+            </div>
+            <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
+              <div>
+                <mat-icon class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              </div>
+              <div class="chat-right-first-row-right">
+                <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+                <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              </div>
+            </div>
+            <div>
+<!--            <span class="chat-message"
+                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
+              message.messageText }}</span>    -->
+                <span class="chat-message"
+                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">First Message - Test</span>
+            </div>
+        </div>
+        </div>
+
+        <!--TODO: Adding responses counter-->
+        <div class="parting-line-padding"></div>
+        <div class="parting-line-firstMessage">
+          <span>2 Responses</span>
+        </div>
+
+      </ng-container>
+
+
+
+      <div class="chat-message"
+           [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+        <div class="profile-picture-container">
+          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
+        </div>
+        <div class="message-content"
+             [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+          <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
+            <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+            <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+          </div>
+          <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
+            <div>
+              <mat-icon class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+            </div>
+            <div class="chat-right-first-row-right">
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+            </div>
+          </div>
+          <div>
+            <span class="chat-message"
+                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
+              message.messageText }}</span>
+          </div>
+          <div class="like-area">
+
+            <div id="reactionlist{{index}}" class="list-of-reactions">
+              <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
+                <span>{{ emoji['emoji'] }} :</span>
+                <span>&nbsp;{{ emoji['reaction-from'] }}</span>
+              </div>
+            </div>
+
+            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+              <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
+              <span class="reaction-counter">{{ message.emojis.length }}</span>
+            </div>
+            <div class="reaction-icon-container">
+              <img src="./assets/img/icons/tick_green.svg" alt="">
+              <span class="reaction-counter">1</span>
+            </div>
+            <div class="reaction-emojis" id="reaction{{index}}">
+              <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
+                   (click)="reactWithEmoji(emoji, index, message.id)">{{ emoji }}</div>
+            </div>
+            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
+                 class="reaction-button-container">
+              <div class="reaction-button"></div>
+            </div>
+          </div>
+          <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
+            formatTimeStamp(message.time) }}</span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <!-- Input field -->
+  <div class="message-input-field">
+    <div class="text-editor">
+      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+
+      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4">
+        </textarea>
+      <div class="text-editor-bottom">
+        <div class="text-editor-left-btns">
+          <div class="attach"></div>
+          <div class="vertical-line-textEditor"></div>
+          <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
+          <div class="mail-container"></div>
+        </div>
+        <div class="send-message-btn" (click)="sendMessage()"></div>
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+<!-- Profile Content -->
+<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+
+<section class="user-profile-card-section" *ngIf="isProfileCardOpen">
+  <mat-card class="user-profile-card">
+    <mat-card-header class="user-header">
+      <mat-card-title>Profile</mat-card-title>
+      <mat-icon (click)="closeUserProfile()">close</mat-icon>
+    </mat-card-header>
+    <div class="user-img">
+      <img src="{{ this.userDataService.chatUserPicture }}">
+    </div>
+    <mat-card-content>
+      <div class="user-contact-info">
+        <p>{{ this.userDataService.chatUserName }}</p>
+      </div>
+      <div class="user-status" [ngClass]="{'user-active': this.userDataService.chatUserStatus === 'Active'}">
+        <p>
+          <svg *ngIf="this.userDataService.chatUserStatus === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
+               height="8" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="4" fill="#92C83E" />
+          </svg>
+          <svg *ngIf="this.userDataService.chatUserStatus === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
+               height="8" viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="4" fill="#808080" />
+          </svg>
+          {{ this.userDataService.chatUserStatus }}
+        </p>
+      </div>
+      <div class="user-email">
+        <mat-icon>mail_outline</mat-icon>
+        <div class="user-email-link">
+          <p>E-Mail-Adresse</p>
+          <a>{{ this.userDataService.chatUserEmail }}</a>
+        </div>
+      </div>
     </mat-card-content>
+    <mat-card-actions class="user-message-button">
+      <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
+    </mat-card-actions>
+  </mat-card>
+</section>
+
+<!-- Edit Channel -->
+<mat-card class="overlay" *ngIf="openEditChannel">
+  <div class="channel-edit-card">
+    <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
+      <div class="channel-header">
+        <h1># {{ channel.channelName }}</h1>
+        <img src="./assets/img/icons/close.png" alt="#" (click)="closeEditChannel()">
+      </div>
+    </div>
+
+    <div *ngIf="!(editChannelName)">
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <div class="channel-edit">
+          <h2>Channel-Name</h2>
+          <span (click)="updateChannelName()">Edit</span>
+        </div>
+        <h2># {{ channel.channelName }}</h2>
+      </div>
+    </div>
+
+    <div *ngIf="editChannelName">
+      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2>Channel-Name</h2>
+        <span (click)="saveChangesToChannelName()">Save</span>
+      </div>
+      <form [formGroup]="channelName">
+        <div class="channel-inputs">
+          <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="!(editChannelDescription)">
+      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <div class="channel-edit">
+          <h2># {{ channel.channelName }}</h2>
+          <span (click)="updateChannelDiscription()">Edit</span>
+        </div>
+        <div class="channel-text">
+          <p>
+            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents
+            and make decisions.</p>
+        </div>
+        <div class="under-line"></div>
+        <div class="channel-creator">
+          <h2>Created by</h2>
+          <span>Frederik Beck</span>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="editChannelDescription">
+      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
+        <h2>Bearbeiten</h2>
+        <span (click)="saveChangesToChannelDescription()">Save</span>
+      </div>
+      <form [formGroup]="channelDescription">
+        <div class="channel-inputs">
+          <input class="channel-name" type="text" placeholder="Enter your text..." formControlName="channelDescription">
+        </div>
+      </form>
+    </div>
+
+    <div class="btn-area">
+      <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
+    </div>
+  </div>
 </mat-card>

@@ -9,7 +9,7 @@ export interface MessageDataInterface {
   time?: number;
   emojis?: any;
   thread?: any;
-  channel?: string;
+  channel?: any;
   sentBy?: string;
   picture?: string;
   sentById?: string;
@@ -40,15 +40,7 @@ export class MessageDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const {
-            messageText,
-            time,
-            thread,
-            emojis,
-            sentById,
-            channel,
-            mentionedUser,
-          } = data;
+          const { messageText,time, thread, emojis, sentById, channel, mentionedUser } = data;
 
           try {
             const userData = await this.userDataService.usersDataBackend(sentById);
@@ -91,18 +83,7 @@ export class MessageDataService {
 
   sendMessage(message: MessageDataInterface): Observable<MessageDataInterface> {
     const messages = collection(this.firestore, 'messages');
-    const messageData = {
-      messageText: message.messageText,
-      time: message.time,
-      thread: message.thread,
-      emojis: message.emojis,
-      sentBy: message.sentBy,
-      sentById: message.sentById,
-      channel: message.channel,
-      mentionedUser: message.mentionedUser,
-    };
-
-    return from(addDoc(messages, messageData)).pipe(
+    return from(addDoc(messages, message)).pipe(
       map((docRef) => {
         const newMessage: MessageDataInterface = {
           ...message,

@@ -22,7 +22,7 @@ export class ThreadDataService {
 
   constructor(public firestore: Firestore) { }
 
-  async openThread(messageId: string) {
+  /*async openThread(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
     const docSnap = await getDoc(docRef);
     const messageData = docSnap.data();
@@ -33,7 +33,6 @@ export class ThreadDataService {
         messageText: messageData['messageText'],
         time: messageData['time'],
         emojis: messageData['emojis'],
-        sentBy: messageData['sentBy'],
         sentById: messageData['sentById'],
         mentionedUser: messageData['mentionedUser'],
       };
@@ -46,6 +45,18 @@ export class ThreadDataService {
     } else if (messageData && messageData['thread']) {
       console.log('opened existing thread');
     }
+  }*/
+
+  generateThreadId() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+
+    for (let i = 0; i < 20; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      id += characters.charAt(randomIndex);
+    }
+
+    return id;
   }
 
   getThreadData(): Observable<ThreadDataInterface[]> {
