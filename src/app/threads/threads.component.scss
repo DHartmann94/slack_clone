@@ -51,7 +51,6 @@
     overflow-y: scroll;
     overflow-x: hidden;
     padding-top: 20px;
-    background-color: rgba(243, 243, 243, 0.462);
     border-radius: 5px;
     top: 82px;
     position: relative;
@@ -279,12 +278,7 @@
 .parting-line {
     width: 100%;
     border: 0.5px solid #adb0d97a;
-    height: 0px;
-}
-
-.parting-line-padding {
-    margin-left: 32px;
-    margin-right: 32px;
+    height: 0;
 }
 
 .parting-line-firstMessage {
@@ -303,6 +297,7 @@
         top: -13px;
         z-index: 10;
         background: #fff;
+        padding-right: 20px;
     }
 }
 
