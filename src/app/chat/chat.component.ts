@@ -382,24 +382,10 @@ export class ChatComponent implements OnInit, OnChanges {
     let emojiArray = this.messageData[index].emojis;
     if (this.existReaction(index)) {
       let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': [emoji], 'reaction-from': this.currentUser };
-
-      
-
-
-      // if (emojiArray['emoji'].includes(emoji)) {
-      //   console.log('Jetzt eingreifen');
-      // }
-      
-      // let indexOfTypedEmoji = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['emoji'][0] === emoji);
-      // emojiArray[indexOfTypedEmoji]['emoji'].push(emoji);
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.currentUser] });
+      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.currentUser] });
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
     }
-    
-    console.log('emojiArray', emojiArray);
-
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
