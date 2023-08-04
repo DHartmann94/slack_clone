@@ -5,7 +5,6 @@
   border-radius: 15px;
   padding: 25px 35px 111px;
   margin: 15px 10px 10px 10px;
-/*  border-radius: 30px;*/
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -63,8 +62,8 @@
   width: 100%;
   left: 0;
   top: 0;
-  border-top-left-radius: 30px !important;
-  border-top-right-radius: 30px !important;
+  border-top-left-radius: 15px !important;
+  border-top-right-radius: 15px !important;
   z-index: 1;
 }
 
