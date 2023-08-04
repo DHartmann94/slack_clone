@@ -45,3 +45,20 @@
         }
     }
 }
+
+.legal-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin-top: -27px;
+    gap: 4px;
+
+    a {
+        color: #686868;
+    }
+
+    :hover {
+        color: var(--c-purple) !important;
+    }
+}

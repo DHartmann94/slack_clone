@@ -7,12 +7,20 @@ section {
     background-color: var(--bg-color);
     overflow-x: hidden;
 
+    a {
+        color: var(--c-purple);
+    }
+
 
     h1,
     h2 {
         font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
         margin: 25px;
         font-size: 28px;
+        font-weight: bold;
+    }
+
+    h3 {
         font-weight: bold;
     }
 
@@ -23,7 +31,6 @@ section {
     }
 }
 
-
 /*------ Header ------*/
 .header-parent {
     z-index: 0;
@@ -35,7 +42,8 @@ section {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    background-color: var(--bg-color);
+    z-index: 999;
 }
 
 .header-logo-container {
@@ -63,54 +71,12 @@ main {
         }
     }
 }
-
-
-/*------ Header ------*/
-.header-parent {
-    z-index: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-}
-
-.header-logo-container {
-    display: flex;
-    align-items: center;
-
-    img {
-        width: 55px;
-        object-fit: scale-down;
-    }
-}
-
-
-main {
-    position: relative;
-
-    .content {
-        position: absolute;
-        top: 100px;
-        left: 87px;
-        padding-right: 70px;
-
-
-        h1 {
-            margin-left: 0;
-        }
-    }
-
-}
-
 
 .button-container {
     position: absolute;
     left: 250px;
+    z-index: 9;
+
 
     .go-back-button {
         display: flex;

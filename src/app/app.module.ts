@@ -42,6 +42,7 @@ import { EmojisComponent } from './emojis/emojis.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { LegalComponent } from './legal/legal.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
