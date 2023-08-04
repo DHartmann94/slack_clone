@@ -46,7 +46,6 @@ export class ChatComponent implements OnInit, OnChanges {
   currentChannelData: ChannelDataInterface | null = null;
 
   channelId: string = "";
-  updateChatById: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -211,8 +210,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   processChannelData(channelId: string) {
     this.channelId = channelId;
-    this.updateChatById = channelId;
-    this.renderChatByChannelId(this.updateChatById);
+    this.renderChatByChannelId(this.channelId);
   }
 
   renderChatByChannelId(channel: string) {
