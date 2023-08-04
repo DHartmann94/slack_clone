@@ -97,13 +97,14 @@ export class ChatComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
+    this.userDataService.userName = this.currentUser;
     this.channelName = this.fbChannelName.group({
       channelName: ['', [Validators.required]],
     });
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-/*     this.getMessageData(); */
+    /*     this.getMessageData(); */
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
@@ -142,22 +143,22 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-/*   async getMessageData() {
-    this.messageDataService.getMessageData().subscribe(
-      (messageData) => {
-        const filteredData = messageData.filter(
-          (message) => message.time !== undefined && message.time !== null
-        );
-        this.messageData = filteredData.sort((a, b) =>
-          a.time! > b.time! ? 1 : -1
-        );
-        console.log('Subscribed data messages:', messageData);
-      },
-      (error) => {
-        console.error('Error retrieving messages data:', error);
-      }
-    );
-  } */
+  /*   async getMessageData() {
+      this.messageDataService.getMessageData().subscribe(
+        (messageData) => {
+          const filteredData = messageData.filter(
+            (message) => message.time !== undefined && message.time !== null
+          );
+          this.messageData = filteredData.sort((a, b) =>
+            a.time! > b.time! ? 1 : -1
+          );
+          console.log('Subscribed data messages:', messageData);
+        },
+        (error) => {
+          console.error('Error retrieving messages data:', error);
+        }
+      );
+    } */
 
   async getChatData() {
     this.chatDataService.getChatData().subscribe(
@@ -394,14 +395,57 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
 
+  // reactWithEmoji(emoji: string, index: number, messageId: string) {
+  //   let emojiArray = this.messageData[index].emojis;
+  //   if (this.existReaction(index)) {
+  //     let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
+  //     emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+  //   } else {
+  //     emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+  //   }
+  //   this.messageDataService.updateMessage(messageId, emojiArray);
+  //   this.emojisClickedBefore = undefined;
+  //   this.reactionListOpen = false;
+  // }
+
   reactWithEmoji(emoji: string, index: number, messageId: string) {
+
     let emojiArray = this.messageData[index].emojis;
-    if (this.existReaction(index)) {
-      let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+
+    
+
+    //Wenn der CU bereits reagiert hat... funktioniert
+    emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
+      if (emoj['reaction-from'].includes(this.userDataService.userName)) {
+        const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
+        emoj['reaction-from'].splice(userIndex, 1);
+      }
+
+      // if (emoj['reaction-from'].length < 1) {
+      //   emojiArray.indexOf(emoj['emoji'])
+        
+      // }
+    });
+
+    //Wenn das Emoji bereits in dieser Nachricht existiert, dann wird nur in "reaction.." gepusht.
+    // Falls nicht, dann wird das Emoji mit dem CU gepusht. (funktioniert!)
+    if (this.existEmoji(index, emoji)) {
+      
+      let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
+      emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
     }
+
+
+    // Wenn bei einem Emoji die ['reactions-from].length 0 ist, dann wird das Emoji aus dem Array gelöscht
+    //TODO!
+
+
+    console.log('my Emoji Array', emojiArray);
+
+
+
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
@@ -416,8 +460,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
 
   existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-      return reaction['reaction-from'] === this.currentUser;
+    return this.messageData[index].emojis.some((reaction: { [key: string]: string }) => {
+      return reaction['reaction-from'].includes(this.currentUser);
     });
   }
 
