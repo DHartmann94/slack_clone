@@ -220,10 +220,12 @@ export class ChatComponent implements OnInit, OnChanges {
       console.log(channel);
       this.chatDataService.getChatData().subscribe(
         (chatData: ChatDataInterface[]) => {
-          const messagesWithChannel = chatData
+          const messagesInChat = chatData
           .flatMap((data) => data.messages)
-          .filter((message) => message && message.channel === channel)
-          console.log("Messages with channel:", messagesWithChannel);
+          .filter((message): message is MessageDataInterface => !!message && message.channel === channel);
+
+          this.messageData = messagesInChat;
+          console.log("Messages with channel:", messagesInChat);
         },
         (error) => {
           console.error('Error direct chat data:', error);
