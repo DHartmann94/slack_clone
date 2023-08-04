@@ -29,6 +29,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
+  getChatChannelActiv: boolean = false;
+
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
@@ -102,26 +104,25 @@ export class ChatComponent implements OnInit, OnChanges {
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-    this.getMessageData();
+/*     this.getMessageData(); */
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
+    this.getChatData();
     this.getCurrentUserId();
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
   }
 
-
   ngOnDestroy() {
     this.crudTriggeredSubscription.unsubscribe();
   }
 
-
   async getUserData() {
     this.userDataService.getUserData().subscribe(
       (userData: UserDataInterface[]) => {
-        this.userData = userData; // Store all users in the component's userData array
+        this.userData = userData;
         this.userList = userData.map(user => user.name);
         console.log('Subscribed data users:', userData);
       },
@@ -137,13 +138,12 @@ export class ChatComponent implements OnInit, OnChanges {
         if (data && data.id) {
           this.processChannelData(data.id);
         }
-        console.log("Data from channel", data);
         return data;
       })
     );
   }
 
-  async getMessageData() {
+/*   async getMessageData() {
     this.messageDataService.getMessageData().subscribe(
       (messageData) => {
         const filteredData = messageData.filter(
@@ -156,6 +156,18 @@ export class ChatComponent implements OnInit, OnChanges {
       },
       (error) => {
         console.error('Error retrieving messages data:', error);
+      }
+    );
+  } */
+
+  async getChatData() {
+    this.chatDataService.getChatData().subscribe(
+      (chatData: ChatDataInterface[]) => {
+        this.chatData = chatData;
+        console.log("Get chat data", chatData);
+      },
+      (error) => {
+        console.error('Error fetching chat data:', error);
       }
     );
   }
@@ -204,13 +216,19 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   renderChatByChannelId(channel: string) {
-    if (channel && this.receivedChannelData$) {
+    if (channel) {
       console.log(channel);
       this.chatDataService.getChatData().subscribe(
         (chatData: ChatDataInterface[]) => {
-          this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
-          console.log("The filterd channel id", this.chatData);
-          console.log("Get chat data", chatData);
+          const messagesInChat = chatData
+            .flatMap((data) => data.messages)
+            .filter((message): message is MessageDataInterface => !!message && message.channel === channel);
+          this.messageData = messagesInChat;
+          console.log("Messages with channel:", messagesInChat);
+          const filteredMessages = messagesInChat.filter((message) => message.time !== undefined && message.time !== null);
+          this.messageData = filteredMessages.sort((a, b) =>
+            a.time! > b.time! ? 1 : -1
+          );
         },
         (error) => {
           console.error('Error direct chat data:', error);

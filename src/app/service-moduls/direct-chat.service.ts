@@ -16,7 +16,7 @@ export interface DirectChatInterface {
 
 export class DirectChatService {
   private directChatDataSubject: BehaviorSubject<DirectChatInterface[]> = new BehaviorSubject<DirectChatInterface[]>([]);
-  public directChateData$: Observable<DirectChatInterface[]> = this.directChatDataSubject.asObservable();
+  public directChatData$: Observable<DirectChatInterface[]> = this.directChatDataSubject.asObservable();
 
   constructor(
     public firestore: Firestore
@@ -28,21 +28,21 @@ export class DirectChatService {
 
     return new Observable<DirectChatInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
-        const storedDirectMessageData: DirectChatInterface[] = [];
+        const storedDirectChatData: DirectChatInterface[] = [];
 
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           const { users, messages } = data;
-          const directMessage: DirectChatInterface = {
+          const directChat: DirectChatInterface = {
             id: doc.id,
             users: users,
             messages: messages
           };
-          storedDirectMessageData.push(directMessage);
+          storedDirectChatData.push(directChat);
         });
 
-        this.directChatDataSubject.next(storedDirectMessageData);
-        observer.next(storedDirectMessageData);
+        this.directChatDataSubject.next(storedDirectChatData);
+        observer.next(storedDirectChatData);
       });
 
       return () => unsubscribe();

@@ -96,7 +96,7 @@
                     </div>
                     <!--- name --->
                     <input formControlName="name" matInput placeholder="Full Name"
-                        [ngClass]="{'error-border': editNameForm.controls['name'].invalid && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)}">
+                        [ngClass]="{'error-border': editNameForm.controls['name'].invalid && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched) || usernameExists}">
                     <div class="error-parent">
                         <div class="error-notification" *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
                             <!--- minlength / maxlenght --->
@@ -109,6 +109,8 @@
                             && editNameForm.controls['name'].touched">
                                 Enter your first AND last name. Only letters allowed.</mat-error>
                         </div>
+                                             <!--- name-function --->
+                    <mat-error *ngIf="usernameExists" class="error-notification">Name already exists.</mat-error>
                     </div>
                 </form>
                 <form class="email-form" [formGroup]="editMailForm">
@@ -118,7 +120,7 @@
                     </div>
                     <!--- email --->
                     <input formControlName="email" matInput placeholder="E-Mail-Address"
-                        [ngClass]="{'error-border': editMailForm.controls['email'].invalid && (editMailForm.controls['email'].dirty || editMailForm.controls['email'].touched)}">
+                        [ngClass]="{'error-border': editMailForm.controls['email'].invalid && (editMailForm.controls['email'].dirty || editMailForm.controls['email'].touched) || emailExists}">
                     <div class="error-parent">
                         <div *ngIf="editMailForm.controls['email'].errors && (editMailForm.controls['email'].dirty || editMailForm.controls['email'].touched)"
                             class="error-notification">
