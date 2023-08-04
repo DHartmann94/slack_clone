@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-legal',
@@ -7,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class LegalComponent {
 
+  constructor(private location: Location) {}
+
+  navigateBack() {
+    this.location.back();
+  }
 }
