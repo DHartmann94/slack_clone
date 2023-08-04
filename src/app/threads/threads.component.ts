@@ -67,7 +67,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
-  private crudTriggeredSubscription: Subscription;
+ /*  private crudTriggeredSubscription: Subscription; */
   triggerCRUDHTML: boolean = true;
 
   inviteUserOrChannel!: string;
@@ -87,9 +87,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
       private threadDataService: ThreadDataService,
       private firestore: Firestore,
   ) {
-    this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+   /*  this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.performCRUD();
-    });
+    }); */
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -103,21 +103,21 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-    this.getMessageData();
+   /*  this.getMessageData();
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
     this.getCurrentUserId();
     this.compareIds();
     this.deleteUserFromChannel();
-    this.getThreadData();
+    this.getThreadData(); */
   }
 
   ngOnDestroy() {
-    this.crudTriggeredSubscription.unsubscribe();
+    /* this.crudTriggeredSubscription.unsubscribe(); */
   }
 
-  async getUserData() {
+ /*  async getUserData() {
     this.userDataService.getUserData().subscribe(
         (userData: UserDataInterface[]) => {
           this.userData = userData; // Store all users in the component's userData array
@@ -219,7 +219,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       this.chatData = [];
     }
   }
-
+ */
   searchUsers(): void {
     if (this.inviteUserOrChannel) {
       const searchBy = this.inviteUserOrChannel.toLowerCase();

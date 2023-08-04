@@ -29,6 +29,8 @@ export class ChatComponent implements OnInit, OnChanges {
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
+  getChatChannelActiv: boolean = false;
+
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
@@ -106,22 +108,21 @@ export class ChatComponent implements OnInit, OnChanges {
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
+    this.getChatData();
     this.getCurrentUserId();
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
   }
 
-
   ngOnDestroy() {
     this.crudTriggeredSubscription.unsubscribe();
   }
 
-
   async getUserData() {
     this.userDataService.getUserData().subscribe(
       (userData: UserDataInterface[]) => {
-        this.userData = userData; // Store all users in the component's userData array
+        this.userData = userData;
         this.userList = userData.map(user => user.name);
         console.log('Subscribed data users:', userData);
       },
@@ -137,7 +138,6 @@ export class ChatComponent implements OnInit, OnChanges {
         if (data && data.id) {
           this.processChannelData(data.id);
         }
-        console.log("Data from channel", data);
         return data;
       })
     );
@@ -156,6 +156,18 @@ export class ChatComponent implements OnInit, OnChanges {
       },
       (error) => {
         console.error('Error retrieving messages data:', error);
+      }
+    );
+  }
+
+  async getChatData() {
+    this.chatDataService.getChatData().subscribe(
+      (chatData: ChatDataInterface[]) => {
+        this.chatData = chatData;
+        console.log("Get chat data", chatData);
+      },
+      (error) => {
+        console.error('Error fetching chat data:', error);
       }
     );
   }
@@ -204,13 +216,14 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   renderChatByChannelId(channel: string) {
-    if (channel && this.receivedChannelData$) {
+    if (channel) {
       console.log(channel);
       this.chatDataService.getChatData().subscribe(
         (chatData: ChatDataInterface[]) => {
-          this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
-          console.log("The filterd channel id", this.chatData);
-          console.log("Get chat data", chatData);
+          const messagesWithChannel = chatData
+          .flatMap((data) => data.messages)
+          .filter((message) => message && message.channel === channel)
+          console.log("Messages with channel:", messagesWithChannel);
         },
         (error) => {
           console.error('Error direct chat data:', error);

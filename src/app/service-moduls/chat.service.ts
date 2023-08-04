@@ -33,12 +33,12 @@ export class ChatDataService {
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           const { users, messages } = data;
-          const directMessage: ChatDataInterface = {
+          const chats: ChatDataInterface = {
             id: doc.id,
             users: users,
             messages: messages,
           };
-          storedChatData.push(directMessage);
+          storedChatData.push(chats);
         });
 
         this.chatDataSubject.next(storedChatData);
@@ -49,16 +49,15 @@ export class ChatDataService {
     });
   }
 
-  addMessageToChat(chat: ChatDataInterface) : Observable<ChatDataInterface> {
-    const chatsCollection  = collection(this.firestore, 'chats');
-    return from(addDoc(chatsCollection, chat)).pipe(
+  addMessageToChat(message: MessageDataInterface) : Observable<string> {
+    const chatCollection  = collection(this.firestore, 'chats');
+    const newChat: ChatDataInterface = {
+      messages: [message],
+    };
+
+    return from(addDoc(chatCollection, newChat)).pipe(
       map((docRef) => {
-        const newChat: MessageDataInterface = {
-          ...chat,
-          id: docRef.id,
-          messageText: [],
-        };
-        return newChat;
+        return docRef.id;
       })
     );
   }
