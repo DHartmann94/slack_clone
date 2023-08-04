@@ -104,7 +104,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-    this.getMessageData();
+/*     this.getMessageData(); */
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
@@ -143,7 +143,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  async getMessageData() {
+/*   async getMessageData() {
     this.messageDataService.getMessageData().subscribe(
       (messageData) => {
         const filteredData = messageData.filter(
@@ -158,7 +158,7 @@ export class ChatComponent implements OnInit, OnChanges {
         console.error('Error retrieving messages data:', error);
       }
     );
-  }
+  } */
 
   async getChatData() {
     this.chatDataService.getChatData().subscribe(
@@ -221,11 +221,14 @@ export class ChatComponent implements OnInit, OnChanges {
       this.chatDataService.getChatData().subscribe(
         (chatData: ChatDataInterface[]) => {
           const messagesInChat = chatData
-          .flatMap((data) => data.messages)
-          .filter((message): message is MessageDataInterface => !!message && message.channel === channel);
-
+            .flatMap((data) => data.messages)
+            .filter((message): message is MessageDataInterface => !!message && message.channel === channel);
           this.messageData = messagesInChat;
           console.log("Messages with channel:", messagesInChat);
+          const filteredMessages = messagesInChat.filter((message) => message.time !== undefined && message.time !== null);
+          this.messageData = filteredMessages.sort((a, b) =>
+            a.time! > b.time! ? 1 : -1
+          );
         },
         (error) => {
           console.error('Error direct chat data:', error);
