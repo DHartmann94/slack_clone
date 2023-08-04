@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, getDocs, onSnapshot, query } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable, from, map } from 'rxjs';
 import { MessageDataInterface } from './message.service';
-import { UserDataInterface } from './user.service';
+import { UserDataInterface, UserDataService } from './user.service';
 
 export interface ChatDataInterface {
   id?: any,
   messages?: MessageDataInterface[],
   users?: UserDataInterface[],
+  userNname?: string,
+  userPicture?: string,
 }
 
 @Injectable({
@@ -20,6 +22,7 @@ export class ChatDataService {
 
   constructor(
     public firestore: Firestore,
+    public userDataService: UserDataService
   ) { }
 
   getChatData(): Observable<ChatDataInterface[]> {
@@ -27,16 +30,34 @@ export class ChatDataService {
     const q = query(chatCollection);
 
     return new Observable<ChatDataInterface[]>((observer) => {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedChatData: ChatDataInterface[] = [];
 
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach(async (doc) => {
           const data = doc.data();
           const { users, messages } = data;
+
+          /*let userId = messages[0].sentById;
+          const userData = await this.userDataService.usersDataBackend(userId);
+          let userName: string;
+          let userPicture: string;
+
+          console.log(userData);
+
+          if (userData !== null) {
+            userName = userData['name'];
+            userPicture = userData['picture'];
+          } else {
+            userName = 'Unknown User';
+            userPicture = '/assets/profile-pictures/avatar1.png';
+          }*/
+
           const chats: ChatDataInterface = {
             id: doc.id,
             users: users,
             messages: messages,
+            //userNname: userName,
+            //userPicture: userPicture
           };
           storedChatData.push(chats);
         });
