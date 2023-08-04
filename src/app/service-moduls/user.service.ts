@@ -62,6 +62,10 @@ export class UserDataService {
   chatUserPicture: string = '';
 
 
+  /**
+   * Asynchronously retrieves the current user's data based on the provided userID.
+   * @param {string} userID - The ID of the user whose data is to be retrieved in the 'users' collection.
+   */
   async getCurrentUserData(userID: string) {
     try {
       const userDocRef = doc(this.firestore, 'users', userID);
@@ -73,7 +77,6 @@ export class UserDataService {
           this.currentUserData(userData);
         }
         this.chatUserData(userData);
-        //this.colorStatus(); 
       } else {
         console.log('The document does not exist.');
       }
@@ -82,6 +85,11 @@ export class UserDataService {
     }
   }
 
+  /**
+   * Asynchronously retrieves user data from the backend based on the provided userID.
+   * @param {string} userID - The ID of the user whose data is to be retrieved in the 'users' collection. 
+   * @returns {Promise<Object|null>} - A promise that resolves with the retrieved user data object if it exists, or null if not found.
+   */
   async usersDataBackend(userID: string) {
     try {
       const userDocRef = doc(this.firestore, 'users', userID);
@@ -90,7 +98,6 @@ export class UserDataService {
       if (docSnapshot.exists()) {
         const userData = docSnapshot.data();
         return userData;
-        //this.colorStatus(); 
       } else {
         console.log('The document does not exist.');
         return null;
@@ -101,6 +108,7 @@ export class UserDataService {
     }
   }
 
+  /*------ Help functions ------*/
   currentUserData(userData: any) {
     this.userName = userData['name'];
     this.userEmail = userData['email'];

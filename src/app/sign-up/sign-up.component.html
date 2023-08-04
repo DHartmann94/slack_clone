@@ -13,7 +13,7 @@
         <form (ngSubmit)="signUp()" [formGroup]="signUpForm">
             <!--- name --->
             <div class="input-parent">
-                <input [ngClass]="{'error-border': signUpForm.controls['name'].invalid && (submitted ||signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched)}"
+                <input [ngClass]="{'error-border': signUpForm.controls['name'].invalid && (submitted ||signUpForm.controls['name'].dirty || signUpForm.controls['name'].touched) || usernameExists}"
                     type="text" formControlName="name" [placeholder]="'First- and last name'" required>
                 <img src="./assets/img/icons/person.png" alt="Person">
                 <div class="error-parent">
@@ -32,6 +32,8 @@
                         && signUpForm.controls['name'].touched">
                         Enter your first AND last name. Only letters allowed.</mat-error>
                     </div>
+                     <!--- name-function --->
+                    <mat-error *ngIf="usernameExists" class="error-notification">Name already exists.</mat-error>
                 </div>
             </div>
             <!--- email --->

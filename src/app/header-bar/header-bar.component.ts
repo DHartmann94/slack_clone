@@ -19,6 +19,7 @@ export class HeaderBarComponent {
   isEditProfileCardOpen: boolean = false;
   isProfilePictureContainerOpen: boolean = false;
   emailExists: boolean = false;
+  usernameExists: boolean = false;
   submitted: boolean = false;
   selectedPictureIndex: number | null = null;
   active: boolean = false;
@@ -104,6 +105,12 @@ export class HeaderBarComponent {
     if (this.editNameForm.invalid) {
       return;
     }
+    const nameLowerCase = name.toLowerCase() || '';
+    this.usernameExists = await this.validation.checkUsernameExists(nameLowerCase);
+    if (this.usernameExists) {
+      this.resetExistsError('usernameExists');
+      return;
+    }
     this.disableForm();
 
     await this.changeFirebase(name, 'name');
@@ -132,7 +139,7 @@ export class HeaderBarComponent {
     this.emailExists = false;
     this.emailExists = await this.validation.checkEmailExists(email);
     if (this.emailExists) {
-      this.resetEmailExistsError();
+      this.resetExistsError('emailExists');
       return;
     }
     await this.changeUserMail(email, password);
@@ -272,9 +279,9 @@ export class HeaderBarComponent {
     this.submitted = false;
   }
 
-  resetEmailExistsError() {
+  resetExistsError(errorType: 'usernameExists' | 'emailExists') {
     setTimeout(() => {
-      this.emailExists = false;
+      this[errorType] = false;
     }, 3000);
   }
 
