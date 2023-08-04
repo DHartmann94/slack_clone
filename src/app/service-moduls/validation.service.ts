@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { getAuth, fetchSignInMethodsForEmail } from '@angular/fire/auth';
+import { Firestore, collection, getDocs, where, query } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
 
-  constructor() { }
+  constructor(private firestore: Firestore) { }
 
   /*------ Validation-Functions ------*/
 
@@ -31,6 +32,24 @@ export class ValidationService {
     } catch (error) {
       console.log('Error: ', error);
       return true;
+    }
+  }
+
+  /**
+   * Asynchronously checks if a desired username exists in the 'users' collection.
+   * @param {string} desiredUsername - The username to be checked.
+   * @returns {boolean}
+   */
+  async checkUsernameExists(desiredUsername: string) {
+    try {
+      const usersRef = collection(this.firestore, 'users');
+      const querySnapshot = await getDocs(usersRef);
+  
+      const lowercaseUsernames = querySnapshot.docs.map(doc => doc.data()['name'].toLowerCase());
+      return lowercaseUsernames.includes(desiredUsername);
+    } catch (error) {
+      console.error('ERROR by searching users.name: ', error);
+      throw error;
     }
   }
 

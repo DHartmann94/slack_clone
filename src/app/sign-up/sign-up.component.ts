@@ -14,6 +14,7 @@ export class SignUpComponent {
   submitted: boolean = false;
   showSlideInNotification: boolean = false;
   emailExists: boolean = false;
+  usernameExists: boolean = false;
 
   signUpForm = new FormGroup({
     name: new FormControl('', [
@@ -57,12 +58,30 @@ export class SignUpComponent {
     }
     this.disableForm();
 
+    this.checkSignUp();
+  }
+
+  /**
+   * Asynchronous function that performs checks before user signup and creates a new user if checks pass.
+   * Checks email and the desire name in the 'users' collection.
+   * @return
+   */
+  async checkSignUp() {
     const emailLowerCase: string = this.signUpForm.value.email?.toLowerCase() || '';
     this.emailExists = await this.validation.checkEmailExists(emailLowerCase);
     if (this.emailExists) {
       this.signUpForm.enable();
       this.isSignUp = false;
-      this.resetEmailExistsError();
+      this.resetExistsError('emailExists');
+      return;
+    }
+
+    const nameLowerCase = this.signUpForm.value.name?.toLowerCase() || '';
+    this.usernameExists = await this.validation.checkUsernameExists(nameLowerCase);
+    if (this.usernameExists) {
+      this.signUpForm.enable();
+      this.isSignUp = false;
+      this.resetExistsError('usernameExists');
       return;
     }
 
@@ -105,9 +124,9 @@ export class SignUpComponent {
     }, 3000);
   }
 
-  resetEmailExistsError() {
+  resetExistsError(errorType: 'usernameExists' | 'emailExists') {
     setTimeout(() => {
-      this.emailExists = false;
+      this[errorType] = false;
     }, 3000);
   }
 
