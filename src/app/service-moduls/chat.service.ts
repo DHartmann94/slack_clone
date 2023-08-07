@@ -25,7 +25,7 @@ export class ChatDataService {
     public userDataService: UserDataService
   ) { }
 
-  /*getChatData(): Observable<ChatDataInterface[]> {
+  getChatData(): Observable<ChatDataInterface[]> {
     const chatCollection = collection(this.firestore, 'chats');
     const q = query(chatCollection);
 
@@ -37,7 +37,7 @@ export class ChatDataService {
           const data = doc.data();
           const { users, messages } = data;
 
-          let userName: string =  'Unknown User';
+          /*let userName: string =  'Unknown User';
           let userPicture: string =  '/assets/profile-pictures/avatar1.png';
 
           let userId = messages[0].sentById;
@@ -51,7 +51,7 @@ export class ChatDataService {
               userName = 'Unknown User';
               userPicture = '/assets/profile-pictures/avatar1.png';
             }
-          }
+          }*/
 
           const chats: ChatDataInterface = {
             id: doc.id,
@@ -69,9 +69,10 @@ export class ChatDataService {
 
       return () => unsubscribe();
     });
-  }*/
+  }
 
-  getChatData(): Observable<ChatDataInterface[]> {
+  // Test von Daniel
+  /*getChatData(): Observable<ChatDataInterface[]> {
     const chatCollection = collection(this.firestore, 'chats');
     const q = query(chatCollection);
 
@@ -119,7 +120,7 @@ export class ChatDataService {
 
       return () => unsubscribe();
     });
-  }
+  }*/
 
   addMessageToChat(message: MessageDataInterface): Observable<string> {
     const chatCollection = collection(this.firestore, 'chats');

@@ -238,6 +238,27 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
+  renderChatByChannelId2(channel: string) { // TEST von Daniel :) !!!!!!!!!!!!!!!!!!!!
+    if (channel) {
+      this.messageDataService.getMessageData().subscribe(
+        (messageData: MessageDataInterface[]) => {
+          const messagesForChannel = messageData.filter(message => message.channel === channel);
+
+          if (messagesForChannel.length > 0) {
+            const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
+            console.log('Messages to Render:', sortDataAfterTime);
+          } else {
+            console.log('No messages found:', channel);
+          }
+        },
+        (error) => {
+          console.error('Error retrieving messages data:', error);
+        }
+      );
+    }
+  }
+
   searchUsers(): void {
     if (this.inviteUserOrChannel) {
       const searchBy = this.inviteUserOrChannel.toLowerCase();
@@ -410,7 +431,7 @@ export class ChatComponent implements OnInit, OnChanges {
     //Wenn das Emoji bereits in dieser Nachricht existiert, dann wird nur in "reaction.." gepusht.
     // Falls nicht, dann wird das Emoji mit dem CU gepusht. (funktioniert!)
     if (this.existEmoji(index, emoji)) {
-      
+
       let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
       emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
@@ -419,10 +440,10 @@ export class ChatComponent implements OnInit, OnChanges {
 
     // Wenn bei einem Emoji die ['reactions-from].length 0 ist, dann wird das Emoji aus dem Array gelöscht
     //funktioniert!
-      let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
-      if (indexWithEmojiToDelete != -1) {
-        emojiArray.splice(indexWithEmojiToDelete, 1);
-      }
+    let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
+    if (indexWithEmojiToDelete != -1) {
+      emojiArray.splice(indexWithEmojiToDelete, 1);
+    }
 
     console.log('my Emoji Array', emojiArray);
 
