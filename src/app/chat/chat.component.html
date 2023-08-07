@@ -78,14 +78,14 @@
 
             <div id="reactionlist{{index}}" class="list-of-reactions">
               <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
-                <span>{{ emoji['emoji'][0] }} :</span>
+                <span>{{ emoji['emoji'] }} :</span>
                 <span>&nbsp;{{ emoji['reaction-from'] }}</span>
               </div>
             </div>
 
-            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
-              <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
-              <span class="reaction-counter">{{ message.emojis.length }}</span>
+            <div *ngFor="let emoji of message.emojis" (click)="showReaction(index)" class="reaction-icon-container">
+              <div class="reaction-counter">{{ emoji['emoji'] }}</div>
+              <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
             <div class="reaction-icon-container">
               <img src="./assets/img/icons/tick_green.svg" alt="">
