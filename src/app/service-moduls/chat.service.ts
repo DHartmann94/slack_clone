@@ -37,19 +37,20 @@ export class ChatDataService {
           const data = doc.data();
           const { users, messages } = data;
 
-          /*let userId = messages[0].sentById;
-          const userData = await this.userDataService.usersDataBackend(userId);
-          let userName: string;
-          let userPicture: string;
+          /*let userName: string =  'Unknown User';
+          let userPicture: string =  '/assets/profile-pictures/avatar1.png';
 
-          console.log(userData);
-
-          if (userData !== null) {
-            userName = userData['name'];
-            userPicture = userData['picture'];
-          } else {
-            userName = 'Unknown User';
-            userPicture = '/assets/profile-pictures/avatar1.png';
+          let userId = messages[0].sentById;
+          if(userId) {
+            const userData = await this.userDataService.usersDataBackend(userId)
+  
+            if (userData !== null) {
+              userName = userData['name'];
+              userPicture = userData['picture'];
+            } else {
+              userName = 'Unknown User';
+              userPicture = '/assets/profile-pictures/avatar1.png';
+            }
           }*/
 
           const chats: ChatDataInterface = {
@@ -70,8 +71,8 @@ export class ChatDataService {
     });
   }
 
-  addMessageToChat(message: MessageDataInterface) : Observable<string> {
-    const chatCollection  = collection(this.firestore, 'chats');
+  addMessageToChat(message: MessageDataInterface): Observable<string> {
+    const chatCollection = collection(this.firestore, 'chats');
     const newChat: ChatDataInterface = {
       messages: [message],
     };
