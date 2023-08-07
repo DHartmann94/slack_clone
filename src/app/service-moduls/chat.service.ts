@@ -25,7 +25,7 @@ export class ChatDataService {
     public userDataService: UserDataService
   ) { }
 
-  getChatData(): Observable<ChatDataInterface[]> {
+  /*getChatData(): Observable<ChatDataInterface[]> {
     const chatCollection = collection(this.firestore, 'chats');
     const q = query(chatCollection);
 
@@ -37,7 +37,7 @@ export class ChatDataService {
           const data = doc.data();
           const { users, messages } = data;
 
-          /*let userName: string =  'Unknown User';
+          let userName: string =  'Unknown User';
           let userPicture: string =  '/assets/profile-pictures/avatar1.png';
 
           let userId = messages[0].sentById;
@@ -51,7 +51,7 @@ export class ChatDataService {
               userName = 'Unknown User';
               userPicture = '/assets/profile-pictures/avatar1.png';
             }
-          }*/
+          }
 
           const chats: ChatDataInterface = {
             id: doc.id,
@@ -62,6 +62,56 @@ export class ChatDataService {
           };
           storedChatData.push(chats);
         });
+
+        this.chatDataSubject.next(storedChatData);
+        observer.next(storedChatData);
+      });
+
+      return () => unsubscribe();
+    });
+  }*/
+
+  getChatData(): Observable<ChatDataInterface[]> {
+    const chatCollection = collection(this.firestore, 'chats');
+    const q = query(chatCollection);
+
+    return new Observable<ChatDataInterface[]>((observer) => {
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
+        const storedChatData: ChatDataInterface[] = [];
+
+        for (const doc of querySnapshot.docs) {
+          const data = doc.data();
+          const { users, messages } = data;
+
+          try {
+          let userName: string =  'Unknown User';
+          let userPicture: string =  '/assets/profile-pictures/avatar1.png';
+
+          let userId = messages[0].sentById;
+          if(userId) {
+            const userData = await this.userDataService.usersDataBackend(userId)
+  
+            if (userData !== null) {
+              userName = userData['name'];
+              userPicture = userData['picture'];
+            } else {
+              userName = 'Unknown User';
+              userPicture = '/assets/profile-pictures/avatar1.png';
+            }
+          }
+
+          const chats: ChatDataInterface = {
+            id: doc.id,
+            users: users,
+            messages: messages,
+            userNname: userName,
+            userPicture: userPicture
+          };
+          storedChatData.push(chats);
+          } catch (error) {
+            console.log('ERROR retrieving user data:', error);
+          }
+        }
 
         this.chatDataSubject.next(storedChatData);
         observer.next(storedChatData);
