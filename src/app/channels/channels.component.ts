@@ -119,7 +119,7 @@ export class ChannelsComponent implements OnInit {
     this.selectedChannel = this.getChannelById(channelGroupId);
   }
 
-  triggerCRUD() {
+  triggerNewChat() {
     this.chatBehavior.triggerCRUD();
   }
 

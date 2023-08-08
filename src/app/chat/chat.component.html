@@ -1,6 +1,6 @@
 <mat-card class="chat-card">
   <div class="shadow-box">
-    <div class="chat-first-row" *ngIf="triggerCRUDHTML">
+    <div class="chat-first-row" *ngIf="triggerNewChatWindow">
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
         <span class="chat-name">{{ channel.channelName }}</span>
@@ -21,7 +21,7 @@
       </div>
     </div>
 
-    <div class="search-input-channels" *ngIf="!triggerCRUDHTML">
+    <div class="search-input-channels" *ngIf="!(triggerNewChatWindow)">
       <h2>New Message</h2>
       <div class="channel-inputs">
         <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="searchUsers()" type="text"
@@ -112,9 +112,9 @@
 
   <!-- Input field -->
   <div class="message-input-field">
-    <div class="text-editor"  *ngIf="(receivedChannelData$ | async) as channel">
+    <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-<!--TODO: hier müsste man statt channelId den tatsächlichen Channel Namen einfügen, davor ich eine extra funktion in chat component schreibe, habt ihr eine andere Idee?^^-->
+      <!--TODO: hier müsste man statt channelId den tatsächlichen Channel Namen einfügen, davor ich eine extra funktion in chat component schreibe, habt ihr eine andere Idee?^^-->
       <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
       <div class="text-editor-bottom">

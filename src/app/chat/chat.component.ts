@@ -66,11 +66,10 @@ export class ChatComponent implements OnInit, OnChanges {
   toggleUserList: boolean = true;
 
   private crudTriggeredSubscription: Subscription;
-  triggerCRUDHTML: boolean = true;
+  triggerNewChatWindow: boolean = true;
 
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
-
 
   constructor(
     private messageDataService: MessageDataService,
@@ -90,11 +89,9 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
 
-
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
   }
-
 
   ngOnInit(): void {
     this.userDataService.userName = this.currentUser;
@@ -137,6 +134,7 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
+          this.triggerNewChatWindow = true;
         }
         return data;
       })
@@ -197,7 +195,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   performCRUD() {
-    this.triggerCRUDHTML = !this.triggerCRUDHTML;
+    this.triggerNewChatWindow = !this.triggerNewChatWindow;
   }
 
   selectMessage(messageId: any) {
@@ -243,7 +241,6 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageDataService.getMessageData().subscribe(
         (messageData: MessageDataInterface[]) => {
           const messagesForChannel = messageData.filter(message => message.channel === channel);
-
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
@@ -480,7 +477,6 @@ export class ChatComponent implements OnInit, OnChanges {
       this.reactionListOpen = false;
     }
   }
-  //***** */
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
@@ -635,7 +631,7 @@ export class ChatComponent implements OnInit, OnChanges {
       return;
     }
     try {
-      await this.messageDataService.deleteMessage(messageId);
+      this.messageDataService.deleteMessage(messageId);
       this.messageData = this.messageData.filter(message => message.id !== messageId);
     } catch (error) {
       console.error('Error deleting message:', error);
