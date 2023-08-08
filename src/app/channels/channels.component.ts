@@ -86,6 +86,7 @@ export class ChannelsComponent implements OnInit {
         this.channelData = channelData;
         if (this.channelData.length > 0) {
           this.selectedChannel = this.channelData[0];
+          this.channelDataResolver.sendDataChannels(this.selectedChannel);
         }
         console.log('Subscribed data channels:', channelData);
       },

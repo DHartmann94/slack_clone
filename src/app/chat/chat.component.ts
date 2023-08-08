@@ -1,7 +1,6 @@
 import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, firstValueFrom, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -29,10 +28,7 @@ export class ChatComponent implements OnInit, OnChanges {
   channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  receivedUserData$!: Observable<UserDataInterface | null>;
-
-  getChatChannelActiv: boolean = false;
-
+  
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
@@ -40,7 +36,6 @@ export class ChatComponent implements OnInit, OnChanges {
   chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
-  /// new multiple selection option for mention users
   mentionUser = new FormControl('');
   userList: string[] = [];
 
@@ -79,7 +74,6 @@ export class ChatComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
-    private userDataResolver: UserDataResolveService,
     private chatDataService: ChatDataService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
@@ -141,15 +135,6 @@ export class ChatComponent implements OnInit, OnChanges {
         }
         return data;
       })
-    );
-    this.receivedUserData$ = this.userDataResolver.resolve().pipe();
-    this.receivedUserData$.subscribe(
-      (userData: UserDataInterface | null) => {
-        console.log("User received from channel: ", userData);
-      },
-      (error) => {
-        console.error('Error retrieving user data:', error);
-      }
     );
   }
 
