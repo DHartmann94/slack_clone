@@ -40,7 +40,7 @@
   </div>
 
   <ng-container *ngIf="triggerNewChatWindow">
-    <div class="chat-text-area" *ngIf="chatData">
+    <div class="chat-text-area" *ngIf="messageData">
       <div *ngFor="let message of messageData; let index = index">
         <!-- Time stamp parting line -->
         <div *ngIf="isNewDay(message, messageData[index - 1])">
