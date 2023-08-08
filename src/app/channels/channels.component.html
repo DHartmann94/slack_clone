@@ -54,7 +54,7 @@
                         <circle cx="4" cy="4" r="4" fill="#808080" />
                     </svg>
                 </div>
-                <h3>{{ users.name }}</h3>
+                <h3 (click)="selectUser(users.id)">{{ users.name }}</h3>
             </div>
         </div>
     </div>

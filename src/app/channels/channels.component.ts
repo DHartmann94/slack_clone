@@ -1,7 +1,8 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -42,12 +43,14 @@ export class ChannelsComponent implements OnInit {
   channelId: string = '';
   selectedUserType: string = '';
   selectedChannel: ChannelDataInterface | null = null;
+  selectedUser: UserDataInterface | null = null;
 
   constructor(
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
@@ -83,7 +86,6 @@ export class ChannelsComponent implements OnInit {
         this.channelData = channelData;
         if (this.channelData.length > 0) {
           this.selectedChannel = this.channelData[0];
-          this.channelDataResolver.sendData(this.selectedChannel);
         }
         console.log('Subscribed data channels:', channelData);
       },
@@ -111,8 +113,13 @@ export class ChannelsComponent implements OnInit {
 
   selectChannel(channelId: any) {
     this.selectedChannel = this.getChannelById(channelId);
-    this.channelDataResolver.sendData(this.selectedChannel);
+    this.channelDataResolver.sendDataChannels(this.selectedChannel);
     this.updateChannelName(this.selectedChannel);
+  }
+
+  selectUser(userId: any) {
+    this.selectedUser = this.getUserById(userId);
+    this.userDataResolver.sendDataUsers(this.selectedUser);
   }
 
   selectChannelFromList(channelGroupId: any) {
@@ -125,6 +132,10 @@ export class ChannelsComponent implements OnInit {
 
   getChannelById(channelId: any) {
     return this.channelData.find(channel => channel.id === channelId) || null;
+  }
+
+  getUserById(userId: any) {
+    return this.userData.find(user => user.id === userId) || null;
   }
 
   updateChannelName(channelToUpdate: any) {
