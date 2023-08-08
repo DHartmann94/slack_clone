@@ -6,13 +6,13 @@ import { ChannelDataInterface } from './channel.service';
   providedIn: 'root'
 })
 export class ChannelDataResolverService {
-  private dataSubject = new BehaviorSubject<ChannelDataInterface | null>(null);
-
-  sendData(data: ChannelDataInterface | null) {
-    this.dataSubject.next(data);
+  private dataSubjectChannel = new BehaviorSubject<ChannelDataInterface | null>(null);
+  
+  sendDataChannels(data: ChannelDataInterface | null) {
+    this.dataSubjectChannel.next(data);
   }
 
   resolve(): Observable<ChannelDataInterface | null> {
-    return this.dataSubject.asObservable();
+    return this.dataSubjectChannel.asObservable();
   }
 }
