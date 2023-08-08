@@ -170,32 +170,29 @@
   flex-direction: row;
   cursor: pointer;
 
+  .chat-name {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-right: 10px;
+    max-width: 200px;
+  }
+
   &:hover {
     width: auto;
     height: auto;
-    background-color: var(--text-hover);
+    border: 1px solid var(--ligth-purple-lines, #adb0d9);
+    padding: 0 5px;
     border-radius: 20px;
     height: 45px;
-    min-width: 200px;
   }
 }
 
 .hash-chat-name {
   margin-right: 15px;
-}
-
-.chat-name {
-  font-size: 18px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  margin-right: 10px;
-  cursor: pointer;
-  transition: color 0.3s;
-
-  &:hover {
-    color: var(--purple-2, #797ef3);
-  }
+  width: 18px;
+  object-fit: scale-down;
 }
 
 .app-emojis {
