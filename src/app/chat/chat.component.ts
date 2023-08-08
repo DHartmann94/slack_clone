@@ -234,6 +234,8 @@ export class ChatComponent implements OnInit, OnChanges {
           console.error('ERROR render messages in channel:', error);
         }
       );
+    } else {
+      this.messageData = [];
     }
   }
 

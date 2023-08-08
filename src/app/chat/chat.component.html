@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <ng-container *ngIf="triggerNewChatWindow">
+  <div *ngIf="triggerNewChatWindow">
     <div class="chat-text-area" *ngIf="messageData">
       <div *ngFor="let message of messageData; let index = index">
         <!-- Time stamp parting line -->
