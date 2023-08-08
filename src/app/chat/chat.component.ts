@@ -191,7 +191,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.renderChatByChannelId(this.channelId);
   }
 
-  renderChatByChannelId(channel: string) {
+  /*renderChatByChannelId(channel: string) {
     if (channel) {
       console.log(channel);
       this.chatDataService.getChatData().subscribe(
@@ -213,9 +213,9 @@ export class ChatComponent implements OnInit, OnChanges {
     } else {
       this.chatData = [];
     }
-  }
+  }*/
 
-  renderChatByChannelId2(channel: string) { // TEST von Daniel :) !!!!!!!!!!!!!!!!!!!!
+  renderChatByChannelId(channel: string) {
     if (channel) {
       this.messageDataService.getMessageData().subscribe(
         (messageData: MessageDataInterface[]) => {
@@ -223,13 +223,15 @@ export class ChatComponent implements OnInit, OnChanges {
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
-            console.log('Messages to Render:', sortDataAfterTime);
+            console.log('Messages to Render:', sortDataAfterTime); // TEST
+            this.messageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel);
+            console.log('No messages found:', channel); // TEST
+            this.messageData = [];
           }
         },
         (error) => {
-          console.error('Error retrieving messages data:', error);
+          console.error('ERROR render messages in channel:', error);
         }
       );
     }
