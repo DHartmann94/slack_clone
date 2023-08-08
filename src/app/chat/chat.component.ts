@@ -98,7 +98,6 @@ export class ChatComponent implements OnInit, OnChanges {
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-    /*     this.getMessageData(); */
     this.getDataFromChannel();
     this.getUserData();
     this.getDirectChatData();
@@ -137,23 +136,6 @@ export class ChatComponent implements OnInit, OnChanges {
       })
     );
   }
-
-  /*   async getMessageData() {
-      this.messageDataService.getMessageData().subscribe(
-        (messageData) => {
-          const filteredData = messageData.filter(
-            (message) => message.time !== undefined && message.time !== null
-          );
-          this.messageData = filteredData.sort((a, b) =>
-            a.time! > b.time! ? 1 : -1
-          );
-          console.log('Subscribed data messages:', messageData);
-        },
-        (error) => {
-          console.error('Error retrieving messages data:', error);
-        }
-      );
-    } */
 
   async getChatData() {
     this.chatDataService.getChatData().subscribe(

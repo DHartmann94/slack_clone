@@ -39,8 +39,8 @@
     </div>
   </div>
 
-  <ng-container *ngIf="triggerNewChatWindow">
-    <div class="chat-text-area" *ngIf="chatData">
+  <div *ngIf="triggerNewChatWindow">
+    <div class="chat-text-area">
       <div *ngFor="let message of messageData; let index = index">
         <!-- Time stamp parting line -->
         <div *ngIf="isNewDay(message, messageData[index - 1])">
@@ -110,27 +110,28 @@
         </div>
       </div>
     </div>
-
-    <!-- Input field -->
-    <div class="message-input-field">
-      <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-        <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" name=""
-          rows="4"></textarea>
-        <div class="text-editor-bottom">
-          <div class="text-editor-left-btns">
-            <div class="attach"></div>
-            <div class="vertical-line-textEditor"></div>
-            <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
-            <div class="mail-container"></div>
-          </div>
-          <div class="send-message-btn" (click)="sendMessage()"></div>
+  </div>
+  
+  <!-- Input field -->
+  <div class="message-input-field" *ngIf="triggerNewChatWindow">
+    <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
+      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+      <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4">
+      </textarea>
+      <div class="text-editor-bottom">
+        <div class="text-editor-left-btns">
+          <div class="attach"></div>
+          <div class="vertical-line-textEditor"></div>
+          <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
+          <div class="mail-container"></div>
         </div>
+        <div class="send-message-btn" (click)="sendMessage()"></div>
       </div>
     </div>
-  </ng-container>
-  <ng-container *ngIf="triggerNewChatWindow"><app-new-chat></app-new-chat></ng-container>  
+  </div>
 </mat-card>
+
+<ng-container *ngIf="!(triggerNewChatWindow)"><app-new-chat></app-new-chat></ng-container>
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
