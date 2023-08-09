@@ -1,8 +1,9 @@
-import { Component, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { Observable, firstValueFrom, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
@@ -28,6 +29,7 @@ export class ChatComponent implements OnInit, OnChanges {
   channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
+  receivedUserData$!: Observable<UserDataInterface | null>
   
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
@@ -62,7 +64,7 @@ export class ChatComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
-  private crudTriggeredSubscription: Subscription;
+  private crudTriggeredSubscription!: Subscription;
   triggerNewChatWindow: boolean = true;
 
   inviteUserOrChannel!: string;
@@ -74,6 +76,7 @@ export class ChatComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private userDataResolver: UserDataResolveService,
     private chatDataService: ChatDataService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
@@ -82,7 +85,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private firestore: Firestore,
   ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.performCRUD();
+      this.toggleDirectChat();
     });
   }
 
@@ -130,10 +133,19 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
-          this.triggerNewChatWindow = true;
         }
         return data;
       })
+    );
+    this.receivedUserData$ = this.userDataResolver.resolve();
+    this.receivedUserData$.subscribe(
+      (userData: UserDataInterface | null) => {
+        // Here, you can access the received user data and perform any necessary actions
+        console.log("User received from channel: ", userData);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
     );
   }
 
@@ -173,7 +185,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  performCRUD() {
+  toggleDirectChat() {
     this.triggerNewChatWindow = !this.triggerNewChatWindow;
   }
 
@@ -191,30 +203,6 @@ export class ChatComponent implements OnInit, OnChanges {
     this.renderChatByChannelId(this.channelId);
   }
 
-  /*renderChatByChannelId(channel: string) {
-    if (channel) {
-      console.log(channel);
-      this.chatDataService.getChatData().subscribe(
-        (chatData: ChatDataInterface[]) => {
-          const messagesInChat = chatData
-            .flatMap((data) => data.messages)
-            .filter((message): message is MessageDataInterface => !!message && message.channel === channel);
-          this.messageData = messagesInChat;
-          console.log("Messages with channel:", messagesInChat);
-          const filteredMessages = messagesInChat.filter((message) => message.time !== undefined && message.time !== null);
-          this.messageData = filteredMessages.sort((a, b) =>
-            a.time! > b.time! ? 1 : -1
-          );
-        },
-        (error) => {
-          console.error('Error direct chat data:', error);
-        }
-      );
-    } else {
-      this.chatData = [];
-    }
-  }*/
-
   renderChatByChannelId(channel: string) {
     if (channel) {
       this.messageDataService.getMessageData().subscribe(
@@ -223,10 +211,10 @@ export class ChatComponent implements OnInit, OnChanges {
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
-            console.log('Messages to Render:', sortDataAfterTime); // TEST
+            console.log('Messages to Render:', sortDataAfterTime);
             this.messageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel); // TEST
+            console.log('No messages found:', channel); 
             this.messageData = [];
           }
         },

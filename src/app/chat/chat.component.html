@@ -111,7 +111,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Input field -->
   <div class="message-input-field" *ngIf="triggerNewChatWindow">
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
@@ -129,9 +129,8 @@
       </div>
     </div>
   </div>
+  <app-new-chat *ngIf="!(triggerNewChatWindow)"></app-new-chat>
 </mat-card>
-
-<ng-container *ngIf="!(triggerNewChatWindow)"><app-new-chat></app-new-chat></ng-container>
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
