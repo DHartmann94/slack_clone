@@ -3,6 +3,7 @@ import { MessageDataService, MessageDataInterface } from '../service-moduls/mess
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
+import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 
 @Component({
   selector: 'app-new-chat',
@@ -14,8 +15,13 @@ export class NewChatComponent implements OnInit {
   messageData: MessageDataInterface[] = [];
   chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
+  directChatData: DirectChatInterface[] = [];
 
   channelId: string = "";
+  inviteUserOrChannel!: string;
+  searchResults: UserDataInterface[] = [];
+  toggleUserList: boolean = true;
+
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -37,10 +43,43 @@ export class NewChatComponent implements OnInit {
     public userDataService: UserDataService,
     private chatDataService: ChatDataService,
     private threadDataService: ThreadDataService,
+    private directChatService: DirectChatService,
   ) {}
 
   ngOnInit(): void {
    
+  }
+
+  searchUsers(): void {
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResults = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+      } else {
+        this.searchResults = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
+    } else {
+      this.searchResults = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      this.directChatService.addUserToDirectChat(user).subscribe(
+        (docId) => {
+          console.log('User added to the chat with ID:', docId);
+        },
+        (error) => {
+          console.error('Error adding user to the chat:', error);
+        }
+      );
+    }
   }
 
   isNewDay(currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
