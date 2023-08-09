@@ -3,19 +3,20 @@ import { MessageDataService, MessageDataInterface } from '../service-moduls/mess
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
-import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
+import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 
 @Component({
   selector: 'app-new-chat',
   templateUrl: './new-chat.component.html',
   styleUrls: ['./new-chat.component.scss']
 })
+
 export class NewChatComponent implements OnInit {
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
-  directChatData: DirectChatInterface[] = [];
+  directMessageData: DirectMessageInterface[] = [];
 
   channelId: string = "";
   inviteUserOrChannel!: string;
@@ -43,11 +44,23 @@ export class NewChatComponent implements OnInit {
     public userDataService: UserDataService,
     private chatDataService: ChatDataService,
     private threadDataService: ThreadDataService,
-    private directChatService: DirectChatService,
+    private directMessageService: DirectMessageService,
   ) {}
 
   ngOnInit(): void {
-   
+    this.getDirectChatData();
+  }
+
+  async getDirectChatData() {
+    this.directMessageService.getDirectChatData().subscribe(
+      (directMessageData: DirectMessageInterface[]) => {
+        this.directMessageData = directMessageData;
+        console.log("Get direct chat data", directMessageData);
+      },
+      (error) => {
+        console.error('Error fetching direct chat data:', error);
+      }
+    );
   }
 
   searchUsers(): void {
@@ -71,7 +84,7 @@ export class NewChatComponent implements OnInit {
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
-      this.directChatService.addUserToDirectChat(user).subscribe(
+      this.directMessageService.addUserToDirectMessage(user).subscribe(
         (docId) => {
           console.log('User added to the chat with ID:', docId);
         },
@@ -282,10 +295,6 @@ export class NewChatComponent implements OnInit {
   }
 
   openThread(threadId: string) {
-    // Eine globale variable mit einer ID befüllen. (Um zu verhindern das eine neue Thread Id beim senden der message entsteht!)
-    // Zweites Textfeld holt sich die globale Variable.
-
-    /*this.threadDataService.openThread(messageId);*/
   }
 }
  

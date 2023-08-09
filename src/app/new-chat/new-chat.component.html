@@ -20,7 +20,6 @@
 
     <div class="chat-text-area" *ngIf="messageData">
         <div *ngFor="let message of messageData; let index = index">
-            <!-- Time stamp parting line -->
             <div *ngIf="isNewDay(message, messageData[index - 1])">
                 <div class="parting-line"></div>
                 <div class="flex-center time-partLine">
@@ -96,7 +95,7 @@
         <div class="text-editor">
             <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
             <textarea placeholder="Send an new message to someone..." [(ngModel)]="messageInput" rows="4">
-      </textarea>
+            </textarea>
             <div class="text-editor-bottom">
                 <div class="text-editor-left-btns">
                     <div class="attach"></div>

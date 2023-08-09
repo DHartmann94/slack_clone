@@ -72,7 +72,7 @@ export class ChannelsComponent implements OnInit {
     this.userDataService.getUserData().subscribe(
       userData => {
         this.userData = userData;
-        console.log('Subscribed data users:', userData);
+        /* console.log('Subscribed data users:', userData); */
       },
       error => {
         console.error('Error retrieving user data:', error);
@@ -88,7 +88,7 @@ export class ChannelsComponent implements OnInit {
           this.selectedChannel = this.channelData[0];
           this.channelDataResolver.sendDataChannels(this.selectedChannel);
         }
-        console.log('Subscribed data channels:', channelData);
+       /*  console.log('Subscribed data channels:', channelData); */
       },
       error => {
         console.error('Error retrieving user data:', error);

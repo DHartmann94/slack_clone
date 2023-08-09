@@ -10,7 +10,6 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { DirectChatInterface, DirectChatService } from '../service-moduls/direct-chat.service';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 
 @Component({
@@ -34,7 +33,6 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
-  directChatData: DirectChatInterface[] = [];
   chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
@@ -72,7 +70,6 @@ export class ChatComponent implements OnInit, OnChanges {
 
   constructor(
     private messageDataService: MessageDataService,
-    private directChatService: DirectChatService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
@@ -85,7 +82,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private firestore: Firestore,
   ) {
     this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.toggleDirectChat();
+      this.toggleNewChat();
     });
   }
 
@@ -103,7 +100,6 @@ export class ChatComponent implements OnInit, OnChanges {
     });
     this.getDataFromChannel();
     this.getUserData();
-    this.getDirectChatData();
     this.getChatData();
     this.getCurrentUserId();
     this.compareIds();
@@ -140,7 +136,6 @@ export class ChatComponent implements OnInit, OnChanges {
     this.receivedUserData$ = this.userDataResolver.resolve();
     this.receivedUserData$.subscribe(
       (userData: UserDataInterface | null) => {
-        // Here, you can access the received user data and perform any necessary actions
         console.log("User received from channel: ", userData);
       },
       (error) => {
@@ -161,18 +156,6 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  async getDirectChatData() {
-    this.directChatService.getDirectChatData().subscribe(
-      (directChatData: DirectChatInterface[]) => {
-        this.directChatData = directChatData;
-        console.log("Get direct chat data", directChatData);
-      },
-      (error) => {
-        console.error('Error fetching direct chat data:', error);
-      }
-    );
-  }
-
   async getThreadData() {
     this.threadDataService.getThreadData().subscribe(
       (threadData: ThreadDataInterface[]) => {
@@ -185,7 +168,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  toggleDirectChat() {
+  toggleNewChat() {
     this.triggerNewChatWindow = !this.triggerNewChatWindow;
   }
 
@@ -224,38 +207,6 @@ export class ChatComponent implements OnInit, OnChanges {
       );
     } else {
       this.messageData = [];
-    }
-  }
-
-  searchUsers(): void {
-    if (this.inviteUserOrChannel) {
-      const searchBy = this.inviteUserOrChannel.toLowerCase();
-
-      if (searchBy.startsWith('@')) {
-        const userName = searchBy.substr(1);
-        this.searchResults = this.userDataService.userData.filter(user =>
-          user.name.toLowerCase().includes(userName)
-        );
-      } else {
-        this.searchResults = this.userDataService.userData.filter(user =>
-          user.email.toLowerCase().includes(searchBy)
-        );
-      }
-    } else {
-      this.searchResults = [];
-    }
-  }
-
-  inviteUser(user: UserDataInterface): void {
-    if (user) {
-      this.directChatService.addUserToDirectChat(user).subscribe(
-        (docId) => {
-          console.log('User added to the chat with ID:', docId);
-        },
-        (error) => {
-          console.error('Error adding user to the chat:', error);
-        }
-      );
     }
   }
 

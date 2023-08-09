@@ -5,7 +5,6 @@ import {UserDataInterface, UserDataService} from "../service-moduls/user.service
 import {ChatDataInterface, ChatDataService} from "../service-moduls/chat.service";
 import {MessageDataInterface, MessageDataService} from "../service-moduls/message.service";
 import {map} from "rxjs/operators";
-import {DirectChatInterface, DirectChatService} from "../service-moduls/direct-chat.service";
 import {ChannelDataResolverService} from "../service-moduls/channel-data-resolver.service";
 import {ChatBehaviorService} from "../service-moduls/chat-behavior.service";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
@@ -35,7 +34,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
-  directChatData: DirectChatInterface[] = [];
   chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
@@ -76,7 +74,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   constructor(
       private messageDataService: MessageDataService,
-      private directChatService: DirectChatService,
       public userDataService: UserDataService,
       private channelDataService: ChannelDataService,
       private channelDataResolver: ChannelDataResolverService,
@@ -220,38 +217,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
  */
-  searchUsers(): void {
-    if (this.inviteUserOrChannel) {
-      const searchBy = this.inviteUserOrChannel.toLowerCase();
-
-      if (searchBy.startsWith('@')) {
-        const userName = searchBy.substr(1);
-        this.searchResults = this.userDataService.userData.filter(user =>
-            user.name.toLowerCase().includes(userName)
-        );
-      } else {
-        this.searchResults = this.userDataService.userData.filter(user =>
-            user.email.toLowerCase().includes(searchBy)
-        );
-      }
-    } else {
-      this.searchResults = [];
-    }
-  }
-
-  inviteUser(user: UserDataInterface): void {
-    if (user) {
-      this.directChatService.addUserToDirectChat(user).subscribe(
-          (docId) => {
-            console.log('User added to the chat with ID:', docId);
-          },
-          (error) => {
-            console.error('Error adding user to the chat:', error);
-          }
-      );
-    }
-  }
-
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
   }
