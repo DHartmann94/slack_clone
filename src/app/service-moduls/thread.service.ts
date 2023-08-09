@@ -91,53 +91,57 @@ export class ThreadDataService {
     const docRef = doc(this.firestore, 'messages', messageId);
     const docSnap = await getDoc(docRef);
     const messageData = docSnap.data();
-    console.log(docSnap.id);
 
     if (messageData) {
-      const threadDataSubscription: Subscription = this.getThreadData().subscribe(
-        async (threadData: ThreadDataInterface[]) => {
-          console.log(threadData);
+      const threadData: any[] = [];
+      const collectionThreads = collection(this.firestore, 'threads');
+      const querySnapshot = await getDocs(collectionThreads);
 
-          const existThread = threadData.find(thread => thread['id'] === docSnap.id);
-          console.log(existThread);
-          if (existThread) {
-            //console.log('existThread',existThread);
-            
-            const threadData = {
-              id: existThread['id'],
-              messageText: existThread['messageText'],
-              time: existThread['time'],
-              thread: existThread['thread'],
-              emojis: existThread['emojis'],
-              channel: existThread['channel'],
-              sentById: existThread['sentById'],
-            };
-          } else {
-            const newThreadData = {
+      querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((doc) => {
+          threadData.push({ threadId: doc.id, ...doc.data() });
+        });
+      });
 
-              id: docSnap.id,
-              messageText: messageData['messageText'],
-              time: messageData['time'],
-              thread: messageData['thread'],
-              emojis: messageData['emojis'],
-              channel: messageData['channel'],
-              sentById: messageData['sentById'],
-            };
-            //console.log('New', newThreadData);
-            //const threadCollectionRef = collection(this.firestore, 'threads');
-            //await addDoc(threadCollectionRef, newThreadData);
+      if (threadData) {
+        const existThread = threadData.find((message) => message.id === docSnap.id);
+        const newThreadData = this.overviewJSON(messageData, docSnap);
 
-
-            //await setDoc(docRef, { thread: threadDocRef.id }, { merge: true });
-          }
-          threadDataSubscription.unsubscribe();
-        },
-        (error) => {
-          console.error('ERROR open thread:', error);
-          threadDataSubscription.unsubscribe();
+        if (existThread) {
+          await this.updateThreadData(existThread, newThreadData)
+        } else {
+          await this.newThreadData(newThreadData);
         }
-      );
+      }
     }
+  }
+
+  overviewJSON(messageData: any, docSnapFromMeesage: any) {
+    const threadData = {
+      id: docSnapFromMeesage.id,
+      messageText: messageData['messageText'],
+      time: messageData['time'],
+      thread: messageData['thread'],
+      emojis: messageData['emojis'],
+      channel: messageData['channel'],
+      sentById: messageData['sentById'],
+    };
+
+    return threadData;
+  }
+
+  async updateThreadData(existThread: any, newThreadData: any) {
+    const threadDocRef = doc(this.firestore, 'threads', existThread.threadId);
+
+
+    await updateDoc(threadDocRef, newThreadData);
+    console.log('Exist Thread', newThreadData);
+  }
+
+  async newThreadData(newThreadData: any) {
+    console.log('New Thread', newThreadData);
+    const threadCollectionRef = collection(this.firestore, 'threads');
+    await addDoc(threadCollectionRef, newThreadData);
   }*/
 
   /*getThreadData(): Observable<ThreadDataInterface[]> { // TEST Daniel!!!
