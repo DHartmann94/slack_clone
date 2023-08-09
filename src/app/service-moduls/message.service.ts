@@ -52,7 +52,7 @@ export class MessageDataService {
               userPicture = userData['picture'];
             } else {
               userName = 'Unknown User';
-              userPicture = '/assets/profile-pictures/avatar1.png';
+              userPicture = '/assets/profile-pictures/unknown-user.png';
             }
 
             const message: MessageDataInterface = {
