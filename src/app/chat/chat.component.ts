@@ -518,7 +518,6 @@ export class ChatComponent implements OnInit, OnChanges {
     });
   }
 
-
   async compareIds() {
     this.messageDataService.messageData$.subscribe(
       (messages) => {
@@ -535,7 +534,7 @@ export class ChatComponent implements OnInit, OnChanges {
               }
             });
             const matches: string[] = [];
-            messages.forEach((message) => {
+            messages.forEach(() => {
               if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
                 const senderName = userIdToNameMap[this.currentUserId];
                 matches.push(this.currentUserId);

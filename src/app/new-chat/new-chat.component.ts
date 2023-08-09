@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
-import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'app-new-chat',
@@ -13,8 +12,6 @@ import { DirectMessageInterface, DirectMessageService } from '../service-moduls/
 
 export class NewChatComponent implements OnInit {
   userData: UserDataInterface[] = [];
-  messageData: MessageDataInterface[] = [];
-  chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
 
@@ -23,6 +20,7 @@ export class NewChatComponent implements OnInit {
   searchResults: UserDataInterface[] = [];
   toggleUserList: boolean = true;
 
+  selectedMessage: DirectMessageInterface | null = null;
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -40,19 +38,18 @@ export class NewChatComponent implements OnInit {
   emojisClickedBefore: number | undefined;
 
   constructor(
-    private messageDataService: MessageDataService,
     public userDataService: UserDataService,
-    private chatDataService: ChatDataService,
     private threadDataService: ThreadDataService,
     private directMessageService: DirectMessageService,
   ) {}
 
   ngOnInit(): void {
     this.getDirectChatData();
+    this.compareIds();
   }
 
   async getDirectChatData() {
-    this.directMessageService.getDirectChatData().subscribe(
+    this.directMessageService.getDirectMessageData().subscribe(
       (directMessageData: DirectMessageInterface[]) => {
         this.directMessageData = directMessageData;
         console.log("Get direct chat data", directMessageData);
@@ -95,7 +92,73 @@ export class NewChatComponent implements OnInit {
     }
   }
 
-  isNewDay(currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
+  selectMessage(messageId: any) {
+    this.selectedMessage = this.getMessageId(messageId);
+    console.log(this.selectedMessage);
+  }
+
+  getMessageId(messageId: any) {
+    return this.directMessageData.find(message => message.id === messageId) || null;
+  }
+
+  /* renderChatByChannelId(channel: string) {
+    if (channel) {
+      this.directMessageService.getDirectChatData().subscribe(
+        (messageData: DirectMessageService[]) => {
+          const messagesForChannel = messageData.filter(message => message.channel === channel);
+          if (messagesForChannel.length > 0) {
+            const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
+            console.log('Messages to Render:', sortDataAfterTime);
+            this.directMessageData = sortDataAfterTime;
+          } else {
+            console.log('No messages found:', channel); 
+            this.directMessageData = [];
+          }
+        },
+        (error) => {
+          console.error('ERROR render messages in channel:', error);
+        }
+      );
+    } else {
+      this.directMessageData = [];
+    }
+  } */
+
+  getCurrentUserId() {
+    this.currentUserId = this.userDataService.currentUser;
+  }
+
+  async compareIds() {
+    this.directMessageService.directMessageData$.subscribe(
+      (messages) => {
+
+        this.userDataService.getUserData().pipe(
+          map((userData) => userData.map(user => user.id))
+        ).subscribe(
+          (userIds: string[]) => {
+
+            const userIdToNameMap: { [id: string]: string } = {};
+            this.userData.forEach(user => {
+              if (userIds.includes(user.id)) {
+                userIdToNameMap[user.id] = user.name;
+              }
+            });
+            const matches: string[] = [];
+            messages.forEach(() => {
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
+                const senderName = userIdToNameMap[this.currentUserId];
+                matches.push(this.currentUserId);
+                this.currentUser = senderName;
+              }
+            });
+          }
+        );
+      }
+    );
+  }
+
+  isNewDay(currentMessage: DirectMessageInterface, previousMessage: DirectMessageInterface): boolean {
     if (!previousMessage) {
       return true;
     }
@@ -171,7 +234,7 @@ export class NewChatComponent implements OnInit {
   async sendMessage() {
     if (this.messageInput.length > 0) {
       const threadId = this.threadDataService.generateThreadId();
-      const message: MessageDataInterface = {
+      const message: DirectMessageInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
@@ -185,11 +248,11 @@ export class NewChatComponent implements OnInit {
         this.toggleEmojiPicker();
       }
 
-      this.messageData.push(message);
+      this.directMessageData.push(message);
       this.messageInput = [''];
 
-      this.messageDataService.sendMessage(message).subscribe(
-        (newMessage) => {
+      this.directMessageService.sendDirectMessage(message).subscribe(
+        /* (newMessage) => {
           if (newMessage && newMessage.id) {
             this.chatDataService.addMessageToChat(newMessage).subscribe();
             const index = this.messageData.findIndex((msg) => msg === message);
@@ -197,7 +260,7 @@ export class NewChatComponent implements OnInit {
               this.messageData[index].id = newMessage.id;
             }
           }
-        },
+        }, */
         (error) => {
           console.error('Error sending message:', error);
         }
@@ -212,8 +275,8 @@ export class NewChatComponent implements OnInit {
       return;
     }
     try {
-      this.messageDataService.deleteMessage(messageId);
-      this.messageData = this.messageData.filter(message => message.id !== messageId);
+      this.directMessageService.deleteDirectMessage(messageId);
+      this.directMessageData = this.directMessageData.filter(message => message.id !== messageId);
     } catch (error) {
       console.error('Error deleting message:', error);
     }
@@ -238,7 +301,7 @@ export class NewChatComponent implements OnInit {
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message, i) => {
+    this.directMessageData.forEach((i) => {
       let hideItems = document.getElementById(`reactionlist${i}`);
       hideItems?.classList.remove('show-list-of-reactions');
     });
@@ -254,9 +317,8 @@ export class NewChatComponent implements OnInit {
     this.emojipickeractive = !this.emojipickeractive;
   }
 
-
   reactWithEmoji(emoji: string, index: number, messageId: string) {
-    let emojiArray = this.messageData[index].emojis;
+    let emojiArray = this.directMessageData[index].emojis;
 
     emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
       if (emoj['reaction-from'].includes(this.userDataService.userName)) {
@@ -279,7 +341,7 @@ export class NewChatComponent implements OnInit {
 
     console.log('my Emoji Array', emojiArray);
 
-    this.messageDataService.updateMessage(messageId, emojiArray);
+    this.directMessageService.updateDirectMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
@@ -289,7 +351,7 @@ export class NewChatComponent implements OnInit {
   }
 
   existEmoji(index: number, typedEmoji: string) {
-    return this.messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
+    return this.directMessageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
     });
   }

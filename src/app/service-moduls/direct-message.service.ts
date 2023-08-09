@@ -1,13 +1,22 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, addDoc, onSnapshot, } from '@angular/fire/firestore';
+import { Firestore, collection, query, addDoc, onSnapshot, doc, deleteDoc, updateDoc, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataInterface } from './user.service';
-import { MessageDataInterface } from './message.service';
+import { UserDataService } from './user.service';
 
 export interface DirectMessageInterface {
   id?: any;
-  messages?: MessageDataInterface[]; 
-  users?: UserDataInterface[];
+  messageText: any;
+  time?: number;
+  emojis?: any;
+  thread?: any;
+  channel?: any;
+  sentBy?: string;
+  picture?: string;
+  sentById?: string;
+  mentionedUser?: string;
+  senderName?: string;
+  users?: UserDataInterface[],
 }
 
 @Injectable({
@@ -19,27 +28,52 @@ export class DirectMessageService {
   public directMessageData$: Observable<DirectMessageInterface[]> = this.directMessageDataSubject.asObservable();
 
   constructor(
-    public firestore: Firestore
+    public firestore: Firestore,
+    private userDataService: UserDataService,
   ) { }
 
-  getDirectChatData(): Observable<DirectMessageInterface[]> {
+  getDirectMessageData(): Observable<DirectMessageInterface[]> {
     const directMessageCollection = collection(this.firestore, 'directMessage');
     const q = query(directMessageCollection);
 
     return new Observable<DirectMessageInterface[]>((observer) => {
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedDirectMessageData: DirectMessageInterface[] = [];
 
-        querySnapshot.forEach((doc) => {
+        for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { users, messages } = data;
-          const directMessage: DirectMessageInterface = {
-            id: doc.id,
-            users: users,
-            messages: messages
-          };
-          storedDirectMessageData.push(directMessage);
-        });
+          const { messageText,time, thread, emojis, sentById, channel, mentionedUser } = data;
+
+          try {
+            const userData = await this.userDataService.usersDataBackend(sentById);
+            let userName: string;
+            let userPicture: string;
+
+            if (userData !== null) {
+              userName = userData['name'];
+              userPicture = userData['picture'];
+            } else {
+              userName = 'Unknown User';
+              userPicture = '/assets/profile-pictures/unknown-user.png';
+            }
+
+            const directMessage: DirectMessageInterface = {
+              id: doc.id,
+              messageText: messageText,
+              time: time,
+              thread: thread,
+              emojis: emojis,
+              channel: channel,
+              sentBy: userName,
+              picture: userPicture,
+              sentById: sentById,
+              mentionedUser: mentionedUser,
+            };
+            storedDirectMessageData.push(directMessage);
+          } catch (error) {
+            console.log('ERROR retrieving user data:', error);
+          }
+        }
 
         this.directMessageDataSubject.next(storedDirectMessageData);
         observer.next(storedDirectMessageData);
@@ -49,10 +83,37 @@ export class DirectMessageService {
     });
   }
 
+  sendDirectMessage(message: DirectMessageInterface): Observable<DirectMessageInterface> {
+    const directMessage = collection(this.firestore, 'directMessage');
+    return from(addDoc(directMessage, message)).pipe(
+      map((docRef) => {
+        const newDirectMessage: DirectMessageInterface = {
+          ...message,
+          id: docRef.id,
+        };
+        return newDirectMessage;
+      })
+    );
+  }
+
+  deleteDirectMessage(messageId: any): Observable<void> {
+    const directMessagesCollection = collection(this.firestore, 'directMessage');
+    const messageDoc = doc(directMessagesCollection, messageId);
+
+    return from(deleteDoc(messageDoc));
+  }
+
+  updateDirectMessage(messageId: any, emojiUpdate: object): Observable<void> {
+    const directMessagesCollection = collection(this.firestore, 'directMessage');
+    const directMessageDoc = doc(directMessagesCollection, messageId);
+    return from(updateDoc(directMessageDoc, { emojis: emojiUpdate }));
+  }
+
   addUserToDirectMessage(user: UserDataInterface): Observable<string> {
     const directMessageCollection = collection(this.firestore, 'directMessage');
     const newDirectMessage: DirectMessageInterface = {
-      users: [user], 
+      users: [user],
+      messageText: [],
     };
 
     return from(addDoc(directMessageCollection, newDirectMessage)).pipe(

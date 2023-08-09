@@ -18,9 +18,9 @@
         </div>
     </div>
 
-    <div class="chat-text-area" *ngIf="messageData">
-        <div *ngFor="let message of messageData; let index = index">
-            <div *ngIf="isNewDay(message, messageData[index - 1])">
+    <div class="chat-text-area" *ngIf="directMessageData">
+        <div *ngFor="let message of directMessageData; let index = index">
+            <div *ngIf="isNewDay(message, directMessageData[index - 1])">
                 <div class="parting-line"></div>
                 <div class="flex-center time-partLine">
                     <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
