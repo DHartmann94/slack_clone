@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { map } from 'rxjs';
 
 @Component({
@@ -14,11 +15,15 @@ export class NewChatComponent implements OnInit {
   userData: UserDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
 
   channelId: string = "";
-  inviteUserOrChannel!: string;
-  searchResults: UserDataInterface[] = [];
+  inviteUserOrChannel: string = '';
+  
+  searchResultsUsers: UserDataInterface[] = [];
+  searchResultsChannels: ChannelDataInterface[] = [];
   toggleUserList: boolean = true;
+  toggleChannelList: boolean = true;
 
   selectedMessage: DirectMessageInterface | null = null;
 
@@ -41,11 +46,14 @@ export class NewChatComponent implements OnInit {
     public userDataService: UserDataService,
     private threadDataService: ThreadDataService,
     private directMessageService: DirectMessageService,
+    private channelDataService: ChannelDataService,
   ) {}
 
   ngOnInit(): void {
     this.getDirectChatData();
+    this.getChannelData();
     this.compareIds();
+    this.getCurrentUserId();
   }
 
   async getDirectChatData() {
@@ -60,28 +68,59 @@ export class NewChatComponent implements OnInit {
     );
   }
 
+  async getChannelData() {
+    this.channelDataService.getChannelData().subscribe(
+      channelData => {
+        this.channelData = channelData;
+        console.log('Subscribed data channels:', channelData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+  }
+
   searchUsers(): void {
     if (this.inviteUserOrChannel) {
       const searchBy = this.inviteUserOrChannel.toLowerCase();
 
       if (searchBy.startsWith('@')) {
         const userName = searchBy.substr(1);
-        this.searchResults = this.userDataService.userData.filter(user =>
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.name.toLowerCase().includes(userName)
         );
+      } else if (searchBy.startsWith('#')) {
+        const channelName = searchBy.substr(1);
+        this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+          channel.channelName.toLowerCase().includes(channelName)
+        );
       } else {
-        this.searchResults = this.userDataService.userData.filter(user =>
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
         );
       }
     } else {
-      this.searchResults = [];
+      this.searchResultsUsers = [];
+      this.searchResultsChannels = [];
     }
   }
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
       this.directMessageService.addUserToDirectMessage(user).subscribe(
+        (docId) => {
+          console.log('User added to the chat with ID:', docId);
+        },
+        (error) => {
+          console.error('Error adding user to the chat:', error);
+        }
+      );
+    }
+  }
+
+  inviteChannel(channel: ChannelDataInterface):void {
+    if (channel) {
+      this.directMessageService.addChannelToDirectMessage(channel).subscribe(
         (docId) => {
           console.log('User added to the chat with ID:', docId);
         },
@@ -204,7 +243,7 @@ export class NewChatComponent implements OnInit {
     }
 
     return messageDate.toLocaleDateString('en-US', {
-      year: 'numeric', // Change to 'numeric' to display all four digits of the year
+      year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
@@ -251,20 +290,7 @@ export class NewChatComponent implements OnInit {
       this.directMessageData.push(message);
       this.messageInput = [''];
 
-      this.directMessageService.sendDirectMessage(message).subscribe(
-        /* (newMessage) => {
-          if (newMessage && newMessage.id) {
-            this.chatDataService.addMessageToChat(newMessage).subscribe();
-            const index = this.messageData.findIndex((msg) => msg === message);
-            if (index !== -1) {
-              this.messageData[index].id = newMessage.id;
-            }
-          }
-        }, */
-        (error) => {
-          console.error('Error sending message:', error);
-        }
-      );
+      this.directMessageService.sendDirectMessage(message).subscribe();
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }

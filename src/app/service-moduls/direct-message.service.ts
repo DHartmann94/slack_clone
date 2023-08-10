@@ -3,6 +3,7 @@ import { Firestore, collection, query, addDoc, onSnapshot, doc, deleteDoc, updat
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataInterface } from './user.service';
 import { UserDataService } from './user.service';
+import { ChannelDataInterface } from './channel.service';
 
 export interface DirectMessageInterface {
   id?: any;
@@ -113,6 +114,20 @@ export class DirectMessageService {
     const directMessageCollection = collection(this.firestore, 'directMessage');
     const newDirectMessage: DirectMessageInterface = {
       users: [user],
+      messageText: [],
+    };
+
+    return from(addDoc(directMessageCollection, newDirectMessage)).pipe(
+      map((docRef) => {
+        return docRef.id;
+      })
+    );
+  }
+
+  addChannelToDirectMessage(channel: ChannelDataInterface): Observable<string> {
+    const directMessageCollection = collection(this.firestore, 'directMessage');
+    const newDirectMessage: DirectMessageInterface = {
+      channel: [channel],
       messageText: [],
     };
 
