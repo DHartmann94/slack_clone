@@ -3,7 +3,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
-import { map } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-new-chat',
@@ -80,18 +80,18 @@ export class NewChatComponent implements OnInit {
     );
   }
 
-  searchUsers(): void {
+  filterUsers(): void {
     if (this.inviteUserOrChannel) {
       const searchBy = this.inviteUserOrChannel.toLowerCase();
-
       if (searchBy.startsWith('@')) {
         const userName = searchBy.substr(1);
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.name.toLowerCase().includes(userName)
         );
-      } else if (searchBy.startsWith('#')) {
-        const channelName = searchBy.substr(1);
-        this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
+        const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+        this.searchResultsChannels = this.channelData;
+        const matchedChannels = this.channelDataService.channelData.filter(channel =>
           channel.channelName.toLowerCase().includes(channelName)
         );
       } else {
@@ -122,7 +122,7 @@ export class NewChatComponent implements OnInit {
     if (channel) {
       this.directMessageService.addChannelToDirectMessage(channel).subscribe(
         (docId) => {
-          console.log('User added to the chat with ID:', docId);
+          console.log('User added to the chat form a channel with ID:', docId);
         },
         (error) => {
           console.error('Error adding user to the chat:', error);
