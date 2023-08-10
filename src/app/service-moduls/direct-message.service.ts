@@ -7,7 +7,7 @@ import { ChannelDataInterface } from './channel.service';
 
 export interface DirectMessageInterface {
   id?: any;
-  messageText: any;
+  messageText?: any;
   time?: number;
   emojis?: any;
   thread?: any;
@@ -114,7 +114,6 @@ export class DirectMessageService {
     const directMessageCollection = collection(this.firestore, 'directMessage');
     const newDirectMessage: DirectMessageInterface = {
       users: [user],
-      messageText: [],
     };
 
     return from(addDoc(directMessageCollection, newDirectMessage)).pipe(
@@ -128,7 +127,6 @@ export class DirectMessageService {
     const directMessageCollection = collection(this.firestore, 'directMessage');
     const newDirectMessage: DirectMessageInterface = {
       channel: [channel],
-      messageText: [],
     };
 
     return from(addDoc(directMessageCollection, newDirectMessage)).pipe(

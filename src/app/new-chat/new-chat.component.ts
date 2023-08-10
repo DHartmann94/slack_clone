@@ -94,6 +94,8 @@ export class NewChatComponent implements OnInit {
         const matchedChannels = this.channelDataService.channelData.filter(channel =>
           channel.channelName.toLowerCase().includes(channelName)
         );
+        this.searchResultsChannels = matchedChannels;
+        console.log("A chhanel is selected", this.searchResultsChannels);
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
