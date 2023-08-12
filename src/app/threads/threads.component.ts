@@ -1,15 +1,15 @@
-import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
-import {Observable, Subscription} from "rxjs";
-import {ChannelDataInterface, ChannelDataService} from "../service-moduls/channel.service";
-import {UserDataInterface, UserDataService} from "../service-moduls/user.service";
-import {ChatDataInterface, ChatDataService} from "../service-moduls/chat.service";
-import {MessageDataInterface, MessageDataService} from "../service-moduls/message.service";
-import {map} from "rxjs/operators";
-import {ChannelDataResolverService} from "../service-moduls/channel-data-resolver.service";
-import {ChatBehaviorService} from "../service-moduls/chat-behavior.service";
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {ThreadDataInterface, ThreadDataService} from "../service-moduls/thread.service";
-import {collection, doc, Firestore, getDoc, updateDoc} from "@angular/fire/firestore";
+import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
+import { ChannelDataInterface, ChannelDataService } from "../service-moduls/channel.service";
+import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
+import { ChatDataInterface, ChatDataService } from "../service-moduls/chat.service";
+import { MessageDataInterface, MessageDataService } from "../service-moduls/message.service";
+import { map } from "rxjs/operators";
+import { ChannelDataResolverService } from "../service-moduls/channel-data-resolver.service";
+import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
+import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
+import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 
 @Component({
   selector: 'app-threads',
@@ -18,9 +18,6 @@ import {collection, doc, Firestore, getDoc, updateDoc} from "@angular/fire/fires
 })
 export class ThreadsComponent implements OnInit, OnChanges {
   private threadUpdateSubscription: Subscription = new Subscription();
-
-  closeFiller: boolean = true;
-
 
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
@@ -66,28 +63,29 @@ export class ThreadsComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
- /*  private crudTriggeredSubscription: Subscription; */
+  /*  private crudTriggeredSubscription: Subscription; */
   triggerCRUDHTML: boolean = true;
+  loading: boolean = false;
 
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
 
 
   constructor(
-      private messageDataService: MessageDataService,
-      public userDataService: UserDataService,
-      private channelDataService: ChannelDataService,
-      private channelDataResolver: ChannelDataResolverService,
-      private chatDataService: ChatDataService,
-      private chatBehavior: ChatBehaviorService,
-      private fbChannelName: FormBuilder,
-      private fbChannelDescription: FormBuilder,
-      private threadDataService: ThreadDataService,
-      private firestore: Firestore,
+    private messageDataService: MessageDataService,
+    public userDataService: UserDataService,
+    private channelDataService: ChannelDataService,
+    private channelDataResolver: ChannelDataResolverService,
+    private chatDataService: ChatDataService,
+    private chatBehavior: ChatBehaviorService,
+    private fbChannelName: FormBuilder,
+    private fbChannelDescription: FormBuilder,
+    private threadDataService: ThreadDataService,
+    private firestore: Firestore,
   ) {
-   /*  this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.performCRUD();
-    }); */
+    /*  this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+       this.performCRUD();
+     }); */
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -101,17 +99,23 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.channelDescription = this.fbChannelDescription.group({
       channelDescription: ['', [Validators.required]],
     });
-   /*  this.getMessageData();
-    this.getDataFromChannel();
-    this.getUserData();
-    this.getDirectChatData();
     this.getCurrentUserId();
-    this.compareIds();
-    this.deleteUserFromChannel();
-    this.getThreadData(); */
+    /*  this.getMessageData();
+        this.getDataFromChannel();
+     this.getUserData();
+     this.getDirectChatData();
+     this.compareIds();
+     this.deleteUserFromChannel();
+     this.getThreadData(); */
 
-    this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(() => {
-      this.renderChatByThreadId();
+    this.startThread();
+
+  }
+
+  async startThread() {
+    this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(async () => {
+      await this.renderChatByThreadId();
+      //await this.getChannelData();
     });
   }
 
@@ -130,8 +134,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render in Thread:', sortDataAfterTime);
             this.threadData = sortDataAfterTime;
+
+            this.getChannelData();
           } else {
-            console.log('No messages found in Thread:', this.threadDataService.threadId); 
+            console.log('No messages found in Thread:', this.threadDataService.threadId);
             this.threadData = [];
           }
         },
@@ -144,84 +150,90 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
- /*  async getUserData() {
-    this.userDataService.getUserData().subscribe(
-        (userData: UserDataInterface[]) => {
-          this.userData = userData; // Store all users in the component's userData array
-          this.userList = userData.map(user => user.name);
-          console.log('Subscribed data users:', userData);
-        },
-        (error) => {
-          console.error('Error retrieving user data:', error);
-        }
-    );
+  async getChannelData() {
+    console.log(this.threadData[0].channel);
+    this.processChannelData(this.threadData[0].channel);
   }
+
+  /*  async getUserData() {
+     this.userDataService.getUserData().subscribe(
+         (userData: UserDataInterface[]) => {
+           this.userData = userData; // Store all users in the component's userData array
+           this.userList = userData.map(user => user.name);
+           console.log('Subscribed data users:', userData);
+         },
+         (error) => {
+           console.error('Error retrieving user data:', error);
+         }
+     );
+   }
 
   async getDataFromChannel(): Promise<void> {
     this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
-        map((data: ChannelDataInterface | null) => {
-          if (data && data.id) {
-            this.processChannelData(data.id);
-          }
-          console.log("Data from channel", data);
-          return data;
-        })
-    );
-  }
-
-  async getMessageData() {
-    this.messageDataService.getMessageData().subscribe(
-        (messageData) => {
-          const filteredData = messageData.filter(
-              (message) => message.time !== undefined && message.time !== null
-          );
-          this.messageData = filteredData.sort((a, b) =>
-              a.time! > b.time! ? 1 : -1
-          );
-          console.log('Subscribed data messages:', messageData);
-        },
-        (error) => {
-          console.error('Error retrieving messages data:', error);
+      map((data: ChannelDataInterface | null) => {
+        if (data && data.id) {
+          this.processChannelData(data.id);
         }
+        console.log("Data from channel", data);
+        return data;
+      })
     );
   }
 
-  async getDirectChatData() {
-    this.directChatService.getDirectChatData().subscribe(
-        (directChatData: DirectChatInterface[]) => {
-          this.directChatData = directChatData;
-          console.log("Get direct chat data", directChatData);
-        },
-        (error) => {
-          console.error('Error fetching direct chat data:', error);
-        }
-    );
-  }
+  /* async getMessageData() {
+     this.messageDataService.getMessageData().subscribe(
+         (messageData) => {
+           const filteredData = messageData.filter(
+               (message) => message.time !== undefined && message.time !== null
+           );
+           this.messageData = filteredData.sort((a, b) =>
+               a.time! > b.time! ? 1 : -1
+           );
+           console.log('Subscribed data messages:', messageData);
+         },
+         (error) => {
+           console.error('Error retrieving messages data:', error);
+         }
+     );
+   }
+ 
+   async getDirectChatData() {
+     this.directChatService.getDirectChatData().subscribe(
+         (directChatData: DirectChatInterface[]) => {
+           this.directChatData = directChatData;
+           console.log("Get direct chat data", directChatData);
+         },
+         (error) => {
+           console.error('Error fetching direct chat data:', error);
+         }
+     );
+   }
+ 
+   async getThreadData() {
+     this.threadDataService.getThreadData().subscribe(
+         (threadData: ThreadDataInterface[]) => {
+           this.threadData = threadData;
+           console.log("Get thread data", threadData);
+         },
+         (error) => {
+           console.error('Error fetching thread data:', error);
+         }
+     );
+   }
+ 
+   selectMessage(messageId: any) {
+     this.selectedMessage = this.getMessageId(messageId);
+     console.log(this.selectedMessage);
+   }
 
-  async getThreadData() {
-    this.threadDataService.getThreadData().subscribe(
-        (threadData: ThreadDataInterface[]) => {
-          this.threadData = threadData;
-          console.log("Get thread data", threadData);
-        },
-        (error) => {
-          console.error('Error fetching thread data:', error);
-        }
-    );
-  }
-
-  performCRUD() {
+      performCRUD() {
     this.triggerCRUDHTML = !this.triggerCRUDHTML;
   }
+ 
+   getMessageId(messageId: any) {
+     return this.messageData.find(message => message.id === messageId) || null;
+   }*/
 
-  selectMessage(messageId: any) {
-    this.selectedMessage = this.getMessageId(messageId);
-    console.log(this.selectedMessage);
-  }
-
-  getMessageId(messageId: any) {
-    return this.messageData.find(message => message.id === messageId) || null;
-  }
 
   processChannelData(channelId: string) {
     this.channelId = channelId;
@@ -230,23 +242,24 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   renderChatByChannelId(channel: string) {
-    if (channel && this.receivedChannelData$) {
+    if (channel) {
       console.log(channel);
-      this.chatDataService.getChatData().subscribe(
-          (chatData: ChatDataInterface[]) => {
-            this.chatData = chatData.filter((chatItem) => chatItem.id === channel);
-            console.log("The filterd channel id", this.chatData);
-            console.log("Get chat data", chatData);
-          },
-          (error) => {
-            console.error('Error direct chat data:', error);
-          }
+      this.channelDataService.getChannelData().subscribe(
+        (channelData: ChannelDataInterface[]) => {
+          const filterChannel = channelData.filter((channelItem) => channelItem.id === channel);
+          this.channelData = filterChannel;
+          this.loading = true;
+          console.log("The filterd channel id in THREAD", this.channelData);
+        },
+        (error) => {
+          console.error('Error THREAD chat data:', error);
+        }
       );
     } else {
-      this.chatData = [];
+      this.channelData = [];
     }
   }
- */
+
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
   }
@@ -289,8 +302,8 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   isNewDay(
-      currentMessage: MessageDataInterface,
-      previousMessage: MessageDataInterface
+    currentMessage: MessageDataInterface,
+    previousMessage: MessageDataInterface
   ): boolean {
     if (!previousMessage) {
       return true;
@@ -306,24 +319,23 @@ export class ThreadsComponent implements OnInit, OnChanges {
     yesterday.setDate(today.getDate() - 1);
 
     return (
-        currentDate.getFullYear() !== previousDate.getFullYear() ||
-        currentDate.getMonth() !== previousDate.getMonth() ||
-        currentDate.getDate() !== previousDate.getDate() ||
-        currentDate.getTime() === today.getTime() ||
-        currentDate.getTime() === yesterday.getTime()
+      currentDate.getFullYear() !== previousDate.getFullYear() ||
+      currentDate.getMonth() !== previousDate.getMonth() ||
+      currentDate.getDate() !== previousDate.getDate() ||
+      currentDate.getTime() === today.getTime() ||
+      currentDate.getTime() === yesterday.getTime()
     );
   }
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
-      const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
-        thread: threadId,
-        channel: this.channelId,
+        thread: this.threadDataService.threadId,
+        channel: 'Thread Message',
         mentionedUser: 'user_id_here',
       };
 
@@ -335,17 +347,17 @@ export class ThreadsComponent implements OnInit, OnChanges {
       this.messageInput = [''];
 
       this.messageDataService.sendMessage(message).subscribe(
-          (newMessage) => {
-            if (newMessage && newMessage.id) {
-              const index = this.messageData.findIndex((msg) => msg === message);
-              if (index !== -1) {
-                this.messageData[index].id = newMessage.id;
-              }
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.messageData.findIndex((msg) => msg === message);
+            if (index !== -1) {
+              this.messageData[index].id = newMessage.id;
             }
-          },
-          (error) => {
-            console.error('Error sending message:', error);
           }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
       );
       this.chatDataService.addMessageToChat(message).subscribe();
     } else {
@@ -357,14 +369,14 @@ export class ThreadsComponent implements OnInit, OnChanges {
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
-          ?.classList.remove('showEmojis');
+        .getElementById(`reaction${this.emojisClickedBefore}`)
+        ?.classList.remove('showEmojis');
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
         document
-            .getElementById(`reaction${this.emojisClickedBefore}`)
-            ?.classList.remove('showEmojis');
+          .getElementById(`reaction${this.emojisClickedBefore}`)
+          ?.classList.remove('showEmojis');
       }
       document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
       this.emojisClickedBefore = index;
@@ -375,9 +387,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
     let emojiArray = this.messageData[index].emojis;
     if (this.existReaction(index)) {
       let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = {'emoji': emoji, 'reaction-from': this.currentUser};
+      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
     } else {
-      emojiArray.push({'emoji': emoji, 'reaction-from': this.currentUser});
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
     }
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
@@ -451,15 +463,15 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
       this.currentChannelData.channelName = newChannelName;
       this.channelDataService
-          .sendChannelData(this.currentChannelData)
-          .subscribe(
-              () => {
-                console.log('Channel name updated successfully.');
-              },
-              (error) => {
-                console.error('Error updating channel name:', error);
-              }
-          );
+        .sendChannelData(this.currentChannelData)
+        .subscribe(
+          () => {
+            console.log('Channel name updated successfully.');
+          },
+          (error) => {
+            console.error('Error updating channel name:', error);
+          }
+        );
       this.channelName.reset();
       this.editChannelName = false;
     }
@@ -470,12 +482,12 @@ export class ThreadsComponent implements OnInit, OnChanges {
       const newChannelDescription: string = this.channelDescription.value.channelDescription;
       this.currentChannelData.channelDescription = newChannelDescription;
       this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
-          () => {
-            console.log('Channel description updated successfully.');
-          },
-          (error) => {
-            console.error('Error updating channel name:', error);
-          }
+        () => {
+          console.log('Channel description updated successfully.');
+        },
+        (error) => {
+          console.error('Error updating channel name:', error);
+        }
       );
       this.channelDescription.reset();
       this.editChannelDescription = false;
@@ -529,30 +541,30 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   async compareIds() {
     this.messageDataService.messageData$.subscribe(
-        (messages) => {
+      (messages) => {
 
-          this.userDataService.getUserData().pipe(
-              map((userData) => userData.map(user => user.id))
-          ).subscribe(
-              (userIds: string[]) => {
+        this.userDataService.getUserData().pipe(
+          map((userData) => userData.map(user => user.id))
+        ).subscribe(
+          (userIds: string[]) => {
 
-                const userIdToNameMap: { [id: string]: string } = {};
-                this.userData.forEach(user => {
-                  if (userIds.includes(user.id)) {
-                    userIdToNameMap[user.id] = user.name;
-                  }
-                });
-                const matches: string[] = [];
-                messages.forEach((message) => {
-                  if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
-                    const senderName = userIdToNameMap[this.currentUserId];
-                    matches.push(this.currentUserId);
-                    this.currentUser = senderName;
-                  }
-                });
+            const userIdToNameMap: { [id: string]: string } = {};
+            this.userData.forEach(user => {
+              if (userIds.includes(user.id)) {
+                userIdToNameMap[user.id] = user.name;
               }
-          );
-        }
+            });
+            const matches: string[] = [];
+            messages.forEach((message) => {
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
+                const senderName = userIdToNameMap[this.currentUserId];
+                matches.push(this.currentUserId);
+                this.currentUser = senderName;
+              }
+            });
+          }
+        );
+      }
     );
   }
 
@@ -569,6 +581,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   close() {
-    this.closeFiller = false;
+    this.loading = false;
+    this.threadDataService.threadOpen = false;
   }
 }

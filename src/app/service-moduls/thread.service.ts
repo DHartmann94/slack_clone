@@ -23,6 +23,8 @@ export interface ThreadDataInterface {
   sentBy?: string;
   picture?: string;
   sentById?: string;
+  mentionedUser?: string;
+  senderName?: string;
 }
 
 @Injectable({
@@ -33,6 +35,7 @@ export class ThreadDataService {
   public threadData: Observable<ThreadDataInterface[]> = this.threadDataSubject$.asObservable();
 
   threadId: string = '';
+  threadOpen: boolean = false;
   private threadUpdateSubject = new Subject<void>();
 
   get threadUpdate$() {
@@ -220,8 +223,12 @@ export class ThreadDataService {
   }
 
   setThreadId(threadID: string) {
-    this.threadId = threadID;
-    this.triggerThreadUpdate();
+    this.threadOpen = true;
+    setTimeout(() => {
+      this.threadId = threadID;
+      this.triggerThreadUpdate();
+    }, 100);
+
   }
 
 }

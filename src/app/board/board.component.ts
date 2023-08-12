@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ThreadDataInterface, ThreadDataService} from "../service-moduls/thread.service";
 
 @Component({
   selector: 'app-board',
@@ -7,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class BoardComponent implements OnInit {
-  constructor(
   
-  ) { }
+
+  constructor(public threadDataService: ThreadDataService,) { }
 
   ngOnInit(): void {
     
