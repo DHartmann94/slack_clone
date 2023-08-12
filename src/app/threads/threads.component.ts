@@ -111,7 +111,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.getThreadData(); */
 
     this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(() => {
-      this.loadDataFromThread();
+      this.renderChatByThreadId();
     });
   }
 
@@ -120,8 +120,28 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.threadUpdateSubscription.unsubscribe();
   }
 
-  loadDataFromThread() {
-    console.log('loadDataFromThread');
+  async renderChatByThreadId() {
+    if (this.threadDataService.threadId) {
+      this.threadDataService.getThreadData().subscribe(
+        (threadData: ThreadDataInterface[]) => {
+          const messagesForChannel = threadData.filter(message => message.thread === this.threadDataService.threadId);
+          if (messagesForChannel.length > 0) {
+            const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
+            console.log('Messages to Render in Thread:', sortDataAfterTime);
+            this.threadData = sortDataAfterTime;
+          } else {
+            console.log('No messages found in Thread:', this.threadDataService.threadId); 
+            this.threadData = [];
+          }
+        },
+        (error) => {
+          console.error('ERROR render messages in Thread:', error);
+        }
+      );
+    } else {
+      this.threadData = [];
+    }
   }
 
  /*  async getUserData() {

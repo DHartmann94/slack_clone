@@ -559,7 +559,8 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  openThread(messageId: string) {
-    this.threadDataService.checkThreadMessage(messageId);
+  openThread(threadID: string) {
+    //this.threadDataService.checkThreadMessage(messageId);
+    this.threadDataService.setThreadId(threadID);
   }
 }

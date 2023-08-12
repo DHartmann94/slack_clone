@@ -32,6 +32,7 @@ export class ThreadDataService {
   private threadDataSubject$: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
   public threadData: Observable<ThreadDataInterface[]> = this.threadDataSubject$.asObservable();
 
+  threadId: string = '';
   private threadUpdateSubject = new Subject<void>();
 
   get threadUpdate$() {
@@ -169,7 +170,7 @@ export class ThreadDataService {
   }
 
   getThreadData(): Observable<ThreadDataInterface[]> {
-    const threadCollection = collection(this.firestore, 'threads');
+    const threadCollection = collection(this.firestore, 'messages');
     const q = query(threadCollection);
 
     return new Observable<ThreadDataInterface[]>((observer) => {
@@ -217,4 +218,10 @@ export class ThreadDataService {
       return () => unsubscribe();
     });
   }
+
+  setThreadId(threadID: string) {
+    this.threadId = threadID;
+    this.triggerThreadUpdate();
+  }
+
 }
