@@ -32,7 +32,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
-  chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
   /// new multiple selection option for mention users
@@ -154,86 +153,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     console.log(this.threadData[0].channel);
     this.processChannelData(this.threadData[0].channel);
   }
-
-  /*  async getUserData() {
-     this.userDataService.getUserData().subscribe(
-         (userData: UserDataInterface[]) => {
-           this.userData = userData; // Store all users in the component's userData array
-           this.userList = userData.map(user => user.name);
-           console.log('Subscribed data users:', userData);
-         },
-         (error) => {
-           console.error('Error retrieving user data:', error);
-         }
-     );
-   }
-
-  async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
-      map((data: ChannelDataInterface | null) => {
-        if (data && data.id) {
-          this.processChannelData(data.id);
-        }
-        console.log("Data from channel", data);
-        return data;
-      })
-    );
-  }
-
-  /* async getMessageData() {
-     this.messageDataService.getMessageData().subscribe(
-         (messageData) => {
-           const filteredData = messageData.filter(
-               (message) => message.time !== undefined && message.time !== null
-           );
-           this.messageData = filteredData.sort((a, b) =>
-               a.time! > b.time! ? 1 : -1
-           );
-           console.log('Subscribed data messages:', messageData);
-         },
-         (error) => {
-           console.error('Error retrieving messages data:', error);
-         }
-     );
-   }
- 
-   async getDirectChatData() {
-     this.directChatService.getDirectChatData().subscribe(
-         (directChatData: DirectChatInterface[]) => {
-           this.directChatData = directChatData;
-           console.log("Get direct chat data", directChatData);
-         },
-         (error) => {
-           console.error('Error fetching direct chat data:', error);
-         }
-     );
-   }
- 
-   async getThreadData() {
-     this.threadDataService.getThreadData().subscribe(
-         (threadData: ThreadDataInterface[]) => {
-           this.threadData = threadData;
-           console.log("Get thread data", threadData);
-         },
-         (error) => {
-           console.error('Error fetching thread data:', error);
-         }
-     );
-   }
- 
-   selectMessage(messageId: any) {
-     this.selectedMessage = this.getMessageId(messageId);
-     console.log(this.selectedMessage);
-   }
-
-      performCRUD() {
-    this.triggerCRUDHTML = !this.triggerCRUDHTML;
-  }
- 
-   getMessageId(messageId: any) {
-     return this.messageData.find(message => message.id === messageId) || null;
-   }*/
-
 
   processChannelData(channelId: string) {
     this.channelId = channelId;
@@ -403,7 +322,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     });
   }
 
-
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
     this.messageData.forEach((message, i) => {
@@ -417,8 +335,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
       this.reactionListOpen = false;
     }
   }
-
-  //***** */
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
