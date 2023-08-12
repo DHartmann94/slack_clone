@@ -560,9 +560,6 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   openThread(messageId: string) {
-    // Eine globale variable mit einer ID befüllen. (Um zu verhindern das eine neue Thread Id beim senden der message entsteht!)
-    // Zweites Textfeld holt sich die globale Variable.
-
-    //this.threadDataService.openThread(messageId);
+    this.threadDataService.checkThreadMessage(messageId);
   }
 }

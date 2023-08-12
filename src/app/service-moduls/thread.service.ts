@@ -1,16 +1,28 @@
 import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, updateDoc, doc, getDoc, setDoc, } from '@angular/fire/firestore';
-import { Observable, from, map, BehaviorSubject, Subscription } from 'rxjs';
-import { UserDataInterface } from './user.service';
+import { Observable, from, map, BehaviorSubject, Subscription, Subject } from 'rxjs';
+import { UserDataInterface, UserDataService } from './user.service';
 import { MessageDataInterface } from './message.service';
 import { ChatDataInterface } from './chat.service';
 
 
-export interface ThreadDataInterface {
+/*export interface ThreadDataInterface {
   id: any;
   users?: UserDataInterface[];
   messages?: MessageDataInterface[];
   chats: ChatDataInterface[];
+}*/
+
+export interface ThreadDataInterface {
+  id?: any;
+  messageText: any;
+  time?: number;
+  emojis?: any;
+  thread?: any;
+  channel?: any;
+  sentBy?: string;
+  picture?: string;
+  sentById?: string;
 }
 
 @Injectable({
@@ -20,7 +32,17 @@ export class ThreadDataService {
   private threadDataSubject$: BehaviorSubject<ThreadDataInterface[]> = new BehaviorSubject<ThreadDataInterface[]>([]);
   public threadData: Observable<ThreadDataInterface[]> = this.threadDataSubject$.asObservable();
 
-  constructor(public firestore: Firestore) { }
+  private threadUpdateSubject = new Subject<void>();
+
+  get threadUpdate$() {
+    return this.threadUpdateSubject.asObservable();
+  }
+
+  triggerThreadUpdate() {
+    this.threadUpdateSubject.next();
+  }
+
+  constructor(public firestore: Firestore, private userDataService: UserDataService,) { }
 
   /*async openThread(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
@@ -47,19 +69,7 @@ export class ThreadDataService {
     }
   }*/
 
-  generateThreadId() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let id = '';
-
-    for (let i = 0; i < 20; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      id += characters.charAt(randomIndex);
-    }
-
-    return id;
-  }
-
-  getThreadData(): Observable<ThreadDataInterface[]> {
+  /*getThreadData(): Observable<ThreadDataInterface[]> {
     const threadCollection = collection(this.firestore, 'threads');
     const q = query(threadCollection);
 
@@ -85,9 +95,21 @@ export class ThreadDataService {
 
       return () => unsubscribe();
     });
-  }
+  }*/
 
-  /*async openThread(messageId: string) { // TEST Daniel!!!
+  generateThreadId() {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+
+    for (let i = 0; i < 20; i++) {
+      const randomIndex = Math.floor(Math.random() * characters.length);
+      id += characters.charAt(randomIndex);
+    }
+
+    return id;
+  }
+  /* --- Daniel Test --- */
+  async checkThreadMessage(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
     const docSnap = await getDoc(docRef);
     const messageData = docSnap.data();
@@ -112,6 +134,8 @@ export class ThreadDataService {
         } else {
           await this.newThreadData(newThreadData);
         }
+
+        this.triggerThreadUpdate();
       }
     }
   }
@@ -121,8 +145,8 @@ export class ThreadDataService {
       id: docSnapFromMeesage.id,
       messageText: messageData['messageText'],
       time: messageData['time'],
-      thread: messageData['thread'],
       emojis: messageData['emojis'],
+      thread: messageData['thread'],
       channel: messageData['channel'],
       sentById: messageData['sentById'],
     };
@@ -142,9 +166,9 @@ export class ThreadDataService {
     console.log('New Thread', newThreadData);
     const threadCollectionRef = collection(this.firestore, 'threads');
     await addDoc(threadCollectionRef, newThreadData);
-  }*/
+  }
 
-  /*getThreadData(): Observable<ThreadDataInterface[]> { // TEST Daniel!!!
+  getThreadData(): Observable<ThreadDataInterface[]> {
     const threadCollection = collection(this.firestore, 'threads');
     const q = query(threadCollection);
 
@@ -154,7 +178,7 @@ export class ThreadDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText,time, thread, emojis, sentById, channel } = data;
+          const { messageText, time, thread, emojis, sentById, channel } = data;
 
           try {
             const userData = await this.userDataService.usersDataBackend(sentById);
@@ -173,8 +197,8 @@ export class ThreadDataService {
               id: doc.id,
               messageText: messageText,
               time: time,
-              thread: thread,
               emojis: emojis,
+              thread: thread,
               channel: channel,
               sentBy: userName,
               picture: userPicture,
@@ -192,5 +216,5 @@ export class ThreadDataService {
 
       return () => unsubscribe();
     });
-  }*/
+  }
 }

@@ -17,6 +17,7 @@ import {collection, doc, Firestore, getDoc, updateDoc} from "@angular/fire/fires
   styleUrls: ['./threads.component.scss']
 })
 export class ThreadsComponent implements OnInit, OnChanges {
+  private threadUpdateSubscription: Subscription = new Subscription();
 
   closeFiller: boolean = true;
 
@@ -108,10 +109,19 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData(); */
+
+    this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(() => {
+      this.loadDataFromThread();
+    });
   }
 
   ngOnDestroy() {
     /* this.crudTriggeredSubscription.unsubscribe(); */
+    this.threadUpdateSubscription.unsubscribe();
+  }
+
+  loadDataFromThread() {
+    console.log('loadDataFromThread');
   }
 
  /*  async getUserData() {
