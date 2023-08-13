@@ -21,6 +21,7 @@ export class HeaderBarComponent {
   emailExists: boolean = false;
   usernameExists: boolean = false;
   submitted: boolean = false;
+  showSlideInNotification: boolean = false;
   selectedPictureIndex: number | null = null;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
@@ -116,6 +117,7 @@ export class HeaderBarComponent {
     await this.changeFirebase(name, 'name');
     this.userDataService.getCurrentUserData(this.userDataService.currentUser);
 
+    this.showsNotificationAnimation();
     this.resetForm();
   }
 
@@ -156,6 +158,8 @@ export class HeaderBarComponent {
     await this.authentication.changeMail(email, password);
     await this.changeFirebase(email, 'email');
     this.userDataService.getCurrentUserData(this.userDataService.currentUser);
+
+    this.showsNotificationAnimation();
     this.resetForm();
   }
 
@@ -224,6 +228,13 @@ export class HeaderBarComponent {
 
   closeProfilePictureContainer() {
     this.isProfilePictureContainerOpen = false;
+  }
+
+  showsNotificationAnimation() {
+    this.showSlideInNotification = true;
+    setTimeout(() => {
+      this.showSlideInNotification = false;
+    }, 3000);
   }
 
   /**

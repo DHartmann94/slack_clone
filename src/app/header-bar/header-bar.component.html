@@ -98,7 +98,8 @@
                     <input formControlName="name" matInput placeholder="Full Name"
                         [ngClass]="{'error-border': editNameForm.controls['name'].invalid && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched) || usernameExists}">
                     <div class="error-parent">
-                        <div class="error-notification" *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
+                        <div class="error-notification"
+                            *ngIf="editNameForm.controls['name'].errors && (editNameForm.controls['name'].dirty || editNameForm.controls['name'].touched)">
                             <!--- minlength / maxlenght --->
                             <mat-error *ngIf="editNameForm.controls['name'].errors['minlength']
                             || editNameForm.controls['name'].errors['maxlength']
@@ -109,8 +110,8 @@
                             && editNameForm.controls['name'].touched">
                                 Enter your first AND last name. Only letters allowed.</mat-error>
                         </div>
-                                             <!--- name-function --->
-                    <mat-error *ngIf="usernameExists" class="error-notification">Name already exists.</mat-error>
+                        <!--- name-function --->
+                        <mat-error *ngIf="usernameExists" class="error-notification">Name already exists.</mat-error>
                     </div>
                 </form>
                 <form class="email-form" [formGroup]="editMailForm">
@@ -127,12 +128,12 @@
                             <mat-error *ngIf="editMailForm.controls['email'].invalid">
                                 Please enter a valid email-address.</mat-error>
                         </div>
-                    <!--- email-function --->
-                    <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
+                        <!--- email-function --->
+                        <mat-error *ngIf="emailExists" class="error-notification">Email already exists.</mat-error>
                     </div>
                     <!--- password --->
                     <input formControlName="password" type="password" matInput placeholder="Confirm with Password"
-                    [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (submitted || editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
+                        [ngClass]="{'error-border': editMailForm.controls['password'].invalid && (submitted || editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)}">
                     <div class="error-parent">
                         <div *ngIf="editMailForm.controls['password'].errors && (submitted ||editMailForm.controls['password'].dirty || editMailForm.controls['password'].touched)"
                             class="error-notification">
@@ -172,4 +173,11 @@
         </div>
 
     </section>
+
+    <div *ngIf="showSlideInNotification" [class.slide-in-animation]="showSlideInNotification"
+    class="slide-in-container" #viewAnimation>
+    <div>
+        <span>Name or e-Mail changed.</span>
+    </div>
+</div>
 </div>
