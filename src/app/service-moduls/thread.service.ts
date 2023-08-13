@@ -112,8 +112,8 @@ export class ThreadDataService {
 
     return id;
   }
-  /* --- Daniel Test --- */
-  async checkThreadMessage(messageId: string) {
+
+  /*async checkThreadMessage(messageId: string) {
     const docRef = doc(this.firestore, 'messages', messageId);
     const docSnap = await getDoc(docRef);
     const messageData = docSnap.data();
@@ -142,7 +142,7 @@ export class ThreadDataService {
         this.triggerThreadUpdate();
       }
     }
-  }
+  }*/
 
   overviewJSON(messageData: any, docSnapFromMeesage: any) {
     const threadData = {

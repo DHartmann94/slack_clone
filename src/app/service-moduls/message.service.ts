@@ -15,6 +15,7 @@ export interface MessageDataInterface {
   sentById?: string;
   mentionedUser?: string;
   senderName?: string;
+  numberOfThreads?: number;
 }
 
 @Injectable({
@@ -37,15 +38,24 @@ export class MessageDataService {
     return new Observable<MessageDataInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: MessageDataInterface[] = [];
+        const threadResponses: Record<string, number> = {};
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText,time, thread, emojis, sentById, channel, mentionedUser } = data;
+          const { messageText, time, thread, emojis, sentById, channel, mentionedUser } = data;
 
           try {
             const userData = await this.userDataService.usersDataBackend(sentById);
             let userName: string;
             let userPicture: string;
+
+            if (thread) { // NOCH NICHT FERTIG
+              if (threadResponses.hasOwnProperty(thread)) {
+                threadResponses[thread]++;
+              } else {
+                threadResponses[thread] = 0;
+              }
+            }
 
             if (userData !== null) {
               userName = userData['name'];
@@ -66,6 +76,7 @@ export class MessageDataService {
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
+              numberOfThreads: threadResponses[thread],
             };
             storedMessageData.push(message);
           } catch (error) {

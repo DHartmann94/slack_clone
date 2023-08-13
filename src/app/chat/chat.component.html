@@ -83,8 +83,8 @@
             </div>
           </div>
           <span (click)="openThread(message.thread)" class="responses"
-            [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">2
-            Responses</span>
+            [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
+            {{ message.numberOfThreads }} Responses</span>
           <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
             formatTimeStamp(message.time) }}</span>
         </div>
