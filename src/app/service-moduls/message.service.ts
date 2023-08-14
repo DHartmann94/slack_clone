@@ -45,25 +45,9 @@ export class MessageDataService {
           const { messageText, time, thread, emojis, sentById, channel, mentionedUser } = data;
 
           try {
-            const userData = await this.userDataService.usersDataBackend(sentById);
-            let userName: string;
-            let userPicture: string;
+            const { userName, userPicture } = await this.getUserData(sentById);
 
-            if (thread) {
-              if (threadResponses.hasOwnProperty(thread)) {
-                threadResponses[thread]++;
-              } else {
-                threadResponses[thread] = 0;
-              }
-            }
-
-            if (userData !== null) {
-              userName = userData['name'];
-              userPicture = userData['picture'];
-            } else {
-              userName = 'Unknown User';
-              userPicture = '/assets/profile-pictures/unknown-user.png';
-            }
+            this.countThreadResponses(thread, threadResponses);
 
             const message: MessageDataInterface = {
               id: doc.id,
@@ -90,6 +74,31 @@ export class MessageDataService {
 
       return () => unsubscribe();
     });
+  }
+
+  async getUserData(sentById: string) {
+    const userData = await this.userDataService.usersDataBackend(sentById);
+    if (userData !== null) {
+      return {
+        userName: userData['name'],
+        userPicture: userData['picture'],
+      };
+    } else {
+      return {
+        userName: 'Unknown User',
+        userPicture: '/assets/profile-pictures/unknown-user.png',
+      };
+    }
+  }
+
+  countThreadResponses(thread: string, threadResponses: Record<string, number>) {
+    if (thread) {
+      if (threadResponses.hasOwnProperty(thread)) {
+        threadResponses[thread]++;
+      } else {
+        threadResponses[thread] = 0;
+      }
+    }
   }
 
   sendMessage(message: MessageDataInterface): Observable<MessageDataInterface> {

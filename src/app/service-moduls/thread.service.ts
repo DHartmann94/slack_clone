@@ -185,17 +185,7 @@ export class ThreadDataService {
           const { messageText, time, thread, emojis, sentById, channel } = data;
 
           try {
-            const userData = await this.userDataService.usersDataBackend(sentById);
-            let userName: string;
-            let userPicture: string;
-
-            if (userData !== null) {
-              userName = userData['name'];
-              userPicture = userData['picture'];
-            } else {
-              userName = 'Unknown User';
-              userPicture = '/assets/profile-pictures/unknown-user.png';
-            }
+            const { userName, userPicture } = await this.getUserData(sentById);
 
             const threadData: ThreadDataInterface = {
               id: doc.id,
@@ -220,6 +210,21 @@ export class ThreadDataService {
 
       return () => unsubscribe();
     });
+  }
+
+  async getUserData(sentById: string) {
+    const userData = await this.userDataService.usersDataBackend(sentById);
+    if (userData !== null) {
+      return {
+        userName: userData['name'],
+        userPicture: userData['picture'],
+      };
+    } else {
+      return {
+        userName: 'Unknown User',
+        userPicture: '/assets/profile-pictures/unknown-user.png',
+      };
+    }
   }
 
   setThreadId(threadID: string) {
