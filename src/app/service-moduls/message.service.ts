@@ -15,7 +15,7 @@ export interface MessageDataInterface {
   sentById?: string;
   mentionedUser?: string;
   senderName?: string;
-  numberOfThreads?: number;
+  numberOfThreads?: any;
 }
 
 @Injectable({
@@ -49,7 +49,7 @@ export class MessageDataService {
             let userName: string;
             let userPicture: string;
 
-            if (thread) { // NOCH NICHT FERTIG
+            if (thread) {
               if (threadResponses.hasOwnProperty(thread)) {
                 threadResponses[thread]++;
               } else {
@@ -76,7 +76,7 @@ export class MessageDataService {
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
-              numberOfThreads: threadResponses[thread],
+              numberOfThreads: threadResponses,
             };
             storedMessageData.push(message);
           } catch (error) {
