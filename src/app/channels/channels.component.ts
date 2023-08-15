@@ -66,6 +66,7 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
+    this.updateUsers();
   }
 
   async getUserData() {
@@ -78,6 +79,13 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+  }
+
+  async updateUsers() {
+    const collectionUsersRef = collection(this.firestore, 'users');
+    onSnapshot(collectionUsersRef, (snapshot) => {
+      this.getUserData();
+    });
   }
 
   async getChannelData() {
