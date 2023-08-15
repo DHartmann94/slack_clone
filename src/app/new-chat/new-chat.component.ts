@@ -3,7 +3,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
-import { Subscription, map } from 'rxjs';
+import { Subject, Subscription, map } from 'rxjs';
 
 @Component({
   selector: 'app-new-chat',
@@ -12,14 +12,19 @@ import { Subscription, map } from 'rxjs';
 })
 
 export class NewChatComponent implements OnInit {
+  private newChatSubscription: Subscription = new Subscription();
+  private newChatSubject = new Subject<void>();
+
   userData: UserDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
 
-  channelId: string = "";
   inviteUserOrChannel: string = '';
-  
+  newChatId: string = '';
+  userIds: string = '';
+  isInvitationValid: boolean = false;
+ 
   searchResultsUsers: UserDataInterface[] = [];
   searchResultsChannels: ChannelDataInterface[] = [];
   toggleUserList: boolean = true;
@@ -54,6 +59,30 @@ export class NewChatComponent implements OnInit {
     this.getChannelData();
     this.compareIds();
     this.getCurrentUserId();
+    this.initNewChat();
+  }
+
+  get newChat$() {
+    return this.newChatSubject.asObservable();
+  }
+
+  generateNewChat(newChatId: string) {
+    this.newChatId = newChatId;
+    this.triggerNewChat();
+  }
+
+  triggerNewChat() {
+    this.newChatSubject.next();
+  }
+
+  async initNewChat() {
+    this.newChatSubscription = this.newChat$.subscribe(async () => {
+      await this.renderChatById();
+    });
+  }
+
+  ngOnDestroy() {
+    this.newChatSubscription.unsubscribe();
   }
 
   async getDirectChatData() {
@@ -111,27 +140,16 @@ export class NewChatComponent implements OnInit {
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
-      this.directMessageService.addUserToDirectMessage(user).subscribe(
-        (docId) => {
-          console.log('User added to the chat with ID:', docId);
-        },
-        (error) => {
-          console.error('Error adding user to the chat:', error);
-        }
-      );
+      this.isInvitationValid = true;
+      this.userIds = user.id;
+      console.log(this.userIds);
     }
   }
 
   inviteChannel(channel: ChannelDataInterface):void {
     if (channel) {
-      this.directMessageService.addChannelToDirectMessage(channel).subscribe(
-        (docId) => {
-          console.log('User added to the chat form a channel with ID:', docId);
-        },
-        (error) => {
-          console.error('Error adding user to the chat:', error);
-        }
-      );
+      this.isInvitationValid = true;
+      this.userIds = channel.id;
     }
   }
 
@@ -144,18 +162,19 @@ export class NewChatComponent implements OnInit {
     return this.directMessageData.find(message => message.id === messageId) || null;
   }
 
-  /* renderChatByChannelId(channel: string) {
-    if (channel) {
-      this.directMessageService.getDirectChatData().subscribe(
-        (messageData: DirectMessageService[]) => {
-          const messagesForChannel = messageData.filter(message => message.channel === channel);
-          if (messagesForChannel.length > 0) {
-            const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
+  renderChatById() {
+    if (this.newChatId) {
+      console.log("New Chat id", this.newChatId);
+      this.directMessageService.getDirectMessageData().subscribe(
+        (messageData: DirectMessageInterface[]) => {
+          const messagesnewChat = messageData.filter(message => message.newChat === this.newChatId);
+          if (messagesnewChat.length > 0) {
+            const filteredData = messagesnewChat.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render:', sortDataAfterTime);
             this.directMessageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel); 
+            console.log('No messages found:', this.newChatId); 
             this.directMessageData = [];
           }
         },
@@ -166,7 +185,7 @@ export class NewChatComponent implements OnInit {
     } else {
       this.directMessageData = [];
     }
-  } */
+  }
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
@@ -275,7 +294,7 @@ export class NewChatComponent implements OnInit {
   }
 
   async sendMessage() {
-    if (this.messageInput.length > 0) {
+    if (this.isInvitationValid && this.messageInput.length > 0) {
       const threadId = this.threadDataService.generateThreadId();
       const message: DirectMessageInterface = {
         messageText: this.messageInput,
@@ -283,8 +302,7 @@ export class NewChatComponent implements OnInit {
         time: Date.now(),
         emojis: [],
         thread: threadId,
-        channel: this.channelId,
-        mentionedUser: 'user_id_here',
+        newChat: this.userIds,
       };
 
       if (this.emojipickeractive) {
