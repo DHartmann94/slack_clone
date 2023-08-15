@@ -16,6 +16,8 @@ export interface DirectMessageInterface {
   sentBy?: string;
   picture?: string;
   sentById?: string;
+  mentionedUser?: string,
+  numberOfThreads?: any;
   users?: UserDataInterface[],
 }
 
@@ -40,23 +42,15 @@ export class DirectMessageService {
     return new Observable<DirectMessageInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedDirectMessageData: DirectMessageInterface[] = [];
+        const threadResponses: Record<string, number> = {};
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText,time, thread, emojis, sentById, channel, newChat } = data;
+          const { messageText,time, thread, channel, emojis, sentById, newChat, mentionedUser} = data;
 
           try {
-            const userData = await this.userDataService.usersDataBackend(sentById);
-            let userName: string;
-            let userPicture: string;
-
-            if (userData !== null) {
-              userName = userData['name'];
-              userPicture = userData['picture'];
-            } else {
-              userName = 'Unknown User';
-              userPicture = '/assets/profile-pictures/unknown-user.png';
-            }
+            const { userName, userPicture } = await this.getUserData(sentById);
+            this.countThreadResponses(thread, threadResponses);
 
             const directMessage: DirectMessageInterface = {
               id: doc.id,
@@ -64,9 +58,12 @@ export class DirectMessageService {
               time: time,
               thread: thread,
               newChat: newChat,
+              channel: channel,
               emojis: emojis,
               sentBy: userName,
               picture: userPicture,
+              mentionedUser: mentionedUser,
+              numberOfThreads: threadResponses,
               sentById: sentById,
             };
             storedDirectMessageData.push(directMessage);
@@ -81,6 +78,31 @@ export class DirectMessageService {
 
       return () => unsubscribe();
     });
+  }
+
+  async getUserData(sentById: string) {
+    const userData = await this.userDataService.usersDataBackend(sentById);
+    if (userData !== null) {
+      return {
+        userName: userData['name'],
+        userPicture: userData['picture'],
+      };
+    } else {
+      return {
+        userName: 'Unknown User',
+        userPicture: '/assets/profile-pictures/unknown-user.png',
+      };
+    }
+  }
+
+  countThreadResponses(thread: string, threadResponses: Record<string, number>) {
+    if (thread) {
+      if (threadResponses.hasOwnProperty(thread)) {
+        threadResponses[thread]++;
+      } else {
+        threadResponses[thread] = 0;
+      }
+    }
   }
 
   sendDirectMessage(message: DirectMessageInterface): Observable<DirectMessageInterface> {

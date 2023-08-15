@@ -89,8 +89,8 @@
                         </div>
                     </div>
                     <span (click)="openThread(message.thread)" class="responses"
-                        [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">2
-                        Responses</span>
+                        [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
+                        {{ message.numberOfThreads[message.thread] }} Responses</span>
                     <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
                         formatTimeStamp(message.time) }}</span>
                 </div>
@@ -110,7 +110,8 @@
                     <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
                     <div class="mail-container"></div>
                 </div>
-                <button class="send-message-btn" (click)="sendMessage()" [disabled]="!isInvitationValid || messageInput.length === 0"></button>
+                <button class="send-message-btn" (click)="sendMessage()"
+                    [disabled]="!isInvitationValid || messageInput.length === 0"></button>
             </div>
         </div>
     </div>

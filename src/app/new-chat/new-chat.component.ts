@@ -12,9 +12,6 @@ import { Subject, Subscription, map } from 'rxjs';
 })
 
 export class NewChatComponent implements OnInit {
-  private newChatSubscription: Subscription = new Subscription();
-  private newChatSubject = new Subject<void>();
-
   userData: UserDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
@@ -59,30 +56,6 @@ export class NewChatComponent implements OnInit {
     this.getChannelData();
     this.compareIds();
     this.getCurrentUserId();
-    this.initNewChat();
-  }
-
-  get newChat$() {
-    return this.newChatSubject.asObservable();
-  }
-
-  generateNewChat(newChatId: string) {
-    this.newChatId = newChatId;
-    this.triggerNewChat();
-  }
-
-  triggerNewChat() {
-    this.newChatSubject.next();
-  }
-
-  async initNewChat() {
-    this.newChatSubscription = this.newChat$.subscribe(async () => {
-      await this.renderChatById();
-    });
-  }
-
-  ngOnDestroy() {
-    this.newChatSubscription.unsubscribe();
   }
 
   async getDirectChatData() {
@@ -302,7 +275,7 @@ export class NewChatComponent implements OnInit {
         time: Date.now(),
         emojis: [],
         thread: threadId,
-        newChat: this.userIds,
+        channel: this.userIds,
       };
 
       if (this.emojipickeractive) {
@@ -405,6 +378,7 @@ export class NewChatComponent implements OnInit {
   }
 
   openThread(threadId: string) {
+    this.threadDataService.setThreadId(threadId);
   }
 }
  
