@@ -3,7 +3,8 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
-import { Subject, Subscription, map } from 'rxjs';
+import { Observable, Subject, Subscription, map } from 'rxjs';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 
 @Component({
   selector: 'app-new-chat',
@@ -18,8 +19,8 @@ export class NewChatComponent implements OnInit {
   channelData: ChannelDataInterface[] = [];
 
   inviteUserOrChannel: string = '';
-  newChatId: string = '';
   userIds: string = '';
+  channelId: string = "";
   isInvitationValid: boolean = false;
  
   searchResultsUsers: UserDataInterface[] = [];
@@ -28,6 +29,7 @@ export class NewChatComponent implements OnInit {
   toggleChannelList: boolean = true;
 
   selectedMessage: DirectMessageInterface | null = null;
+  receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -48,6 +50,7 @@ export class NewChatComponent implements OnInit {
     public userDataService: UserDataService,
     private threadDataService: ThreadDataService,
     private directMessageService: DirectMessageService,
+    private channelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
   ) {}
 
@@ -80,6 +83,22 @@ export class NewChatComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
+  }
+
+  async getDataFromChannel(): Promise<void> {
+    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
+      map((data: ChannelDataInterface | null) => {
+        if (data && data.id) {
+          this.processChannelData(data.id);
+        }
+        return data;
+      })
+    );
+  }
+
+  processChannelData(channelId: string) {
+    this.channelId = channelId;
+    this.renderChatById(this.channelId);
   }
 
   filterUsers(): void {
@@ -135,19 +154,18 @@ export class NewChatComponent implements OnInit {
     return this.directMessageData.find(message => message.id === messageId) || null;
   }
 
-  renderChatById() {
-    if (this.newChatId) {
-      console.log("New Chat id", this.newChatId);
+  renderChatById(channel: string) {
+    if (channel) {
       this.directMessageService.getDirectMessageData().subscribe(
         (messageData: DirectMessageInterface[]) => {
-          const messagesnewChat = messageData.filter(message => message.newChat === this.newChatId);
+          const messagesnewChat = messageData.filter(message => message.channel === channel);
           if (messagesnewChat.length > 0) {
             const filteredData = messagesnewChat.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render:', sortDataAfterTime);
             this.directMessageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', this.newChatId); 
+            console.log('No messages found:', channel); 
             this.directMessageData = [];
           }
         },
