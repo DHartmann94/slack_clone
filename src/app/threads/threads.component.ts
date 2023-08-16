@@ -32,10 +32,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
+  directMessageData: DirectMessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
-  /// new multiple selection option for mention users
   mentionUser = new FormControl('');
   userList: string[] = [];
 
@@ -65,7 +65,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
-  /*  private crudTriggeredSubscription: Subscription; */
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
 
@@ -83,11 +82,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
-  ) {
-    /*  this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-       this.performCRUD();
-     }); */
-  }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
@@ -102,13 +97,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     });
     this.getCurrentUserId();
     this.getDirectChatData();
-    /*  this.getMessageData();
-        this.getDataFromChannel();
-     this.getUserData();
-     this.getDirectChatData();
-     this.compareIds();
-     this.deleteUserFromChannel();
-     this.getThreadData(); */
     this.startThread();
 
   }
@@ -182,11 +170,17 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
   
   async getDirectChatData() {
-    if (this.threadData[0]?.directMessage) {
-      this.processDirectChatData(this.threadData[0].directMessage);
-      console.log(this.threadData[0].directMessage);
+    if (this.threadData.length > 0) {
+      for (const thread of this.threadData) {
+        if (thread.directMessage) {
+          this.processDirectChatData(thread.directMessage);
+          console.log(thread.directMessage);
+        } else {
+          console.log("No directMessage in thread:", thread.id);
+        }
+      }
     } else {
-      console.log("No directMessage in threadData[0]");
+      console.log("No threadData available");
     }
   }
 
@@ -319,11 +313,22 @@ export class ThreadsComponent implements OnInit, OnChanges {
         mentionedUser: 'user_id_here',
       };
 
+      const directMessage: DirectMessageInterface = {
+        messageText: this.messageInput,
+        sentById: this.currentUserId,
+        time: Date.now(),
+        emojis: [],
+        thread: this.threadDataService.threadId,
+        directMessage: 'Thread Message',
+        mentionedUser: 'user_id_here',
+      };
+
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
 
       this.messageData.push(message);
+      this.directMessageData.push(directMessage);
       this.messageInput = [''];
 
       this.messageDataService.sendMessage(message).subscribe(
@@ -339,13 +344,24 @@ export class ThreadsComponent implements OnInit, OnChanges {
           console.error('Error sending message:', error);
         }
       );
-      this.chatDataService.addMessageToChat(message).subscribe();
+      this.directMessageService.sendDirectMessage(directMessage).subscribe(
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.directMessageData.findIndex((msg) => msg === directMessage);
+            if (index !== -1) {
+              this.directMessageData[index].id = newMessage.id;
+            }
+          }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+      );
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
 
-  // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -492,10 +508,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+    currentDate.setHours(0, 0, 0, 0);
 
     const messageDate = new Date(time);
-    messageDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+    messageDate.setHours(0, 0, 0, 0);
 
     if (messageDate.getTime() === currentDate.getTime()) {
       return 'Today';
@@ -509,7 +525,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
 
     return messageDate.toLocaleDateString('en-US', {
-      year: 'numeric', // Change to 'numeric' to display all four digits of the year
+      year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
