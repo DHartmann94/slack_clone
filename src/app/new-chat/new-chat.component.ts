@@ -59,6 +59,7 @@ export class NewChatComponent implements OnInit {
     this.getChannelData();
     this.compareIds();
     this.getCurrentUserId();
+    this.getThreadData();
   }
 
   async getDirectChatData() {
@@ -93,6 +94,18 @@ export class NewChatComponent implements OnInit {
         }
         return data;
       })
+    );
+  }
+
+  async getThreadData() {
+    this.threadDataService.getThreadDataDirectMessages().subscribe(
+      (threadData: ThreadDataInterface[]) => {
+        this.threadData = threadData;
+        console.log("Get thread data", threadData);
+      },
+      (error) => {
+        console.error('Error fetching thread data:', error);
+      }
     );
   }
 

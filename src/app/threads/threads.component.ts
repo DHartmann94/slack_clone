@@ -4,6 +4,7 @@ import { ChannelDataInterface, ChannelDataService } from "../service-moduls/chan
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
 import { ChatDataInterface, ChatDataService } from "../service-moduls/chat.service";
 import { MessageDataInterface, MessageDataService } from "../service-moduls/message.service";
+import { DirectMessageService, DirectMessageInterface } from '../service-moduls/direct-message.service';
 import { map } from "rxjs/operators";
 import { ChannelDataResolverService } from "../service-moduls/channel-data-resolver.service";
 import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
@@ -42,7 +43,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
   currentChannelData: ChannelDataInterface | null = null;
 
   channelId: string = "";
-  updateChatById: string = "";
+  directChat: string = "";
+  updateChatByChannelId: string = "";
+  updateDirectChatId: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -72,11 +75,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   constructor(
     private messageDataService: MessageDataService,
+    private directMessageService: DirectMessageService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private channelDataResolver: ChannelDataResolverService,
     private chatDataService: ChatDataService,
-    private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
@@ -99,6 +101,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       channelDescription: ['', [Validators.required]],
     });
     this.getCurrentUserId();
+    this.getDirectChatData();
     /*  this.getMessageData();
         this.getDataFromChannel();
      this.getUserData();
@@ -106,7 +109,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
      this.compareIds();
      this.deleteUserFromChannel();
      this.getThreadData(); */
-
     this.startThread();
 
   }
@@ -114,7 +116,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   async startThread() {
     this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(async () => {
       await this.renderChatByThreadId();
-      //await this.getChannelData();
+      await this.renderDirectChatByThreadId();
     });
   }
 
@@ -125,7 +127,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   async renderChatByThreadId() {
     if (this.threadDataService.threadId) {
-      this.threadDataService.getThreadData().subscribe(
+      this.threadDataService.getThreadDataMessages().subscribe(
         (threadData: ThreadDataInterface[]) => {
           const messagesForChannel = threadData.filter(message => message.thread === this.threadDataService.threadId);
           if (messagesForChannel.length > 0) {
@@ -133,7 +135,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render in Thread:', sortDataAfterTime);
             this.threadData = sortDataAfterTime;
-
             this.getChannelData();
           } else {
             console.log('No messages found in Thread:', this.threadDataService.threadId);
@@ -144,20 +145,61 @@ export class ThreadsComponent implements OnInit, OnChanges {
           console.error('ERROR render messages in Thread:', error);
         }
       );
+    } 
+  }
+
+  async renderDirectChatByThreadId() {
+    if (this.threadDataService.threadId) {
+      this.threadDataService.getThreadDataDirectMessages().subscribe(
+        (threadData: ThreadDataInterface[]) => {
+          const messagesDirect = threadData.filter(message => message.thread === this.threadDataService.threadId);
+          if (messagesDirect.length > 0) {
+            const filteredData = messagesDirect.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
+            console.log('Messages to Render in Thread:', sortDataAfterTime);
+            this.threadData = sortDataAfterTime;
+            this.getDirectChatData();
+          } else {
+            console.log('No messages found in Thread:', this.threadDataService.threadId);
+            this.threadData = [];
+          }
+        }, (error) => {
+          console.error('ERROR render messages in Thread:', error);
+        }
+      )
     } else {
       this.threadData = [];
     }
   }
 
   async getChannelData() {
-    console.log(this.threadData[0].channel);
-    this.processChannelData(this.threadData[0].channel);
+    if (this.threadData[0]?.channel) {
+      this.processChannelData(this.threadData[0].channel);
+      console.log(this.threadData[0].channel);
+    } else {
+      console.log("No channel in threadData[0]");
+    }
+  }
+  
+  async getDirectChatData() {
+    if (this.threadData[0]?.directMessage) {
+      this.processDirectChatData(this.threadData[0].directMessage);
+      console.log(this.threadData[0].directMessage);
+    } else {
+      console.log("No directMessage in threadData[0]");
+    }
   }
 
   processChannelData(channelId: string) {
     this.channelId = channelId;
-    this.updateChatById = channelId;
-    this.renderChatByChannelId(this.updateChatById);
+    this.updateChatByChannelId = channelId;
+    this.renderChatByChannelId(this.updateChatByChannelId);
+  }
+
+  processDirectChatData(chatId: string) {
+    this.directChat = chatId
+    this.updateDirectChatId = chatId;
+    this.renderChatByDirectChatId(this.updateDirectChatId);
   }
 
   renderChatByChannelId(channel: string) {
@@ -169,6 +211,25 @@ export class ThreadsComponent implements OnInit, OnChanges {
           this.channelData = filterChannel;
           this.loading = true;
           console.log("The filterd channel id in THREAD", this.channelData);
+        },
+        (error) => {
+          console.error('Error THREAD chat data:', error);
+        }
+      );
+    } else {
+      this.channelData = [];
+    }
+  }
+
+  renderChatByDirectChatId(directMessage: string) {
+    if (directMessage) {
+      console.log(directMessage);
+      this.directMessageService.getDirectMessageData().subscribe(
+        (directMessageData: DirectMessageInterface[]) => {
+          const filterdirectMessage = directMessageData.filter((directMessage) => directMessage.id === directMessage);
+          this['directMessageData'] = filterdirectMessage;
+          this.loading = true;
+          console.log("The filterd channel id in THREAD", this['directMessageData']);
         },
         (error) => {
           console.error('Error THREAD chat data:', error);

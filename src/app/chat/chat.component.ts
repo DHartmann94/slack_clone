@@ -157,7 +157,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   async getThreadData() {
-    this.threadDataService.getThreadData().subscribe(
+    this.threadDataService.getThreadDataMessages().subscribe(
       (threadData: ThreadDataInterface[]) => {
         this.threadData = threadData;
         console.log("Get thread data", threadData);
