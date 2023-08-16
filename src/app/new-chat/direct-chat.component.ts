@@ -8,8 +8,8 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 
 @Component({
   selector: 'app-new-chat',
-  templateUrl: './new-chat.component.html',
-  styleUrls: ['./new-chat.component.scss']
+  templateUrl: './direct-chat.component.html',
+  styleUrls: ['./direct-chat.component.scss']
 })
 
 export class NewChatComponent implements OnInit {
