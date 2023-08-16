@@ -315,7 +315,9 @@ export class ChatComponent implements OnInit, OnChanges {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
-
+ 
+  
+  ///// HIER BIS ZEILE 408 wird gelöscht, bzw. in den Service Umgelagert ///
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
