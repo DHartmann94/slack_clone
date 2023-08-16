@@ -13,11 +13,11 @@ export interface DirectMessageInterface {
   thread?: any;
   newChat?: string;
   channel?: any;
-  directMessage?: any,
+  directMessage?: any;
   sentBy?: string;
   picture?: string;
   sentById?: string;
-  mentionedUser?: string,
+  mentionedUser?: string;
   numberOfThreads?: any;
   users?: UserDataInterface[],
 }

@@ -275,22 +275,11 @@ export class ThreadsComponent implements OnInit, OnChanges {
         mentionedUser: 'user_id_here',
       };
 
-      const directMessage: DirectMessageInterface = {
-        messageText: this.messageInput,
-        sentById: this.currentUserId,
-        time: Date.now(),
-        emojis: [],
-        thread: this.threadDataService.threadId,
-        directMessage: 'Thread Message',
-        mentionedUser: 'user_id_here',
-      };
-
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
 
       this.messageData.push(message);
-      this.directMessageData.push(directMessage);
       this.messageInput = [''];
 
       this.messageDataService.sendMessage(message).subscribe(
@@ -299,19 +288,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
             const index = this.messageData.findIndex((msg) => msg === message);
             if (index !== -1) {
               this.messageData[index].id = newMessage.id;
-            }
-          }
-        },
-        (error) => {
-          console.error('Error sending message:', error);
-        }
-      );
-      this.directMessageService.sendDirectMessage(directMessage).subscribe(
-        (newMessage) => {
-          if (newMessage && newMessage.id) {
-            const index = this.directMessageData.findIndex((msg) => msg === directMessage);
-            if (index !== -1) {
-              this.directMessageData[index].id = newMessage.id;
             }
           }
         },
