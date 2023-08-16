@@ -2,12 +2,9 @@ import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { ChannelDataInterface, ChannelDataService } from "../service-moduls/channel.service";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
-import { ChatDataInterface, ChatDataService } from "../service-moduls/chat.service";
 import { MessageDataInterface, MessageDataService } from "../service-moduls/message.service";
 import { DirectMessageService, DirectMessageInterface } from '../service-moduls/direct-message.service';
 import { map } from "rxjs/operators";
-import { ChannelDataResolverService } from "../service-moduls/channel-data-resolver.service";
-import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
@@ -77,7 +74,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     private directMessageService: DirectMessageService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
-    private chatDataService: ChatDataService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
@@ -98,7 +94,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.getCurrentUserId();
     this.getDirectChatData();
     this.startThread();
-
   }
 
   async startThread() {
@@ -236,39 +231,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
-  }
-
-  async deleteUserFromChannel() {
-    await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
-    this.deleteUserFormChannel = this.userDataService.currentUser;
-  }
-
-  async leaveChannel() {
-    if (this.deleteUserFormChannel && this.currentChannelData) {
-      console.log("Im logged in", this.deleteUserFormChannel);
-      try {
-        const matchingChannel = this.currentChannelData.id;
-        console.log(matchingChannel);
-        if (matchingChannel) {
-          const channelCollection = collection(this.firestore, 'channels');
-          const channelDoc = doc(channelCollection, matchingChannel);
-          const channelDocSnapshot = await getDoc(channelDoc);
-
-          if (channelDocSnapshot.exists()) {
-            const usersArray = channelDocSnapshot.data()['users'] || [];
-            const updatedUsersArray = usersArray.filter((user: any) => user !== this.deleteUserFormChannel);
-            await updateDoc(channelDoc, {
-              users: updatedUsersArray
-            });
-            console.log("User removed from the channel.");
-          } else {
-            console.log("Matching channel not found.");
-          }
-        }
-      } catch (error) {
-        console.error('Error removing user:', error);
-      }
-    }
   }
 
   public typeEmoji($event: any): void {
@@ -417,16 +379,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.emojipickeractive = !this.emojipickeractive;
   }
 
-  editChannel() {
-    this.openEditChannel = true;
-    this.receivedChannelData$.subscribe((data: ChannelDataInterface | null) => {
-      if (data) {
-        this.currentChannelData = data;
-      }
-      console.log('Received Channel Data:', this.currentChannelData);
-    });
-  }
-
   openUserProfile(id: any) {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
@@ -435,56 +387,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   closeUserProfile() {
     this.isProfileCardOpen = false;
-  }
-
-  closeEditChannel() {
-    this.openEditChannel = false;
-  }
-
-  updateChannelName() {
-    this.editChannelName = true;
-  }
-
-  updateChannelDiscription() {
-    this.editChannelDescription = true;
-  }
-
-  saveChangesToChannelName() {
-    if (this.channelName.valid && this.currentChannelData) {
-      console.log('Saving changes to channel', this.currentChannelData);
-      const newChannelName: string = this.channelName.value.channelName;
-
-      this.currentChannelData.channelName = newChannelName;
-      this.channelDataService
-        .sendChannelData(this.currentChannelData)
-        .subscribe(
-          () => {
-            console.log('Channel name updated successfully.');
-          },
-          (error) => {
-            console.error('Error updating channel name:', error);
-          }
-        );
-      this.channelName.reset();
-      this.editChannelName = false;
-    }
-  }
-
-  saveChangesToChannelDescription() {
-    if (this.channelDescription.valid && this.currentChannelData) {
-      const newChannelDescription: string = this.channelDescription.value.channelDescription;
-      this.currentChannelData.channelDescription = newChannelDescription;
-      this.channelDataService.sendChannelData(this.currentChannelData).subscribe(
-        () => {
-          console.log('Channel description updated successfully.');
-        },
-        (error) => {
-          console.error('Error updating channel name:', error);
-        }
-      );
-      this.channelDescription.reset();
-      this.editChannelDescription = false;
-    }
   }
 
   formatTimeStamp(time: number | undefined): string {
