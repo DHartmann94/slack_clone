@@ -285,7 +285,6 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
-            this.messageDataService.sendMessage(newMessage).subscribe();
             const index = this.messageData.findIndex((msg) => msg === message);
             if (index !== -1) {
               this.messageData[index].id = newMessage.id;
@@ -301,7 +300,6 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
  
-  
   ///// HIER BIS ZEILE 408 wird gelöscht, bzw. in den Service Umgelagert ///
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {

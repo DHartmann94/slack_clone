@@ -163,11 +163,20 @@ export class ThreadsComponent implements OnInit, OnChanges {
       console.log("No channel in threadData[0]");
     }
   }
-  
+
   async getDirectChatData() {
+    if (this.threadData[0]?.directMessageTo) {
+      this.processDirectChatData(this.threadData[0].directMessageTo);
+      console.log(this.threadData[0].directMessageTo);
+    } else {
+      console.log("No channel in threadData[0]");
+    }
+  }
+  
+  /* async getDirectChatData() {
     if (this.threadData.length > 0) {
       for (const thread of this.threadData) {
-        if (thread.directMessage) {
+        if (thread.threadData[0]) {
           this.processDirectChatData(thread.directMessage);
           console.log(thread.directMessage);
         } else {
@@ -177,7 +186,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     } else {
       console.log("No threadData available");
     }
-  }
+  } */
 
   processChannelData(channelId: string) {
     this.channelId = channelId;

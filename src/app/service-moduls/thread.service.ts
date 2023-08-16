@@ -10,7 +10,7 @@ export interface ThreadDataInterface {
   emojis?: any;
   thread?: any;
   channel?: any;
-  directMessage?: any,
+  directMessageTo?: any,
   sentBy?: string;
   picture?: string;
   sentById?: string;
@@ -141,7 +141,7 @@ export class ThreadDataService {
               time: time,
               emojis: emojis,
               thread: thread,
-              directMessage: directMessage,
+              directMessageTo: directMessage,
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,

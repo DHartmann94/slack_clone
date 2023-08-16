@@ -13,7 +13,7 @@ export interface DirectMessageInterface {
   thread?: any;
   newChat?: string;
   channel?: any;
-  directMessage?: any;
+  directMessageTo?: any;
   sentBy?: string;
   picture?: string;
   sentById?: string;
@@ -47,7 +47,7 @@ export class DirectMessageService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText,time, thread, channel, emojis, sentById, newChat, mentionedUser, message} = data;
+          const { messageText,time, thread, channel, emojis, sentById, newChat, mentionedUser, directMessageTo} = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -60,7 +60,7 @@ export class DirectMessageService {
               thread: thread,
               newChat: newChat,
               channel: channel,
-              directMessage: message,
+              directMessageTo: directMessageTo,
               emojis: emojis,
               sentBy: userName,
               picture: userPicture,
