@@ -340,7 +340,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       }
     });
 
-    if (this.emojiService.existEmojiThread(index, emoji, this.messageData)) {
+    if (this.emojiService.existEmoji(index, emoji, this.threadData)) {
 
       let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
       emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
@@ -360,19 +360,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.reactionListOpen = false;
   }
 
-  // reactWithEmoji(emoji: string, index: number, messageId: string) {
-  //   let emojiArray = this.messageData[index].emojis;
-  //   if (this.existReaction(index)) {
-  //     let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-  //     emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
-  //   } else {
-  //     emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
-  //   }
-  //   this.messageDataService.updateMessage(messageId, emojiArray);
-  //   this.emojisClickedBefore = undefined;
-  //   this.reactionListOpen = false;
-  // }
-
 
   existReaction(index: number): boolean {
     return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
@@ -380,10 +367,11 @@ export class ThreadsComponent implements OnInit, OnChanges {
     });
   }
 
+
   showReaction(index: number) {
-    let item = document.getElementById(`reactionlist${index}`);
+    let item = document.getElementById(`reactionlist-in-thread${index}`);
     this.messageData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
+      let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
       hideItems?.classList.remove('show-list-of-reactions');
     });
     if (!this.reactionListOpen) {
