@@ -358,16 +358,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
 
-  existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-      return reaction['reaction-from'] === this.currentUser;
-    });
-  }
-
-
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist-in-thread${index}`);
-    this.messageData.forEach((message, i) => {
+    this.threadData.forEach((message, i) => {
       let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
       hideItems?.classList.remove('show-list-of-reactions');
     });

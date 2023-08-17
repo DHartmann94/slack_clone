@@ -64,7 +64,7 @@
               </div>
             </div>
 
-            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+            <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"  *ngIf="message.emojis.length > 0" class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
