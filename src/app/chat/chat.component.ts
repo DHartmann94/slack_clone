@@ -10,7 +10,6 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
-import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
 import { EmojiService } from '../service-moduls/emoji.service';
 
 @Component({
@@ -34,7 +33,6 @@ export class ChatComponent implements OnInit, OnChanges {
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
-  chatData: ChatDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
   mentionUser = new FormControl('');
@@ -76,7 +74,6 @@ export class ChatComponent implements OnInit, OnChanges {
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
     private userDataResolver: UserDataResolveService,
-    private chatDataService: ChatDataService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
@@ -102,7 +99,6 @@ export class ChatComponent implements OnInit, OnChanges {
     });
     this.getDataFromChannel();
     this.getUserData();
-    this.getChatData();
     this.getCurrentUserId();
     this.compareIds();
     this.deleteUserFromChannel();
@@ -146,17 +142,6 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  async getChatData() {
-    this.chatDataService.getChatData().subscribe(
-      (chatData: ChatDataInterface[]) => {
-        this.chatData = chatData;
-        console.log("Get chat data", chatData);
-      },
-      (error) => {
-        console.error('Error fetching chat data:', error);
-      }
-    );
-  }
 
   async getThreadData() {
     this.threadDataService.getThreadDataMessages().subscribe(
@@ -302,7 +287,6 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
-            this.chatDataService.addMessageToChat(newMessage).subscribe();
             const index = this.messageData.findIndex((msg) => msg === message);
             if (index !== -1) {
               this.messageData[index].id = newMessage.id;
@@ -318,7 +302,6 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
  
-  
   ///// HIER BIS ZEILE 408 wird gelöscht, bzw. in den Service Umgelagert ///
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {

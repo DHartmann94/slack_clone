@@ -8,8 +8,8 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 
 @Component({
   selector: 'app-new-chat',
-  templateUrl: './new-chat.component.html',
-  styleUrls: ['./new-chat.component.scss']
+  templateUrl: './direct-chat.component.html',
+  styleUrls: ['./direct-chat.component.scss']
 })
 
 export class NewChatComponent implements OnInit {
@@ -155,6 +155,7 @@ export class NewChatComponent implements OnInit {
     if (channel) {
       this.isInvitationValid = true;
       this.userIds = channel.id;
+      console.log(this.userIds);
     }
   }
 
@@ -306,7 +307,7 @@ export class NewChatComponent implements OnInit {
         time: Date.now(),
         emojis: [],
         thread: threadId,
-        channel: this.userIds,
+        directMessageTo: this.userIds,
       };
 
       if (this.emojipickeractive) {
@@ -316,7 +317,19 @@ export class NewChatComponent implements OnInit {
       this.directMessageData.push(message);
       this.messageInput = [''];
 
-      this.directMessageService.sendDirectMessage(message).subscribe();
+      this.directMessageService.sendDirectMessage(message).subscribe(
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.directMessageData.findIndex((msg) => msg === message);
+            if (index !== -1) {
+              this.directMessageData[index].id = newMessage.id;
+            }
+          }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+      );
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }

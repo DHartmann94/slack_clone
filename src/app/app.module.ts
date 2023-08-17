@@ -41,7 +41,8 @@ import { EmailVerificationConfirmComponent } from './email-verification-confirm/
 import { EmojisComponent } from './emojis/emojis.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { LegalComponent } from './legal/legal.component';
-import { NewChatComponent } from './new-chat/new-chat.component';
+import { NewChatComponent } from './new-chat/direct-chat.component';
+import { DirectMessageToUserComponent } from './direct-message-to-user/direct-message-to-user.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { NewChatComponent } from './new-chat/new-chat.component';
     ImprintComponent,
     LegalComponent,
     NewChatComponent,
+    DirectMessageToUserComponent,
   ],
   imports: [
     BrowserModule,
