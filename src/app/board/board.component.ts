@@ -13,6 +13,9 @@ export class BoardComponent implements OnInit {
 
   constructor(public threadDataService: ThreadDataService, public directMessageToUserService: DirectMessageToUserService) { }
 
+
+  
+
   ngOnInit(): void {
     
   }

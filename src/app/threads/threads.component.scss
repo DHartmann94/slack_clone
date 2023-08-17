@@ -418,20 +418,23 @@
     flex-direction: row;
     gap: 10px;
     align-items: center;
+    position: relative;
 }
 
 .list-of-reactions {
-    min-width: 200px;
-    min-height: 100px;
-    max-height: 500px;
-    background-color: #68686831;
+    position: absolute;
+    right: -20%;
+    z-index: 10;
+    min-width: 100px;
+    min-height: 50px;
+    background-color: #c1c3d7;
     border-radius: 20px;
     display: none;
-}
-
-.show-list-of-reactions {
+  }
+  
+  .show-list-of-reactions {
     display: unset;
-}
+  }
 
 .list-item-reaction {
     width: calc(90% - 20px);

@@ -3,7 +3,7 @@
     <div class="board-flex">
         <div class="grid-view-channels"><app-channels></app-channels></div>
         <div class="grid-view-chat"><app-chat></app-chat></div>
-        <div *ngIf="this.directMessageToUserService.directMessageToUserOpen" class="grid-view-chat"><app-direct-message-to-user></app-direct-message-to-user></div>
+        <div class="grid-view-chat"><app-direct-message-to-user></app-direct-message-to-user></div>
         <div *ngIf="this.threadDataService.threadOpen" class="grid-view-threads"><app-threads></app-threads></div>
     </div>
 </div>
@@ -12,4 +12,3 @@
     <a routerLink="/imprint">Imprint |  </a>
     <a routerLink="/legal"> Legal</a>
 </div>
-

@@ -61,7 +61,7 @@ export class ChatComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
-  private crudTriggeredSubscription!: Subscription;
+  private chatTriggerSubscription!: Subscription;
   triggerNewChatWindow: boolean = true;
 
   inviteUserOrChannel!: string;
@@ -80,8 +80,8 @@ export class ChatComponent implements OnInit, OnChanges {
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
   ) {
-    this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.toggleNewChat();
+    this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+      this.toggleDirectChat();
     });
   }
 
@@ -106,7 +106,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    this.crudTriggeredSubscription.unsubscribe();
+    this.chatTriggerSubscription.unsubscribe();
   }
 
   async getUserData() {
@@ -155,7 +155,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  toggleNewChat() {
+  toggleDirectChat() {
     this.triggerNewChatWindow = !this.triggerNewChatWindow;
   }
 
@@ -278,7 +278,7 @@ export class ChatComponent implements OnInit, OnChanges {
       };
 
       if (this.emojipickeractive) {
-        this.toggleEmojiPicker();
+        this.emojiService.toggleEmojiPicker('chat');
       }
 
       this.messageData.push(message);
@@ -302,7 +302,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
  
-  ///// HIER BIS ZEILE 408 wird gelöscht, bzw. in den Service Umgelagert ///
+  
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
@@ -322,8 +322,8 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
 
-  reactWithEmoji(emoji: string, index: number, messageId: string) {
-    let emojiArray = this.messageData[index].emojis;
+  reactWithEmoji(emoji: string, index: number, messageId: string, message: MessageDataInterface) {
+    let emojiArray = message.emojis;
 
     emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
       if (emoj['reaction-from'].includes(this.userDataService.userName)) {
@@ -332,7 +332,7 @@ export class ChatComponent implements OnInit, OnChanges {
       }
     });
 
-    if (this.existEmoji(index, emoji)) {
+    if (this.emojiService.existEmoji(index, emoji, this.messageData)) {
 
       let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
       emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
@@ -353,20 +353,6 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
 
-  existEmoji(index: number, typedEmoji: string) {
-    return this.messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
-      return emoji['emoji'] === typedEmoji;
-    });
-  }
-
-
-  existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [key: string]: string }) => {
-      return reaction['reaction-from'].includes(this.currentUser);
-    });
-  }
-
-
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
     this.messageData.forEach((message, i) => {
@@ -381,9 +367,6 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  toggleEmojiPicker() {
-    this.emojipickeractive = !this.emojipickeractive;
-  }
 
   editChannel() {
     this.openEditChannel = true;
@@ -527,6 +510,7 @@ export class ChatComponent implements OnInit, OnChanges {
       }
     );
   }
+
 
   async deleteMessage(messageId: any) {
     if (!messageId) {

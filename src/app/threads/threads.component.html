@@ -57,14 +57,14 @@
           </div>
           <div class="like-area">
 
-            <div id="reactionlist{{index}}" class="list-of-reactions">
+            <div id="reactionlist-in-thread{{index}}" class="list-of-reactions">
               <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
                 <span>{{ emoji['emoji'] }} :</span>
                 <span>&nbsp;{{ emoji['reaction-from'] }}</span>
               </div>
             </div>
 
-            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+            <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"  *ngIf="message.emojis.length > 0" class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
@@ -72,9 +72,9 @@
               <img src="./assets/img/icons/tick_green.svg" alt="">
               <span class="reaction-counter">1</span>
             </div>
-            <div class="reaction-emojis" id="reaction{{index}}">
+            <div class="reaction-emojis" id="reaction-in-thread{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
-                (click)="reactWithEmoji(emoji, index, message.id)">{{ emoji }}</div>
+                (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
             </div>
             <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
               class="reaction-button-container">
