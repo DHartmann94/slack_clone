@@ -8,7 +8,6 @@ export interface DirectMessageToUserInterface {
   messageText: any;
   time?: number;
   emojis?: any;
-  thread?: any;
   channel?: any;
   sentBy?: string;
   picture?: string;
@@ -38,29 +37,23 @@ export class DirectMessageToUserService {
     return new Observable<DirectMessageToUserInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: DirectMessageToUserInterface[] = [];
-        const threadResponses: Record<string, number> = {};
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentById, channel, mentionedUser } = data;
+          const { messageText, time, emojis, sentById, mentionedUser } = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
-
-            this.countThreadResponses(thread, threadResponses);
 
             const message: DirectMessageToUserInterface = {
               id: doc.id,
               messageText: messageText,
               time: time,
-              thread: thread,
               emojis: emojis,
-              channel: channel,
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
-              numberOfThreads: threadResponses,
             };
             storedMessageData.push(message);
           } catch (error) {
@@ -73,6 +66,7 @@ export class DirectMessageToUserService {
       });
 
       return () => unsubscribe();
+
     });
   }
 
@@ -88,16 +82,6 @@ export class DirectMessageToUserService {
         userName: 'Unknown User',
         userPicture: '/assets/profile-pictures/unknown-user.png',
       };
-    }
-  }
-
-  countThreadResponses(thread: string, threadResponses: Record<string, number>) {
-    if (thread) {
-      if (threadResponses.hasOwnProperty(thread)) {
-        threadResponses[thread]++;
-      } else {
-        threadResponses[thread] = 0;
-      }
     }
   }
 
