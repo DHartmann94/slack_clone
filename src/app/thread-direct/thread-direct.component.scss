@@ -1,10 +1,46 @@
+.threads-card {
+    /*min-width: 200px;*/
+    width: 485px;
+    height: calc(100vh - 150px);
+    border-radius: 15px;
+    padding: 32px 30px;
+    margin: 15px 10px 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .threads-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 65px;
+
+        .thread-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            column-gap: 10px;
+
+            h2 {
+                margin: 0;
+            }
+        }
+    }
+
+    @media (max-width: 1600px) {
+       display: none;
+    }
+}
+
 .chat-card {
     position: relative;
     min-width: 500px;
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - 130px);
     border-radius: 15px;
     padding: 25px 35px 111px;
     margin: 15px 10px 10px 10px;
+/*    border-radius: 30px;*/
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -14,8 +50,10 @@
     height: 50vh;
     overflow-y: scroll;
     overflow-x: hidden;
-    padding-top: 76px;
+    padding-top: 20px;
     border-radius: 5px;
+    top: 82px;
+    position: relative;
 }
 
 .reaction-emojis {
@@ -41,7 +79,6 @@
     justify-content: center;
     transition: transform 0.2s ease-in-out;
     margin: 5px;
-
     &:hover {
         cursor: pointer;
         transform: scale(1.2);
@@ -58,14 +95,13 @@
 
 .shadow-box {
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-    background-color: var(--white);
     height: auto;
     position: absolute;
     width: 100%;
     left: 0;
     top: 0;
-    border-top-left-radius: 15px !important;
-    border-top-right-radius: 15px !important;
+    border-top-left-radius: 30px !important;
+    border-top-right-radius: 30px !important;
     z-index: 1;
 }
 
@@ -75,39 +111,15 @@
     justify-content: flex-start;
     padding: 0 20px 15px 20px;
 
-    .message-head {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        h2 {
-            font-family: "Nunito";
-            margin-top: 20px;
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 700;
-        }
-
-        img {
-            width: 45px;
-            object-fit: scale-down;
-            cursor: pointer;
-        }
+    h2 {
+        font-family: "Nunito";
+        margin-top: 20px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
     }
 
     .user-list {
-        padding: 10px 0;
-        font-family: "Nunito";
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 500;
-        cursor: pointer;
-
-        &:hover {
-            color: var(--c-purple);
-        }
-    }
-
-    .channel-list {
         padding: 10px 0;
         font-family: "Nunito";
         font-size: 16px;
@@ -195,46 +207,57 @@
     flex-direction: row;
     cursor: pointer;
 
-    .chat-name {
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-        margin-right: 10px;
-        max-width: 200px;
-    }
-
     &:hover {
         width: auto;
         height: auto;
-        border: 1px solid var(--ligth-purple-lines, #adb0d9);
-        padding: 0 5px;
+        background-color: var(--text-hover);
         border-radius: 20px;
         height: 45px;
+        min-width: 200px;
     }
 }
 
 .hash-chat-name {
     margin-right: 15px;
-    width: 18px;
-    object-fit: scale-down;
+}
+
+.chat-name {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: color 0.3s;
+
+    &:hover {
+        color: var(--purple-2, #797ef3);
+    }
+}
+
+.chat-name-blue {
+    color: var(--purple-2, #797EF3);
+    font-family: Nunito;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
 .app-emojis {
     position: absolute;
     bottom: 10px;
+    z-index: 10;
 }
 
 .chat-left {
     display: flex;
     flex-direction: row;
-    padding: 0 145px 0 45px;
+    padding: 0 40px 0 40px;
     transition: background-color 0.3s;
-
     &:hover {
         cursor: pointer;
         background: var(--bg-color, #eceefe);
-
         .chat-message-left {
             background-color: white;
         }
@@ -245,10 +268,9 @@
     display: flex;
     justify-content: flex-start;
     margin: 40px 0;
-    padding: 0 45px 0 145px;
+    padding: 0 40px 0 40px;
     transition: background-color 0.3s;
     flex-direction: row-reverse;
-
     &:hover {
         background: var(--bg-color, #eceefe);
     }
@@ -257,7 +279,27 @@
 .parting-line {
     width: 100%;
     border: 0.5px solid #adb0d97a;
-    height: 0px;
+    height: 0;
+}
+
+.parting-line-firstMessage {
+    width: 100%;
+    border: 0.5px solid #adb0d97a;
+    height: 0;
+
+    span {
+        color: var(--ligth-purple-lines, #ADB0D9);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        cursor: pointer;
+        position: relative;
+        top: -13px;
+        z-index: 10;
+        background: #fff;
+        padding-right: 20px;
+    }
 }
 
 .time-stamp {
@@ -309,8 +351,7 @@
     color: #fff;
     border-radius: 30px 0px 30px 30px;
     background: var(--purple-2, #797ef3);
-    display: inline-flex;
-    /* Änderung hier */
+    display: inline-flex; /* Änderung hier */
     padding: 15px;
     flex-direction: column;
     align-items: center;
@@ -367,39 +408,6 @@
     gap: 8px;
 }
 
-.responses-left {
-    color: var(--purple-3, #535af1);
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    cursor: pointer;
-    margin-right: 20px;
-    position: relative;
-    transition: font-weight 0.3s, text-shadow 0.3s;
-
-    &:hover {
-        font-weight: 500;
-        text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
-    }
-}
-
-.responses-right {
-    color: var(--purple-3, #535af1);
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    cursor: pointer;
-    position: relative;
-    transition: font-weight 0.3s, text-shadow 0.3s;
-
-    &:hover {
-        font-weight: 500;
-        text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
-    }
-}
-
 .time-partLine {
     position: relative;
     top: -40px;
@@ -410,20 +418,23 @@
     flex-direction: row;
     gap: 10px;
     align-items: center;
+    position: relative;
 }
 
 .list-of-reactions {
-    min-width: 200px;
-    min-height: 100px;
-    max-height: 500px;
-    background-color: #68686831;
+    position: absolute;
+    right: -20%;
+    z-index: 10;
+    min-width: 100px;
+    min-height: 50px;
+    background-color: #c1c3d7;
     border-radius: 20px;
     display: none;
-}
-
-.show-list-of-reactions {
+  }
+  
+  .show-list-of-reactions {
     display: unset;
-}
+  }
 
 .list-item-reaction {
     width: calc(90% - 20px);
@@ -445,7 +456,6 @@
     width: 44px;
     gap: 10px;
     cursor: pointer;
-
     &:hover {
         background-color: #adb0d947;
     }
@@ -586,6 +596,7 @@ $light-blue: #eceefe;
     @extend .container;
     background-image: url(../../assets/img/icons/sentiment_satisfied.svg);
     transition: background-image 0.3s;
+    z-index: 10;
 }
 
 .emoji-container:hover {
@@ -608,7 +619,6 @@ $light-blue: #eceefe;
     background-image: url(../../assets/img/icons/send_message.svg);
     height: 40px;
     width: 40px;
-    border: none;
     cursor: pointer;
     transition: background-image 0.3s; //
 
@@ -730,6 +740,188 @@ section {
     }
 }
 
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+
+    .channel-edit-card {
+        width: 872px;
+        height: auto;
+        background-color: white;
+        border-radius: 25px;
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 10px;
+
+        .channel-edit {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            h2 {
+                font-family: "Nunito";
+                margin-top: 20px;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+            }
+
+            span {
+                font-family: "Nunito";
+                margin-top: 20px;
+                font-size: 18px;
+                font-style: normal;
+                color: var(--c-mediun-purple);
+                margin: 0;
+                cursor: pointer;
+            }
+        }
+
+        .channel-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+
+            img {
+                width: 40px;
+                object-fit: scale-down;
+                cursor: pointer;
+            }
+
+            h1 {
+                font-family: "Nunito";
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+            }
+        }
+
+        h3 {
+            font-family: "Nunito";
+            margin-top: 20px;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        .channel-introduction {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .channel-name {
+            display: flex;
+            height: 20px;
+            padding: 18px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 95%;
+            border-radius: 20px;
+            border: 1px solid var(--ligth-purple-lines, #adb0d9);
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .btn-area {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 30px;
+
+            .btn-channel {
+                border-radius: 25px;
+                background: var(--purple-1, #444df2);
+                color: var(--white, #fff);
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                display: flex;
+                padding: 12px 25px;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                border: none;
+                height: 49px;
+                width: 226px;
+                cursor: pointer;
+            }
+        }
+
+        .frame-edit {
+            display: flex;
+            height: auto;
+            padding: 18px 20px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            width: 95%;
+            border-radius: 20px;
+            border: 1px solid var(--ligth-purple-lines, #adb0d9);
+            padding: 20px;
+            gap: 20px;
+
+            h2 {
+                font-family: "Nunito";
+                margin-top: 20px;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 700;
+                margin: 0;
+            }
+
+            .channel-creator {
+                display: flex;
+                flex-direction: column;
+                row-gap: 10px;
+
+                span {
+                    font-family: "Nunito";
+                    margin-top: 20px;
+                    font-size: 18px;
+                    font-style: normal;
+                    color: var(--c-mediun-purple);
+                    margin: 0;
+                    cursor: pointer;
+                }
+            }
+
+            .under-line {
+                width: 100%;
+                height: 1px;
+                background-color: var(--purple-1, #adb0d9);
+            }
+        }
+    }
+
+    .error-massage {
+        position: relative;
+        left: 18px;
+        font-family: "Nunito";
+        margin-top: 20px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        color: var(--c-mediun-purple);
+    }
+}
+
+
+
 .chat-right-first-row-right {
     gap: 20px;
     display: flex;
@@ -746,7 +938,6 @@ section {
     opacity: 0.1;
     font-size: 20px;
     transition: transform ease-in-out 200ms;
-
     &:hover {
         color: rgb(147, 23, 23);
         opacity: 1;

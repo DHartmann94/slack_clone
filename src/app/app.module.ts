@@ -43,6 +43,7 @@ import { ImprintComponent } from './imprint/imprint.component';
 import { LegalComponent } from './legal/legal.component';
 import { DirectChatComponent } from './direct-chat/direct-chat.component';
 import { DirectMessageToUserComponent } from './direct-message-to-user/direct-message-to-user.component';
+import { ThreadDirectComponent } from './thread-direct/thread-direct.component';
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { DirectMessageToUserComponent } from './direct-message-to-user/direct-me
     LegalComponent,
     DirectChatComponent,
     DirectMessageToUserComponent,
+    ThreadDirectComponent,
   ],
   imports: [
     BrowserModule,

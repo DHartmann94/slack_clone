@@ -104,7 +104,8 @@
     <div class="message-input-field">
         <div class="text-editor">
             <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-            <textarea placeholder="Send an new message to someone..." [(ngModel)]="messageInput" rows="4">
+            <textarea [placeholder]="'Send a new message to ' + selectedUserNameOrChannelName"
+                [(ngModel)]="messageInput" rows="4">
             </textarea>
             <div class="text-editor-bottom">
                 <div class="text-editor-left-btns">

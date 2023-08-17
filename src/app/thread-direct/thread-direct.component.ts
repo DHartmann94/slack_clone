@@ -1,23 +1,22 @@
-
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { ChannelDataInterface, ChannelDataService } from "../service-moduls/channel.service";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
 import { MessageDataInterface, MessageDataService } from "../service-moduls/message.service";
+import { DirectMessageService, DirectMessageInterface } from '../service-moduls/direct-message.service';
 import { map } from "rxjs/operators";
-import { ChannelDataResolverService } from "../service-moduls/channel-data-resolver.service";
-import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
+import { ThreadDirectDataInterface, ThreadDirectService } from '../service-moduls/thread-direct.service';
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 import { EmojiService } from '../service-moduls/emoji.service';
 
 @Component({
-  selector: 'app-threads',
-  templateUrl: './threads.component.html',
-  styleUrls: ['./threads.component.scss']
+  selector: 'app-thread-direct',
+  templateUrl: './thread-direct.component.html',
+  styleUrls: ['./thread-direct.component.scss']
 })
-export class ThreadsComponent implements OnInit, OnChanges {
+
+export class ThreadDirectComponent {
   private threadUpdateSubscription: Subscription = new Subscription();
 
   typedEmoji: string = '';
@@ -32,8 +31,8 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
-  channelData: ChannelDataInterface[] = [];
-  threadData: ThreadDataInterface[] = [];
+  directMessageData: DirectMessageInterface[] = [];
+  threadDirectData: ThreadDirectDataInterface[] = [];
 
   mentionUser = new FormControl('');
   userList: string[] = [];
@@ -41,8 +40,8 @@ export class ThreadsComponent implements OnInit, OnChanges {
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
 
-  channelId: string = "";
-  updateChatById: string = "";
+  directChat: string = "";
+  updateDirectChatId: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -71,16 +70,15 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   constructor(
     private messageDataService: MessageDataService,
+    private directMessageService: DirectMessageService,
     public userDataService: UserDataService,
     public emojiService: EmojiService,
     private channelDataService: ChannelDataService,
-    private channelDataResolver: ChannelDataResolverService,
-    private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
-    private threadDataService: ThreadDataService,
+    private threadDirectDataService: ThreadDirectService,
     private firestore: Firestore,
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
@@ -94,14 +92,13 @@ export class ThreadsComponent implements OnInit, OnChanges {
       channelDescription: ['', [Validators.required]],
     });
     this.getCurrentUserId();
+    this.getDirectChatData();
     this.startThread();
-
   }
 
   async startThread() {
-    this.threadUpdateSubscription = this.threadDataService.threadUpdate$.subscribe(async () => {
-      await this.renderChatByThreadId();
-      //await this.getChannelData();
+    this.threadUpdateSubscription = this.threadDirectDataService.threadUpdate$.subscribe(async () => {
+      await this.renderDirectChatByThreadId();
     });
   }
 
@@ -110,59 +107,61 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.threadUpdateSubscription.unsubscribe();
   }
 
-  async renderChatByThreadId() {
-    if (this.threadDataService.threadId) {
-      this.threadDataService.getThreadDataMessages().subscribe(
-        (threadData: ThreadDataInterface[]) => {
-          const messagesForChannel = threadData.filter(message => message.thread === this.threadDataService.threadId);
-          if (messagesForChannel.length > 0) {
-            const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
+  async renderDirectChatByThreadId() {
+    if (this.threadDirectDataService.threadId) {
+      this.threadDirectDataService.getThreadDataDirectMessages().subscribe(
+        (threadData: ThreadDirectDataInterface[]) => {
+          const messagesDirect = threadData.filter(message => message.thread === this.threadDirectDataService.threadId);
+          if (messagesDirect.length > 0) {
+            const filteredData = messagesDirect.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render in Thread:', sortDataAfterTime);
-            this.threadData = sortDataAfterTime;
-
-            this.getChannelData();
+            this.threadDirectData = sortDataAfterTime;
+            this.getDirectChatData();
           } else {
-            console.log('No messages found in Thread:', this.threadDataService.threadId);
-            this.threadData = [];
+            console.log('No messages found in Thread:', this.threadDirectDataService.threadId);
+            this.threadDirectData = [];
           }
-        },
-        (error) => {
+        }, (error) => {
           console.error('ERROR render messages in Thread:', error);
         }
-      );
+      )
     } else {
-      this.threadData = [];
+      this.threadDirectData = [];
     }
   }
 
-  async getChannelData() {
-    console.log(this.threadData[0].channel);
-    this.processChannelData(this.threadData[0].channel);
+  async getDirectChatData() {
+    if (this.threadDirectData[0]?.directMessageTo) {
+      this.processDirectChatData(this.threadDirectData[0].directMessageTo);
+      console.log(this.threadDirectData[0].directMessageTo);
+    } else {
+      console.log("No channel in threadData[0]");
+    }
+  }
+  
+  processDirectChatData(chatId: string) {
+    this.directChat = chatId
+    this.updateDirectChatId = chatId;
+    this.renderChatByDirectChatId(this.updateDirectChatId);
   }
 
-  processChannelData(channelId: string) {
-    this.channelId = channelId;
-    this.updateChatById = channelId;
-    this.renderChatByChannelId(this.updateChatById);
-  }
-
-  renderChatByChannelId(channel: string) {
-    if (channel) {
-      console.log(channel);
-      this.channelDataService.getChannelData().subscribe(
-        (channelData: ChannelDataInterface[]) => {
-          const filterChannel = channelData.filter((channelItem) => channelItem.id === channel);
-          this.channelData = filterChannel;
+  renderChatByDirectChatId(user: string) {
+    if (user) {
+      console.log(user);
+      this.userDataService.getUserData().subscribe(
+        (userData: UserDataInterface[]) => {
+          const filterUsers = userData.filter((userItem) => userItem.id === user);
+          this.userData = filterUsers;
           this.loading = true;
-          console.log("The filterd channel id in THREAD", this.channelData);
+          console.log("The filterd channel id in THREAD", this.userData);
         },
         (error) => {
           console.error('Error THREAD chat data:', error);
         }
       );
     } else {
-      this.channelData = [];
+      this.userData = [];
     }
   }
 
@@ -174,7 +173,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  isNewDay( currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
+  isNewDay(currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
     if (!previousMessage) {
       return true;
     }
@@ -199,29 +198,30 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   async sendMessage() {
     if (this.messageInput.length > 0) {
-      const message: MessageDataInterface = {
+      const directMessage: DirectMessageInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
-        thread: this.threadDataService.threadId,
-        channel: 'Thread Message',
+        thread: this.threadDirectDataService.threadId,
+        directMessageTo: 'Thread Message',
+
         mentionedUser: 'user_id_here',
       };
 
       if (this.emojipickeractive) {
-        this.toggleEmojiPicker();
+        this.emojiService.toggleEmojiPicker('thread');
       }
 
-      this.messageData.push(message);
+      this.directMessageData.push(directMessage);
       this.messageInput = [''];
 
-      this.messageDataService.sendMessage(message).subscribe(
+      this.directMessageService.sendDirectMessage(directMessage).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
-            const index = this.messageData.findIndex((msg) => msg === message);
+            const index = this.directMessageData.findIndex((msg) => msg === directMessage);
             if (index !== -1) {
-              this.messageData[index].id = newMessage.id;
+              this.directMessageData[index].id = newMessage.id;
             }
           }
         },
@@ -234,47 +234,60 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
+
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
-        .getElementById(`reaction${this.emojisClickedBefore}`)
+        .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
         ?.classList.remove('showEmojis');
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
         document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
+          .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
           ?.classList.remove('showEmojis');
       }
-      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+      document.getElementById(`reaction-in-thread${index}`)?.classList.add('showEmojis');
       this.emojisClickedBefore = index;
     }
   }
 
-  reactWithEmoji(emoji: string, index: number, messageId: string) {
-    let emojiArray = this.messageData[index].emojis;
-    if (this.existReaction(index)) {
-      let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+
+  reactWithEmoji(emoji: string, index: number, messageId: string, message: ThreadDirectDataInterface) {
+    let emojiArray = message.emojis;
+    
+    emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
+      if (emoj['reaction-from'].includes(this.userDataService.userName)) {
+        const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
+        emoj['reaction-from'].splice(userIndex, 1);
+      }
+    });
+
+    if (this.emojiService.existEmoji(index, emoji, this.threadDirectData)) {
+
+      let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
+      emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
     }
+
+    let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
+    if (indexWithEmojiToDelete != -1) {
+      emojiArray.splice(indexWithEmojiToDelete, 1);
+    }
+
+    console.log('my Emoji Array', emojiArray);
+
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
 
 
-  existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-      return reaction['reaction-from'] === this.currentUser;
-    });
-  }
-
   showReaction(index: number) {
-    let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
+    let item = document.getElementById(`reactionlist-in-thread${index}`);
+    this.threadDirectData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
       hideItems?.classList.remove('show-list-of-reactions');
     });
     if (!this.reactionListOpen) {
@@ -285,9 +298,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
-  toggleEmojiPicker() {
-    this.emojipickeractive = !this.emojipickeractive;
-  }
+
 
   openUserProfile(id: any) {
     this.isProfileCardOpen = true;
@@ -320,10 +331,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
 
     const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+    currentDate.setHours(0, 0, 0, 0);
 
     const messageDate = new Date(time);
-    messageDate.setHours(0, 0, 0, 0); // Set time to 00:00:00
+    messageDate.setHours(0, 0, 0, 0);
 
     if (messageDate.getTime() === currentDate.getTime()) {
       return 'Today';
@@ -342,6 +353,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       day: 'numeric',
     });
   }
+
 
   async compareIds() {
     this.messageDataService.messageData$.subscribe(
@@ -386,7 +398,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   close() {
     this.loading = false;
-    this.threadDataService.threadOpen = false;
+    this.threadDirectDataService.threadOpen = false;
   }
 }
-

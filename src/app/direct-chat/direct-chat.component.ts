@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
-import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
+import { ThreadDirectService, ThreadDirectDataInterface } from '../service-moduls/thread-direct.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
@@ -15,7 +15,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 
 export class DirectChatComponent implements OnInit {
   userData: UserDataInterface[] = [];
-  threadData: ThreadDataInterface[] = [];
+  threadData: ThreadDirectDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
   channelData: ChannelDataInterface[] = [];
 
@@ -41,6 +41,7 @@ export class DirectChatComponent implements OnInit {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
+  selectedUserNameOrChannelName: string = ''; 
 
   emojipickeractive = false;
   reactionListOpen = false;
@@ -50,7 +51,7 @@ export class DirectChatComponent implements OnInit {
 
   constructor(
     public userDataService: UserDataService,
-    private threadDataService: ThreadDataService,
+    private threadDirectDataService: ThreadDirectService,
     private directMessageService: DirectMessageService,
     private channelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
@@ -102,8 +103,8 @@ export class DirectChatComponent implements OnInit {
   }
 
   async getThreadData() {
-    this.threadDataService.getThreadDataDirectMessages().subscribe(
-      (threadData: ThreadDataInterface[]) => {
+    this.threadDirectDataService.getThreadDataDirectMessages().subscribe(
+      (threadData: ThreadDirectDataInterface[]) => {
         this.threadData = threadData;
         console.log("Get thread data", threadData);
       },
@@ -130,6 +131,7 @@ export class DirectChatComponent implements OnInit {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.name.toLowerCase().includes(userName)
         );
+        this.toggleUserList = true;
       } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
         this.searchResultsChannels = this.channelData;
@@ -140,6 +142,7 @@ export class DirectChatComponent implements OnInit {
           channel.users.map((userId: string) =>
           this.userDataService.userData.find(user => user.id === userId)
         ));
+        this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
@@ -155,6 +158,9 @@ export class DirectChatComponent implements OnInit {
     if (user) {
       this.isInvitationValid = true;
       this.userIds = user.id;
+      this.selectedUserNameOrChannelName = user.name;
+      this.toggleUserList = false;
+      this.inviteUserOrChannel = '';
       console.log(this.userIds);
     }
   }
@@ -163,6 +169,9 @@ export class DirectChatComponent implements OnInit {
     if (channel) {
       this.isInvitationValid = true;
       this.userIds = channel.id;
+      this.selectedUserNameOrChannelName = channel.channelName;
+      this.toggleChannelList = false;
+      this.inviteUserOrChannel = '';
       console.log(this.userIds);
     }
   }
@@ -308,7 +317,7 @@ export class DirectChatComponent implements OnInit {
 
   async sendMessage() {
     if (this.isInvitationValid && this.messageInput.length > 0) {
-      const threadId = this.threadDataService.generateThreadId();
+      const threadId = this.threadDirectDataService.generateThreadId();
       const message: DirectMessageInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
@@ -430,7 +439,7 @@ export class DirectChatComponent implements OnInit {
   }
 
   openThread(threadId: string) {
-    this.threadDataService.setThreadId(threadId);
+    this.threadDirectDataService.setThreadId(threadId);
   }
 }
  

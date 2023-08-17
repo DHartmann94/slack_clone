@@ -511,7 +511,6 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-
   async deleteMessage(messageId: any) {
     if (!messageId) {
       return;
