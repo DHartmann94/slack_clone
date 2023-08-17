@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ThreadDataInterface, ThreadDataService} from "../service-moduls/thread.service";
+import { DirectMessageToUserInterface, DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 
 @Component({
   selector: 'app-board',
@@ -10,7 +11,7 @@ import {ThreadDataInterface, ThreadDataService} from "../service-moduls/thread.s
 export class BoardComponent implements OnInit {
   
 
-  constructor(public threadDataService: ThreadDataService,) { }
+  constructor(public threadDataService: ThreadDataService, public directMessageToUserService: DirectMessageToUserService) { }
 
   ngOnInit(): void {
     

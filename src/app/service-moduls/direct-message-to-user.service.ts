@@ -26,6 +26,8 @@ export class DirectMessageToUserService {
   private messageDataSubject: BehaviorSubject<DirectMessageToUserInterface[]> = new BehaviorSubject<DirectMessageToUserInterface[]>([]);
   public messageData$: Observable<DirectMessageToUserInterface[]> = this.messageDataSubject.asObservable();
 
+  directMessageToUserOpen: boolean = false;
+
   constructor(
     public firestore: Firestore,
     private userDataService: UserDataService,
@@ -126,4 +128,17 @@ export class DirectMessageToUserService {
     const messageDoc = doc(messagesCollection, messageId);
     return from(updateDoc(messageDoc, { emojis: emojiUpdate }));
   }
+
+
+  setDirectMessageToUserId() {
+    this.directMessageToUserOpen = true;
+    //setTimeout(() => {
+      //this.directMessageToUserId = directMessageToUserID;
+      //this.triggerdirectMessageToUserUpdate();
+    //}, 100);
+
+  }
+
+ 
+  
 }

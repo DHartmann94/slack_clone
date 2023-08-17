@@ -20,7 +20,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
-
+  directMessageToUserOpen: boolean = false;
   [x: string]: any;
 
 

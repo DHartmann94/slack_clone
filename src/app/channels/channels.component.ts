@@ -8,6 +8,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
+import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 
 @Component({
   selector: 'app-channels',
@@ -54,6 +55,7 @@ export class ChannelsComponent implements OnInit {
     private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
+    public directMessageToUserService: DirectMessageToUserService,
   ) { }
 
   ngOnInit(): void {
@@ -266,4 +268,16 @@ export class ChannelsComponent implements OnInit {
     }
     this.userCard = false;
   }
+
+  openDirectMessageToUser() {
+    this.directMessageToUserService.setDirectMessageToUserId();
+  }
+
+  // openDirectMessageToUser(//DirectMessageToUserID: string) {
+  //   this.directMessageToUserService.setDirectMessageToUserId(//DirectMessageToUserID);
+  // }
+
 }
+
+
+
