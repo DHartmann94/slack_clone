@@ -248,10 +248,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  isNewDay(
-    currentMessage: MessageDataInterface,
-    previousMessage: MessageDataInterface
-  ): boolean {
+  isNewDay(currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
     if (!previousMessage) {
       return true;
     }

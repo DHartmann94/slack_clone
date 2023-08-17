@@ -10,7 +10,9 @@ import {ThreadDataInterface, ThreadDataService} from "../service-moduls/thread.s
 export class BoardComponent implements OnInit {
   
 
-  constructor(public threadDataService: ThreadDataService,) { }
+  constructor(
+    public threadDataService: ThreadDataService,
+  ) { }
 
   ngOnInit(): void {
     

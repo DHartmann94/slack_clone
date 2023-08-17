@@ -135,7 +135,7 @@ export class ChannelsComponent implements OnInit {
     this.selectedChannel = this.getChannelById(channelGroupId);
   }
 
-  triggerNewChat() {
+  triggerDirectChat() {
     this.chatBehavior.triggerCRUD();
   }
 

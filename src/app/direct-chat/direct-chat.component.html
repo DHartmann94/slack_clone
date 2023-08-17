@@ -1,7 +1,10 @@
 <mat-card class="chat-card">
     <div class="shadow-box">
         <div class="search-input-channels">
-            <h2>New Message</h2>
+            <div class="message-head">
+                <h2>New Message</h2>
+                <img src="./assets/img/icons/close.png" alt="#" (click)="triggerChat()">
+            </div>        
             <div class="channel-inputs">
                 <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
                     placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
