@@ -31,7 +31,7 @@ export class DirectMessageToUserService {
   ) { }
 
   getMessageData(): Observable<DirectMessageToUserInterface[]> {
-    const messageCollection = collection(this.firestore, 'messages');
+    const messageCollection = collection(this.firestore, 'directMessageToUser');
     const q = query(messageCollection);
 
     return new Observable<DirectMessageToUserInterface[]>((observer) => {
@@ -86,7 +86,7 @@ export class DirectMessageToUserService {
   }
 
   sendMessage(message: DirectMessageToUserInterface): Observable<DirectMessageToUserInterface> {
-    const messages = collection(this.firestore, 'messages');
+    const messages = collection(this.firestore, 'directMessageToUser');
     return from(addDoc(messages, message)).pipe(
       map((docRef) => {
         const newMessage: DirectMessageToUserInterface = {
@@ -99,14 +99,14 @@ export class DirectMessageToUserService {
   }
 
   deleteMessage(messageId: any): Observable<void> {
-    const messagesCollection = collection(this.firestore, 'messages');
+    const messagesCollection = collection(this.firestore, 'directMessageToUser');
     const messageDoc = doc(messagesCollection, messageId);
 
     return from(deleteDoc(messageDoc));
   }
 
   updateMessage(messageId: any, emojiUpdate: object): Observable<void> {
-    const messagesCollection = collection(this.firestore, 'messages');
+    const messagesCollection = collection(this.firestore, 'directMessageToUser');
     const messageDoc = doc(messagesCollection, messageId);
     return from(updateDoc(messageDoc, { emojis: emojiUpdate }));
   }

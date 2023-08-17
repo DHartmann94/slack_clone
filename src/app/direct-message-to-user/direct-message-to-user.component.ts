@@ -81,28 +81,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   }
 
   renderMessage() {
-    // this.directMessageToUserService.getMessageData().subscribe(
-    //   (messageData: DirectMessageToUserInterface[]) => {
-    //     const messagesDirect = messageData.filter(
-    //       (message) => message.id === this.directMessageToUserService
-    //     );
-    //     if (messagesDirect.length > 0) {
-    //       const filteredData = messagesDirect.filter(
-    //         (message) => message.time !== undefined && message.time !== null
-    //       );
-    //       const sortDataAfterTime = filteredData.sort((a, b) =>
-    //         a.time! > b.time! ? 1 : -1
-    //       );
-    //       this.messageData = sortDataAfterTime;
-    //     } else {
-    //       this.messageData = [];
-    //     }
-    //   },
-    //   (error) => {
-    //     console.error('ERROR render messages in MessageToUser:', error);
-    //   }
-    // );
-
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
           if (messageData.length > 0) {
@@ -122,7 +100,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         }
       );
     }
-  
+
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
@@ -156,10 +134,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       currentDate.getTime() === today.getTime() ||
       currentDate.getTime() === yesterday.getTime()
     );
-  }
-
-  sendDirectMessageToUser() {
-    console.log('sendDirectMessageToUser test');
   }
 
   reaction(messageEmoji: string, index: number) {
@@ -307,7 +281,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  async sendMessage() {
+  async sendDirectMessageToUser() {
     if (this.messageInput.length > 0) {
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
