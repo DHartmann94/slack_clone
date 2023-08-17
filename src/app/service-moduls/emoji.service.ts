@@ -11,6 +11,7 @@ export class EmojiService {
   reactionListOpen: any;
   emojipickeractiveChat: boolean | undefined;
   emojipickeractiveThread: boolean | undefined;
+  reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
 
 
   constructor(

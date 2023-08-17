@@ -11,7 +11,7 @@ import {ThreadsComponent} from "../threads/threads.component";
 
 export class EmojisComponent implements OnInit{
 
-  constructor(public chat: ChatComponent) {}
+  constructor() {}
 
   @Output() newEmoji = new EventEmitter<string>();
 

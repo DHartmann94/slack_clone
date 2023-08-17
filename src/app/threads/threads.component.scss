@@ -247,6 +247,7 @@
 .app-emojis {
     position: absolute;
     bottom: 10px;
+    z-index: 10;
 }
 
 .chat-left {
@@ -592,6 +593,7 @@ $light-blue: #eceefe;
     @extend .container;
     background-image: url(../../assets/img/icons/sentiment_satisfied.svg);
     transition: background-image 0.3s;
+    z-index: 10;
 }
 
 .emoji-container:hover {
