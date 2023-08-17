@@ -61,7 +61,7 @@ export class ChatComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
 
-  private crudTriggeredSubscription!: Subscription;
+  private chatTriggerSubscription!: Subscription;
   triggerNewChatWindow: boolean = true;
 
   inviteUserOrChannel!: string;
@@ -80,8 +80,8 @@ export class ChatComponent implements OnInit, OnChanges {
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
   ) {
-    this.crudTriggeredSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.toggleNewChat();
+    this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+      this.toggleDirectChat();
     });
   }
 
@@ -106,7 +106,7 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   ngOnDestroy() {
-    this.crudTriggeredSubscription.unsubscribe();
+    this.chatTriggerSubscription.unsubscribe();
   }
 
   async getUserData() {
@@ -155,7 +155,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  toggleNewChat() {
+  toggleDirectChat() {
     this.triggerNewChatWindow = !this.triggerNewChatWindow;
   }
 

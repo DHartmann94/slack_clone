@@ -1,45 +1,34 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
-import { DirectMessageToUserInterface } from "../service-moduls/direct-message-to-user.service";
+import { DirectMessageToUserInterface, DirectMessageToUserService } from "../service-moduls/direct-message-to-user.service";
 import { map } from "rxjs/operators";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
-import { MessageDataService } from '../service-moduls/message.service';
 
 @Component({
   selector: 'app-direct-message-to-user',
   templateUrl: './direct-message-to-user.component.html',
-  styleUrls: ['./direct-message-to-user.component.scss']
+  styleUrls: ['./direct-message-to-user.component.scss'],
 })
 export class DirectMessageToUserComponent implements OnInit, OnChanges {
-
-  private threadUpdateSubscription: Subscription = new Subscription();
-
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
 
   [x: string]: any;
 
-
-
   userData: UserDataInterface[] = [];
   messageData: DirectMessageToUserInterface[] = [];
-
-  threadData: ThreadDataInterface[] = [];
 
   mentionUser = new FormControl('');
   userList: string[] = [];
 
   selectedMessage: DirectMessageToUserInterface | null = null;
 
+  directChat: string = '';
 
-
-  directChat: string = "";
-
-  updateDirectChatId: string = "";
+  updateDirectChatId: string = '';
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -50,9 +39,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   currentUser: string = '';
   currentUserId: string = '';
 
-
-
-
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
@@ -60,25 +46,61 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
 
-
   searchResults: UserDataInterface[] = [];
 
-
   constructor(
-    private messageDataService: MessageDataService,
-    // private directMessageToUserInterface: DirectMessageToUserInterface,
+    private directMessageToUserService: DirectMessageToUserService,
     public userDataService: UserDataService,
-
-    private threadDataService: ThreadDataService,
-    private firestore: Firestore,
-  ) {}
+    private firestore: Firestore
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('changes here', this.sentByName)
+    console.log('changes here', this.sentByName);
   }
 
   ngOnInit(): void {
+    this.getCurrentUserId();
+    this.getUserData();
+    this.renderMessage();
+
+    setTimeout(() => {
+      console.log('messageData', this.messageData);
+    }, 1000);
   }
+
+  async getUserData() {
+    this.userDataService.getUserData().subscribe(
+      (userData: UserDataInterface[]) => {
+        this.userData = userData;
+        this.userList = userData.map((user) => user.name);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+  }
+
+  renderMessage() {
+      this.directMessageToUserService.getMessageData().subscribe(
+        (messageData: DirectMessageToUserInterface[]) => {
+          if (messageData.length > 0) {
+            const filteredData = messageData.filter(
+              (message) => message.time !== undefined && message.time !== null
+            );
+            const sortDataAfterTime = filteredData.sort((a, b) =>
+              a.time! > b.time! ? 1 : -1
+            );
+            this.messageData = sortDataAfterTime;
+          } else {
+            this.messageData = [];
+          }
+        },
+        (error) => {
+          console.error('ERROR render messages in MessageToUser:', error);
+        }
+      );
+    }
+
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
@@ -114,10 +136,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  sendDirectMessageToUser() {
-    console.log('sendDirectMessageToUser test');
-  }
-
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -138,21 +156,28 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   reactWithEmoji(emoji: string, index: number, messageId: string) {
     let emojiArray = this.messageData[index].emojis;
     if (this.existReaction(index)) {
-      let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+      let indexWithCurrentUser = emojiArray.findIndex(
+        (reaction: { [x: string]: string }) =>
+          reaction['reaction-from'] === this.currentUser
+      );
+      emojiArray[indexWithCurrentUser] = {
+        emoji: emoji,
+        'reaction-from': this.currentUser,
+      };
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+      emojiArray.push({ emoji: emoji, 'reaction-from': this.currentUser });
     }
-    // this.messageDataService.updateMessage(messageId, emojiArray);
+    this.directMessageToUserService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
 
-
   existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-      return reaction['reaction-from'] === this.currentUser;
-    });
+    return this.messageData[index].emojis.some(
+      (reaction: { [x: string]: string }) => {
+        return reaction['reaction-from'] === this.currentUser;
+      }
+    );
   }
 
   showReaction(index: number) {
@@ -227,34 +252,68 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     });
   }
 
-
   async compareIds() {
-    // this.directMessageToUserInterface.messageData$.subscribe(
-    //   (messages) => {
+    this.directMessageToUserService.messageData$.subscribe(
+      (messages: any[]) => {
+        this.userDataService
+          .getUserData()
+          .pipe(map((userData) => userData.map((user) => user.id)))
+          .subscribe((userIds: string[]) => {
+            const userIdToNameMap: { [id: string]: string } = {};
+            this.userData.forEach((user) => {
+              if (userIds.includes(user.id)) {
+                userIdToNameMap[user.id] = user.name;
+              }
+            });
+            const matches: string[] = [];
+            messages.forEach((message) => {
+              if (
+                this.currentUserId &&
+                userIdToNameMap.hasOwnProperty(this.currentUserId)
+              ) {
+                const senderName = userIdToNameMap[this.currentUserId];
+                matches.push(this.currentUserId);
+                this.currentUser = senderName;
+              }
+            });
+          });
+      }
+    );
+  }
 
-    //     this.userDataService.getUserData().pipe(
-    //       map((userData) => userData.map(user => user.id))
-    //     ).subscribe(
-    //       (userIds: string[]) => {
+  async sendDirectMessageToUser() {
+    if (this.messageInput.length > 0) {
+      const message: DirectMessageToUserInterface = {
+        messageText: this.messageInput,
+        sentById: this.currentUserId,
+        time: Date.now(),
+        emojis: [],
+        mentionedUser: 'user_id_here',
+      };
 
-    //         const userIdToNameMap: { [id: string]: string } = {};
-    //         this.userData.forEach(user => {
-    //           if (userIds.includes(user.id)) {
-    //             userIdToNameMap[user.id] = user.name;
-    //           }
-    //         });
-    //         const matches: string[] = [];
-    //         messages.forEach((message) => {
-    //           if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
-    //             const senderName = userIdToNameMap[this.currentUserId];
-    //             matches.push(this.currentUserId);
-    //             this.currentUser = senderName;
-    //           }
-    //         });
-    //       }
-    //     );
-    //   }
-    // );
+      if (this.emojipickeractive) {
+        this.toggleEmojiPicker();
+      }
+
+      this.messageData.push(message);
+      this.messageInput = [''];
+
+      this.directMessageToUserService.sendMessage(message).subscribe(
+        (newMessage) => {
+          if (newMessage && newMessage.id) {
+            const index = this.messageData.findIndex((msg) => msg === message);
+            if (index !== -1) {
+              this.messageData[index].id = newMessage.id;
+            }
+          }
+        },
+        (error) => {
+          console.error('Error sending message:', error);
+        }
+      );
+    } else {
+      console.log('Message input is empty. Cannot send an empty message.');
+    }
   }
 
   async deleteMessage(messageId: any) {
@@ -262,12 +321,12 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       return;
     }
     try {
-      await this.messageDataService.deleteMessage(messageId);
-      this.messageData = this.messageData.filter(message => message.id !== messageId);
+      await this.directMessageToUserService.deleteMessage(messageId);
+      this.messageData = this.messageData.filter(
+        (message) => message.id !== messageId
+      );
     } catch (error) {
       console.error('Error deleting message:', error);
     }
   }
-
-
 }

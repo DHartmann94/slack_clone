@@ -75,12 +75,23 @@
     justify-content: flex-start;
     padding: 0 20px 15px 20px;
 
-    h2 {
-        font-family: "Nunito";
-        margin-top: 20px;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
+    .message-head {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        h2 {
+            font-family: "Nunito";
+            margin-top: 20px;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 700;
+        }
+
+        img {
+            width: 45px;
+            object-fit: scale-down;
+            cursor: pointer;
+        }
     }
 
     .user-list {

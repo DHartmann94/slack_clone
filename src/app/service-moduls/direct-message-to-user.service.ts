@@ -8,7 +8,6 @@ export interface DirectMessageToUserInterface {
   messageText: any;
   time?: number;
   emojis?: any;
-  thread?: any;
   channel?: any;
   sentBy?: string;
   picture?: string;
@@ -32,35 +31,29 @@ export class DirectMessageToUserService {
   ) { }
 
   getMessageData(): Observable<DirectMessageToUserInterface[]> {
-    const messageCollection = collection(this.firestore, 'messages');
+    const messageCollection = collection(this.firestore, 'directMessageToUser');
     const q = query(messageCollection);
 
     return new Observable<DirectMessageToUserInterface[]>((observer) => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const storedMessageData: DirectMessageToUserInterface[] = [];
-        const threadResponses: Record<string, number> = {};
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentById, channel, mentionedUser } = data;
+          const { messageText, time, emojis, sentById, mentionedUser } = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
-
-            this.countThreadResponses(thread, threadResponses);
 
             const message: DirectMessageToUserInterface = {
               id: doc.id,
               messageText: messageText,
               time: time,
-              thread: thread,
               emojis: emojis,
-              channel: channel,
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
-              numberOfThreads: threadResponses,
             };
             storedMessageData.push(message);
           } catch (error) {
@@ -73,6 +66,7 @@ export class DirectMessageToUserService {
       });
 
       return () => unsubscribe();
+
     });
   }
 
@@ -91,18 +85,8 @@ export class DirectMessageToUserService {
     }
   }
 
-  countThreadResponses(thread: string, threadResponses: Record<string, number>) {
-    if (thread) {
-      if (threadResponses.hasOwnProperty(thread)) {
-        threadResponses[thread]++;
-      } else {
-        threadResponses[thread] = 0;
-      }
-    }
-  }
-
   sendMessage(message: DirectMessageToUserInterface): Observable<DirectMessageToUserInterface> {
-    const messages = collection(this.firestore, 'messages');
+    const messages = collection(this.firestore, 'directMessageToUser');
     return from(addDoc(messages, message)).pipe(
       map((docRef) => {
         const newMessage: DirectMessageToUserInterface = {
@@ -115,14 +99,14 @@ export class DirectMessageToUserService {
   }
 
   deleteMessage(messageId: any): Observable<void> {
-    const messagesCollection = collection(this.firestore, 'messages');
+    const messagesCollection = collection(this.firestore, 'directMessageToUser');
     const messageDoc = doc(messagesCollection, messageId);
 
     return from(deleteDoc(messageDoc));
   }
 
   updateMessage(messageId: any, emojiUpdate: object): Observable<void> {
-    const messagesCollection = collection(this.firestore, 'messages');
+    const messagesCollection = collection(this.firestore, 'directMessageToUser');
     const messageDoc = doc(messagesCollection, messageId);
     return from(updateDoc(messageDoc, { emojis: emojiUpdate }));
   }

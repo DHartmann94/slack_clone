@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
+import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { Observable, Subject, Subscription, map } from 'rxjs';
@@ -12,7 +13,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
   styleUrls: ['./direct-chat.component.scss']
 })
 
-export class NewChatComponent implements OnInit {
+export class DirectChatComponent implements OnInit {
   userData: UserDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
   directMessageData: DirectMessageInterface[] = [];
@@ -22,6 +23,7 @@ export class NewChatComponent implements OnInit {
   userIds: string = '';
   channelId: string = "";
   isInvitationValid: boolean = false;
+  closeDirectChatWindow: boolean = false;
  
   searchResultsUsers: UserDataInterface[] = [];
   searchResultsChannels: ChannelDataInterface[] = [];
@@ -52,7 +54,9 @@ export class NewChatComponent implements OnInit {
     private directMessageService: DirectMessageService,
     private channelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
-  ) {}
+    private chatBehavior: ChatBehaviorService,
+  ) {
+  }
 
   ngOnInit(): void {
     this.getDirectChatData();
@@ -107,6 +111,10 @@ export class NewChatComponent implements OnInit {
         console.error('Error fetching thread data:', error);
       }
     );
+  }
+
+  triggerChat() {
+    this.chatBehavior.triggerCRUD();
   }
 
   processChannelData(channelId: string) {
