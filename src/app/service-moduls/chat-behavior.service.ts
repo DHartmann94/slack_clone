@@ -8,6 +8,8 @@ export class ChatBehaviorService {
   private crudTriggeredSubject = new Subject<void>();
   crudTriggered$ = this.crudTriggeredSubject.asObservable();
 
+  ChannelChatIsOpen: boolean = true;
+
   triggerCRUD() {
     this.crudTriggeredSubject.next();
   }

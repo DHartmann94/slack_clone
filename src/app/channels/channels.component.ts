@@ -8,6 +8,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
+import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 
 @Component({
   selector: 'app-channels',
@@ -31,6 +32,7 @@ export class ChannelsComponent implements OnInit {
   userForm!: FormGroup;
 
   showFiller: boolean = true;
+  ChannelChatisOpen: boolean = true;
   openChannels: boolean = true;
   openDirect: boolean = true;
   channelCard: boolean = false;
@@ -54,6 +56,7 @@ export class ChannelsComponent implements OnInit {
     private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
+    public directMessageToUserService: DirectMessageToUserService,
   ) { }
 
   ngOnInit(): void {
@@ -124,6 +127,8 @@ export class ChannelsComponent implements OnInit {
     this.selectedChannel = this.getChannelById(channelId);
     this.channelDataResolver.sendDataChannels(this.selectedChannel);
     this.updateChannelName(this.selectedChannel);
+    this.directMessageToUserService.directMessageToUserOpen = false;
+    this.chatBehavior.ChannelChatIsOpen = true;
   }
 
   selectUser(userId: any) {
@@ -266,4 +271,18 @@ export class ChannelsComponent implements OnInit {
     }
     this.userCard = false;
   }
+
+  openDirectMessageToUser() {
+    this.directMessageToUserService.setDirectMessageToUserId();
+    this.chatBehavior.ChannelChatIsOpen = false;
+  
+  }
+
+  // openDirectMessageToUser(//DirectMessageToUserID: string) {
+  //   this.directMessageToUserService.setDirectMessageToUserId(//DirectMessageToUserID);
+  // }
+
 }
+
+
+
