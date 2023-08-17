@@ -11,6 +11,7 @@ import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
+import { EmojiService } from '../service-moduls/emoji.service';
 
 @Component({
   selector: 'app-threads',
@@ -76,6 +77,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     private messageDataService: MessageDataService,
     private directMessageService: DirectMessageService,
     public userDataService: UserDataService,
+    public emojiService: EmojiService,
     private channelDataService: ChannelDataService,
     private chatDataService: ChatDataService,
     private fbChannelName: FormBuilder,

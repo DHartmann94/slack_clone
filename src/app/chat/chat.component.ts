@@ -11,6 +11,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { ChatDataInterface, ChatDataService } from '../service-moduls/chat.service';
+import { EmojiService } from '../service-moduls/emoji.service';
 
 @Component({
   selector: 'app-chat',
@@ -70,6 +71,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   constructor(
     private messageDataService: MessageDataService,
+    public emojiService: EmojiService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,

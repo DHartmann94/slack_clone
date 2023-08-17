@@ -9,17 +9,15 @@ export class EmojiService {
   messageData: any;
   emojisClickedBefore: number | undefined;
   reactionListOpen: any;
-  emojipickeractive: boolean | undefined;
+  emojipickeractiveChat: boolean | undefined;
+  emojipickeractiveThread: boolean | undefined;
 
 
   constructor(
     public userDataService: UserDataService,
     public messageDataService: MessageDataService,
     
-    
-    
     ) { }
-
 
 
 
@@ -107,8 +105,13 @@ export class EmojiService {
     }
   }
 
-  toggleEmojiPicker() {
-    this.emojipickeractive = !this.emojipickeractive;
+  toggleEmojiPicker(component: string) {
+    if (component === 'chat') {
+      this.emojipickeractiveChat = !this.emojipickeractiveChat;
+    } else if (component === 'thread') {
+      this.emojipickeractiveThread = !this.emojipickeractiveThread;
+    }
+    
   }
 
 }

@@ -91,7 +91,8 @@
   <!-- Input field -->
   <div class="message-input-field">
     <div class="text-editor">
-      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
+      <!--  (newEmoji)="typeEmoji($event)" -->
+      <app-emojis class="app-emojis" *ngIf="this.emojiService.emojipickeractiveThread"></app-emojis>
 
       <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4">
         </textarea>
@@ -99,7 +100,7 @@
         <div class="text-editor-left-btns">
           <div class="attach"></div>
           <div class="vertical-line-textEditor"></div>
-          <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
+          <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
           <div class="mail-container"></div>
         </div>
         <div class="send-message-btn" (click)="sendMessage()"></div>
