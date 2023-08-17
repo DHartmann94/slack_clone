@@ -32,6 +32,7 @@ export class ChannelsComponent implements OnInit {
   userForm!: FormGroup;
 
   showFiller: boolean = true;
+  ChannelChatisOpen: boolean = true;
   openChannels: boolean = true;
   openDirect: boolean = true;
   channelCard: boolean = false;
@@ -271,6 +272,8 @@ export class ChannelsComponent implements OnInit {
 
   openDirectMessageToUser() {
     this.directMessageToUserService.setDirectMessageToUserId();
+    this.chatBehavior.ChannelChatIsOpen = false;
+  
   }
 
   // openDirectMessageToUser(//DirectMessageToUserID: string) {

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataService } from './user.service';
+import { ChatBehaviorService } from './chat-behavior.service';
 
 export interface DirectMessageToUserInterface {
   id?: any;
@@ -25,12 +26,14 @@ export class DirectMessageToUserService {
   private messageDataSubject: BehaviorSubject<DirectMessageToUserInterface[]> = new BehaviorSubject<DirectMessageToUserInterface[]>([]);
   public messageData$: Observable<DirectMessageToUserInterface[]> = this.messageDataSubject.asObservable();
 
-  directMessageToUserOpen: boolean = false;
-
   constructor(
     public firestore: Firestore,
     private userDataService: UserDataService,
+    public ChatBehaviorService: ChatBehaviorService,
   ) { }
+
+  directMessageToUserOpen: boolean = false;
+  ChannelChatisOpen: boolean = true;
 
   getMessageData(): Observable<DirectMessageToUserInterface[]> {
     const messageCollection = collection(this.firestore, 'directMessageToUser');
@@ -116,6 +119,8 @@ export class DirectMessageToUserService {
 
   setDirectMessageToUserId() {
     this.directMessageToUserOpen = true;
+    this.ChannelChatisOpen = false;
+    console.log("Channel is closed" + this.ChannelChatisOpen);
     //setTimeout(() => {
       //this.directMessageToUserId = directMessageToUserID;
       //this.triggerdirectMessageToUserUpdate();
