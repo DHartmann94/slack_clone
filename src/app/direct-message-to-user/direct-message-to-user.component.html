@@ -1,10 +1,10 @@
 
 <mat-card class="threads-card">
-  <div class="shadow-box">
+  <div *ngIf="receivedUserData$ | async as userData" class="shadow-box">
     <div class="chat-first-row">
       <div class="participant-status">
-        <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-        <span class="participant-name">Sofia Müller</span>
+        <img class="participant-icon" src="{{ userData.picture }}" alt="">
+        <span class="participant-name">{{ userData.name }}</span>
       </div>
 
       </div>
@@ -37,7 +37,7 @@
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
-            <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+            <span class="chat-name">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
@@ -46,7 +46,7 @@
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              <span class="chat-name">{{ message.sentBy }}</span>
             </div>
           </div>
           <div>
@@ -106,13 +106,13 @@
 </mat-card>
 
 <!-- Profile Content -->
-<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+<div class="overlay" *ngIf="isProfileCardOpen"></div>
 
 <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
   <mat-card class="user-profile-card">
     <mat-card-header class="user-header">
       <mat-card-title>Profile</mat-card-title>
-      <mat-icon (click)="closeUserProfile()">close</mat-icon>
+      <mat-icon>close</mat-icon>
     </mat-card-header>
     <div class="user-img">
       <img src="{{ this.userDataService.chatUserPicture }}">
