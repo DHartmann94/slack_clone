@@ -1,7 +1,7 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
-import { DirectMessageToUserInterface } from "../service-moduls/direct-message-to-user.service";
+import { DirectMessageToUserInterface, DirectMessageToUserService } from "../service-moduls/direct-message-to-user.service";
 import { map } from "rxjs/operators";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
@@ -66,12 +66,12 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   constructor(
     private messageDataService: MessageDataService,
-    // private directMessageToUserInterface: DirectMessageToUserInterface,
+    private directMessageToUserService: DirectMessageToUserService,
     public userDataService: UserDataService,
 
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
-  ) {}
+  ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName)
@@ -229,32 +229,32 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
 
   async compareIds() {
-    // this.directMessageToUserInterface.messageData$.subscribe(
-    //   (messages) => {
+    this.directMessageToUserService.messageData$.subscribe(
+      (messages: any[]) => {
 
-    //     this.userDataService.getUserData().pipe(
-    //       map((userData) => userData.map(user => user.id))
-    //     ).subscribe(
-    //       (userIds: string[]) => {
+        this.userDataService.getUserData().pipe(
+          map((userData) => userData.map(user => user.id))
+        ).subscribe(
+          (userIds: string[]) => {
 
-    //         const userIdToNameMap: { [id: string]: string } = {};
-    //         this.userData.forEach(user => {
-    //           if (userIds.includes(user.id)) {
-    //             userIdToNameMap[user.id] = user.name;
-    //           }
-    //         });
-    //         const matches: string[] = [];
-    //         messages.forEach((message) => {
-    //           if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
-    //             const senderName = userIdToNameMap[this.currentUserId];
-    //             matches.push(this.currentUserId);
-    //             this.currentUser = senderName;
-    //           }
-    //         });
-    //       }
-    //     );
-    //   }
-    // );
+            const userIdToNameMap: { [id: string]: string } = {};
+            this.userData.forEach(user => {
+              if (userIds.includes(user.id)) {
+                userIdToNameMap[user.id] = user.name;
+              }
+            });
+            const matches: string[] = [];
+            messages.forEach((message) => {
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
+                const senderName = userIdToNameMap[this.currentUserId];
+                matches.push(this.currentUserId);
+                this.currentUser = senderName;
+              }
+            });
+          }
+        );
+      }
+    );
   }
 
   async deleteMessage(messageId: any) {
