@@ -3,6 +3,7 @@ import { Observable, Subscription } from "rxjs";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
 import { DirectMessageToUserInterface, DirectMessageToUserService } from "../service-moduls/direct-message-to-user.service";
 import { map } from "rxjs/operators";
+import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
@@ -63,6 +64,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     public channelDataService: ChannelDataService,
     public channelDataInterface: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private chatBehavior: ChatBehaviorService,
     private firestore: Firestore,
     private userDataResolver: UserDataResolveService,
   ) { }
@@ -114,11 +116,14 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
+  triggerChat() {
+    this.chatBehavior.triggerChat();
+  }
+
   processChannelData(channelId: string) {
     this.channelId = channelId;
     this.renderMessage();
   }
-
 
   renderMessage() {
       this.directMessageToUserService.getMessageData().subscribe(

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ThreadDirectService, ThreadDirectDataInterface } from '../service-moduls/thread-direct.service';
+import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
@@ -52,6 +53,7 @@ export class DirectChatComponent implements OnInit {
   constructor(
     public userDataService: UserDataService,
     private threadDirectDataService: ThreadDirectService,
+    private directChatDataResolverService: DirectChatDataResolverService,
     private directMessageService: DirectMessageService,
     private channelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
@@ -115,7 +117,7 @@ export class DirectChatComponent implements OnInit {
   }
 
   triggerChat() {
-    this.chatBehavior.triggerCRUD();
+    this.chatBehavior.triggerChat();
   }
 
   processChannelData(channelId: string) {
@@ -156,11 +158,13 @@ export class DirectChatComponent implements OnInit {
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
+      console.log(user);
       this.isInvitationValid = true;
       this.userIds = user.id;
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
       this.inviteUserOrChannel = '';
+      this.directChatDataResolverService.setSelectedUser(user)
       console.log(this.userIds);
     }
   }

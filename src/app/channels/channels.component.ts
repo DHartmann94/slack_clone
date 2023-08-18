@@ -3,6 +3,7 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
+import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -52,6 +53,7 @@ export class ChannelsComponent implements OnInit {
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private directChatDataResolverService: DirectChatDataResolverService,
     private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
@@ -70,6 +72,7 @@ export class ChannelsComponent implements OnInit {
     this.getChannelData();
     this.getUserData();
     this.updateUsers();
+    this.getDataFromDirectChat();
   }
 
   async getUserData() {
@@ -107,6 +110,15 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
+  async getDataFromDirectChat() {
+    this.directChatDataResolverService.selectedUser$.subscribe(selectedUser => {
+      if (selectedUser) {
+         this.selectedUser = selectedUser;
+        console.log(selectedUser);
+      }
+    });
+  }
+
   toggle() {
     this.showFiller = !this.showFiller;
   }
@@ -134,6 +146,10 @@ export class ChannelsComponent implements OnInit {
   selectUser(userId: any) {
     this.selectedUser = this.getUserById(userId);
     this.userDataResolver.sendDataUsers(this.selectedUser);
+    const selectedUser = this.userData.find(user => user.id === userId);
+    if (selectedUser) {
+      this.directChatDataResolverService.setSelectedUser(selectedUser);
+    }
   }
 
   selectChannelFromList(channelGroupId: any) {
@@ -141,7 +157,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   triggerDirectChat() {
-    this.chatBehavior.triggerCRUD();
+    this.chatBehavior.triggerChat();
   }
 
   getChannelById(channelId: any) {
