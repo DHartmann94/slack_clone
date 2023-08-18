@@ -10,7 +10,7 @@ export class ChatBehaviorService {
 
   ChannelChatIsOpen: boolean = true;
 
-  triggerCRUD() {
+  triggerChat() {
     this.crudTriggeredSubject.next();
   }
 }
