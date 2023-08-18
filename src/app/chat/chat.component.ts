@@ -67,6 +67,8 @@ export class ChatComponent implements OnInit, OnChanges {
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
 
+  isInviteUserOpen: boolean = false;
+
   constructor(
     private messageDataService: MessageDataService,
     public emojiService: EmojiService,
@@ -525,4 +527,13 @@ export class ChatComponent implements OnInit, OnChanges {
   openThread(threadID: string) {
     this.threadDataService.setThreadId(threadID);
   }
+
+  openInviteUserToChannel() {
+    this.isInviteUserOpen = !this.isInviteUserOpen;
+  }
+
+  closeInviteUserToChannel() {
+    this.isInviteUserOpen = false;
+  }
+
 }

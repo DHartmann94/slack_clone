@@ -12,15 +12,30 @@
           <img class="participant-icon" src="./assets/img/avatar.png" alt="">
           <img class="participant-icon" src="./assets/img/avatar.png" alt="">
         </div>
-        <div class="participant-amount">
-          3
+        <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
+          {{ channel.users.length }}
         </div>
         <div class="add-participant-background">
-          <img class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
+          <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
         </div>
       </div>
     </div>
   </div>
+
+  <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
+    <div class="invite-user-title-parent">
+      <mat-card-title>Add People</mat-card-title>
+      <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
+    </div>
+    <div class="invite-user-card-link">
+      <span>#</span>
+      <span>CHANNEL-NAME</span>
+    </div>
+    <input placeholder="Enter Name">
+    <div class="invite-user-button-parent">
+      <button>Add</button>
+    </div>
+  </mat-card>
 
   <div class="chat-text-area" *ngIf="messageData">
     <div *ngFor="let message of messageData; let index = index">
