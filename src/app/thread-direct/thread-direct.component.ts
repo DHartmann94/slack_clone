@@ -205,7 +205,6 @@ export class ThreadDirectComponent {
         emojis: [],
         thread: this.threadDirectDataService.threadId,
         directMessageTo: 'Thread Message',
-
         mentionedUser: 'user_id_here',
       };
 

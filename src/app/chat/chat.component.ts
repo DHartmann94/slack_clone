@@ -283,8 +283,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
       this.messageData.push(message);
       this.messageInput = [''];
-
-      this.messageDataService.sendMessage(message).subscribe(
+      this.messageDataService.sendMessage(message).subscribe(      
         (newMessage) => {
           if (newMessage && newMessage.id) {
             const index = this.messageData.findIndex((msg) => msg === message);
