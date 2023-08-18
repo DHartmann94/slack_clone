@@ -119,30 +119,30 @@
       <mat-icon (click)="closeUserProfile()">close</mat-icon>
     </mat-card-header>
     <div class="user-img">
-      <img src="{{ this.userDataService.chatUserPicture }}">
+      <img src="{{  this.userProfile[0].picture }}">
     </div>
     <mat-card-content>
       <div class="user-contact-info">
-        <p>{{ this.userDataService.chatUserName }}</p>
+        <p>{{ this.userProfile[0].name }}</p>
       </div>
-      <div class="user-status" [ngClass]="{'user-active': this.userDataService.chatUserStatus === 'Active'}">
+      <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
         <p>
-          <svg *ngIf="this.userDataService.chatUserStatus === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
+          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
             height="8" viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#92C83E" />
           </svg>
-          <svg *ngIf="this.userDataService.chatUserStatus === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
+          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
             height="8" viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#808080" />
           </svg>
-          {{ this.userDataService.chatUserStatus }}
+          {{ this.userProfile[0].status }}
         </p>
       </div>
       <div class="user-email">
         <mat-icon>mail_outline</mat-icon>
         <div class="user-email-link">
           <p>E-Mail-Adresse</p>
-          <a>{{ this.userDataService.chatUserEmail }}</a>
+          <a>{{ this.userProfile[0].email }}</a>
         </div>
       </div>
     </mat-card-content>

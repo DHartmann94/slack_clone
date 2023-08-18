@@ -35,6 +35,8 @@ export class ChatComponent implements OnInit, OnChanges {
   channelData: ChannelDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
+  userProfile: UserDataInterface[] = [];
+
   mentionUser = new FormControl('');
   userList: string[] = [];
 
@@ -382,7 +384,11 @@ export class ChatComponent implements OnInit, OnChanges {
   openUserProfile(id: any) {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
-    this.userDataService.getCurrentUserData(id);
+    //this.userDataService.getCurrentUserData(id);
+    this.userProfile = [];
+    if (id) {
+      this.userProfile = this.userDataService.userData.filter(user => user.id.includes(id));
+    }
   }
 
   closeUserProfile() {
