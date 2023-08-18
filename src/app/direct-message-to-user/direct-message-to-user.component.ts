@@ -5,6 +5,10 @@ import { DirectMessageToUserInterface, DirectMessageToUserService } from "../ser
 import { map } from "rxjs/operators";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
+import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
+import { MessageDataInterface, MessageDataService } from '../service-moduls/message.service';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
+import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 
 @Component({
   selector: 'app-direct-message-to-user',
@@ -38,7 +42,11 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
-
+  
+  receivedChannelData$!: Observable<ChannelDataInterface | null>;
+  receivedUserData$!: Observable<UserDataInterface | null>
+  
+  channelId: string = "";
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
@@ -51,7 +59,12 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   constructor(
     private directMessageToUserService: DirectMessageToUserService,
     public userDataService: UserDataService,
-    private firestore: Firestore
+    public messageDataService: MessageDataService,
+    public channelDataService: ChannelDataService,
+    public channelDataInterface: ChannelDataService,
+    private channelDataResolver: ChannelDataResolverService,
+    private firestore: Firestore,
+    private userDataResolver: UserDataResolveService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -62,6 +75,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.getCurrentUserId();
     this.getUserData();
     this.renderMessage();
+    this.getDataFromChannel();
 
     setTimeout(() => {
       console.log('messageData', this.messageData);
@@ -79,6 +93,32 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       }
     );
   }
+
+  async getDataFromChannel(): Promise<void> {
+    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
+      map((data: ChannelDataInterface | null) => {
+        if (data && data.id) {
+          this.processChannelData(data.id);
+        }
+        return data;
+      })
+    );
+    this.receivedUserData$ = this.userDataResolver.resolve();
+    this.receivedUserData$.subscribe(
+      (userData: UserDataInterface | null) => {
+        console.log("User received from channel: ", userData);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+  }
+
+  processChannelData(channelId: string) {
+    this.channelId = channelId;
+    this.renderMessage();
+  }
+
 
   renderMessage() {
       this.directMessageToUserService.getMessageData().subscribe(
@@ -196,16 +236,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
-  }
-
-  openUserProfile(id: any) {
-    this.isProfileCardOpen = true;
-    this.isLogoutContainerOpen = false;
-    this.userDataService.getCurrentUserData(id);
-  }
-
-  closeUserProfile() {
-    this.isProfileCardOpen = false;
   }
 
   formatTimeStamp(time: number | undefined): string {
