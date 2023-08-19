@@ -979,6 +979,10 @@ section {
 
     overflow-x: scroll;
 
+    mat-icon {
+      cursor: pointer;
+    }
+
     div {
       display: flex;
       align-items: center;

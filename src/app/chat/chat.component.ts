@@ -544,7 +544,10 @@ export class ChatComponent implements OnInit, OnChanges {
     if (this.inviteUserToChannel) {
       const searchBy = this.inviteUserToChannel.toLowerCase();
       const userName = searchBy.substr(1);
-      this.searchUserResults = this.userDataService.userData.filter(user => user.name.toLowerCase().includes(userName));
+      this.searchUserResults = this.userDataService.userData.filter(user =>
+        user.name.toLowerCase().includes(userName) &&
+        !this.selectedUserToChannel.some(selectedUser => selectedUser.name === user.name)
+      );
       this.toggleList = true;
     } else {
       this.searchUserResults = [];
@@ -559,6 +562,13 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
+  deleteSelectedUser(user: any) {
+    const index = this.selectedUserToChannel.indexOf(user);
+    if (index !== -1) {
+      this.selectedUserToChannel.splice(index, 1);
+    }
+  }
+
   async sendUserToChannel() {
     if (this.selectedUserToChannel) {
       this.userSendToChannel = true;
@@ -568,10 +578,10 @@ export class ChatComponent implements OnInit, OnChanges {
       try {
         const channelSnapshot = await getDoc(channelDoc);
         const existingUserIds = await channelSnapshot.get('users') || [];
-  
+
         const updatedUserIds = [...existingUserIds, ...selectedUserIds];
 
-        await updateDoc(channelDoc, { users: updatedUserIds});
+        await updateDoc(channelDoc, { users: updatedUserIds });
         this.selectedUserToChannel = [];
         this.userSendToChannel = false;
         this.isInviteUserOpen = false;

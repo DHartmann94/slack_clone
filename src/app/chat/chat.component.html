@@ -23,7 +23,7 @@
     </div>
   </div>
 
-  <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
+  <mat-card *ngIf="!isInviteUserOpen" class="invite-user-card">
     <div class="invite-user-title-parent">
       <mat-card-title>Add People</mat-card-title>
       <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
@@ -39,6 +39,7 @@
         <div>
           <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
           <span>{{ user.name }}</span>
+          <mat-icon (click)="deleteSelectedUser(user)">close</mat-icon>
         </div>
       </div>
     </div>
