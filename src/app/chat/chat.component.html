@@ -44,7 +44,7 @@
     </div>
 
     <div class="invite-user-button-parent">
-      <button [disabled]="selectedUserToChannel.length === 0" (click)="sendUserToChannel()">Add</button>
+      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel" (click)="sendUserToChannel()">Add</button>
     </div>
 
     <div *ngIf="searchUserResults.length > 0  && toggleList" class="result-user-list-parent">

@@ -71,6 +71,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   isInviteUserOpen: boolean = false;
   toggleList: boolean = false;
+  userSendToChannel: boolean = false;
   inviteUserToChannel: string = '';
   searchUserResults: UserDataInterface[] = [];
   selectedUserToChannel: UserDataInterface[] = [];
@@ -560,6 +561,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   async sendUserToChannel() {
     if (this.selectedUserToChannel) {
+      this.userSendToChannel = true;
       const selectedUserIds: string[] = this.selectedUserToChannel.map(user => user.id);
 
       const channelDoc = doc(this.firestore, 'channels', this.channelId);
@@ -571,6 +573,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
         await updateDoc(channelDoc, { users: updatedUserIds});
         this.selectedUserToChannel = [];
+        this.userSendToChannel = false;
         this.isInviteUserOpen = false;
       } catch (error) {
         console.error('ERROR invite user to channel', error);
