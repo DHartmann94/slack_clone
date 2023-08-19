@@ -70,8 +70,10 @@ export class ChatComponent implements OnInit, OnChanges {
   searchResults: UserDataInterface[] = [];
 
   isInviteUserOpen: boolean = false;
+  toggleList: boolean = false;
   inviteUserToChannel: string = '';
   searchUserResults: UserDataInterface[] = [];
+  selectedUserToChannel: UserDataInterface[] = [];
 
   constructor(
     private messageDataService: MessageDataService,
@@ -542,13 +544,38 @@ export class ChatComponent implements OnInit, OnChanges {
       const searchBy = this.inviteUserToChannel.toLowerCase();
       const userName = searchBy.substr(1);
       this.searchUserResults = this.userDataService.userData.filter(user => user.name.toLowerCase().includes(userName));
+      this.toggleList = true;
     } else {
       this.searchUserResults = [];
     }
   }
 
   selectUserToChannel(user: UserDataInterface): void {
+    if (user) {
+      this.selectedUserToChannel.push(user);
+      this.inviteUserToChannel = '';
+      this.toggleList = false;
+    }
+  }
 
+  async sendUserToChannel() {
+    if (this.selectedUserToChannel) {
+      const selectedUserIds: string[] = this.selectedUserToChannel.map(user => user.id);
+
+      const channelDoc = doc(this.firestore, 'channels', this.channelId);
+      try {
+        const channelSnapshot = await getDoc(channelDoc);
+        const existingUserIds = await channelSnapshot.get('users') || [];
+  
+        const updatedUserIds = [...existingUserIds, ...selectedUserIds];
+
+        await updateDoc(channelDoc, { users: updatedUserIds});
+        this.selectedUserToChannel = [];
+        this.isInviteUserOpen = false;
+      } catch (error) {
+        console.error('ERROR invite user to channel', error);
+      }
+    }
   }
 
   openInviteUserToChannel() {

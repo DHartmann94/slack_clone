@@ -23,24 +23,35 @@
     </div>
   </div>
 
-  <mat-card *ngIf="!isInviteUserOpen" class="invite-user-card">
+  <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
     <div class="invite-user-title-parent">
       <mat-card-title>Add People</mat-card-title>
       <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
     </div>
+
     <div class="invite-user-card-link" *ngIf="(receivedChannelData$ | async) as channel">
       <span># {{ channel.channelName }} </span>
     </div>
+
     <input [(ngModel)]="inviteUserToChannel" (input)="searchUser()" type="text" placeholder="Enter Name">
-    <div class="invite-user-button-parent">
-      <button [disabled]="inviteUserToChannel === ''">Add</button>
+    <div *ngIf="selectedUserToChannel.length > 0" class="invite-user-selected-user-parent">
+      <div *ngFor="let user of selectedUserToChannel">
+        <div>
+          <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
+          <span>{{ user.name }}</span>
+        </div>
+      </div>
     </div>
 
-    <div *ngIf="searchUserResults.length > 0" class="result-user-list-parent">
+    <div class="invite-user-button-parent">
+      <button [disabled]="selectedUserToChannel.length === 0" (click)="sendUserToChannel()">Add</button>
+    </div>
+
+    <div *ngIf="searchUserResults.length > 0  && toggleList" class="result-user-list-parent">
       <ul>
         <li *ngFor="let user of searchUserResults" (click)="selectUserToChannel(user)">
           <div class="result-user-list">
-            <img src=" {{ user.picture }} " alt="User">
+            <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
             <div>
               <span>{{ user.name }}</span>
               <span>{{ user.email }}</span>
