@@ -29,7 +29,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   receivedUserData$!: Observable<UserDataInterface | null>
-  
+
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
@@ -70,6 +70,8 @@ export class ChatComponent implements OnInit, OnChanges {
   searchResults: UserDataInterface[] = [];
 
   isInviteUserOpen: boolean = false;
+  inviteUserToChannel: string = '';
+  searchUserResults: UserDataInterface[] = [];
 
   constructor(
     private messageDataService: MessageDataService,
@@ -188,7 +190,7 @@ export class ChatComponent implements OnInit, OnChanges {
             console.log('Messages to Render:', sortDataAfterTime);
             this.messageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel); 
+            console.log('No messages found:', channel);
             this.messageData = [];
           }
         },
@@ -287,7 +289,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
       this.messageData.push(message);
       this.messageInput = [''];
-      this.messageDataService.sendMessage(message).subscribe(      
+      this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
             const index = this.messageData.findIndex((msg) => msg === message);
@@ -304,8 +306,8 @@ export class ChatComponent implements OnInit, OnChanges {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
- 
-  
+
+
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
@@ -532,6 +534,21 @@ export class ChatComponent implements OnInit, OnChanges {
 
   openThread(threadID: string) {
     this.threadDataService.setThreadId(threadID);
+  }
+
+  /*------ Invite User To Channel ------*/
+  searchUser(): void {
+    if (this.inviteUserToChannel) {
+      const searchBy = this.inviteUserToChannel.toLowerCase();
+      const userName = searchBy.substr(1);
+      this.searchUserResults = this.userDataService.userData.filter(user => user.name.toLowerCase().includes(userName));
+    } else {
+      this.searchUserResults = [];
+    }
+  }
+
+  selectUserToChannel(user: UserDataInterface): void {
+
   }
 
   openInviteUserToChannel() {

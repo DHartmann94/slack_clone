@@ -16,24 +16,38 @@
           {{ channel.users.length }}
         </div>
         <div class="add-participant-background">
-          <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png" alt="#">
+          <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png"
+            alt="#">
         </div>
       </div>
     </div>
   </div>
 
-  <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
+  <mat-card *ngIf="!isInviteUserOpen" class="invite-user-card">
     <div class="invite-user-title-parent">
       <mat-card-title>Add People</mat-card-title>
       <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
     </div>
-    <div class="invite-user-card-link">
-      <span>#</span>
-      <span>CHANNEL-NAME</span>
+    <div class="invite-user-card-link" *ngIf="(receivedChannelData$ | async) as channel">
+      <span># {{ channel.channelName }} </span>
     </div>
-    <input placeholder="Enter Name">
+    <input [(ngModel)]="inviteUserToChannel" (input)="searchUser()" type="text" placeholder="Enter Name">
     <div class="invite-user-button-parent">
-      <button>Add</button>
+      <button [disabled]="inviteUserToChannel === ''">Add</button>
+    </div>
+
+    <div *ngIf="searchUserResults.length > 0" class="result-user-list-parent">
+      <ul>
+        <li *ngFor="let user of searchUserResults" (click)="selectUserToChannel(user)">
+          <div class="result-user-list">
+            <img src=" {{ user.picture }} " alt="User">
+            <div>
+              <span>{{ user.name }}</span>
+              <span>{{ user.email }}</span>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
   </mat-card>
 
@@ -80,7 +94,8 @@
               </div>
             </div>
 
-            <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)" class="reaction-icon-container">
+            <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"
+              class="reaction-icon-container">
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
@@ -110,7 +125,8 @@
   <!-- Input field -->
   <div class="message-input-field">
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="this.emojiService.emojipickeractiveChat"></app-emojis>
+      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"
+        *ngIf="this.emojiService.emojipickeractiveChat"></app-emojis>
       <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4">
       </textarea>
       <div class="text-editor-bottom">
@@ -146,12 +162,12 @@
       </div>
       <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
         <p>
-          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
+          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+            viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#92C83E" />
           </svg>
-          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
+          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+            viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#808080" />
           </svg>
           {{ this.userProfile[0].status }}

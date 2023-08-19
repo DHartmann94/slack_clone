@@ -916,6 +916,7 @@ section {
   margin-right: 10px;
 }
 
+/*------ Invite User To Channel ------*/
 .invite-user-card {
   z-index: 10;
   position: absolute;
@@ -924,7 +925,7 @@ section {
 
   padding: 1rem;
   gap: 1rem;
-  width: 310px;
+  width: 460px;
   max-height: 100%;
 
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
@@ -976,9 +977,65 @@ section {
       font-weight: bold;
       color: var(--white);
       background-color: var(--c-purple);
+      border: 1px solid transparent;
       border-radius: 42px;
       transition: all 225ms ease-in-out;
       cursor: pointer;
+
+      &:hover {
+        background-color: #575ff7;
+      }
+
+      &:disabled {
+        background-color: #E0E0E0;
+      }
     }
+  }
+
+  ul {
+    padding-left: 0px;
+  }
+
+  .result-user-list-parent {
+    height: 200px;
+    max-height: 200px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    .result-user-list {
+      padding: 5px;
+      display: flex;
+      align-items: center;
+      transition: all 225ms ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        color: var(--c-purple);
+        transition: all 225ms ease-in-out;
+
+        img {
+          border: 1px solid var(--c-purple);
+          transition: all 225ms ease-in-out;
+        }
+      }
+
+      img {
+        height: 40px;
+        width: 40px;
+        object-fit: cover;
+        border: 1px solid transparent;
+        border-radius: 50%;
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+
+  @media(max-width: 970px) {
+    width: 310px;
   }
 }
