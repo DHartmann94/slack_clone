@@ -579,16 +579,22 @@ export class ChatComponent implements OnInit, OnChanges {
         const channelSnapshot = await getDoc(channelDoc);
         const existingUserIds = await channelSnapshot.get('users') || [];
 
-        const updatedUserIds = [...existingUserIds, ...selectedUserIds];
+        const newUserIds = selectedUserIds.filter(userId => !existingUserIds.includes(userId));
+
+        const updatedUserIds = [...existingUserIds, ...newUserIds];
 
         await updateDoc(channelDoc, { users: updatedUserIds });
-        this.selectedUserToChannel = [];
-        this.userSendToChannel = false;
-        this.isInviteUserOpen = false;
+        this.resetInviteVariables();
       } catch (error) {
         console.error('ERROR invite user to channel', error);
       }
     }
+  }
+
+  resetInviteVariables() {
+    this.selectedUserToChannel = [];
+    this.userSendToChannel = false;
+    this.isInviteUserOpen = false;
   }
 
   openInviteUserToChannel() {
