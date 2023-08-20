@@ -171,15 +171,6 @@
   flex-direction: row;
   cursor: pointer;
 
-  .chat-name {
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    margin-right: 10px;
-    max-width: 200px;
-  }
-
   &:hover {
     width: auto;
     height: auto;
@@ -188,6 +179,21 @@
     border-radius: 20px;
     height: 45px;
   }
+}
+
+.chat-name {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-right: 10px;
+  max-width: 200px;
+  transition: color 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--purple-2, #797ef3);
+}
 }
 
 .hash-chat-name {
