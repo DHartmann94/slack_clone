@@ -8,9 +8,9 @@
       </div>
       <div class="right-corner">
         <div class="participant-container">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
-          <img class="participant-icon" src="./assets/img/avatar.png" alt="">
+          <ng-container *ngFor="let participant of channelUserPicture; let i = index">
+            <img class="participant-icon" *ngIf="i < 3" [src]="participant" alt="User">
+          </ng-container>
         </div>
         <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
           {{ channel.users.length }}
