@@ -4,7 +4,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
@@ -76,6 +76,8 @@ export class ChatComponent implements OnInit, OnChanges {
   searchUserResults: UserDataInterface[] = [];
   selectedUserToChannel: UserDataInterface[] = [];
 
+  channelUserPicture: string[] = [];
+
   constructor(
     private messageDataService: MessageDataService,
     public emojiService: EmojiService,
@@ -112,6 +114,10 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
+    
+    this.receivedChannelData$.pipe(
+      switchMap(channelData => this.loadUserProfilePicture(channelData))
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -537,6 +543,20 @@ export class ChatComponent implements OnInit, OnChanges {
 
   openThread(threadID: string) {
     this.threadDataService.setThreadId(threadID);
+  }
+
+  async loadUserProfilePicture(channelData: ChannelDataInterface | null) {
+    this.channelUserPicture = [];
+    if (channelData) {
+      for (let i = 0; i < 3; i++) {
+        const userId = channelData.users[i];
+        const userData = await this.userDataService.usersDataBackend(userId);
+        if (userData) {
+          const userPicture = userData['picture'];
+          this.channelUserPicture.push(userPicture);
+        }
+      }
+    }
   }
 
   /*------ Invite User To Channel ------*/
