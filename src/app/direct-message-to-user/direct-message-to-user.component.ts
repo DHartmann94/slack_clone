@@ -42,10 +42,9 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
-  
-  receivedChannelData$!: Observable<ChannelDataInterface | null>;
+
   receivedUserData$!: Observable<UserDataInterface | null>
-  
+
   userId: string = "";
   emojipickeractive = false;
   reactionListOpen = false;
@@ -95,12 +94,12 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   }
 
   async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
-      map((data: ChannelDataInterface | null) => {
-        if (data && data.id) {
-          this.processUserData(data.id);
+    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
+      map((userData: UserDataInterface | null) => {
+        if (userData && userData.id) {
+          this.processUserData(userData.id);
         }
-        return data;
+        return userData;
       })
     );
     this.receivedUserData$ = this.userDataResolver.resolve();
@@ -118,21 +117,19 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.chatBehavior.triggerChat();
   }
 
-  processUserData(channelId: string) {
-    this.userId = channelId;
+  processUserData(userId: string) {
+    this.userId = userId;
     this.renderMessage(this.userId);
   }
 
   renderMessage(userId: any) {
+    if (userId) {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
-          if (messageData.length > 0) {
-            const filteredData = messageData.filter(
-              (message) => message.time !== undefined && message.time !== null
-            );
-            const sortDataAfterTime = filteredData.sort((a, b) =>
-              a.time! > b.time! ? 1 : -1
-            );
+          const messagesForUser = messageData.filter(message => message.user === userId);
+          if (messagesForUser.length > 0) {
+            const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             this.messageData = sortDataAfterTime;
           } else {
             this.messageData = [];
@@ -143,7 +140,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         }
       );
     }
-
+  }
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
@@ -322,6 +319,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
+        user: this.userId
       };
 
       if (this.emojipickeractive) {
