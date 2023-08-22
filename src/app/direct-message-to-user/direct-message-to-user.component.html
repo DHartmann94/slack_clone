@@ -1,3 +1,4 @@
+<!--Header-Bar-->
 <mat-card class="threads-card">
   <div *ngIf="receivedUserData$ | async as userData" class="shadow-box">
     <div class="chat-first-row">
@@ -7,8 +8,8 @@
           viewBox="0 0 8 8">
           <circle cx="4" cy="4" r="4" fill="#92C83E" />
         </svg>
-        <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-          viewBox="0 0 8 8">
+        <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8"
+          height="8" viewBox="0 0 8 8">
           <circle cx="4" cy="4" r="4" fill="#808080" />
         </svg>
         <span class="participant-name">{{ userData.name }}</span>
@@ -31,8 +32,7 @@
         <div class="parting-line-firstMessage">
           <span>2 Responses</span>
         </div>
-
-      </ng-container>
+    </ng-container>
 
 
 
@@ -111,46 +111,3 @@
     </div>
   </div>
 </mat-card>
-
-<!-- Profile Content -->
-<div class="overlay" *ngIf="isProfileCardOpen"></div>
-
-<section class="user-profile-card-section" *ngIf="isProfileCardOpen">
-  <mat-card class="user-profile-card">
-    <mat-card-header class="user-header">
-      <mat-card-title>Profile</mat-card-title>
-      <mat-icon>close</mat-icon>
-    </mat-card-header>
-    <div class="user-img">
-      <img src="{{ this.userDataService.chatUserPicture }}">
-    </div>
-    <mat-card-content>
-      <div class="user-contact-info">
-        <p>{{ this.userDataService.chatUserName }}</p>
-      </div>
-      <div class="user-status" [ngClass]="{'user-active': this.userDataService.chatUserStatus === 'Active'}">
-        <p>
-          <svg *ngIf="this.userDataService.chatUserStatus === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#92C83E" />
-          </svg>
-          <svg *ngIf="this.userDataService.chatUserStatus === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#808080" />
-          </svg>
-          {{ this.userDataService.chatUserStatus }}
-        </p>
-      </div>
-      <div class="user-email">
-        <mat-icon>mail_outline</mat-icon>
-        <div class="user-email-link">
-          <p>E-Mail-Adresse</p>
-          <a>{{ this.userDataService.chatUserEmail }}</a>
-        </div>
-      </div>
-    </mat-card-content>
-    <mat-card-actions class="user-message-button">
-      <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
-    </mat-card-actions>
-  </mat-card>
-</section>
