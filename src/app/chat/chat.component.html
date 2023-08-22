@@ -15,7 +15,7 @@
         <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
           {{ channel.users.length }}
         </div>
-        <div class="add-participant-background">
+        <div *ngIf="channelId" class="add-participant-background">
           <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png"
             alt="#">
         </div>
