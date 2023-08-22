@@ -45,7 +45,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   receivedUserData$!: Observable<UserDataInterface | null>
 
-  userId: string = "";
+  userId: string = '';
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
@@ -297,10 +297,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
             });
             const matches: string[] = [];
             messages.forEach((message) => {
-              if (
-                this.currentUserId &&
-                userIdToNameMap.hasOwnProperty(this.currentUserId)
-              ) {
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
                 const senderName = userIdToNameMap[this.currentUserId];
                 matches.push(this.currentUserId);
                 this.currentUser = senderName;
@@ -311,7 +308,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  async sendDirectMessageToUser() {
+  async sendDirectMessageToUser(userId: string) {
     if (this.messageInput.length > 0) {
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
@@ -319,7 +316,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: this.userId
+        user: userId
       };
 
       if (this.emojipickeractive) {
@@ -353,9 +350,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }
     try {
       await this.directMessageToUserService.deleteMessage(messageId);
-      this.messageData = this.messageData.filter(
-        (message) => message.id !== messageId
-      );
+      this.messageData = this.messageData.filter((message) => message.id !== messageId);
     } catch (error) {
       console.error('Error deleting message:', error);
     }
