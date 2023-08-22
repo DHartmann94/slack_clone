@@ -4,7 +4,7 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
@@ -38,6 +38,8 @@ export class ChatComponent implements OnInit, OnChanges {
   channelData: ChannelDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
 
+  userProfile: UserDataInterface[] = [];
+
   mentionUser = new FormControl('');
   userList: string[] = [];
 
@@ -69,6 +71,15 @@ export class ChatComponent implements OnInit, OnChanges {
 
   inviteUserOrChannel!: string;
   searchResults: UserDataInterface[] = [];
+
+  isInviteUserOpen: boolean = false;
+  toggleList: boolean = false;
+  userSendToChannel: boolean = false;
+  inviteUserToChannel: string = '';
+  searchUserResults: UserDataInterface[] = [];
+  selectedUserToChannel: UserDataInterface[] = [];
+
+  channelUserPicture: string[] = [];
 
   constructor(
     private messageDataService: MessageDataService,
@@ -107,6 +118,10 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
+    
+    this.receivedChannelData$.pipe(
+      switchMap(channelData => this.loadUserProfilePicture(channelData))
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -178,7 +193,7 @@ export class ChatComponent implements OnInit, OnChanges {
             console.log('Messages to Render:', sortDataAfterTime);
             this.messageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel); 
+            console.log('No messages found:', channel);
             this.messageData = [];
           }
         },
@@ -277,7 +292,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
       this.messageData.push(message);
       this.messageInput = [''];
-      this.messageDataService.sendMessage(message).subscribe(      
+      this.messageDataService.sendMessage(message).subscribe(
         (newMessage) => {
           if (newMessage && newMessage.id) {
             const index = this.messageData.findIndex((msg) => msg === message);
@@ -294,8 +309,8 @@ export class ChatComponent implements OnInit, OnChanges {
       console.log('Message input is empty. Cannot send an empty message.');
     }
   }
- 
-  
+
+
   // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
@@ -374,7 +389,11 @@ export class ChatComponent implements OnInit, OnChanges {
   openUserProfile(id: any) {
     this.isProfileCardOpen = true;
     this.isLogoutContainerOpen = false;
-    this.userDataService.getCurrentUserData(id);
+    //this.userDataService.getCurrentUserData(id);
+    this.userProfile = [];
+    if (id) {
+      this.userProfile = this.userDataService.userData.filter(user => user.id.includes(id));
+    }
   }
 
   closeUserProfile() {
@@ -519,4 +538,85 @@ export class ChatComponent implements OnInit, OnChanges {
   openThread(threadID: string) {
     this.threadDataService.setThreadId(threadID);
   }
+
+  async loadUserProfilePicture(channelData: ChannelDataInterface | null) {
+    this.channelUserPicture = [];
+    if (channelData) {
+      for (let i = 0; i < 3; i++) {
+        const userId = channelData.users[i];
+        const userData = await this.userDataService.usersDataBackend(userId);
+        if (userData) {
+          const userPicture = userData['picture'];
+          this.channelUserPicture.push(userPicture);
+        }
+      }
+    }
+  }
+
+  /*------ Invite User To Channel ------*/
+  searchUser(): void {
+    if (this.inviteUserToChannel) {
+      const searchBy = this.inviteUserToChannel.toLowerCase();
+      const userName = searchBy.substr(1);
+      this.searchUserResults = this.userDataService.userData.filter(user =>
+        user.name.toLowerCase().includes(userName) &&
+        !this.selectedUserToChannel.some(selectedUser => selectedUser.name === user.name)
+      );
+      this.toggleList = true;
+    } else {
+      this.searchUserResults = [];
+    }
+  }
+
+  selectUserToChannel(user: UserDataInterface): void {
+    if (user) {
+      this.selectedUserToChannel.push(user);
+      this.inviteUserToChannel = '';
+      this.toggleList = false;
+    }
+  }
+
+  deleteSelectedUser(user: any) {
+    const index = this.selectedUserToChannel.indexOf(user);
+    if (index !== -1) {
+      this.selectedUserToChannel.splice(index, 1);
+    }
+  }
+
+  async sendUserToChannel() {
+    if (this.selectedUserToChannel) {
+      this.userSendToChannel = true;
+      const selectedUserIds: string[] = this.selectedUserToChannel.map(user => user.id);
+
+      const channelDoc = doc(this.firestore, 'channels', this.channelId);
+      try {
+        const channelSnapshot = await getDoc(channelDoc);
+        const existingUserIds = await channelSnapshot.get('users') || [];
+
+        const newUserIds = selectedUserIds.filter(userId => !existingUserIds.includes(userId));
+
+        const updatedUserIds = [...existingUserIds, ...newUserIds];
+
+        await updateDoc(channelDoc, { users: updatedUserIds });
+        this.resetInviteVariables();
+      } catch (error) {
+        console.error('ERROR invite user to channel', error);
+      }
+    }
+  }
+
+  resetInviteVariables() {
+    this.selectedUserToChannel = [];
+    this.userSendToChannel = false;
+    this.isInviteUserOpen = false;
+  }
+
+  openInviteUserToChannel() {
+    this.isInviteUserOpen = !this.isInviteUserOpen;
+  }
+
+  closeInviteUserToChannel() {
+    this.isInviteUserOpen = false;
+  }
+
 }

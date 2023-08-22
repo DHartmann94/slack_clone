@@ -1,9 +1,16 @@
-
 <mat-card class="threads-card">
   <div *ngIf="receivedUserData$ | async as userData" class="shadow-box">
     <div class="chat-first-row">
       <div class="participant-status">
         <img class="participant-icon" src="{{ userData.picture }}" alt="">
+        <svg *ngIf="userData.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+          viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" fill="#92C83E" />
+        </svg>
+        <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+          viewBox="0 0 8 8">
+          <circle cx="4" cy="4" r="4" fill="#808080" />
+        </svg>
         <span class="participant-name">{{ userData.name }}</span>
       </div>
 
@@ -147,4 +154,3 @@
     </mat-card-actions>
   </mat-card>
 </section>
-

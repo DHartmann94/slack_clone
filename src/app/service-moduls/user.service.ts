@@ -56,6 +56,7 @@ export class UserDataService {
   userStatus: string = '';
   userPicture: string = '';
 
+  // Diese Variablen braucht man vielleicht nicht mehr!
   chatUserName: string = '';
   chatUserEmail: string = '';
   chatUserStatus: string = '';
