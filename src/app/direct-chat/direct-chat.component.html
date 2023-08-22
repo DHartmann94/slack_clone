@@ -28,15 +28,15 @@
         </div>
     </div>
 
-    <div *ngIf="(receivedDirectChatData$ | async) as directMessageData" class="shadow-box">
+    <div *ngIf="receivedDirectChatData$ | async as directMessageData" class="shadow-box">
         <div class="chat-first-row">
-          <div class="participant-status">
-            <img class="participant-icon" src="{{ directMessageData.picture }}" alt="#">
-           <!--  <span class="participant-name">{{ directMessageData.name }}</span> -->
-          </div>   
+          <div *ngFor="let user of directMessageData.users" class="participant-status">
+            <img class="participant-icon" src="{{ user.picture }}" alt="#">
+            <span class="participant-name">{{ user.name }}</span>
+          </div>
         </div>
     </div>
-
+      
     <div class="chat-text-area" *ngIf="directMessageData">
         <div *ngFor="let message of directMessageData; let index = index">
             <div *ngIf="isNewDay(message, directMessageData[index - 1])">
@@ -111,7 +111,7 @@
     </div>
 
     <div class="message-input-field">
-        <div class="text-editor">
+        <div class="text-editor" *ngIf="(receivedDirectChatData$ | async) as directMessageData">
             <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
             <textarea [placeholder]="'Send a new message to ' + selectedUserNameOrChannelName"
                 [(ngModel)]="messageInput" rows="4">

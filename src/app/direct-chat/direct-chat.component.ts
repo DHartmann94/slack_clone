@@ -32,7 +32,6 @@ export class DirectChatComponent implements OnInit {
   toggleChannelList: boolean = true;
 
   selectedMessage: DirectMessageInterface | null = null;
-  receivedChannelData$!: Observable<ChannelDataInterface | null>;
   receivedDirectChatData$!: Observable<DirectMessageInterface | null>;
 
   messageInput: string[] = [];
@@ -191,7 +190,7 @@ export class DirectChatComponent implements OnInit {
     if (directChat) {
       this.directMessageService.getDirectMessageData().subscribe(
         (directMessageData: DirectMessageInterface[]) => {
-          const messagesnewChat = directMessageData.filter(directmessage => directmessage.directMessageTo === directMessageData);
+          const messagesnewChat = directMessageData.filter(directmessage => directmessage.users === directMessageData);
           if (messagesnewChat.length > 0) {
             const filteredData = messagesnewChat.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);

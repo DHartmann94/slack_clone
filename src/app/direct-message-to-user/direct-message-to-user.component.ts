@@ -47,7 +47,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   receivedUserData$!: Observable<UserDataInterface | null>
   
-  channelId: string = "";
+  userId: string = "";
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
@@ -100,7 +100,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
-          this.processChannelData(data.id);
+          this.processUserData(data.id);
         }
         return data;
       })
@@ -120,12 +120,12 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.chatBehavior.triggerChat();
   }
 
-  processChannelData(channelId: string) {
-    this.channelId = channelId;
-    this.renderMessage();
+  processUserData(channelId: string) {
+    this.userId = channelId;
+    this.renderMessage(this.userId);
   }
 
-  renderMessage() {
+  renderMessage(userId: any) {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
           if (messageData.length > 0) {

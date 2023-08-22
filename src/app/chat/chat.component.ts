@@ -31,7 +31,6 @@ export class ChatComponent implements OnInit, OnChanges {
   channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  receivedUserData$!: Observable<UserDataInterface | null>;
 
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
