@@ -120,6 +120,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   processUserData(userId: string) {
     this.userId = userId;
     this.renderMessage(this.userId);
+    console.log('userId IST:::', this.userId);
   }
 
   renderMessage(userId: any) {
@@ -144,6 +145,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
+    console.log('currentUserId ist::::', this.currentUserId);
   }
 
   public typeEmoji($event: any): void {
@@ -313,18 +315,23 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   async sendDirectMessageToUser() {
     if (this.messageInput.length > 0) {
+      console.log('messageInput', this.messageInput); 
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: this.userId
+        user: this.userId,
+       
       };
+ 
 
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
+
+      console.log('user', this.userId),
 
       this.messageData.push(message);
       this.messageInput = [''];
