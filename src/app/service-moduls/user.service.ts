@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, doc, getDoc, getDocs, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDoc, getDocs, query } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 
 export interface UserDataInterface {

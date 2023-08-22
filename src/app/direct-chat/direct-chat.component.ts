@@ -22,7 +22,7 @@ export class DirectChatComponent implements OnInit {
 
   inviteUserOrChannel: string = '';
   userIds: string = '';
-  channelId: string = "";
+  directChatId: string = "";
   isInvitationValid: boolean = false;
   closeDirectChatWindow: boolean = false;
  
@@ -33,6 +33,7 @@ export class DirectChatComponent implements OnInit {
 
   selectedMessage: DirectMessageInterface | null = null;
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
+  receivedDirectChatData$!: Observable<DirectMessageInterface | null>;
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -53,9 +54,8 @@ export class DirectChatComponent implements OnInit {
   constructor(
     public userDataService: UserDataService,
     private threadDirectDataService: ThreadDirectService,
-    private directChatDataResolverService: DirectChatDataResolverService,
+    private directChatDataResolver: DirectChatDataResolverService,
     private directMessageService: DirectMessageService,
-    private channelDataResolver: ChannelDataResolverService,
     private channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,
   ) {
@@ -63,10 +63,10 @@ export class DirectChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDirectChatData();
-    this.getChannelData();
     this.compareIds();
     this.getCurrentUserId();
     this.getThreadData();
+    this.getDataFromDirectChat();
   }
 
   async getDirectChatData() {
@@ -81,26 +81,24 @@ export class DirectChatComponent implements OnInit {
     );
   }
 
-  async getChannelData() {
-    this.channelDataService.getChannelData().subscribe(
-      channelData => {
-        this.channelData = channelData;
-        console.log('Subscribed data channels:', channelData);
-      },
-      error => {
-        console.error('Error retrieving user data:', error);
-      }
-    );
-  }
-
-  async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
-      map((data: ChannelDataInterface | null) => {
-        if (data && data.id) {
-          this.processChannelData(data.id);
+  async getDataFromDirectChat(): Promise<void> {
+    this.receivedDirectChatData$ = this.directChatDataResolver.resolve().pipe(
+      map((data: DirectMessageInterface | null) => {
+        console.log("Direct chat data received", data);
+       if (data && data.id) {
+          this.processDirectChatData(data.id);
         }
         return data;
       })
+    )
+    this.receivedDirectChatData$ = this.directChatDataResolver.resolve();
+    this.receivedDirectChatData$ .subscribe(
+      (data: DirectMessageInterface | null) => {
+        console.log("User received from channel: ", data);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
     );
   }
 
@@ -120,9 +118,9 @@ export class DirectChatComponent implements OnInit {
     this.chatBehavior.triggerChat();
   }
 
-  processChannelData(channelId: string) {
-    this.channelId = channelId;
-    this.renderChatById(this.channelId);
+  processDirectChatData(channelId: string) {
+    this.directChatId = channelId;
+    this.renderDirectChatById(this.directChatId);
   }
 
   filterUsers(): void {
@@ -164,7 +162,7 @@ export class DirectChatComponent implements OnInit {
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
       this.inviteUserOrChannel = '';
-      this.directChatDataResolverService.setSelectedUser(user)
+      this.directMessageService.addUserDirect(user);
       console.log(this.userIds);
     }
   }
@@ -189,18 +187,18 @@ export class DirectChatComponent implements OnInit {
     return this.directMessageData.find(message => message.id === messageId) || null;
   }
 
-  renderChatById(channel: string) {
-    if (channel) {
+  renderDirectChatById(directChat: string) {
+    if (directChat) {
       this.directMessageService.getDirectMessageData().subscribe(
-        (messageData: DirectMessageInterface[]) => {
-          const messagesnewChat = messageData.filter(message => message.channel === channel);
+        (directMessageData: DirectMessageInterface[]) => {
+          const messagesnewChat = directMessageData.filter(directmessage => directmessage.directMessageTo === directMessageData);
           if (messagesnewChat.length > 0) {
             const filteredData = messagesnewChat.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render:', sortDataAfterTime);
             this.directMessageData = sortDataAfterTime;
           } else {
-            console.log('No messages found:', channel); 
+            console.log('No messages found:', directChat); 
             this.directMessageData = [];
           }
         },

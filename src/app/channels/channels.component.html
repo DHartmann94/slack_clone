@@ -56,6 +56,18 @@
                 </div>
                 <h3 (click)="selectUser(users.id)">{{ users.name }}</h3>
             </div>
+            <div class="direct-box" *ngFor="let directChat of directChatData; let c = index">
+                <div class="user-icon">
+                    <img class="user-icon" src="{{ directChat.picture }}" alt="User">
+                    <svg *ngIf="directChat.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                        <circle cx="4" cy="4" r="4" fill="#92C83E" />
+                    </svg>
+                    <svg *ngIf="directChat.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                        <circle cx="4" cy="4" r="4" fill="#808080" />
+                    </svg> 
+                </div>
+                <h3 (click)="selectDirectChat(directChat.id)">{{ directChat.name }}</h3>    
+            </div>
         </div>
     </div>
 </mat-card>

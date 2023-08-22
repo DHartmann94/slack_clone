@@ -6,11 +6,14 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
+import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { EmojiService } from '../service-moduls/emoji.service';
+
 
 @Component({
   selector: 'app-chat',
@@ -28,8 +31,8 @@ export class ChatComponent implements OnInit, OnChanges {
   channelDescription!: FormGroup;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  receivedUserData$!: Observable<UserDataInterface | null>
-  
+  receivedUserData$!: Observable<UserDataInterface | null>;
+
   userData: UserDataInterface[] = [];
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
@@ -73,6 +76,7 @@ export class ChatComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private directChatDataResolver: DirectChatDataResolverService,
     private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
@@ -127,21 +131,11 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
-        }
+        } 
         return data;
       })
     );
-    this.receivedUserData$ = this.userDataResolver.resolve();
-    this.receivedUserData$.subscribe(
-      (userData: UserDataInterface | null) => {
-        console.log("User received from channel: ", userData);
-      },
-      (error) => {
-        console.error('Error retrieving user data:', error);
-      }
-    );
   }
-
 
   async getThreadData() {
     this.threadDataService.getThreadDataMessages().subscribe(

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, query, addDoc, onSnapshot, doc, deleteDoc, updateDoc, } from '@angular/fire/firestore';
+import { Firestore, collection, query, addDoc, onSnapshot, doc, deleteDoc, updateDoc, QuerySnapshot, DocumentData, getDocs, } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject, Subject } from 'rxjs';
 import { UserDataInterface } from './user.service';
 import { UserDataService } from './user.service';
@@ -29,6 +29,8 @@ export interface DirectMessageInterface {
 export class DirectMessageService {
   private directMessageDataSubject: BehaviorSubject<DirectMessageInterface[]> = new BehaviorSubject<DirectMessageInterface[]>([]);
   public directMessageData$: Observable<DirectMessageInterface[]> = this.directMessageDataSubject.asObservable();
+
+  userData: UserDataInterface[] = [];
 
   constructor(
     public firestore: Firestore,
@@ -97,6 +99,32 @@ export class DirectMessageService {
     }
   }
 
+  getUserDataDirect(): Observable<UserDataInterface[]> {
+    const userCollection = collection(this.firestore, 'directChat');
+    const q = query(userCollection);
+
+    return from(getDocs(q)).pipe(
+      map((querySnapshot: QuerySnapshot<DocumentData>) => {
+        const storedUserData: UserDataInterface[] = [];
+
+        querySnapshot.forEach(doc => {
+          const data = doc.data();
+          const { name, email, picture, status } = data;
+          const user: UserDataInterface = {
+            id: doc.id,
+            name: name,
+            email: email,
+            picture: picture,
+            status: status
+          };
+          storedUserData.push(user);
+        });
+        this.userData = storedUserData;
+        return storedUserData;
+      })
+    );
+  }
+
   countThreadResponses(thread: string, threadResponses: Record<string, number>) {
     if (thread) {
       if (threadResponses.hasOwnProperty(thread)) {
@@ -116,6 +144,19 @@ export class DirectMessageService {
           id: docRef.id,
         };
         return newDirectMessage;
+      })
+    );
+  }
+
+  addUserDirect(userToChat: UserDataInterface): Observable<UserDataInterface> {
+    const userChat = collection(this.firestore, 'directChat');
+    return from(addDoc(userChat, userToChat)).pipe(
+      map((docRef) => {
+        const newChatToUser: UserDataInterface = {
+          ...userToChat,
+          id: docRef.id,
+        };
+        return newChatToUser;
       })
     );
   }

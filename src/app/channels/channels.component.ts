@@ -10,6 +10,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom } from 'rxjs';
 import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
+import { DirectMessageService, DirectMessageInterface } from '../service-moduls/direct-message.service';
+
 
 @Component({
   selector: 'app-channels',
@@ -41,19 +43,22 @@ export class ChannelsComponent implements OnInit {
   openUserForm: boolean = false;
 
   userData: UserDataInterface[] = [];
+  directChatData: UserDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
 
   channelId: string = '';
   selectedUserType: string = '';
   selectedChannel: ChannelDataInterface | null = null;
   selectedUser: UserDataInterface | null = null;
+  selectedDirectChat: DirectMessageInterface | null = null;
 
   constructor(
     private firestore: Firestore,
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
-    private directChatDataResolverService: DirectChatDataResolverService,
+    private directChatDataResolver: DirectChatDataResolverService,
+    private directMessageService: DirectMessageService,
     private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
@@ -71,8 +76,7 @@ export class ChannelsComponent implements OnInit {
     });
     this.getChannelData();
     this.getUserData();
-    this.updateUsers();
-    this.getDataFromDirectChat();
+    this.getDirectChatData();
   }
 
   async getUserData() {
@@ -85,13 +89,6 @@ export class ChannelsComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
-  }
-
-  async updateUsers() {
-    const collectionUsersRef = collection(this.firestore, 'users');
-    onSnapshot(collectionUsersRef, (snapshot) => {
-      this.getUserData();
-    });
   }
 
   async getChannelData() {
@@ -110,13 +107,16 @@ export class ChannelsComponent implements OnInit {
     );
   }
 
-  async getDataFromDirectChat() {
-    this.directChatDataResolverService.selectedUser$.subscribe(selectedUser => {
-      if (selectedUser) {
-         this.selectedUser = selectedUser;
-        console.log(selectedUser);
+  async getDirectChatData() {
+    this.directMessageService.getUserDataDirect().subscribe(
+      directChatData => {
+        this.directChatData = directChatData;
+        console.log('Subscribed data direct User in chat:', directChatData);
+      },
+      error => {
+        console.error('Error retrieving user data:', error);
       }
-    });
+    );
   }
 
   toggle() {
@@ -146,10 +146,14 @@ export class ChannelsComponent implements OnInit {
   selectUser(userId: any) {
     this.selectedUser = this.getUserById(userId);
     this.userDataResolver.sendDataUsers(this.selectedUser);
-    const selectedUser = this.userData.find(user => user.id === userId);
-    if (selectedUser) {
-      this.directChatDataResolverService.setSelectedUser(selectedUser);
-    }
+  }
+
+  selectDirectChat(directChatId: any) {
+    const selectedDirectChat = this.getDirectChatById(directChatId);
+    if (selectedDirectChat !== null) {
+      this.selectedDirectChat = selectedDirectChat;
+      this.directChatDataResolver.sendDataDirectChat(this.selectedDirectChat);
+    } 
   }
 
   selectChannelFromList(channelGroupId: any) {
@@ -166,6 +170,10 @@ export class ChannelsComponent implements OnInit {
 
   getUserById(userId: any) {
     return this.userData.find(user => user.id === userId) || null;
+  }
+
+  getDirectChatById(directChatId: any) {
+    return this.directChatData.find(directChat => directChat.id === directChatId) || null;
   }
 
   updateChannelName(channelToUpdate: any) {
@@ -291,13 +299,7 @@ export class ChannelsComponent implements OnInit {
   openDirectMessageToUser() {
     this.directMessageToUserService.setDirectMessageToUserId();
     this.chatBehavior.ChannelChatIsOpen = false;
-  
   }
-
-  // openDirectMessageToUser(//DirectMessageToUserID: string) {
-  //   this.directMessageToUserService.setDirectMessageToUserId(//DirectMessageToUserID);
-  // }
-
 }
 
 
