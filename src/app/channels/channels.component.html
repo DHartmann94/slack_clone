@@ -26,7 +26,7 @@
             </div>
         </div>
         <div class="dropdown-container" *ngIf="openChannels">
-            <div class="channel-box" *ngFor="let channel of channelData; let i = index"
+            <div class="channel-box" *ngFor="let channel of availableChannels; let i = index"
                 [style.background]="channel.color" (click)="selectChannel(channel.id)">
                 <h3># {{ channel.channelName }}</h3>
             </div>

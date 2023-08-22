@@ -117,7 +117,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
-    
+
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
     ).subscribe();
@@ -145,7 +145,7 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
-        } 
+        }
         return data;
       })
     );
@@ -611,7 +611,9 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   openInviteUserToChannel() {
-    this.isInviteUserOpen = !this.isInviteUserOpen;
+    if (this.channelId) {
+      this.isInviteUserOpen = !this.isInviteUserOpen;
+    }
   }
 
   closeInviteUserToChannel() {

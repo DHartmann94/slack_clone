@@ -45,6 +45,7 @@ export class ChannelsComponent implements OnInit {
   userData: UserDataInterface[] = [];
   directChatData: UserDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
+  availableChannels: ChannelDataInterface[] = [];
 
   channelId: string = '';
   selectedUserType: string = '';
@@ -96,8 +97,13 @@ export class ChannelsComponent implements OnInit {
       channelData => {
         this.channelData = channelData;
         if (this.channelData.length > 0) {
-          this.selectedChannel = this.channelData[0];
-          this.channelDataResolver.sendDataChannels(this.selectedChannel);
+          this.availableChannels = this.channelData.filter(channel =>
+            channel.users.includes(this.userDataService.currentUser)
+          );
+          if (this.availableChannels) {
+            this.selectedChannel = this.availableChannels[0];
+            this.channelDataResolver.sendDataChannels(this.selectedChannel);
+          }
         }
         console.log('Subscribed data channels:', channelData);
       },
@@ -153,7 +159,7 @@ export class ChannelsComponent implements OnInit {
     if (selectedDirectChat !== null) {
       this.selectedDirectChat = selectedDirectChat;
       this.directChatDataResolver.sendDataDirectChat(this.selectedDirectChat);
-    } 
+    }
   }
 
   selectChannelFromList(channelGroupId: any) {
