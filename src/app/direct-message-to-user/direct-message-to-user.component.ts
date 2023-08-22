@@ -32,7 +32,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   selectedMessage: DirectMessageToUserInterface | null = null;
 
   directChat: string = '';
-
   updateDirectChatId: string = '';
 
   messageInput: string[] = [];
@@ -76,7 +75,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getCurrentUserId();
     this.getUserData();
-    this.renderMessage();
     this.getDataFromChannel();
 
     setTimeout(() => {
