@@ -34,7 +34,7 @@
 
 
 
-      <div class="chat-message"
+      <div *ngIf="receivedUserData$ | async as userData" class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ userDataService.userPicture }}" alt="#">
@@ -42,7 +42,7 @@
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
-            <span class="chat-name">{{ userDataService.userName }}</span>
+            <span class="chat-name">{{ message.user }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
@@ -51,7 +51,7 @@
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              <span class="chat-name">{{ message.sentBy }}</span>
+              <span class="chat-name">{{ message.user }}</span>
             </div>
           </div>
           <div>

@@ -74,6 +74,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getCurrentUserId();
     this.getUserData();
+    this.compareIds();
     this.getDataFromChannel();
 
     setTimeout(() => {
@@ -81,37 +82,61 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }, 1000);
   }
 
-  async getUserData() {
-    this.userDataService.getUserData().subscribe(
-      (userData: UserDataInterface[]) => {
-        this.userData = userData;
-        this.userList = userData.map((user) => user.name);
-      },
-      (error) => {
-        console.error('Error retrieving user data:', error);
-      }
-    );
-  }
+    async getUserData() {
+        this.userDataService.getUserData().subscribe(
+            (userData: UserDataInterface[]) => {
+                this.userData = userData;
+                this.userList = userData.map((user) => user.name);
+            },
+            (error) => {
+                console.error('Error retrieving user data:', error);
+            }
+        );
+    }
+
+/*  diese funktion zeigt keine nachrichten an*/
 
   async getDataFromChannel(): Promise<void> {
     this.receivedUserData$ = this.userDataResolver.resolve().pipe(
-      map((userData: UserDataInterface | null) => {
-        if (userData && userData.id) {
-          this.processUserData(userData.id);
-        }
-        return userData;
-      })
+        map((userData: UserDataInterface | null) => {
+          if (userData && userData.id) {
+            this.processUserData(userData.id);
+          }
+          return userData;
+        })
     );
     this.receivedUserData$ = this.userDataResolver.resolve();
     this.receivedUserData$.subscribe(
-      (userData: UserDataInterface | null) => {
-        console.log("User received from channel: ", userData);
-      },
-      (error) => {
-        console.error('Error retrieving user data:', error);
-      }
+        (userData: UserDataInterface | null) => {
+          console.log("User received from channel: ", userData);
+        },
+        (error) => {
+          console.error('Error retrieving user data:', error);
+        }
     );
   }
+
+
+/*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert)
+
+/*  async getDataFromChannel(): Promise<void> {
+    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
+        map((userData: UserDataInterface | null) => {
+          if (userData && userData.id) {
+            this.processUserData(userData.id);
+          }
+          return userData;
+        })
+    );
+    this.receivedUserData$.subscribe(
+        (userData: UserDataInterface | null) => {
+          console.log("User received from channel: ", userData);
+        },
+        (error) => {
+          console.error('Error retrieving user data:', error);
+        }
+    );
+  }*/
 
   triggerChat() {
     this.chatBehavior.triggerChat();
@@ -312,7 +337,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   async sendDirectMessageToUser(userId: string) {
     if (this.messageInput.length > 0) {
-      console.log('messageInput', this.messageInput); 
+      console.log('messageInput', this.messageInput);
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
@@ -321,7 +346,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         mentionedUser: 'user_id_here',
         user: userId
       };
- 
+
 
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
