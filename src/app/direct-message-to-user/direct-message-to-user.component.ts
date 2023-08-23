@@ -224,7 +224,10 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     if (userId) {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
-          const messagesForUser = messageData.filter(message => message.user === userId);
+          const messagesForUser = messageData.filter(message => 
+            (message.userSentTo !== this.userDataService.currentUser || userId) &&
+            (userId === message.user)
+          );
           if (messagesForUser.length > 0) {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
@@ -416,7 +419,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: userId
+        user: userId,
+        userSentTo: this.userDataService.currentUser
       };
 
 
