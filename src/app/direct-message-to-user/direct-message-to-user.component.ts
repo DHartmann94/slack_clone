@@ -225,8 +225,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
           const messagesForUser = messageData.filter(message => 
-            (message.userSentTo !== this.userDataService.currentUser || userId) &&
-            (userId === message.user)
+            (message.user === this.userDataService.currentUser && message.userSentTo === userId) ||
+            (message.user === userId && message.userSentTo === this.userDataService.currentUser)
           );
           if (messagesForUser.length > 0) {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
