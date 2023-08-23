@@ -42,10 +42,10 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
-  
+
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
   receivedUserData$!: Observable<UserDataInterface | null>
-  
+
   userId: string = "";
   emojipickeractive = false;
   reactionListOpen = false;
@@ -124,25 +124,25 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   }
 
   renderMessage(userId: any) {
-      this.directMessageToUserService.getMessageData().subscribe(
-        (messageData: DirectMessageToUserInterface[]) => {
-          if (messageData.length > 0) {
-            const filteredData = messageData.filter(
-              (message) => message.time !== undefined && message.time !== null
-            );
-            const sortDataAfterTime = filteredData.sort((a, b) =>
-              a.time! > b.time! ? 1 : -1
-            );
-            this.messageData = sortDataAfterTime;
-          } else {
-            this.messageData = [];
-          }
-        },
-        (error) => {
-          console.error('ERROR render messages in MessageToUser:', error);
+    this.directMessageToUserService.getMessageData().subscribe(
+      (messageData: DirectMessageToUserInterface[]) => {
+        if (messageData.length > 0) {
+          const filteredData = messageData.filter(
+            (message) => message.time !== undefined && message.time !== null
+          );
+          const sortDataAfterTime = filteredData.sort((a, b) =>
+            a.time! > b.time! ? 1 : -1
+          );
+          this.messageData = sortDataAfterTime;
+        } else {
+          this.messageData = [];
         }
-      );
-    }
+      },
+      (error) => {
+        console.error('ERROR render messages in MessageToUser:', error);
+      }
+    );
+  }
 
 
   getCurrentUserId() {
