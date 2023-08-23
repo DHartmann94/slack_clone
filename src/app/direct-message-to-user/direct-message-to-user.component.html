@@ -37,7 +37,7 @@
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
-          <img class="profile-pictures-chat" src="{{ userDataService.userPicture }}" alt="#">
+          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
         <div class="message-content"
           [ngClass]="{ 'message-content-right': message.sentById === currentUserId,  }">
