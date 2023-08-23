@@ -94,7 +94,26 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         );
     }
 
-/*  diese funktion zeigt keine nachrichten an*/
+/*  diese funktion zeigt keine nachrichten an */
+
+/*  async getDataFromChannel(): Promise<void> {
+    this.receivedUserData$ = this.userDataResolver.resolve();
+    this.receivedUserData$.subscribe(
+        (userData: UserDataInterface | null) => {
+          console.log("User received from channel: ", userData);
+          if (userData && userData.id) {
+            this.processUserData(userData.id);
+          }
+        },
+        (error) => {
+          console.error('Error retrieving user data:', error);
+        }
+    );
+  }*/
+
+
+
+/*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert) */
 
   async getDataFromChannel(): Promise<void> {
     this.receivedUserData$ = this.userDataResolver.resolve().pipe(
@@ -105,7 +124,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           return userData;
         })
     );
-    this.receivedUserData$ = this.userDataResolver.resolve();
     this.receivedUserData$.subscribe(
         (userData: UserDataInterface | null) => {
           console.log("User received from channel: ", userData);
@@ -115,28 +133,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         }
     );
   }
-
-
-/*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert)
-
-/*  async getDataFromChannel(): Promise<void> {
-    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
-        map((userData: UserDataInterface | null) => {
-          if (userData && userData.id) {
-            this.processUserData(userData.id);
-          }
-          return userData;
-        })
-    );
-    this.receivedUserData$.subscribe(
-        (userData: UserDataInterface | null) => {
-          console.log("User received from channel: ", userData);
-        },
-        (error) => {
-          console.error('Error retrieving user data:', error);
-        }
-    );
-  }*/
 
   triggerChat() {
     this.chatBehavior.triggerChat();

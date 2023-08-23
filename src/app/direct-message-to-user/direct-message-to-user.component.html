@@ -1,5 +1,5 @@
-<mat-card class="threads-card">
-  <div *ngIf="receivedUserData$ | async as userData" class="shadow-box">
+<mat-card  *ngIf="receivedUserData$ | async as userData" class="threads-card">
+  <div class="shadow-box">
     <div class="chat-first-row">
       <div class="participant-status">
         <img class="participant-icon" src="{{ userData.picture }}" alt="">
@@ -34,15 +34,15 @@
 
 
 
-      <div *ngIf="receivedUserData$ | async as userData" class="chat-message"
+      <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ userDataService.userPicture }}" alt="#">
         </div>
         <div class="message-content"
-          [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+          [ngClass]="{ 'message-content-right': message.sentById === currentUserId,  }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
-            <span class="chat-name">{{ message.user }}</span>
+            <span class="chat-name">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
@@ -51,7 +51,7 @@
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              <span class="chat-name">{{ message.user }}</span>
+              <span class="chat-name">{{ message.sentBy }}</span>
             </div>
           </div>
           <div>
@@ -93,7 +93,7 @@
   </div>
 
   <!-- Input field -->
-  <div *ngIf="receivedUserData$ | async as userData" class="message-input-field">
+  <div class="message-input-field">
     <div class="text-editor">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
 
