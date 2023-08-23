@@ -164,8 +164,11 @@
   <!-- Input field -->
   <div class="message-input-field">
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-      <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"
-        *ngIf="this.emojiService.emojipickeractiveChat"></app-emojis>
+      
+      <div *ngIf="this.emojiService.emojipickeractiveChat" class="behind-emoji-popup">
+        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+      </div>
+
       <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4">
       </textarea>
       <div class="text-editor-bottom">
