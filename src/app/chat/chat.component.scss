@@ -75,38 +75,62 @@
   justify-content: flex-start;
   padding: 0 20px 15px 20px;
 
-  h2 {
-    font-family: "Nunito";
-    margin-top: 20px;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
+  .message-head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      h2 {
+          font-family: "Nunito";
+          margin-top: 20px;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 700;
+      }
+
+      img {
+          width: 45px;
+          object-fit: scale-down;
+          cursor: pointer;
+      }
   }
 
   .user-list {
-    padding: 10px 0;
-    font-family: "Nunito";
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    cursor: pointer;
+      padding: 10px 0;
+      font-family: "Nunito";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      cursor: pointer;
 
-    &:hover {
-      color: var(--c-purple);
-    }
+      &:hover {
+          color: var(--c-purple);
+      }
+  }
+
+  .channel-list {
+      padding: 10px 0;
+      font-family: "Nunito";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      cursor: pointer;
+
+      &:hover {
+          color: var(--c-purple);
+      }
   }
 
   .channel-name {
-    display: flex;
-    height: 20px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: 95%;
-    border-radius: 20px;
-    border: 1px solid var(--ligth-purple-lines, #adb0d9);
-    padding: 20px;
-    gap: 20px;
+      display: flex;
+      height: 20px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      width: 95%;
+      border-radius: 20px;
+      border: 1px solid var(--ligth-purple-lines, #adb0d9);
+      padding: 20px;
+      gap: 20px;
   }
 }
 

@@ -1,42 +1,15 @@
 <mat-card class="chat-card">
     <div class="shadow-box">
-        <div class="search-input-channels">
-            <div class="message-head">
-                <h2>New Message</h2>
-                <img src="./assets/img/icons/close.png" alt="#" (click)="triggerChat()">
-            </div>        
-            <div class="channel-inputs">
-                <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
-                    placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+        <div *ngIf="receivedDirectChatData$ | async as directMessageData">
+            <div class="chat-first-row">
+              <div *ngFor="let user of directMessageData.users" class="participant-status">
+                <img class="participant-icon" src="{{ user.picture }}" alt="#">
+                <span class="participant-name">{{ user.name }}</span>
+              </div>
             </div>
-            <div *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
-                <ul *ngIf="toggleUserList">
-                    <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
-                        <div class="user-list">
-                            {{ user.name }} ({{ user.email }})
-                        </div>
-                    </li>
-                </ul>
-                <ul *ngIf="toggleChannelList">
-                    <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
-                        <div class="channel-list">
-                            {{ channel.channelName }}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        </div>    
     </div>
 
-    <div *ngIf="receivedDirectChatData$ | async as directMessageData" class="shadow-box">
-        <div class="chat-first-row">
-          <div *ngFor="let user of directMessageData.users" class="participant-status">
-            <img class="participant-icon" src="{{ user.picture }}" alt="#">
-            <span class="participant-name">{{ user.name }}</span>
-          </div>
-        </div>
-    </div>
-      
     <div class="chat-text-area" *ngIf="directMessageData">
         <div *ngFor="let message of directMessageData; let index = index">
             <div *ngIf="isNewDay(message, directMessageData[index - 1])">

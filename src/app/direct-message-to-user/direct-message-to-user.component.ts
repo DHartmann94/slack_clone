@@ -23,16 +23,26 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   directMessageToUserOpen: boolean = false;
   [x: string]: any;
 
+  receivedUserData$!: Observable<UserDataInterface | null>
+
   userData: UserDataInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
   messageData: DirectMessageToUserInterface[] = [];
 
   mentionUser = new FormControl('');
   userList: string[] = [];
 
   selectedMessage: DirectMessageToUserInterface | null = null;
+  selectedUserToChannel: UserDataInterface[] = [];
+  searchResultsUsers: UserDataInterface[] = [];
+  searchResultsChannels: ChannelDataInterface[] = [];
+  availableChannels: ChannelDataInterface[] = [];
+  isInvitationValid: boolean = false;
 
   directChat: string = '';
   updateDirectChatId: string = '';
+  selectedUserNameOrChannelName: string = ''; 
+  userIds: string = '';
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -43,12 +53,15 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   currentUser: string = '';
   currentUserId: string = '';
 
-  receivedUserData$!: Observable<UserDataInterface | null>
+  private chatTriggerSubscription!: Subscription;
+  toggleSearchBar: boolean = true;
+  inviteUserOrChannel!: string;
 
   userId: string = '';
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
+  toggleChannelList: boolean = true;
 
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
@@ -60,12 +73,13 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     public messageDataService: MessageDataService,
     public channelDataService: ChannelDataService,
-    public channelDataInterface: ChannelDataService,
-    private channelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
-    private firestore: Firestore,
     private userDataResolver: UserDataResolveService,
-  ) { }
+  ) {
+    this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+      this.toggleChat();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName);
@@ -82,60 +96,122 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }, 1000);
   }
 
-    async getUserData() {
-        this.userDataService.getUserData().subscribe(
-            (userData: UserDataInterface[]) => {
-                this.userData = userData;
-                this.userList = userData.map((user) => user.name);
-            },
-            (error) => {
-                console.error('Error retrieving user data:', error);
-            }
-        );
-    }
+  ngOnDestroy() {
+    this.chatTriggerSubscription.unsubscribe();
+  }
 
-/*  diese funktion zeigt keine nachrichten an */
-
-/*  async getDataFromChannel(): Promise<void> {
-    this.receivedUserData$ = this.userDataResolver.resolve();
-    this.receivedUserData$.subscribe(
-        (userData: UserDataInterface | null) => {
-          console.log("User received from channel: ", userData);
-          if (userData && userData.id) {
-            this.processUserData(userData.id);
-          }
-        },
-        (error) => {
-          console.error('Error retrieving user data:', error);
-        }
-    );
-  }*/
-
-
-
-/*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert) */
-
-  async getDataFromChannel(): Promise<void> {
-    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
-        map((userData: UserDataInterface | null) => {
-          if (userData && userData.id) {
-            this.processUserData(userData.id);
-          }
-          return userData;
-        })
-    );
-    this.receivedUserData$.subscribe(
-        (userData: UserDataInterface | null) => {
-          console.log("User received from channel: ", userData);
-        },
-        (error) => {
-          console.error('Error retrieving user data:', error);
-        }
+  async getUserData() {
+    this.userDataService.getUserData().subscribe(
+      (userData: UserDataInterface[]) => {
+        this.userData = userData;
+        this.userList = userData.map((user) => user.name);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
     );
   }
 
-  triggerChat() {
-    this.chatBehavior.triggerChat();
+  filterUsers(): void {
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+        this.toggleUserList = true;
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#') && this.availableChannels) {
+        this.availableChannels = this.channelData.filter(channel => channel.users.includes(this.userDataService.currentUser));
+        if (this.availableChannels) {
+          const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+          this.searchResultsChannels = this.channelData;
+          this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+            channel.channelName.toLowerCase().includes(channelName)
+          );
+          this.searchResultsChannels.flatMap(channel =>
+            channel.users.map((userId: string) =>
+            this.userDataService.userData.find(user => user.id === userId)
+          ));
+          this.toggleChannelList = true;
+        }       
+      } else {
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
+    } else {
+      this.searchResultsUsers = [];
+      this.searchResultsChannels = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      console.log(user);
+      this.isInvitationValid = true;
+      this.userIds = user.id;
+      this.selectedUserNameOrChannelName = user.name;
+      this.toggleUserList = false;
+      this.inviteUserOrChannel = '';
+      /* this.directMessageService.addUserDirect(user); */
+      console.log(this.userIds);
+    }
+  }
+
+  inviteChannel(channel: ChannelDataInterface):void {
+    if (channel) {
+      this.isInvitationValid = true;
+      this.userIds = channel.id;
+      this.selectedUserNameOrChannelName = channel.channelName;
+      this.toggleChannelList = false;
+      this.inviteUserOrChannel = '';
+      console.log(this.userIds);
+    }
+  }
+
+  /*  diese funktion zeigt keine nachrichten an */
+
+  /*  async getDataFromChannel(): Promise<void> {
+      this.receivedUserData$ = this.userDataResolver.resolve();
+      this.receivedUserData$.subscribe(
+          (userData: UserDataInterface | null) => {
+            console.log("User received from channel: ", userData);
+            if (userData && userData.id) {
+              this.processUserData(userData.id);
+            }
+          },
+          (error) => {
+            console.error('Error retrieving user data:', error);
+          }
+      );
+    }*/
+
+
+
+  /*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert) */
+
+  async getDataFromChannel(): Promise<void> {
+    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
+      map((userData: UserDataInterface | null) => {
+        if (userData && userData.id) {
+          this.processUserData(userData.id);
+        }
+        return userData;
+      })
+    );
+    this.receivedUserData$.subscribe(
+      (userData: UserDataInterface | null) => {
+        console.log("User received from channel: ", userData);
+      },
+      (error) => {
+        console.error('Error retrieving user data:', error);
+      }
+    );
+  }
+
+  toggleChat() {
+    this.toggleSearchBar = !this.toggleSearchBar;
   }
 
   processUserData(userId: string) {
@@ -148,7 +224,10 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     if (userId) {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
-          const messagesForUser = messageData.filter(message => message.user === userId);
+          const messagesForUser = messageData.filter(message => 
+            (message.user === this.userDataService.currentUser && message.userSentTo === userId) ||
+            (message.user === userId && message.userSentTo === this.userDataService.currentUser)
+          );
           if (messagesForUser.length > 0) {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
@@ -340,7 +419,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: userId
+        user: userId,
+        userSentTo: this.userDataService.currentUser
       };
 
 
@@ -350,7 +430,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
       console.log('user', this.userId),
 
-      this.messageData.push(message);
+        this.messageData.push(message);
       this.messageInput = [''];
 
       this.directMessageToUserService.sendMessage(message).subscribe(

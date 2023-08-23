@@ -28,6 +28,7 @@ export class DirectChatComponent implements OnInit {
  
   searchResultsUsers: UserDataInterface[] = [];
   searchResultsChannels: ChannelDataInterface[] = [];
+  availableChannels: ChannelDataInterface[] = [];
   toggleUserList: boolean = true;
   toggleChannelList: boolean = true;
 
@@ -57,8 +58,7 @@ export class DirectChatComponent implements OnInit {
     private directMessageService: DirectMessageService,
     private channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,
-  ) {
-  }
+  ) { }
 
   ngOnInit(): void {
     this.getDirectChatData();
@@ -120,61 +120,6 @@ export class DirectChatComponent implements OnInit {
   processDirectChatData(channelId: string) {
     this.directChatId = channelId;
     this.renderDirectChatById(this.directChatId);
-  }
-
-  filterUsers(): void {
-    if (this.inviteUserOrChannel) {
-      const searchBy = this.inviteUserOrChannel.toLowerCase();
-      if (searchBy.startsWith('@')) {
-        const userName = searchBy.substr(1);
-        this.searchResultsUsers = this.userDataService.userData.filter(user =>
-          user.name.toLowerCase().includes(userName)
-        );
-        this.toggleUserList = true;
-      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
-        const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
-        this.searchResultsChannels = this.channelData;
-        const matchedChannels = this.channelDataService.channelData.filter(channel =>
-          channel.channelName.toLowerCase().includes(channelName)
-        );
-        matchedChannels.flatMap(channel =>
-          channel.users.map((userId: string) =>
-          this.userDataService.userData.find(user => user.id === userId)
-        ));
-        this.toggleChannelList = true;
-      } else {
-        this.searchResultsUsers = this.userDataService.userData.filter(user =>
-          user.email.toLowerCase().includes(searchBy)
-        );
-      }
-    } else {
-      this.searchResultsUsers = [];
-      this.searchResultsChannels = [];
-    }
-  }
-
-  inviteUser(user: UserDataInterface): void {
-    if (user) {
-      console.log(user);
-      this.isInvitationValid = true;
-      this.userIds = user.id;
-      this.selectedUserNameOrChannelName = user.name;
-      this.toggleUserList = false;
-      this.inviteUserOrChannel = '';
-      this.directMessageService.addUserDirect(user);
-      console.log(this.userIds);
-    }
-  }
-
-  inviteChannel(channel: ChannelDataInterface):void {
-    if (channel) {
-      this.isInvitationValid = true;
-      this.userIds = channel.id;
-      this.selectedUserNameOrChannelName = channel.channelName;
-      this.toggleChannelList = false;
-      this.inviteUserOrChannel = '';
-      console.log(this.userIds);
-    }
   }
 
   selectMessage(messageId: any) {
