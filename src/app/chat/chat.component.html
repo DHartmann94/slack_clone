@@ -1,6 +1,6 @@
-<mat-card class="chat-card" *ngIf="triggerNewChatWindow">
+<mat-card class="chat-card">
   <div class="shadow-box">
-    <div class="chat-first-row">
+    <div class="chat-first-row" *ngIf="toggleSearchBar">
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
         <span class="chat-name">{{ channel.channelName }}</span>
@@ -15,10 +15,36 @@
         <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
           {{ channel.users.length }}
         </div>
-        <div class="add-participant-background">
+        <div *ngIf="channelId" class="add-participant-background">
           <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png"
             alt="#">
         </div>
+      </div>
+    </div>
+    <div class="search-input-channels" *ngIf="!(toggleSearchBar)">
+      <div class="message-head">
+        <h2>New Message</h2>
+        <img src="./assets/img/icons/close.png" alt="#" (click)="toggleChat()">
+      </div>
+      <div class="channel-inputs">
+        <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
+          placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+      </div>
+      <div *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
+        <ul *ngIf="toggleUserList">
+          <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
+            <div class="user-list">
+              {{ user.name }} ({{ user.email }})
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf="toggleChannelList">
+          <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
+            <div class="channel-list">
+              {{ channel.channelName }}
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -45,7 +71,8 @@
     </div>
 
     <div class="invite-user-button-parent">
-      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel" (click)="sendUserToChannel()">Add</button>
+      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel"
+        (click)="sendUserToChannel()">Add</button>
     </div>
 
     <div *ngIf="searchUserResults.length > 0  && toggleList" class="result-user-list-parent">
@@ -153,8 +180,6 @@
     </div>
   </div>
 </mat-card>
-
-<app-new-chat *ngIf="!(triggerNewChatWindow)"></app-new-chat>
 
 <!-- Profile Content -->
 <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>

@@ -23,16 +23,26 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   directMessageToUserOpen: boolean = false;
   [x: string]: any;
 
+  receivedUserData$!: Observable<UserDataInterface | null>
+
   userData: UserDataInterface[] = [];
+  channelData: ChannelDataInterface[] = [];
   messageData: DirectMessageToUserInterface[] = [];
 
   mentionUser = new FormControl('');
   userList: string[] = [];
 
   selectedMessage: DirectMessageToUserInterface | null = null;
+  selectedUserToChannel: UserDataInterface[] = [];
+  searchResultsUsers: UserDataInterface[] = [];
+  searchResultsChannels: ChannelDataInterface[] = [];
+  availableChannels: ChannelDataInterface[] = [];
+  isInvitationValid: boolean = false;
 
   directChat: string = '';
   updateDirectChatId: string = '';
+  selectedUserNameOrChannelName: string = ''; 
+  userIds: string = '';
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -43,13 +53,15 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   currentUser: string = '';
   currentUserId: string = '';
 
-  receivedChannelData$!: Observable<ChannelDataInterface | null>;
-  receivedUserData$!: Observable<UserDataInterface | null>
+  private chatTriggerSubscription!: Subscription;
+  toggleSearchBar: boolean = true;
+  inviteUserOrChannel!: string;
 
-  userId: string = "";
+  userId: string = '';
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
+  toggleChannelList: boolean = true;
 
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
@@ -61,12 +73,13 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     public messageDataService: MessageDataService,
     public channelDataService: ChannelDataService,
-    public channelDataInterface: ChannelDataService,
-    private channelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
-    private firestore: Firestore,
     private userDataResolver: UserDataResolveService,
-  ) { }
+  ) {
+    this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
+      this.toggleChat();
+    });
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     console.log('changes here', this.sentByName);
@@ -75,11 +88,16 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.getCurrentUserId();
     this.getUserData();
+    this.compareIds();
     this.getDataFromChannel();
 
     setTimeout(() => {
       console.log('messageData', this.messageData);
     }, 1000);
+  }
+
+  ngOnDestroy() {
+    this.chatTriggerSubscription.unsubscribe();
   }
 
   async getUserData() {
@@ -94,16 +112,94 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
+  filterUsers(): void {
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+        this.toggleUserList = true;
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#') && this.availableChannels) {
+        this.availableChannels = this.channelData.filter(channel => channel.users.includes(this.userDataService.currentUser));
+        if (this.availableChannels) {
+          const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+          this.searchResultsChannels = this.channelData;
+          this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+            channel.channelName.toLowerCase().includes(channelName)
+          );
+          this.searchResultsChannels.flatMap(channel =>
+            channel.users.map((userId: string) =>
+            this.userDataService.userData.find(user => user.id === userId)
+          ));
+          this.toggleChannelList = true;
+        }       
+      } else {
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
+    } else {
+      this.searchResultsUsers = [];
+      this.searchResultsChannels = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      console.log(user);
+      this.isInvitationValid = true;
+      this.userIds = user.id;
+      this.selectedUserNameOrChannelName = user.name;
+      this.toggleUserList = false;
+      this.inviteUserOrChannel = '';
+      /* this.directMessageService.addUserDirect(user); */
+      console.log(this.userIds);
+    }
+  }
+
+  inviteChannel(channel: ChannelDataInterface):void {
+    if (channel) {
+      this.isInvitationValid = true;
+      this.userIds = channel.id;
+      this.selectedUserNameOrChannelName = channel.channelName;
+      this.toggleChannelList = false;
+      this.inviteUserOrChannel = '';
+      console.log(this.userIds);
+    }
+  }
+
+  /*  diese funktion zeigt keine nachrichten an */
+
+  /*  async getDataFromChannel(): Promise<void> {
+      this.receivedUserData$ = this.userDataResolver.resolve();
+      this.receivedUserData$.subscribe(
+          (userData: UserDataInterface | null) => {
+            console.log("User received from channel: ", userData);
+            if (userData && userData.id) {
+              this.processUserData(userData.id);
+            }
+          },
+          (error) => {
+            console.error('Error retrieving user data:', error);
+          }
+      );
+    }*/
+
+
+
+  /*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert) */
+
   async getDataFromChannel(): Promise<void> {
-    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
-      map((data: ChannelDataInterface | null) => {
-        if (data && data.id) {
-          this.processUserData(data.id);
+    this.receivedUserData$ = this.userDataResolver.resolve().pipe(
+      map((userData: UserDataInterface | null) => {
+        if (userData && userData.id) {
+          this.processUserData(userData.id);
         }
-        return data;
+        return userData;
       })
     );
-    this.receivedUserData$ = this.userDataResolver.resolve();
     this.receivedUserData$.subscribe(
       (userData: UserDataInterface | null) => {
         console.log("User received from channel: ", userData);
@@ -114,39 +210,39 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  triggerChat() {
-    this.chatBehavior.triggerChat();
+  toggleChat() {
+    this.toggleSearchBar = !this.toggleSearchBar;
   }
 
-  processUserData(channelId: string) {
-    this.userId = channelId;
+  processUserData(userId: string) {
+    this.userId = userId;
     this.renderMessage(this.userId);
+    console.log('userId IST:::', this.userId);
   }
 
   renderMessage(userId: any) {
-    this.directMessageToUserService.getMessageData().subscribe(
-      (messageData: DirectMessageToUserInterface[]) => {
-        if (messageData.length > 0) {
-          const filteredData = messageData.filter(
-            (message) => message.time !== undefined && message.time !== null
-          );
-          const sortDataAfterTime = filteredData.sort((a, b) =>
-            a.time! > b.time! ? 1 : -1
-          );
-          this.messageData = sortDataAfterTime;
-        } else {
-          this.messageData = [];
+    if (userId) {
+      this.directMessageToUserService.getMessageData().subscribe(
+        (messageData: DirectMessageToUserInterface[]) => {
+          const messagesForUser = messageData.filter(message => message.user === userId);
+          if (messagesForUser.length > 0) {
+            const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
+            const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
+            this.messageData = sortDataAfterTime;
+          } else {
+            this.messageData = [];
+          }
+        },
+        (error) => {
+          console.error('ERROR render messages in MessageToUser:', error);
         }
-      },
-      (error) => {
-        console.error('ERROR render messages in MessageToUser:', error);
-      }
-    );
+      );
+    }
   }
-
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
+    console.log('currentUserId ist::::', this.currentUserId);
   }
 
   public typeEmoji($event: any): void {
@@ -300,10 +396,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
             });
             const matches: string[] = [];
             messages.forEach((message) => {
-              if (
-                this.currentUserId &&
-                userIdToNameMap.hasOwnProperty(this.currentUserId)
-              ) {
+              if (this.currentUserId && userIdToNameMap.hasOwnProperty(this.currentUserId)) {
                 const senderName = userIdToNameMap[this.currentUserId];
                 matches.push(this.currentUserId);
                 this.currentUser = senderName;
@@ -314,21 +407,26 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  async sendDirectMessageToUser() {
+  async sendDirectMessageToUser(userId: string) {
     if (this.messageInput.length > 0) {
+      console.log('messageInput', this.messageInput);
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
+        user: userId
       };
+
 
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
 
-      this.messageData.push(message);
+      console.log('user', this.userId),
+
+        this.messageData.push(message);
       this.messageInput = [''];
 
       this.directMessageToUserService.sendMessage(message).subscribe(
@@ -355,9 +453,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }
     try {
       await this.directMessageToUserService.deleteMessage(messageId);
-      this.messageData = this.messageData.filter(
-        (message) => message.id !== messageId
-      );
+      this.messageData = this.messageData.filter((message) => message.id !== messageId);
     } catch (error) {
       console.error('Error deleting message:', error);
     }

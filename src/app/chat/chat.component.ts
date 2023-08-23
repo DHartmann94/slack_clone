@@ -1,19 +1,15 @@
 import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
-import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
-import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { EmojiService } from '../service-moduls/emoji.service';
-
 
 @Component({
   selector: 'app-chat',
@@ -36,40 +32,43 @@ export class ChatComponent implements OnInit, OnChanges {
   messageData: MessageDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
   threadData: ThreadDataInterface[] = [];
-
+  availableChannels: ChannelDataInterface[] = [];
   userProfile: UserDataInterface[] = [];
-
+  isInvitationValid: boolean = false;
   mentionUser = new FormControl('');
   userList: string[] = [];
 
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
-
+  selectedUserNameOrChannelName: string = ''; 
+  userIds: string = '';
   channelId: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
+
   sentByName: string[] = [];
   usersFromUserData: string[] = [];
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
+  toggleUserList: boolean = true;
+  toggleChannelList: boolean = true;
 
   deleteUserFormChannel: any;
-
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
   openEditChannel: boolean = false;
   emojipickeractive = false;
   reactionListOpen = false;
-  toggleUserList: boolean = true;
 
   private chatTriggerSubscription!: Subscription;
-  triggerNewChatWindow: boolean = true;
+  toggleSearchBar: boolean = true;
 
   inviteUserOrChannel!: string;
-  searchResults: UserDataInterface[] = [];
+  searchResultsChannels: ChannelDataInterface[] = [];
+  searchResultsUsers: UserDataInterface[] = [];
 
   isInviteUserOpen: boolean = false;
   toggleList: boolean = false;
@@ -77,7 +76,7 @@ export class ChatComponent implements OnInit, OnChanges {
   inviteUserToChannel: string = '';
   searchUserResults: UserDataInterface[] = [];
   selectedUserToChannel: UserDataInterface[] = [];
-
+  
   channelUserPicture: string[] = [];
 
   constructor(
@@ -86,8 +85,6 @@ export class ChatComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
-    private directChatDataResolver: DirectChatDataResolverService,
-    private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
@@ -95,7 +92,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private firestore: Firestore,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
-      this.toggleDirectChat();
+      this.toggleChat();
     });
   }
 
@@ -117,7 +114,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
-    
+
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
     ).subscribe();
@@ -145,7 +142,7 @@ export class ChatComponent implements OnInit, OnChanges {
       map((data: ChannelDataInterface | null) => {
         if (data && data.id) {
           this.processChannelData(data.id);
-        } 
+        }
         return data;
       })
     );
@@ -163,8 +160,66 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  toggleDirectChat() {
-    this.triggerNewChatWindow = !this.triggerNewChatWindow;
+  toggleChat() {
+    this.toggleSearchBar = !this.toggleSearchBar;
+  }
+
+  filterUsers(): void {
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+        this.toggleUserList = true;
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#') && this.availableChannels) {
+        this.availableChannels = this.channelData.filter(channel => channel.users.includes(this.userDataService.currentUser));
+        if (this.availableChannels) {
+          const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+          this.searchResultsChannels = this.channelData;
+          this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+            channel.channelName.toLowerCase().includes(channelName)
+          );
+          this.searchResultsChannels.flatMap(channel =>
+            channel.users.map((userId: string) =>
+            this.userDataService.userData.find(user => user.id === userId)
+          ));
+          this.toggleChannelList = true;
+        }       
+      } else {
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
+    } else {
+      this.searchResultsUsers = [];
+      this.searchResultsChannels = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      console.log(user);
+      this.isInvitationValid = true;
+      this.userIds = user.id;
+      this.selectedUserNameOrChannelName = user.name;
+      this.toggleUserList = false;
+      this.inviteUserOrChannel = '';
+      /* this.directMessageService.addUserDirect(user); */
+      console.log(this.userIds);
+    }
+  }
+
+  inviteChannel(channel: ChannelDataInterface):void {
+    if (channel) {
+      this.isInvitationValid = true;
+      this.userIds = channel.id;
+      this.selectedUserNameOrChannelName = channel.channelName;
+      this.toggleChannelList = false;
+      this.inviteUserOrChannel = '';
+      console.log(this.userIds);
+    }
   }
 
   selectMessage(messageId: any) {
@@ -611,7 +666,9 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
   openInviteUserToChannel() {
-    this.isInviteUserOpen = !this.isInviteUserOpen;
+    if (this.channelId) {
+      this.isInviteUserOpen = !this.isInviteUserOpen;
+    }
   }
 
   closeInviteUserToChannel() {
