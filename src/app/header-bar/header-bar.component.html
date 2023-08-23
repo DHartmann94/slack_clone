@@ -20,7 +20,7 @@
     <div class="logout-container" *ngIf="isLogoutContainerOpen" #containerRef>
         <div class="logout">
             <div class="logout-info">
-                <div>
+                <div *ngIf="userDataService.userName !== 'Guest'">
                     <mat-icon>person</mat-icon>
                     <p (click)="openUserProfile()">Profile</p>
                 </div>
