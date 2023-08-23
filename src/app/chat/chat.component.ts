@@ -13,6 +13,7 @@ import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { EmojiService } from '../service-moduls/emoji.service';
+import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 
 
 @Component({
@@ -29,6 +30,7 @@ export class ChatComponent implements OnInit, OnChanges {
   [x: string]: any;
   channelName!: FormGroup;
   channelDescription!: FormGroup;
+  directMessageToUserOpen: boolean = false;
 
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
@@ -93,6 +95,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
+    public directMessageToUserService: DirectMessageToUserService,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleDirectChat();
@@ -618,6 +621,10 @@ export class ChatComponent implements OnInit, OnChanges {
 
   closeInviteUserToChannel() {
     this.isInviteUserOpen = false;
+  }
+
+  directMessageToUser(){
+    this.directMessageToUserOpen = false;
   }
 
 }

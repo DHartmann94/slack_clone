@@ -188,13 +188,13 @@
       <div class="user-email">
         <mat-icon>mail_outline</mat-icon>
         <div class="user-email-link">
-          <p>E-Mail-Adresse</p>
+          <p>E-Mail</p>
           <a>{{ this.userProfile[0].email }}</a>
         </div>
       </div>
     </mat-card-content>
     <mat-card-actions class="user-message-button">
-      <button mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Nachricht</button>
+      <button (click)="directMessageToUser()" mat-flat-button color="primary"><mat-icon>chat_bubble_outline</mat-icon>Message</button>
     </mat-card-actions>
   </mat-card>
 </section>
