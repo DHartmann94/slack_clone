@@ -192,6 +192,9 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   toggleChat() {
     this.toggleSearchBar = !this.toggleSearchBar;
+    this.inviteUserOrChannel = '';
+    this.toggleUserList = false;
+    this.toggleChannelList = false;
   }
 
   processUserData(userId: string) {

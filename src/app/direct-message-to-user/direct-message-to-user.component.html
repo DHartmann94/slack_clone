@@ -20,26 +20,26 @@
         <img src="./assets/img/icons/close.png" alt="#" (click)="toggleChat()">
       </div>
       <div class="channel-inputs">
-        <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
-          placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
-      </div>
-      <div *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
-        <ul *ngIf="toggleUserList">
-          <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
-            <div class="user-list">
-              {{ user.name }} ({{ user.email }})
-            </div>
-          </li>
-        </ul>
-        <ul *ngIf="toggleChannelList">
-          <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
-            <div class="channel-list">
-              {{ channel.channelName }}
-            </div>
-          </li>
-        </ul>
+        <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
+          placeholder="To: #channel, or @jemand oder e-mail address">
       </div>
     </div>
+    <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
+      <ul *ngIf="toggleUserList">
+        <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
+          <div class="user-list">
+            {{ user.name }} ({{ user.email }})
+          </div>
+        </li>
+      </ul>
+      <ul *ngIf="toggleChannelList">
+        <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
+          <div class="channel-list">
+            {{ channel.channelName }}
+          </div>
+        </li>
+      </ul>
+    </div>   
   </div>
   <div class="chat-text-area" *ngIf="messageData">
     <ng-container *ngFor="let message of messageData; let index = index">

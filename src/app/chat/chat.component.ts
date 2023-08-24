@@ -43,7 +43,7 @@ export class ChatComponent implements OnInit, OnChanges {
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
   selectedUserNameOrChannelName: string = '';
-  userIds: string = '';
+  userIdInputSearch: string = '';
   channelId: string = "";
 
   messageInput: string[] = [];
@@ -55,8 +55,9 @@ export class ChatComponent implements OnInit, OnChanges {
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
   currentUserId: string = '';
-  toggleUserList: boolean = true;
-  toggleChannelList: boolean = true;
+  toggleUserList: boolean = false;
+  toggleChannelList: boolean = false;
+  allLists: boolean = false;
 
   deleteUserFormChannel: any;
   editChannelName: boolean = false;
@@ -165,6 +166,9 @@ export class ChatComponent implements OnInit, OnChanges {
 
   toggleChat() {
     this.toggleSearchBar = !this.toggleSearchBar;
+    this.inviteUserOrChannel = '';
+    this.toggleUserList = false;
+    this.toggleChannelList = false;
   }
 
   filterUsers(): void {
@@ -206,23 +210,22 @@ export class ChatComponent implements OnInit, OnChanges {
     if (user) {
       console.log(user);
       this.isInvitationValid = true;
-      this.userIds = user.id;
+      this.userIdInputSearch = user.id;
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
       this.inviteUserOrChannel = '';
-      /* this.directMessageService.addUserDirect(user); */
-      console.log(this.userIds);
     }
   }
 
   inviteChannel(channel: ChannelDataInterface): void {
     if (channel) {
       this.isInvitationValid = true;
-      this.userIds = channel.id;
+      this.userIdInputSearch = channel.id;
       this.selectedUserNameOrChannelName = channel.channelName;
       this.toggleChannelList = false;
       this.inviteUserOrChannel = '';
-      console.log(this.userIds);
+      this.renderChatByChannelId(this.userIdInputSearch);
+      this.sendMessage(this.userIdInputSearch);
     }
   }
 
@@ -242,28 +245,38 @@ export class ChatComponent implements OnInit, OnChanges {
 
   renderChatByChannelId(channel: string) {
     if (channel) {
+      const invitedChannelId = this.userIdInputSearch;
+      console.log("Invited channel ID:", invitedChannelId);
       this.messageDataService.getMessageData().subscribe(
         (messageData: MessageDataInterface[]) => {
-          const messagesForChannel = messageData.filter(message => message.channel === channel);
+          const messagesForChannel = messageData.filter(message =>
+            (message.channel && message.channelId === channel) ||
+            (message.channel === channel && message.channelId)
+          );
+          if (invitedChannelId) {
+            const messagesForInvitedUser = messageData.filter(message =>
+              (message.channel && message.channelId === invitedChannelId) ||
+              (message.channel === invitedChannelId && message.channelId)
+            );
+            
+            messagesForChannel.push(...messagesForInvitedUser);
+          }
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render:', sortDataAfterTime);
             this.messageData = sortDataAfterTime;
-          } else {
-            console.log('No messages found:', channel);
-            this.messageData = [];
           }
         },
         (error) => {
-          console.error('ERROR render messages in channel:', error);
+          console.error('ERROR rendering messages in channel:', error);
         }
       );
     } else {
       this.messageData = [];
     }
   }
-
+  
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
   }
@@ -331,7 +344,7 @@ export class ChatComponent implements OnInit, OnChanges {
     );
   }
 
-  async sendMessage() {
+  async sendMessage(userIdInputSearch: any) {
     if (this.messageInput.length > 0) {
       const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
@@ -342,6 +355,7 @@ export class ChatComponent implements OnInit, OnChanges {
         thread: threadId,
         channel: this.channelId,
         mentionedUser: 'user_id_here',
+        channelId: userIdInputSearch,
       };
 
       if (this.emojipickeractive) {
