@@ -40,7 +40,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
-  selectedUserNameOrChannelName: string = ''; 
+  selectedUserNameOrChannelName: string = '';
   userIds: string = '';
   channelId: string = "";
 
@@ -76,7 +76,7 @@ export class ChatComponent implements OnInit, OnChanges {
   inviteUserToChannel: string = '';
   searchUserResults: UserDataInterface[] = [];
   selectedUserToChannel: UserDataInterface[] = [];
-  
+
   channelUserPicture: string[] = [];
 
   constructor(
@@ -173,20 +173,18 @@ export class ChatComponent implements OnInit, OnChanges {
           user.name.toLowerCase().includes(userName)
         );
         this.toggleUserList = true;
-      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#') && this.availableChannels) {
-        this.availableChannels = this.channelData.filter(channel => channel.users.includes(this.userDataService.currentUser));
-        if (this.availableChannels) {
-          const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
-          this.searchResultsChannels = this.channelData;
-          this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
-            channel.channelName.toLowerCase().includes(channelName)
-          );
-          this.searchResultsChannels.flatMap(channel =>
-            channel.users.map((userId: string) =>
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
+        const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+        const channelMention = this.channelDataService.getChannelData();
+        this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
+          channel.channelName.toLowerCase().includes(channelName)
+        );
+        this.searchResultsChannels.flatMap(channel =>
+          channel.users.map((userId: string) =>
             this.userDataService.userData.find(user => user.id === userId)
-          ));
-          this.toggleChannelList = true;
-        }       
+          )
+        );
+        this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
@@ -211,7 +209,7 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  inviteChannel(channel: ChannelDataInterface):void {
+  inviteChannel(channel: ChannelDataInterface): void {
     if (channel) {
       this.isInvitationValid = true;
       this.userIds = channel.id;
