@@ -5,11 +5,10 @@ import { DirectMessageToUserInterface, DirectMessageToUserService } from "../ser
 import { map } from "rxjs/operators";
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
-import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { MessageDataInterface, MessageDataService } from '../service-moduls/message.service';
-import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
+import { DirectMessageToUserDataResolverService } from '../service-moduls/direct-messsage-to-user-data-resolver.service';
 
 @Component({
   selector: 'app-direct-message-to-user',
@@ -42,7 +41,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   directChat: string = '';
   updateDirectChatId: string = '';
   selectedUserNameOrChannelName: string = '';
-  userIds: string = '';
+  userIdInputSearch: string = '';
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -75,6 +74,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     public channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,
     private userDataResolver: UserDataResolveService,
+    private directMessageToUserDataResolverService: DirectMessageToUserDataResolverService,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleChat();
@@ -111,65 +111,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       }
     );
   }
-
-  filterUsers(): void {
-    if (this.inviteUserOrChannel) {
-      const searchBy = this.inviteUserOrChannel.toLowerCase();
-      if (searchBy.startsWith('@')) {
-        const userName = searchBy.substr(1);
-        this.searchResultsUsers = this.userDataService.userData.filter(user =>
-          user.name.toLowerCase().includes(userName)
-        );
-        this.toggleUserList = true;
-      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#') && this.availableChannels) {
-        this.availableChannels = this.channelData.filter(channel => channel.users.includes(this.userDataService.currentUser));
-        if (this.availableChannels) {
-          const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
-          this.searchResultsChannels = this.channelData;
-          this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
-            channel.channelName.toLowerCase().includes(channelName)
-          );
-          this.searchResultsChannels.flatMap(channel =>
-            channel.users.map((userId: string) =>
-            this.userDataService.userData.find(user => user.id === userId)
-          ));
-          this.toggleChannelList = true;
-        }
-      } else {
-        this.searchResultsUsers = this.userDataService.userData.filter(user =>
-          user.email.toLowerCase().includes(searchBy)
-        );
-      }
-    } else {
-      this.searchResultsUsers = [];
-      this.searchResultsChannels = [];
-    }
-  }
-
-  inviteUser(user: UserDataInterface): void {
-    if (user) {
-      console.log(user);
-      this.isInvitationValid = true;
-      this.userIds = user.id;
-      this.selectedUserNameOrChannelName = user.name;
-      this.toggleUserList = false;
-      this.inviteUserOrChannel = '';
-      /* this.directMessageService.addUserDirect(user); */
-      console.log(this.userIds);
-    }
-  }
-
-  inviteChannel(channel: ChannelDataInterface):void {
-    if (channel) {
-      this.isInvitationValid = true;
-      this.userIds = channel.id;
-      this.selectedUserNameOrChannelName = channel.channelName;
-      this.toggleChannelList = false;
-      this.inviteUserOrChannel = '';
-      console.log(this.userIds);
-    }
-  }
-
+  
   async getDataFromChannel(): Promise<void> {
     this.receivedUserData$ = this.userDataResolver.resolve().pipe(
       map((userData: UserDataInterface | null) => {
@@ -189,6 +131,65 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
+  filterUsers(): void {
+    if (this.inviteUserOrChannel) {
+      const searchBy = this.inviteUserOrChannel.toLowerCase();
+      if (searchBy.startsWith('@')) {
+        const userName = searchBy.substr(1);
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.name.toLowerCase().includes(userName)
+        );
+        this.toggleUserList = true;
+      } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
+        const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
+        this.channelDataService.getChannelData().subscribe(
+          (channelData: ChannelDataInterface[]) => {
+            this.searchResultsChannels = channelData.filter(channel =>
+              channel.channelName.toLowerCase().includes(channelName)
+            );
+            this.searchResultsChannels.flatMap(channel =>
+              channel.users.map((userId: string) =>
+                this.userDataService.userData.find(user => user.id === userId)
+              )
+            );
+          }  
+        );  
+        this.toggleChannelList = true;
+      } else {
+        this.searchResultsUsers = this.userDataService.userData.filter(user =>
+          user.email.toLowerCase().includes(searchBy)
+        );
+      }
+    } else {
+      this.searchResultsUsers = [];
+      this.searchResultsChannels = [];
+    }
+  }
+
+  inviteUser(user: UserDataInterface): void {
+    if (user) {
+      console.log(user);
+      this.isInvitationValid = true;
+      this.userIdInputSearch = user.id;
+      this.selectedUserNameOrChannelName = user.name;
+      this.toggleUserList = false;
+      this.inviteUserOrChannel = '';
+      this.renderMessage(this.userIdInputSearch);
+      console.log(this.userIdInputSearch);
+    }
+  }
+
+  inviteChannel(channel: ChannelDataInterface):void {
+    if (channel) {
+      this.isInvitationValid = true;
+      this.userIdInputSearch = channel.id;
+      this.selectedUserNameOrChannelName = channel.channelName;
+      this.toggleChannelList = false;
+      this.inviteUserOrChannel = '';
+      console.log(this.userIdInputSearch);
+    }
+  }
+
   toggleChat() {
     this.toggleSearchBar = !this.toggleSearchBar;
   }
@@ -201,12 +202,22 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   renderMessage(userId: any) {
     if (userId) {
+      const invitedUserId = this.userIdInputSearch;
+      console.log("Get search input", invitedUserId);
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
           const messagesForUser = messageData.filter(message =>
             (message.user === this.userDataService.currentUser && message.userSentTo === userId) ||
             (message.user === userId && message.userSentTo === this.userDataService.currentUser)
           );
+          if (invitedUserId) {
+            const messagesForInvitedUser = messageData.filter(message =>
+              (message.user === this.userDataService.currentUser && message.userSentTo === invitedUserId) ||
+              (message.user === invitedUserId && message.userSentTo === this.userDataService.currentUser)
+            );
+            
+            messagesForUser.push(...messagesForInvitedUser);
+          }
           if (messagesForUser.length > 0) {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
@@ -219,7 +230,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           console.error('ERROR render messages in MessageToUser:', error);
         }
       );
-    }
+    } 
   }
 
   getCurrentUserId() {

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
 import { ThreadDirectService, ThreadDirectDataInterface } from '../service-moduls/thread-direct.service';
-import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
@@ -54,7 +53,6 @@ export class DirectChatComponent implements OnInit {
   constructor(
     public userDataService: UserDataService,
     private threadDirectDataService: ThreadDirectService,
-    private directChatDataResolver: DirectChatDataResolverService,
     private directMessageService: DirectMessageService,
     private channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,
@@ -65,7 +63,7 @@ export class DirectChatComponent implements OnInit {
     this.compareIds();
     this.getCurrentUserId();
     this.getThreadData();
-    this.getDataFromDirectChat();
+    /* this.getDataFromDirectChat(); */
   }
 
   async getDirectChatData() {
@@ -80,7 +78,7 @@ export class DirectChatComponent implements OnInit {
     );
   }
 
-  async getDataFromDirectChat(): Promise<void> {
+ /*  async getDataFromDirectChat(): Promise<void> {
     this.receivedDirectChatData$ = this.directChatDataResolver.resolve().pipe(
       map((data: DirectMessageInterface | null) => {
         console.log("Direct chat data received", data);
@@ -99,7 +97,7 @@ export class DirectChatComponent implements OnInit {
         console.error('Error retrieving user data:', error);
       }
     );
-  }
+  } */
 
   async getThreadData() {
     this.threadDirectDataService.getThreadDataDirectMessages().subscribe(

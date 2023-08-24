@@ -3,7 +3,6 @@ import { UserDataService, UserDataInterface } from '../service-moduls/user.servi
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
-import { DirectChatDataResolverService } from '../service-moduls/direct-chat-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -58,7 +57,6 @@ export class ChannelsComponent implements OnInit {
     private userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
-    private directChatDataResolver: DirectChatDataResolverService,
     private directMessageService: DirectMessageService,
     private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
