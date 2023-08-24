@@ -41,7 +41,6 @@
       </div>
     </div>
   </div>
-
   <div class="chat-text-area" *ngIf="messageData">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
@@ -56,8 +55,6 @@
         <div class="parting-line-firstMessage">
         </div>
       </ng-container>
-
-
 
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
@@ -115,6 +112,25 @@
         </div>
       </div>
     </ng-container>
+  </div>
+
+  <!-- No message message -->
+  <div class="no-messages" *ngIf="!(messageData?.length)">
+    <div class="participant-status-no-message">
+      <img class="profile-pictures-chat" src="{{ userData.picture }}" alt="">
+      <svg *ngIf="userData.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+           viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="4" fill="#92C83E"/>
+      </svg>
+      <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+           viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="4" fill="#808080"/>
+      </svg>
+      <span class="chat-name">{{ userData.name }}</span>
+    </div>
+    <span class="no-message-span">
+          This conversation is only between <span class="user-tagged-no-message"> @{{ userData.name }}  </span> and you.
+    </span>
   </div>
 
   <!-- Input field -->

@@ -458,6 +458,35 @@
   width: 100%;
 }
 
+.no-messages {
+  padding-bottom: 235px;
+  height: 151px;
+}
+
+.participant-status-no-message {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  margin-bottom: 24px;
+}
+
+.no-message-span {
+  color: var(--text-gray, #686868);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.user-tagged-no-message {
+  color: var(--purple-3, #535AF1);
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+}
+
 .wid-max {
   width: 100%;
 }
