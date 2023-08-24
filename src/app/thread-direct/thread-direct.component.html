@@ -100,7 +100,7 @@
             <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
             <div class="mail-container"></div>
           </div>
-          <div class="send-message-btn" (click)="sendMessage()"></div>
+          <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage()"></div>
         </div>
       </div>
     </div>
