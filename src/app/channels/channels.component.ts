@@ -152,13 +152,13 @@ export class ChannelsComponent implements OnInit {
     this.userDataResolver.sendDataUsers(this.selectedUser);
   }
 
-  selectDirectChat(directChatId: any) {
+  /* selectDirectChat(directChatId: any) {
     const selectedDirectChat = this.getDirectChatById(directChatId);
     if (selectedDirectChat !== null) {
       this.selectedDirectChat = selectedDirectChat;
       this.directChatDataResolver.sendDataDirectChat(this.selectedDirectChat);
     }
-  }
+  } */
 
   selectChannelFromList(channelGroupId: any) {
     this.selectedChannel = this.getChannelById(channelGroupId);

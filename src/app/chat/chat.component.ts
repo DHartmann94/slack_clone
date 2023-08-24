@@ -178,15 +178,18 @@ export class ChatComponent implements OnInit, OnChanges {
         this.toggleUserList = true;
       } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
-        const channelMention = this.channelDataService.getChannelData();
-        this.searchResultsChannels = this.channelDataService.channelData.filter(channel =>
-          channel.channelName.toLowerCase().includes(channelName)
-        );
-        this.searchResultsChannels.flatMap(channel =>
-          channel.users.map((userId: string) =>
-            this.userDataService.userData.find(user => user.id === userId)
-          )
-        );
+        this.channelDataService.getChannelData().subscribe(
+          (channelData: ChannelDataInterface[]) => {
+            this.searchResultsChannels = channelData.filter(channel =>
+              channel.channelName.toLowerCase().includes(channelName)
+            );
+            this.searchResultsChannels.flatMap(channel =>
+              channel.users.map((userId: string) =>
+                this.userDataService.userData.find(user => user.id === userId)
+              )
+            );
+          }  
+        );  
         this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
