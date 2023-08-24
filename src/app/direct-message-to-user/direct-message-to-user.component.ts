@@ -41,7 +41,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   directChat: string = '';
   updateDirectChatId: string = '';
-  selectedUserNameOrChannelName: string = ''; 
+  selectedUserNameOrChannelName: string = '';
   userIds: string = '';
 
   messageInput: string[] = [];
@@ -134,7 +134,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
             this.userDataService.userData.find(user => user.id === userId)
           ));
           this.toggleChannelList = true;
-        }       
+        }
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
@@ -170,27 +170,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }
   }
 
-  /*  diese funktion zeigt keine nachrichten an */
-
-  /*  async getDataFromChannel(): Promise<void> {
-      this.receivedUserData$ = this.userDataResolver.resolve();
-      this.receivedUserData$.subscribe(
-          (userData: UserDataInterface | null) => {
-            console.log("User received from channel: ", userData);
-            if (userData && userData.id) {
-              this.processUserData(userData.id);
-            }
-          },
-          (error) => {
-            console.error('Error retrieving user data:', error);
-          }
-      );
-    }*/
-
-
-
-  /*  diese funktion zeigt nachrichten an, aber eine seite der ids (wenn man den resolver auskommentiert) */
-
   async getDataFromChannel(): Promise<void> {
     this.receivedUserData$ = this.userDataResolver.resolve().pipe(
       map((userData: UserDataInterface | null) => {
@@ -224,7 +203,10 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     if (userId) {
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
-          const messagesForUser = messageData.filter(message => message.user === userId);
+          const messagesForUser = messageData.filter(message =>
+            (message.user === this.userDataService.currentUser && message.userSentTo === userId) ||
+            (message.user === userId && message.userSentTo === this.userDataService.currentUser)
+          );
           if (messagesForUser.length > 0) {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
@@ -416,7 +398,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: userId
+        user: userId,
+        userSentTo: this.userDataService.currentUser
       };
 
 

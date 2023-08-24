@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-  
+
     <div class="chat-text-area" *ngIf="threadDirectData">
       <ng-container *ngFor="let message of threadDirectData; let index = index">
         <!-- Time stamp parting line -->
@@ -19,15 +19,12 @@
           <div class="flex-center time-partLine">
             <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
           </div>
-  
-          <!--TODO: Adding responses counter -- showing only under first message: Dany-->
           <div class="parting-line-padding"></div>
           <div class="parting-line-firstMessage">
-            <span>2 Responses</span>
           </div>
-  
+
         </ng-container>
-  
+
         <div class="chat-message"
           [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
           <div class="profile-picture-container">
@@ -54,14 +51,14 @@
                 message.messageText }}</span>
             </div>
             <div class="like-area">
-  
+
               <div id="reactionlist-in-thread{{index}}" class="list-of-reactions">
                 <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
                   <span>{{ emoji['emoji'] }} :</span>
                   <span>&nbsp;{{ emoji['reaction-from'] }}</span>
                 </div>
               </div>
-  
+
               <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"  *ngIf="message.emojis.length > 0" class="reaction-icon-container">
                 <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
                 <span class="reaction-counter">{{ message.emojis.length }}</span>
@@ -85,16 +82,17 @@
         </div>
       </ng-container>
     </div>
-  
+
     <!-- Input field -->
     <div class="message-input-field">
       <div class="text-editor">
-  
+
         <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="this.emojiService.emojipickeractiveThread"></app-emojis>
-    
-  
-        <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4">
-          </textarea>
+
+
+        <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4"
+                  (keyup.enter)="sendMessage()">
+                  </textarea>
         <div class="text-editor-bottom">
           <div class="text-editor-left-btns">
             <div class="attach"></div>
@@ -107,10 +105,10 @@
       </div>
     </div>
   </mat-card>
-  
+
   <!-- Profile Content -->
   <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
-  
+
   <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
     <mat-card class="user-profile-card">
       <mat-card-header class="user-header">
@@ -150,4 +148,3 @@
       </mat-card-actions>
     </mat-card>
   </section>
-  

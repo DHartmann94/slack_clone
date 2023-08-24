@@ -23,7 +23,6 @@
         <!--TODO: Adding responses counter -- showing only under first message: Dany-->
         <div class="parting-line-padding"></div>
         <div class="parting-line-firstMessage">
-          <span>2 Responses</span>
         </div>
       </ng-container>
 
@@ -92,14 +91,13 @@
     <div class="text-editor">
 
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="this.emojiService.emojipickeractiveThread"></app-emojis>
-  
 
-      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4">
-        </textarea>
+
+      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4"
+                (keyup.enter)="sendMessage()">
+</textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
-          <div class="attach"></div>
-          <div class="vertical-line-textEditor"></div>
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
           <div class="mail-container"></div>
         </div>

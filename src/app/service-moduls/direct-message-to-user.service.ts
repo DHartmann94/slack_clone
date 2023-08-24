@@ -16,6 +16,7 @@ export interface DirectMessageToUserInterface {
   mentionedUser?: string;
   senderName?: string;
   numberOfThreads?: any;
+  userSentTo: any;
 }
 
 @Injectable({
@@ -45,7 +46,7 @@ export class DirectMessageToUserService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, emojis, sentById, mentionedUser, user } = data;
+          const { messageText, time, emojis, sentById, mentionedUser, user, userSentTo } = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -60,6 +61,7 @@ export class DirectMessageToUserService {
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
+              userSentTo:userSentTo
             };
             storedMessageData.push(message);
           } catch (error) {
