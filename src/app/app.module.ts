@@ -41,9 +41,7 @@ import { EmailVerificationConfirmComponent } from './email-verification-confirm/
 import { EmojisComponent } from './emojis/emojis.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { LegalComponent } from './legal/legal.component';
-import { DirectChatComponent } from './u-direct-chat/direct-chat.component';
 import { DirectMessageToUserComponent } from './direct-message-to-user/direct-message-to-user.component';
-import { ThreadDirectComponent } from './thread-direct/thread-direct.component';
 
 @NgModule({
   declarations: [
@@ -63,9 +61,7 @@ import { ThreadDirectComponent } from './thread-direct/thread-direct.component';
     EmojisComponent,
     ImprintComponent,
     LegalComponent,
-    DirectChatComponent,
     DirectMessageToUserComponent,
-    ThreadDirectComponent,
   ],
   imports: [
     BrowserModule,

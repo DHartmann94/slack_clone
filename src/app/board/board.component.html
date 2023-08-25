@@ -5,7 +5,6 @@
         <div *ngIf="this.chatBehaviorService.ChannelChatIsOpen" class="grid-view-chat"><app-chat></app-chat></div>
         <div *ngIf="this.directMessageToUserService.directMessageToUserOpen" class="grid-view-chat"><app-direct-message-to-user></app-direct-message-to-user></div>
         <div *ngIf="this.threadDataService.threadOpen" class="grid-view-threads"><app-threads></app-threads></div>
-        <div *ngIf="this.threadDirectDataService.threadOpen" class="grid-view-threads"><app-thread-direct></app-thread-direct></div>
     </div>
 </div>
 
