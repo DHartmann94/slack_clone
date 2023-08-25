@@ -120,7 +120,11 @@ export class MessageDataService {
     const messagesCollection = collection(this.firestore, 'messages');
     const messageDoc = doc(messagesCollection, messageId);
 
-    return from(deleteDoc(messageDoc));
+    const newMessageData = {
+      messageText: 'This message has been deleted'
+    };
+
+    return from(updateDoc(messageDoc, newMessageData));
   }
 
   updateMessage(messageId: any, emojiUpdate: object): Observable<void> {

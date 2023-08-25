@@ -69,7 +69,7 @@
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
             <div>
-              <mat-icon class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'" class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
