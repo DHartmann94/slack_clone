@@ -145,11 +145,6 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.ChannelChatIsOpen = true;
   }
 
-  selectUser(userId: any) {
-    this.selectedUser = this.getUserById(userId);
-    this.userDataResolver.sendDataUsers(this.selectedUser);
-  }
-
   /* selectDirectChat(directChatId: any) {
     const selectedDirectChat = this.getDirectChatById(directChatId);
     if (selectedDirectChat !== null) {
@@ -298,11 +293,15 @@ export class ChannelsComponent implements OnInit {
     this.userCard = false;
   }
 
-  openDirectMessageToUser() {
+  openDirectMessageToUser(userId: any) {
     this.directMessageToUserService.setDirectMessageToUserId();
     this.chatBehavior.ChannelChatIsOpen = false;
 
+    this.selectedUser = this.getUserById(userId);
+    this.userDataResolver.sendDataUsers(this.selectedUser);
+
   }
+
 }
 
 

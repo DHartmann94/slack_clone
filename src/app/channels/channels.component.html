@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="dropdown-container" *ngIf="openDirect">
-            <div (click)="selectUser(users.id)" (click)="openDirectMessageToUser()" class="direct-box" *ngFor="let users of userData; let i = index">
+            <div (click)="openDirectMessageToUser(users.id)" class="direct-box" *ngFor="let users of userData; let i = index">
                 <div class="user-icon">
                     <img class="user-icon" src="{{ users.picture }}" alt="User">
                     <svg *ngIf="users.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
