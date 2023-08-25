@@ -22,7 +22,7 @@ export class ChatComponent implements OnInit, OnChanges {
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
-
+  
   [x: string]: any;
   channelName!: FormGroup;
   channelDescription!: FormGroup;
@@ -39,6 +39,8 @@ export class ChatComponent implements OnInit, OnChanges {
   isInvitationValid: boolean = false;
   mentionUser = new FormControl('');
   userList: string[] = [];
+
+  selectedUser: UserDataInterface | null = null;
 
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
@@ -679,8 +681,19 @@ export class ChatComponent implements OnInit, OnChanges {
     this.isInviteUserOpen = false;
   }
 
-  directMessageToUser(){
-    this.directMessageToUserOpen = false;
+  openDirectMessageToUser() {
+    this.directMessageToUserService.setDirectMessageToUserId();
+    this.chatBehavior.ChannelChatIsOpen = false;
   }
+
+  // directMessageToUser(userGroupId: any){
+  //   this.selectedUser = this.getUserById(userGroupId);
+  //   console.log(this.selectedUser);
+  // }
+
+  // getUserById(userId: any) {
+  //   console.log(userId);
+  //   return this.userData.find(user => user.id === userId) || null;
+  // }
 
 }

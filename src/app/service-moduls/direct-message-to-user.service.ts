@@ -123,7 +123,6 @@ export class DirectMessageToUserService {
   setDirectMessageToUserId() {
     this.directMessageToUserOpen = true;
     this.ChannelChatisOpen = false;
-    console.log("Channel is closed" + this.ChannelChatisOpen);
     //setTimeout(() => {
       //this.directMessageToUserId = directMessageToUserID;
       //this.triggerdirectMessageToUserUpdate();
