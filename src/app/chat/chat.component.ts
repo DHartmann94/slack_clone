@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserDataService, UserDataInterface } from '../service-moduls/user.service';
+import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
 import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread.service';
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
@@ -90,6 +91,7 @@ export class ChatComponent implements OnInit, OnChanges {
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
+    private userDataResolver: UserDataResolveService,
     private chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
@@ -467,6 +469,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.userProfile = [];
     if (id) {
       this.userProfile = this.userDataService.userData.filter(user => user.id.includes(id));
+      console.log(this.userProfile);
     }
   }
 
@@ -695,19 +698,16 @@ export class ChatComponent implements OnInit, OnChanges {
     this.isInviteUserOpen = false;
   }
 
-  openDirectMessageToUser() {
+  openDirectMessageToUser(userId: any) {
     this.directMessageToUserService.setDirectMessageToUserId();
     this.chatBehavior.ChannelChatIsOpen = false;
+
+    this.selectedUser = this.getUserById(userId);
+    this.userDataResolver.sendDataUsers(this.selectedUser);
   }
 
-  // directMessageToUser(userGroupId: any){
-  //   this.selectedUser = this.getUserById(userGroupId);
-  //   console.log(this.selectedUser);
-  // }
-
-  // getUserById(userId: any) {
-  //   console.log(userId);
-  //   return this.userData.find(user => user.id === userId) || null;
-  // }
+  getUserById(userId: any) {
+    return this.userData.find(user => user.id === userId) || null;
+  }
 
 }

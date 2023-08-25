@@ -220,7 +220,7 @@
       </div>
     </mat-card-content>
     <mat-card-actions class="user-message-button">
-      <button (click)="openDirectMessageToUser()" mat-flat-button color="primary">
+      <button (click)="openDirectMessageToUser(this.userProfile[0].id)" mat-flat-button color="primary">
         <mat-icon>chat_bubble_outline</mat-icon>
         Message
       </button>

@@ -301,6 +301,7 @@ export class ChannelsComponent implements OnInit {
   openDirectMessageToUser() {
     this.directMessageToUserService.setDirectMessageToUserId();
     this.chatBehavior.ChannelChatIsOpen = false;
+
   }
 }
 
