@@ -10,6 +10,7 @@ export interface MessageDataInterface {
   emojis?: any;
   thread?: any;
   channel?: any;
+  channelId?: any,
   sentBy?: string;
   picture?: string;
   sentById?: string;
@@ -42,7 +43,7 @@ export class MessageDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentById, channel, mentionedUser } = data;
+          const { messageText, time, thread, emojis, sentById, channel, mentionedUser, channelId } = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -56,6 +57,7 @@ export class MessageDataService {
               thread: thread,
               emojis: emojis,
               channel: channel,
+              channelId: channelId,
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,

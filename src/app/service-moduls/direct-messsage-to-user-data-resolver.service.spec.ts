@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DirectChatDataResolverService } from './direct-chat-data-resolver.service';
+import { DirectMessageToUserDataResolverService } from './direct-messsage-to-user-data-resolver.service';
 
 describe('DirectChatDataResolverService', () => {
-  let service: DirectChatDataResolverService;
+  let service: DirectMessageToUserDataResolverService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DirectChatDataResolverService);
+    service = TestBed.inject(DirectMessageToUserDataResolverService);
   });
 
   it('should be created', () => {

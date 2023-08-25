@@ -27,10 +27,10 @@
         <img src="./assets/img/icons/close.png" alt="#" (click)="toggleChat()">
       </div>
       <div class="channel-inputs">
-        <input class="channel-name" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
-               placeholder="An: #channel, oder @jemand oder E-Mail Adresse">
+        <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
+          placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
+      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">
@@ -45,7 +45,7 @@
             </div>
           </li>
         </ul>
-      </div>
+      </div>   
     </div>
   </div>
 
@@ -169,14 +169,14 @@
         <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
       </div>
       <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4"
-                (keyup.enter)="sendMessage()">
+                (keyup.enter)="sendMessage(channel.id)">
         </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
           <div class="mail-container"></div>
         </div>
-        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage()"></div>
+        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage(channel.id)"></div>
       </div>
     </div>
   </div>
