@@ -325,9 +325,9 @@ export class ChatComponent implements OnInit, OnChanges {
   }
 
    addMention(name: string) {
-    let mention = `@${name}`;
+    let mention = ` @${name} `;
     console.log(mention);
-    this.messageInput.push(mention);
+    this.messageInput = [this.messageInput + mention];
   }
 
 
