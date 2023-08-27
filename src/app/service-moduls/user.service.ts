@@ -49,19 +49,12 @@ export class UserDataService {
     );
   }
 
-  /*------ Current-User / Chat-Card ------*/
+  /*------ Current-User / Users ------*/
   currentUser: string = '';
   userName: string = '';
   userEmail: string = '';
   userStatus: string = '';
   userPicture: string = '';
-
-  // Diese Variablen braucht man vielleicht nicht mehr!
-  chatUserName: string = '';
-  chatUserEmail: string = '';
-  chatUserStatus: string = '';
-  chatUserPicture: string = '';
-
 
   /**
    * Asynchronously retrieves the current user's data based on the provided userID.
@@ -77,7 +70,6 @@ export class UserDataService {
         if (this.currentUser === userID) {
           this.currentUserData(userData);
         }
-        this.chatUserData(userData);
       } else {
         console.log('The document does not exist.');
       }
@@ -117,10 +109,4 @@ export class UserDataService {
     this.userPicture = userData['picture'];
   }
 
-  chatUserData(userData: any) {
-    this.chatUserName = userData['name'];
-    this.chatUserEmail = userData['email'];
-    this.chatUserStatus = userData['status'];
-    this.chatUserPicture = userData['picture'];
-  }
 }
