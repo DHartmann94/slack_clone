@@ -17,7 +17,7 @@
         </div>
         <div *ngIf="channelId" class="add-participant-background">
           <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png"
-               alt="#">
+            alt="#">
         </div>
       </div>
     </div>
@@ -45,7 +45,7 @@
             </div>
           </li>
         </ul>
-      </div>   
+      </div>
     </div>
   </div>
 
@@ -71,8 +71,7 @@
     </div>
 
     <div class="invite-user-button-parent">
-      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel"
-              (click)="sendUserToChannel()">Add
+      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel" (click)="sendUserToChannel()">Add
       </button>
     </div>
 
@@ -102,19 +101,20 @@
       </div>
 
       <div class="chat-message"
-           [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+        [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
         <div class="message-content"
-             [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+          [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
             <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
             <div>
-              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'" class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'"
+                class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
@@ -123,7 +123,7 @@
           </div>
           <div>
             <span class="chat-message"
-                  [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
+              [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}</span>
           </div>
           <div class="like-area">
@@ -135,7 +135,7 @@
             </div>
 
             <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"
-                 class="reaction-icon-container">
+              class="reaction-icon-container">
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
@@ -145,16 +145,17 @@
             </div>
             <div class="reaction-emojis" id="reaction{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
-                   (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
+                (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
             </div>
             <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
-                 class="reaction-button-container">
+              class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>
           <div *ngIf="message.numberOfThreads != undefined" (click)="openThread(message.thread)" class="responses"
-                [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
-            <span *ngIf="message.numberOfThreads[message.thread] > 0">{{ message?.numberOfThreads[message?.thread] }} Responses</span>
+            [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
+            <span *ngIf="message.numberOfThreads[message.thread] > 0">{{ message?.numberOfThreads[message?.thread] }}
+              Responses</span>
             <span *ngIf="message.numberOfThreads[message.thread] === 0">Respond</span>
           </div>
           <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
@@ -171,14 +172,20 @@
         <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
       </div>
       <textarea placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4"
-                (keyup.enter)="sendMessage(channel.id)">
+        (keyup.enter)="sendMessage(channel.id)">
         </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
-          <div class="mail-container"></div>
+          <!-- <div class="mail-container"  #menuTrigger mat-button [matMenuTriggerFor]="mention"></div> -->
+          <div class="mail-container" (click)="mentionService.getUsers(channel.users)" #menuTrigger mat-button [matMenuTriggerFor]="mention"></div>
+          <mat-menu #mention="matMenu">
+            <button class="users-to-mention"  *ngFor="let user of mentionService.usersInCannel" mat-menu-item (click)="addMention(user.name)" >@{{ user.name }}</button>
+          </mat-menu>
+
         </div>
-        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage(channel.id)"></div>
+        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
+          (click)="sendMessage(channel.id)"></div>
       </div>
     </div>
   </div>
@@ -203,12 +210,12 @@
       <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
         <p>
           <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-               viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#92C83E"/>
+            viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="4" fill="#92C83E" />
           </svg>
           <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-               viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#808080"/>
+            viewBox="0 0 8 8">
+            <circle cx="4" cy="4" r="4" fill="#808080" />
           </svg>
           {{ this.userProfile[0].status }}
         </p>

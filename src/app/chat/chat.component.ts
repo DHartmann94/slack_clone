@@ -12,6 +12,7 @@ import { ThreadDataInterface, ThreadDataService } from '../service-moduls/thread
 import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/firestore';
 import { EmojiService } from '../service-moduls/emoji.service';
 import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
+import { MentionService } from '../service-moduls/mention.service';
 
 @Component({
   selector: 'app-chat',
@@ -20,7 +21,7 @@ import { DirectMessageToUserService } from '../service-moduls/direct-message-to-
 })
 
 export class ChatComponent implements OnInit, OnChanges {
-  typedEmoji: string = '';
+
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
   
@@ -88,6 +89,7 @@ export class ChatComponent implements OnInit, OnChanges {
   constructor(
     private messageDataService: MessageDataService,
     public emojiService: EmojiService,
+    public mentionService: MentionService,
     public userDataService: UserDataService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
@@ -321,6 +323,13 @@ export class ChatComponent implements OnInit, OnChanges {
   public typeEmoji($event: any): void {
     this.messageInput = this.messageInput + $event.character;
   }
+
+   addMention(name: string) {
+    let mention = `@${name}`;
+    console.log(mention);
+    this.messageInput.push(mention);
+  }
+
 
   isNewDay(
     currentMessage: MessageDataInterface,
