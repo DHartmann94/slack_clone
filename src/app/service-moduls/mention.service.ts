@@ -13,6 +13,7 @@ export class MentionService {
   chatPopupOpen = false;
   usersInCannel:any[] = [];
 
+
   constructor(public userService: UserDataService) { }
 
   async getUsers(userData: []){
@@ -23,4 +24,7 @@ export class MentionService {
     this.usersInCannel.push(myuser);
     });
   }
+
+
+
 }

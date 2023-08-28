@@ -122,6 +122,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
+    this.updateUsersForMention();
 
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
@@ -324,7 +325,6 @@ export class ChatComponent implements OnInit, OnChanges {
 
   addMention(name: string) {
     let mention = ` @${name} `;
-    console.log(mention);
     this.messageInput = [this.messageInput + mention];
   }
 
@@ -391,6 +391,14 @@ export class ChatComponent implements OnInit, OnChanges {
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
+  }
+
+  updateUsersForMention() {
+    this.receivedChannelData$.subscribe(data => {
+      if (data && data.users) {
+        this.mentionService.getUsers(data.users);
+      }
+    });
   }
 
 
