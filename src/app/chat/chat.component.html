@@ -173,11 +173,11 @@
       </div>
       <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4"
         (keyup.enter)="sendMessage(channel.id)">
-        </textarea>
+      </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
-          <!-- <div class="mail-container"  #menuTrigger mat-button [matMenuTriggerFor]="mention"></div> -->
+          
           <div class="mail-container"  (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu #mention="matMenu">
