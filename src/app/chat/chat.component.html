@@ -178,9 +178,11 @@
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
           <!-- <div class="mail-container"  #menuTrigger mat-button [matMenuTriggerFor]="mention"></div> -->
-          <div class="mail-container" (click)="mentionService.getUsers(channel.users)" #menuTrigger mat-button [matMenuTriggerFor]="mention"></div>
+          <div class="mail-container"  #menuTrigger mat-button
+            [matMenuTriggerFor]="mention"></div>
           <mat-menu #mention="matMenu">
-            <button class="users-to-mention"  *ngFor="let user of mentionService.usersInCannel" mat-menu-item (click)="addMention(user.name)" >@{{ user.name }}</button>
+            <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
+              (click)="addMention(user.name)">@{{ user.name }}</button>
           </mat-menu>
 
         </div>

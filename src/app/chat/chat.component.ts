@@ -24,7 +24,7 @@ export class ChatComponent implements OnInit, OnChanges {
 
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
-  
+
   [x: string]: any;
   channelName!: FormGroup;
   channelDescription!: FormGroup;
@@ -124,6 +124,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.compareIds();
     this.deleteUserFromChannel();
     this.getThreadData();
+    this.updateUsersForMention();
 
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
@@ -198,8 +199,8 @@ export class ChatComponent implements OnInit, OnChanges {
                 this.userDataService.userData.find(user => user.id === userId)
               )
             );
-          }  
-        );  
+          }
+        );
         this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
@@ -264,7 +265,7 @@ export class ChatComponent implements OnInit, OnChanges {
               (message.channel && message.channelId === invitedChannelId) ||
               (message.channel === invitedChannelId && message.channelId)
             );
-            
+
             messagesForChannel.push(...messagesForInvitedUser);
           }
           if (messagesForChannel.length > 0) {
@@ -282,7 +283,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageData = [];
     }
   }
-  
+
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
   }
@@ -324,9 +325,8 @@ export class ChatComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-   addMention(name: string) {
+  addMention(name: string) {
     let mention = ` @${name} `;
-    console.log(mention);
     this.messageInput = [this.messageInput + mention];
   }
 
@@ -393,6 +393,14 @@ export class ChatComponent implements OnInit, OnChanges {
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
+  }
+
+  updateUsersForMention() {
+    this.receivedChannelData$.subscribe(data => {
+      if (data && data.users) {
+        this.mentionService.getUsers(data.users);
+      }
+    });
   }
 
 

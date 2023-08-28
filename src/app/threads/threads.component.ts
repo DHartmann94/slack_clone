@@ -11,6 +11,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms"
 import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 import { EmojiService } from '../service-moduls/emoji.service';
+import { MentionService } from '../service-moduls/mention.service';
 
 @Component({
   selector: 'app-threads',
@@ -75,6 +76,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     private messageDataService: MessageDataService,
     public userDataService: UserDataService,
     public emojiService: EmojiService,
+    public mentionService: MentionService,
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
     private chatBehavior: ChatBehaviorService,
@@ -174,6 +176,11 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   public typeEmoji($event: any): void {
     this.messageInput = this.messageInput + $event.character;
+  }
+
+  addMention(name: string) {
+    let mention = ` @${name} `;
+    this.messageInput = [this.messageInput + mention];
   }
 
   isNewDay( currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
