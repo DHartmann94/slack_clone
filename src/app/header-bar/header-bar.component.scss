@@ -5,7 +5,7 @@
     align-items: center;
     padding: 10px 15px;
     column-gap: 37px;
-    
+
     .header-logo-container {
         display: flex;
         align-items: center;
@@ -114,7 +114,7 @@
             }
         }
 
-        
+
         mat-icon {
             @media(max-width: 970px) {
                 display: none;
@@ -149,6 +149,14 @@
             div {
                 display: flex;
                 align-items: center;
+                padding-left: 20px;
+                padding-right: 20px;
+
+                &:hover {
+                    background: var(--bg-color);
+                    border-radius: 15px;
+                    color: var(--c-purple);
+                }
 
                 p {
                     margin: 0;
@@ -232,6 +240,14 @@ section {
 
         mat-icon {
             cursor: pointer;
+            padding: 4px;
+
+            &:hover {
+                background: var(--bg-color);
+                border-radius: 50%;
+                padding: 4px;
+                color: var(--text-hover);
+            }
         }
 
     }
@@ -335,6 +351,14 @@ section {
         mat-icon {
             margin-right: 0.4rem;
             margin-top: 0.1rem;
+            padding: 4px;
+
+            &:hover {
+                background: var(--bg-color);
+                border-radius: 50%;
+                padding: 4px;
+                color: var(--text-hover);
+            }
         }
     }
 
@@ -381,7 +405,7 @@ section {
         position: absolute;
         right: 25px;
         top: 25px;
-       
+
     }
 
     .edit-buttons-pictures {
