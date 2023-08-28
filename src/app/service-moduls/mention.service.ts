@@ -12,6 +12,7 @@ export class MentionService {
   
   chatPopupOpen = false;
   usersInCannel:any[] = [];
+  chatToggledWithButton = true;
 
 
   constructor(public userService: UserDataService) { }

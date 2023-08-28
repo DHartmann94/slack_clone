@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
@@ -13,6 +13,8 @@ import { Firestore, collection, doc, getDoc, updateDoc } from '@angular/fire/fir
 import { EmojiService } from '../service-moduls/emoji.service';
 import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 import { MentionService } from '../service-moduls/mention.service';
+import { MatMenuTrigger } from '@angular/material/menu';
+
 
 @Component({
   selector: 'app-chat',
@@ -21,6 +23,8 @@ import { MentionService } from '../service-moduls/mention.service';
 })
 
 export class ChatComponent implements OnInit, OnChanges {
+  @ViewChild(MatMenuTrigger)
+  trigger!: MatMenuTrigger;
 
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -325,12 +329,6 @@ export class ChatComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  addMention(name: string) {
-    let mention = ` @${name} `;
-    this.messageInput = [this.messageInput + mention];
-  }
-
-
   isNewDay(
     currentMessage: MessageDataInterface,
     previousMessage: MessageDataInterface
@@ -395,12 +393,37 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
+  // createElement 
+  // append Child 
+  //inner text content 
+
+  addMention(name: string) {
+    if (this.mentionService.chatToggledWithButton) {
+      let mention = ` @${name} `;
+      this.messageInput = [this.messageInput + mention];
+    } else {
+      let mention = `${name} `;
+      this.messageInput = [this.messageInput + mention];
+    }
+  }
+
   updateUsersForMention() {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {
         this.mentionService.getUsers(data.users);
       }
     });
+  }
+
+  checkForMention(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    const lastCharacter = inputValue[inputValue.length - 1];
+    if (lastCharacter === '@') {
+      this.trigger.openMenu();
+      this.mentionService.chatToggledWithButton = false;
+    } else {
+      this.trigger.closeMenu();
+    }
   }
 
 
