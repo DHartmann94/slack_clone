@@ -21,15 +21,12 @@ import { MentionService } from '../service-moduls/mention.service';
 })
 
 export class ChatComponent implements OnInit, OnChanges {
-
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
-  
+
   [x: string]: any;
   channelName!: FormGroup;
   channelDescription!: FormGroup;
-  directMessageToUserOpen: boolean = false;
-
   receivedChannelData$!: Observable<ChannelDataInterface | null>;
 
   userData: UserDataInterface[] = [];
@@ -47,14 +44,14 @@ export class ChatComponent implements OnInit, OnChanges {
   selectedMessage: MessageDataInterface | null = null;
   currentChannelData: ChannelDataInterface | null = null;
   selectedUserNameOrChannelName: string = '';
-  userIdInputSearch: string = '';
-  channelId: string = "";
 
   messageInput: string[] = [];
   messageId: string = '';
-
+  userIdInputSearch: string = '';
+  channelId: string = "";
   sentByName: string[] = [];
   usersFromUserData: string[] = [];
+
   isProfileCardOpen: boolean = false;
   isLogoutContainerOpen: boolean = false;
   currentUser: string = '';
@@ -62,6 +59,7 @@ export class ChatComponent implements OnInit, OnChanges {
   toggleUserList: boolean = false;
   toggleChannelList: boolean = false;
   allLists: boolean = false;
+  directMessageToUserOpen: boolean = false;
 
   deleteUserFormChannel: any;
   editChannelName: boolean = false;
@@ -190,16 +188,16 @@ export class ChatComponent implements OnInit, OnChanges {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
         this.channelDataService.getChannelData().subscribe(
           (channelData: ChannelDataInterface[]) => {
-            this.searchResultsChannels = channelData.filter(channel =>
-              channel.channelName.toLowerCase().includes(channelName)
-            );
+            this.searchResultsChannels = channelData
+              .filter(channel => channel.channelName.toLowerCase().includes(channelName))
+              .filter(channel => channel.users.includes(this.userDataService.currentUser)); 
             this.searchResultsChannels.flatMap(channel =>
               channel.users.map((userId: string) =>
                 this.userDataService.userData.find(user => user.id === userId)
               )
             );
-          }  
-        );  
+          }
+        );
         this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
@@ -264,7 +262,7 @@ export class ChatComponent implements OnInit, OnChanges {
               (message.channel && message.channelId === invitedChannelId) ||
               (message.channel === invitedChannelId && message.channelId)
             );
-            
+
             messagesForChannel.push(...messagesForInvitedUser);
           }
           if (messagesForChannel.length > 0) {
@@ -282,7 +280,7 @@ export class ChatComponent implements OnInit, OnChanges {
       this.messageData = [];
     }
   }
-  
+
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
   }
@@ -324,7 +322,7 @@ export class ChatComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-   addMention(name: string) {
+  addMention(name: string) {
     let mention = ` @${name} `;
     console.log(mention);
     this.messageInput = [this.messageInput + mention];

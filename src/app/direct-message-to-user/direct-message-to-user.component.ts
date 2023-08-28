@@ -144,16 +144,16 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
         this.channelDataService.getChannelData().subscribe(
           (channelData: ChannelDataInterface[]) => {
-            this.searchResultsChannels = channelData.filter(channel =>
-              channel.channelName.toLowerCase().includes(channelName)
-            );
+            this.searchResultsChannels = channelData
+              .filter(channel => channel.channelName.toLowerCase().includes(channelName))
+              .filter(channel => channel.users.includes(this.userDataService.currentUser)); 
             this.searchResultsChannels.flatMap(channel =>
               channel.users.map((userId: string) =>
                 this.userDataService.userData.find(user => user.id === userId)
               )
             );
-          }  
-        );  
+          }
+        );
         this.toggleChannelList = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
