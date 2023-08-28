@@ -68,7 +68,7 @@
             justify-content: space-between;
             align-items: center;
             column-gap: 10px;
-        
+
             .channel-info {
                 display: flex;
                 flex-direction: row;
@@ -80,19 +80,19 @@
                     font-family: 'Nunito';
                     font-size: 20px;
                     font-style: normal;
-                    font-weight: 700; 
+                    font-weight: 700;
                     margin: 0;
                 }
-        
+
                 .shape {
                     width: 60px;
                     height: 60px;
                     border-radius: 50%;
                     background-color: lightgray;
                 }
-        
+
             }
-        
+
             .edit-icon {
                 width: 45px;
                 object-fit: scale-down;
@@ -206,6 +206,11 @@
         align-items: center;
         gap: 10px;
 
+        &:hover {
+            background-color: #ECEEFE;
+            color: #444df2;
+        }
+
         .user-icon {
             position: relative;
             width: 40px;
@@ -244,12 +249,20 @@
     padding: 10px 0 0 15px;
     cursor: pointer;
 
+    &:hover {
+        color: var(--c-purple);
+    }
+
     h3 {
         font-family: 'Nunito';
         font-size: 18px;
         font-style: normal;
         font-weight: 400;
         margin: 0;
+
+        &:hover {
+            font-weight: bold;
+        }
     }
 
     img {
