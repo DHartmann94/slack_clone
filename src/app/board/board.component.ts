@@ -12,6 +12,7 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 
 export class BoardComponent implements OnInit {
   hideChannel: boolean = false;
+  hideChat: boolean = true;
 
   constructor(
     public threadDataService: ThreadDataService, 
@@ -28,5 +29,6 @@ export class BoardComponent implements OnInit {
   toggleDirectChatMobile() {
     this.chatBehavior.triggerChat();
     this.hideChannel = !this.hideChannel;
+    this.hideChat = !this.hideChat;
   }
 }

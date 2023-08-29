@@ -5,7 +5,7 @@
     height: 100vh;
 
     @media (max-width: 380px) {
-       grid: none;
+        grid: none;
     }
 
     .board-flex {
@@ -24,6 +24,10 @@
 
         .grid-view-channels {
             grid-row: 2/11;
+
+            @media(max-width: 380px) {
+                width: 100%;
+            }
         }
 
         .grid-view-threads {
@@ -61,9 +65,15 @@
 }
 
 @media(max-width: 380px) {
-.hidden-channel {
-    display: none;
-  }
+    .hidden-channel {
+        display: none;
+    }
+}
+
+@media(max-width: 380px) {
+    .hidden-chat {
+        display: none;
+    }
 }
 
 @media(max-width: 380px) {
@@ -95,5 +105,5 @@
 @media(min-width: 620px) {
     .direct-chat-icon {
         display: none;
-    }    
+    }
 }
