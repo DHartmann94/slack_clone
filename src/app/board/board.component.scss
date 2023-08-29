@@ -24,7 +24,6 @@
 
         .grid-view-channels {
             grid-row: 2/11;
-            width: 100%;
         }
 
         .grid-view-threads {
@@ -59,6 +58,12 @@
     :hover {
         color: var(--c-purple) !important;
     }
+}
+
+@media(max-width: 380px) {
+.hidden-channel {
+    display: none;
+  }
 }
 
 @media(max-width: 380px) {

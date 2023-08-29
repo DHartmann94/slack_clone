@@ -41,6 +41,8 @@ export class ChannelsComponent implements OnInit {
   userCard: boolean = false;
   openUserForm: boolean = false;
 
+  toggleChannelCard: boolean = true;
+
   userData: UserDataInterface[] = [];
   directChatData: UserDataInterface[] = [];
   channelData: ChannelDataInterface[] = [];
