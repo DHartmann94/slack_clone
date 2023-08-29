@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
 import { DirectMessageToUserInterface, DirectMessageToUserService } from "../service-moduls/direct-message-to-user.service";
@@ -9,6 +9,7 @@ import { ChannelDataService, ChannelDataInterface } from '../service-moduls/chan
 import { MessageDataInterface, MessageDataService } from '../service-moduls/message.service';
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { DirectMessageToUserDataResolverService } from '../service-moduls/direct-messsage-to-user-data-resolver.service';
+import { ScrollService } from '../service-moduls/scroll.service';
 
 @Component({
   selector: 'app-direct-message-to-user',
@@ -16,6 +17,8 @@ import { DirectMessageToUserDataResolverService } from '../service-moduls/direct
   styleUrls: ['./direct-message-to-user.component.scss'],
 })
 export class DirectMessageToUserComponent implements OnInit, OnChanges {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
+
   typedEmoji: string = '';
   reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
@@ -75,6 +78,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     private chatBehavior: ChatBehaviorService,
     private userDataResolver: UserDataResolveService,
     private directMessageToUserDataResolverService: DirectMessageToUserDataResolverService,
+    private scrollService: ScrollService,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleChat();
@@ -96,6 +100,10 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }, 1000);
   }
 
+  ngAfterViewChecked(): void {
+    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+  }
+
   ngOnDestroy() {
     this.chatTriggerSubscription.unsubscribe();
   }
@@ -111,7 +119,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       }
     );
   }
-  
+
   async getDataFromChannel(): Promise<void> {
     this.receivedUserData$ = this.userDataResolver.resolve().pipe(
       map((userData: UserDataInterface | null) => {
@@ -146,7 +154,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           (channelData: ChannelDataInterface[]) => {
             this.searchResultsChannels = channelData
               .filter(channel => channel.channelName.toLowerCase().includes(channelName))
-              .filter(channel => channel.users.includes(this.userDataService.currentUser)); 
+              .filter(channel => channel.users.includes(this.userDataService.currentUser));
             this.searchResultsChannels.flatMap(channel =>
               channel.users.map((userId: string) =>
                 this.userDataService.userData.find(user => user.id === userId)
@@ -218,7 +226,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
               (message.user === this.userDataService.currentUser && message.userSentTo === invitedUserId) ||
               (message.user === invitedUserId && message.userSentTo === this.userDataService.currentUser)
             );
-            
+
             messagesForUser.push(...messagesForInvitedUser);
           }
           if (messagesForUser.length > 0) {
@@ -233,7 +241,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           console.error('ERROR render messages in MessageToUser:', error);
         }
       );
-    } 
+    }
   }
 
   getCurrentUserId() {

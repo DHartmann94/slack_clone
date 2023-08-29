@@ -7,8 +7,8 @@
           viewBox="0 0 8 8">
           <circle cx="4" cy="4" r="4" fill="#92C83E" />
         </svg>
-        <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-          viewBox="0 0 8 8">
+        <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8"
+          height="8" viewBox="0 0 8 8">
           <circle cx="4" cy="4" r="4" fill="#808080" />
         </svg>
         <span class="participant-name">{{ userData.name }}</span>
@@ -39,9 +39,9 @@
           </div>
         </li>
       </ul>
-    </div>   
+    </div>
   </div>
-  <div class="chat-text-area" *ngIf="messageData">
+  <div #chatContainer class="chat-text-area" *ngIf="messageData">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -61,15 +61,15 @@
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
-        <div class="message-content"
-          [ngClass]="{ 'message-content-right': message.sentById === currentUserId,  }">
+        <div class="message-content" [ngClass]="{ 'message-content-right': message.sentById === currentUserId,  }">
           <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
             <span class="chat-name">{{ message.sentBy }}</span>
             <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
             <div>
-              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'" class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'"
+                class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
@@ -115,17 +115,17 @@
     <div class="participant-status-no-message">
       <img class="profile-pictures-chat" src="{{ userData.picture }}" alt="">
       <svg *ngIf="userData.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-           viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="4" fill="#92C83E"/>
+        viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="4" fill="#92C83E" />
       </svg>
       <svg *ngIf="userData.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-           viewBox="0 0 8 8">
-        <circle cx="4" cy="4" r="4" fill="#808080"/>
+        viewBox="0 0 8 8">
+        <circle cx="4" cy="4" r="4" fill="#808080" />
       </svg>
       <span class="chat-name">{{ userData.name }}</span>
     </div>
     <span class="no-message-span">
-          This conversation is only between <span class="user-tagged-no-message"> @{{ userData.name }}  </span> and you.
+      This conversation is only between <span class="user-tagged-no-message"> @{{ userData.name }} </span> and you.
     </span>
   </div>
 
@@ -135,7 +135,7 @@
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
 
       <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4"
-                (keyup.enter)="sendDirectMessageToUser(userData.id)">
+        (keyup.enter)="sendDirectMessageToUser(userData.id)">
     </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
@@ -143,7 +143,7 @@
           <div class="mail-container"></div>
         </div>
         <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
-             (click)="sendDirectMessageToUser(userData.id)">
+          (click)="sendDirectMessageToUser(userData.id)">
         </div>
       </div>
     </div>

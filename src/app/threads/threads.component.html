@@ -11,7 +11,7 @@
     </div>
   </div>
 
-  <div class="chat-text-area" *ngIf="threadData">
+  <div #chatContainer class="chat-text-area" *ngIf="threadData">
     <ng-container *ngFor="let message of threadData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -95,7 +95,7 @@
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
-          
+
           <div class="mail-container"  #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu #mention="matMenu">

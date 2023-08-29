@@ -1,5 +1,5 @@
 
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { ChannelDataInterface, ChannelDataService } from "../service-moduls/channel.service";
 import { UserDataInterface, UserDataService } from "../service-moduls/user.service";
@@ -12,6 +12,7 @@ import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread
 import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
 import { EmojiService } from '../service-moduls/emoji.service';
 import { MentionService } from '../service-moduls/mention.service';
+import { ScrollService } from '../service-moduls/scroll.service';
 
 @Component({
   selector: 'app-threads',
@@ -19,6 +20,8 @@ import { MentionService } from '../service-moduls/mention.service';
   styleUrls: ['./threads.component.scss']
 })
 export class ThreadsComponent implements OnInit, OnChanges {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
+
   private threadUpdateSubscription: Subscription = new Subscription();
 
   typedEmoji: string = '';
@@ -84,6 +87,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
+    private scrollService: ScrollService,
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -107,6 +111,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
       await this.renderChatByThreadId();
       //await this.getChannelData();
     });
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
   }
 
   ngOnDestroy() {
