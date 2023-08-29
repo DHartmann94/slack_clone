@@ -1,4 +1,5 @@
-import { Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { ScrollService } from './../service-moduls/scroll.service';
+import { AfterViewChecked, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
@@ -15,14 +16,14 @@ import { DirectMessageToUserService } from '../service-moduls/direct-message-to-
 import { MentionService } from '../service-moduls/mention.service';
 import { MatMenuTrigger } from '@angular/material/menu';
 
-
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges {
+export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
 
@@ -102,6 +103,7 @@ export class ChatComponent implements OnInit, OnChanges {
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
+    private scrollService: ScrollService,
     public directMessageToUserService: DirectMessageToUserService,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
@@ -132,6 +134,10 @@ export class ChatComponent implements OnInit, OnChanges {
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
     ).subscribe();
+  }
+
+  ngAfterViewChecked(): void {
+    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
   }
 
   ngOnDestroy() {
@@ -196,7 +202,7 @@ export class ChatComponent implements OnInit, OnChanges {
           (channelData: ChannelDataInterface[]) => {
             this.searchResultsChannels = channelData
               .filter(channel => channel.channelName.toLowerCase().includes(channelName))
-              .filter(channel => channel.users.includes(this.userDataService.currentUser)); 
+              .filter(channel => channel.users.includes(this.userDataService.currentUser));
             this.searchResultsChannels.flatMap(channel =>
               channel.users.map((userId: string) =>
                 this.userDataService.userData.find(user => user.id === userId)
@@ -392,9 +398,9 @@ export class ChatComponent implements OnInit, OnChanges {
     }
   }
 
-  // createElement 
-  // append Child 
-  //inner text content 
+  // createElement
+  // append Child
+  //inner text content
 
   addMention(name: string) {
     if (this.mentionService.chatToggledWithButton) {
@@ -748,5 +754,4 @@ export class ChatComponent implements OnInit, OnChanges {
   getUserById(userId: any) {
     return this.userData.find(user => user.id === userId) || null;
   }
-
 }
