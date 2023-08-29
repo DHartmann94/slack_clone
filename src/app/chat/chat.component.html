@@ -139,10 +139,6 @@
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
-            <div class="reaction-icon-container">
-              <img src="./assets/img/icons/tick_green.svg" alt="">
-              <span class="reaction-counter">1</span>
-            </div>
             <div class="reaction-emojis" id="reaction{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
