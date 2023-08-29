@@ -34,6 +34,10 @@ li {
 /* width */
 ::-webkit-scrollbar {
   width: 5px;
+
+  @media(max-width: 380px) {
+    display: none;
+  }
 }
 
 /* Track */
@@ -52,4 +56,5 @@ li {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
 

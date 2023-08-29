@@ -1,148 +1,155 @@
-<mat-card class="workspace-card" (click)="toggle()">
-    <mat-card-content>
-        <h2>Close workspace-menu</h2>
-    </mat-card-content>
-    <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
-</mat-card>
+<div class="direct-chat-icon" (click)="toggleDirectChatMobile()">
+    <img src="./assets/img/icons/edit_square_white.png" alt="#">
+</div>
 
-<mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
-    <div class="channel-in-out" *ngIf="showFiller">
-        <div class="channel-header">
-            <div class="channel-info" *ngIf="(selectedChannel) as channel">
-                <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt="#"></div>
-                <h2>{{ channel.channelName  }}</h2>
-            </div>
-            <img class="edit-icon" src="./assets/img/icons/edit_square.png" alt="#" (click)="triggerDirectChat()">
-        </div>
-        <div class="channel-edit">
-            <div class="channel-info">
-                <img [ngClass]="{'arrow-for-dropdown-open': openChannels}" class="arrow-for-dropdown-closed"
-                    src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
-                <img src="./assets/img/icons/workspaces.png" alt="#">
-                <h2>Channels</h2>
-            </div>
-            <div>
-                <img src="./assets/img/icons/add.png" alt="#" (click)="addChannel()">
-            </div>
-        </div>
-        <div class="dropdown-container" *ngIf="openChannels">
-            <div class="channel-box" *ngFor="let channel of availableChannels; let i = index"
-                [style.background]="channel.color" (click)="selectChannel(channel.id)">
-                <h3># {{ channel.channelName }}</h3>
-            </div>
-        </div>
-        <div class="add-channel" (click)="addChannel()">
-            <img src="./assets/img/icons/add_circle.png" alt="#">
-            <h3>Add Channel</h3>
-        </div>
-        <div class="massage-edit">
-            <div class="massage-info">
-                <img [ngClass]="{'arrow-for-dropdown-open': openDirect}" class="arrow-for-dropdown-closed"
-                    src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleDirect()">
-                <img src="./assets/img/icons/account_circle.png" alt="#">
-                <h2>Direct Message</h2>
-            </div>
-        </div>
-        <div class="dropdown-container" *ngIf="openDirect">
-            <div (click)="openDirectMessageToUser(users.id)" class="direct-box" *ngFor="let users of userData; let i = index">
-                <div class="user-icon">
-                    <img class="user-icon" src="{{ users.picture }}" alt="User">
-                    <svg *ngIf="users.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                    </svg>
-                    <svg *ngIf="users.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#808080" />
-                    </svg>
+<ng-container *ngIf="toggleChannelCard">
+    <mat-card class="workspace-card" (click)="toggle()">
+        <mat-card-content>
+            <h2>Close workspace-menu</h2>
+        </mat-card-content>
+        <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
+    </mat-card>
+    
+    <mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
+        <div class="channel-in-out" *ngIf="showFiller">
+            <div class="channel-header">
+                <div class="channel-info" *ngIf="(selectedChannel) as channel">
+                    <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt="#"></div>
+                    <h2>{{ channel.channelName  }}</h2>
                 </div>
-                <h3>{{ users.name }}</h3>
+                <img class="edit-icon" src="./assets/img/icons/edit_square.png" alt="#" (click)="triggerDirectChat()">
             </div>
-            <!-- <div class="direct-box" *ngFor="let directChat of directChatData; let c = index">
-                <div class="user-icon">
-                    <img class="user-icon" src="{{ directChat.picture }}" alt="User">
-                    <svg *ngIf="directChat.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#92C83E" />
-                    </svg>
-                    <svg *ngIf="directChat.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
-                        <circle cx="4" cy="4" r="4" fill="#808080" />
-                    </svg> 
+            <div class="channel-edit">
+                <div class="channel-info">
+                    <img [ngClass]="{'arrow-for-dropdown-open': openChannels}" class="arrow-for-dropdown-closed"
+                        src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleChannel()">
+                    <img src="./assets/img/icons/workspaces.png" alt="#">
+                    <h2>Channels</h2>
                 </div>
-                <h3 (click)="selectDirectChat(directChat.id)">{{ directChat.name }}</h3>    
-            </div> -->
+                <div>
+                    <img src="./assets/img/icons/add.png" alt="#" (click)="addChannel()">
+                </div>
+            </div>
+            <div class="dropdown-container" *ngIf="openChannels">
+                <div class="channel-box" *ngFor="let channel of availableChannels; let i = index"
+                    [style.background]="channel.color" (click)="selectChannel(channel.id)">
+                    <h3># {{ channel.channelName }}</h3>
+                </div>
+            </div>
+            <div class="add-channel" (click)="addChannel()">
+                <img src="./assets/img/icons/add_circle.png" alt="#">
+                <h3>Add Channel</h3>
+            </div>
+            <div class="massage-edit">
+                <div class="massage-info">
+                    <img [ngClass]="{'arrow-for-dropdown-open': openDirect}" class="arrow-for-dropdown-closed"
+                        src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleDirect()">
+                    <img src="./assets/img/icons/account_circle.png" alt="#">
+                    <h2>Direct Message</h2>
+                </div>
+            </div>
+            <div class="dropdown-container" *ngIf="openDirect">
+                <div (click)="openDirectMessageToUser(users.id)" class="direct-box" *ngFor="let users of userData; let i = index">
+                    <div class="user-icon">
+                        <img class="user-icon" src="{{ users.picture }}" alt="User">
+                        <svg *ngIf="users.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#92C83E" />
+                        </svg>
+                        <svg *ngIf="users.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#808080" />
+                        </svg>
+                    </div>
+                    <h3>{{ users.name }}</h3>
+                </div>
+                <!-- <div class="direct-box" *ngFor="let directChat of directChatData; let c = index">
+                    <div class="user-icon">
+                        <img class="user-icon" src="{{ directChat.picture }}" alt="User">
+                        <svg *ngIf="directChat.status === 'Active'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#92C83E" />
+                        </svg>
+                        <svg *ngIf="directChat.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
+                            <circle cx="4" cy="4" r="4" fill="#808080" />
+                        </svg> 
+                    </div>
+                    <h3 (click)="selectDirectChat(directChat.id)">{{ directChat.name }}</h3>    
+                </div> -->
+            </div>
         </div>
-    </div>
-</mat-card>
-
-<mat-card class="overlay" *ngIf="channelCard">
-    <div class="channel-edit-card">
-        <form [formGroup]="channelForm">
+    </mat-card>
+    
+    <mat-card class="overlay" *ngIf="channelCard">
+        <div class="channel-edit-card">
+            <form [formGroup]="channelForm">
+                <div class="channel-introduction">
+                    <div class="channel-text">
+                        <h2>Add Channel</h2>
+                        <p>
+                            Channels are used by your team to communicate. Ideally they should be themed # marketing for example.
+                        </p>
+                    </div>
+                    <img src="./assets/img/icons/close.png" alt="#" (click)="close()">
+                </div>
+                <h3>Channel-Name</h3>
+                <div class="channel-inputs">
+                    <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+                        formControlName="channelName">
+                    <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
+                        <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
+                            required.
+                        </div>
+                    </div>
+                </div>
+                <h3>Description (optional)</h3>
+                <div class="channel-inputs">
+                    <input class="channel-name" type="text" placeholder="Dein Text hier"
+                        formControlName="channelDescription">
+                    <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
+                        <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
+                            required.
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-area">
+                    <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
+                </div>
+            </form>
+        </div>
+    </mat-card>
+    
+    <mat-card class="overlay" *ngIf="userCard">
+        <div class="user-edit-card">
             <div class="channel-introduction">
                 <div class="channel-text">
-                    <h2>Add Channel</h2>
-                    <p>
-                        Channels are used by your team to communicate. Ideally they should be themed # marketing for example.
-                    </p>
+                    <h2>Leute hinzufügen</h2>
                 </div>
-                <img src="./assets/img/icons/close.png" alt="#" (click)="close()">
             </div>
-            <h3>Channel-Name</h3>
-            <div class="channel-inputs">
-                <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
-                    formControlName="channelName">
-                <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
-                    <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
-                        required.
+            <div class="radio-selection">
+                <mat-radio-group>
+                    <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
+                      Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName || channel.channelName }}</span> hinzufügen
+                      <mat-menu #channelMenu="matMenu">
+                        <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannelFromList(channel.id)">{{ channel.channelName }}</button>
+                      </mat-menu>                 
+                    </mat-radio-button>
+                    <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
+                      Bestimmte Leute hinzufügen
+                    </mat-radio-button>
+                </mat-radio-group>    
+            </div>
+            <form [formGroup]="userForm" *ngIf="openUserForm">
+                <div class="users-inputs">
+                    <input class="user-name" type="text" placeholder="Name eingeben" formControlName="userName">
+                    <div *ngIf="userForm.controls['userName'].invalid && userForm.controls['userName'].touched">
+                        <div class="error-massage" *ngIf="userForm.controls['userName'].errors?.['required']">Name is
+                            required.
+                        </div>
                     </div>
                 </div>
-            </div>
-            <h3>Description (optional)</h3>
-            <div class="channel-inputs">
-                <input class="channel-name" type="text" placeholder="Dein Text hier"
-                    formControlName="channelDescription">
-                <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
-                    <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">Title is
-                        required.
-                    </div>
-                </div>
-            </div>
+            </form>
             <div class="btn-area">
-                <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
+                <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
             </div>
-        </form>
-    </div>
-</mat-card>
+        </div>
+    </mat-card>
+</ng-container>
 
-<mat-card class="overlay" *ngIf="userCard">
-    <div class="user-edit-card">
-        <div class="channel-introduction">
-            <div class="channel-text">
-                <h2>Leute hinzufügen</h2>
-            </div>
-        </div>
-        <div class="radio-selection">
-            <mat-radio-group>
-                <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary" value="addFromGroup" (click)="addUser('addFromGroup')">
-                  Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName || channel.channelName }}</span> hinzufügen
-                  <mat-menu #channelMenu="matMenu">
-                    <button mat-menu-item *ngFor="let channel of channelData" (click)="selectChannelFromList(channel.id)">{{ channel.channelName }}</button>
-                  </mat-menu>                 
-                </mat-radio-button>
-                <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
-                  Bestimmte Leute hinzufügen
-                </mat-radio-button>
-            </mat-radio-group>    
-        </div>
-        <form [formGroup]="userForm" *ngIf="openUserForm">
-            <div class="users-inputs">
-                <input class="user-name" type="text" placeholder="Name eingeben" formControlName="userName">
-                <div *ngIf="userForm.controls['userName'].invalid && userForm.controls['userName'].touched">
-                    <div class="error-massage" *ngIf="userForm.controls['userName'].errors?.['required']">Name is
-                        required.
-                    </div>
-                </div>
-            </div>
-        </form>
-        <div class="btn-area">
-            <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
-        </div>
-    </div>
-</mat-card>

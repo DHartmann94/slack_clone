@@ -1,306 +1,311 @@
-<mat-card class="chat-card">
-  <div class="shadow-box">
-    <div class="chat-first-row" *ngIf="toggleSearchBar">
-      <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
-        <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
-        <span class="chat-name">{{ channel.channelName }}</span>
-        <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
-      </div>
-      <div class="right-corner">
-        <div class="participant-container">
-          <ng-container *ngFor="let participant of channelUserPicture; let i = index">
-            <img class="participant-icon" *ngIf="i < 3" [src]="participant" alt="User">
-          </ng-container>
+<ng-container *ngIf="toggleChatCard">
+  <mat-card class="chat-card">
+    <div class="shadow-box">
+      <div class="chat-first-row" *ngIf="toggleSearchBar">
+        <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
+          <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
+          <span class="chat-name">{{ channel.channelName }}</span>
+          <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
         </div>
-        <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
-          {{ channel.users.length }}
-        </div>
-        <div *ngIf="channelId" class="add-participant-background">
-          <img (click)="openInviteUserToChannel()" class="add-participant" src="./assets/img/icons/add_participant.png"
-            alt="#">
-        </div>
-      </div>
-    </div>
-    <div class="search-input-channels" *ngIf="!(toggleSearchBar)">
-      <div class="message-head">
-        <h2>New Message</h2>
-        <img src="./assets/img/icons/close.png" alt="#" (click)="toggleChat()">
-      </div>
-      <div class="channel-inputs">
-        <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
-          placeholder="To: #channel, or @somebody oder e-mail address">
-      </div>
-      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
-        <ul *ngIf="toggleUserList">
-          <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
-            <div class="user-list">
-              {{ user.name }} ({{ user.email }})
-            </div>
-          </li>
-        </ul>
-        <ul *ngIf="toggleChannelList">
-          <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
-            <div class="channel-list">
-              {{ channel.channelName }}
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
-
-  <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
-    <div class="invite-user-title-parent">
-      <mat-card-title>Add People</mat-card-title>
-      <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
-    </div>
-
-    <div class="invite-user-card-link" *ngIf="(receivedChannelData$ | async) as channel">
-      <span># {{ channel.channelName }} </span>
-    </div>
-
-    <input [(ngModel)]="inviteUserToChannel" (input)="searchUser()" type="text" placeholder="Enter Name">
-    <div *ngIf="selectedUserToChannel.length > 0" class="invite-user-selected-user-parent">
-      <div *ngFor="let user of selectedUserToChannel">
-        <div>
-          <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
-          <span>{{ user.name }}</span>
-          <mat-icon (click)="deleteSelectedUser(user)">close</mat-icon>
-        </div>
-      </div>
-    </div>
-
-    <div class="invite-user-button-parent">
-      <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel" (click)="sendUserToChannel()">Add
-      </button>
-    </div>
-
-    <div *ngIf="searchUserResults.length > 0  && toggleList" class="result-user-list-parent">
-      <ul>
-        <li *ngFor="let user of searchUserResults" (click)="selectUserToChannel(user)">
-          <div class="result-user-list">
-            <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
-            <div>
-              <span>{{ user.name }}</span>
-              <span>{{ user.email }}</span>
-            </div>
+        <div class="right-corner">
+          <div class="participant-container">
+            <ng-container *ngFor="let participant of channelUserPicture; let i = index">
+              <img class="participant-icon" *ngIf="i < 3" [src]="participant" alt="User">
+            </ng-container>
           </div>
-        </li>
-      </ul>
-    </div>
-  </mat-card>
-
-  <div #chatContainer class="chat-text-area" *ngIf="messageData">
-    <div *ngFor="let message of messageData; let index = index">
-      <!-- Time stamp parting line -->
-      <div *ngIf="isNewDay(message, messageData[index - 1])">
-        <div class="parting-line"></div>
-        <div class="flex-center time-partLine">
-          <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
+          <div class="participant-amount" *ngIf="(receivedChannelData$ | async) as channel">
+            {{ channel.users.length }}
+          </div>
+          <div *ngIf="channelId" class="add-participant-background">
+            <img (click)="openInviteUserToChannel()" class="add-participant"
+              src="./assets/img/icons/add_participant.png" alt="#">
+          </div>
         </div>
       </div>
-
-      <div class="chat-message"
-        [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
-        <div class="profile-picture-container">
-          <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
+      <div class="search-input-channels" *ngIf="!(toggleSearchBar)">
+        <div class="message-head">
+          <h2>New Message</h2>
+          <img src="./assets/img/icons/close.png" alt="#" (click)="toggleChat()">
         </div>
-        <div class="message-content"
-          [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
-          <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
-            <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
-            <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-          </div>
-          <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
-            <div>
-              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'"
-                class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
-            </div>
-            <div class="chat-right-first-row-right">
-              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
-              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
-            </div>
-          </div>
+        <div class="channel-inputs">
+          <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
+            placeholder="To: #channel, or @somebody oder e-mail address">
+        </div>
+        <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
+          <ul *ngIf="toggleUserList">
+            <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
+              <div class="user-list">
+                {{ user.name }} ({{ user.email }})
+              </div>
+            </li>
+          </ul>
+          <ul *ngIf="toggleChannelList">
+            <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
+              <div class="channel-list">
+                {{ channel.channelName }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <mat-card *ngIf="isInviteUserOpen" class="invite-user-card">
+      <div class="invite-user-title-parent">
+        <mat-card-title>Add People</mat-card-title>
+        <mat-icon (click)="closeInviteUserToChannel()">close</mat-icon>
+      </div>
+
+      <div class="invite-user-card-link" *ngIf="(receivedChannelData$ | async) as channel">
+        <span># {{ channel.channelName }} </span>
+      </div>
+
+      <input [(ngModel)]="inviteUserToChannel" (input)="searchUser()" type="text" placeholder="Enter Name">
+      <div *ngIf="selectedUserToChannel.length > 0" class="invite-user-selected-user-parent">
+        <div *ngFor="let user of selectedUserToChannel">
           <div>
-            <span class="chat-message"
-              [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
-              message.messageText }}</span>
+            <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
+            <span>{{ user.name }}</span>
+            <mat-icon (click)="deleteSelectedUser(user)">close</mat-icon>
           </div>
-          <div class="like-area">
-            <div id="reactionlist{{index}}" class="list-of-reactions">
-              <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
-                <span>{{ emoji['emoji'] }} :</span>
-                <span>&nbsp;{{ emoji['reaction-from'] }}</span>
+        </div>
+      </div>
+
+      <div class="invite-user-button-parent">
+        <button [disabled]="selectedUserToChannel.length === 0 || userSendToChannel" (click)="sendUserToChannel()">Add
+        </button>
+      </div>
+
+      <div *ngIf="searchUserResults.length > 0  && toggleList" class="result-user-list-parent">
+        <ul>
+          <li *ngFor="let user of searchUserResults" (click)="selectUserToChannel(user)">
+            <div class="result-user-list">
+              <img class="invite-user-profile-picture" src=" {{ user.picture }} " alt="User">
+              <div>
+                <span>{{ user.name }}</span>
+                <span>{{ user.email }}</span>
               </div>
             </div>
+          </li>
+        </ul>
+      </div>
+    </mat-card>
 
-            <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"
-              class="reaction-icon-container">
-              <div class="reaction-counter">{{ emoji['emoji'] }}</div>
-              <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
-            </div>
-            <div class="reaction-emojis" id="reaction{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
-                (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
-            </div>
-            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
-              class="reaction-button-container">
-              <div class="reaction-button"></div>
-            </div>
+    <div #chatContainer class="chat-text-area" *ngIf="messageData">
+      <div *ngFor="let message of messageData; let index = index">
+        <!-- Time stamp parting line -->
+        <div *ngIf="isNewDay(message, messageData[index - 1])">
+          <div class="parting-line"></div>
+          <div class="flex-center time-partLine">
+            <div class="time-stamp">{{ getFormattedDate(message.time) }}</div>
           </div>
-          <div *ngIf="message.numberOfThreads != undefined" (click)="openThread(message.thread)" class="responses"
-            [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
-            <span *ngIf="message.numberOfThreads[message.thread] > 0">{{ message?.numberOfThreads[message?.thread] }}
-              Responses</span>
-            <span *ngIf="message.numberOfThreads[message.thread] === 0">Respond</span>
+        </div>
+
+        <div class="chat-message"
+          [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+          <div class="profile-picture-container">
+            <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
           </div>
-          <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
-            formatTimeStamp(message.time) }}</span>
+          <div class="message-content"
+            [ngClass]="{ 'message-content-right': message.sentById === currentUserId, 'message-content-left': message.sentById !== currentUserId }">
+            <div class="chat-bubble-head" *ngIf="message.sentById !== currentUserId">
+              <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+            </div>
+            <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
+              <div>
+                <mat-icon *ngIf="message.messageText !== 'This message has been deleted'"
+                  class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              </div>
+              <div class="chat-right-first-row-right">
+                <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
+                <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
+              </div>
+            </div>
+            <div>
+              <span class="chat-message"
+                [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
+                message.messageText }}</span>
+            </div>
+            <div class="like-area">
+              <div id="reactionlist{{index}}" class="list-of-reactions">
+                <div *ngFor="let emoji of message.emojis" class="list-item-reaction">
+                  <span>{{ emoji['emoji'] }} :</span>
+                  <span>&nbsp;{{ emoji['reaction-from'] }}</span>
+                </div>
+              </div>
+
+              <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)"
+                (mouseout)="showReaction(index)" class="reaction-icon-container">
+                <div class="reaction-counter">{{ emoji['emoji'] }}</div>
+                <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
+              </div>
+              <div class="reaction-emojis" id="reaction{{index}}">
+                <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
+                  (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
+              </div>
+              <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
+                class="reaction-button-container">
+                <div class="reaction-button"></div>
+              </div>
+            </div>
+            <div *ngIf="message.numberOfThreads != undefined" (click)="openThread(message.thread)" class="responses"
+              [ngClass]="{ 'responses-right': message.sentById === currentUserId, 'responses-left': message.sentById !== currentUserId }">
+              <span *ngIf="message.numberOfThreads[message.thread] > 0">{{ message?.numberOfThreads[message?.thread] }}
+                Responses</span>
+              <span *ngIf="message.numberOfThreads[message.thread] === 0">Respond</span>
+            </div>
+            <span class="chat-timeStamp" *ngIf="message.sentById !== currentUserId">Last reply {{
+              formatTimeStamp(message.time) }}</span>
+          </div>
         </div>
       </div>
+
     </div>
 
-  </div>
-
-  <!-- Input field -->
-  <div class="message-input-field">
-    <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-      <div *ngIf="this.emojiService.emojipickeractiveChat" class="behind-emoji-popup">
-        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
-      </div>
-      <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}" [(ngModel)]="messageInput" rows="4"
-        (keyup.enter)="sendMessage(channel.id)">
+    <!-- Input field -->
+    <div class="message-input-field">
+      <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
+        <div *ngIf="this.emojiService.emojipickeractiveChat" class="behind-emoji-popup">
+          <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+        </div>
+        <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
+          [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
       </textarea>
-      <div class="text-editor-bottom">
-        <div class="text-editor-left-btns">
-          <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
+        <div class="text-editor-bottom">
+          <div class="text-editor-left-btns">
+            <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
 
-          <div class="mail-container"  (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
-            [matMenuTriggerFor]="mention"></div>
-          <mat-menu #mention="matMenu">
-            <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
-              (click)="addMention(user.name)">@{{ user.name }}</button>
-          </mat-menu>
+            <div class="mail-container" (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
+              [matMenuTriggerFor]="mention"></div>
+            <mat-menu #mention="matMenu">
+              <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
+                (click)="addMention(user.name)">@{{ user.name }}</button>
+            </mat-menu>
 
-        </div>
-        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
-          (click)="sendMessage(channel.id)"></div>
-      </div>
-    </div>
-  </div>
-</mat-card>
-
-<!-- Profile Content -->
-<div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
-
-<section class="user-profile-card-section" *ngIf="isProfileCardOpen">
-  <mat-card class="user-profile-card">
-    <mat-card-header class="user-header">
-      <mat-card-title>Profile</mat-card-title>
-      <mat-icon (click)="closeUserProfile()">close</mat-icon>
-    </mat-card-header>
-    <div class="user-img">
-      <img src="{{ this.userProfile[0].picture }}">
-    </div>
-    <mat-card-content>
-      <div class="user-contact-info">
-        <p>{{ this.userProfile[0].name }}</p>
-      </div>
-      <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
-        <p>
-          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-            viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#92C83E" />
-          </svg>
-          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
-            viewBox="0 0 8 8">
-            <circle cx="4" cy="4" r="4" fill="#808080" />
-          </svg>
-          {{ this.userProfile[0].status }}
-        </p>
-      </div>
-      <div class="user-email">
-        <mat-icon>mail_outline</mat-icon>
-        <div class="user-email-link">
-          <p>E-Mail</p>
-          <a>{{ this.userProfile[0].email }}</a>
+          </div>
+          <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
+            (click)="sendMessage(channel.id)"></div>
         </div>
       </div>
-    </mat-card-content>
-    <mat-card-actions class="user-message-button">
-      <button (click)="openDirectMessageToUser(this.userProfile[0].id)" mat-flat-button color="primary">
-        <mat-icon>chat_bubble_outline</mat-icon>
-        Message
-      </button>
-    </mat-card-actions>
+    </div>
   </mat-card>
-</section>
 
-<!-- Edit Channel -->
-<mat-card class="overlay" *ngIf="openEditChannel">
-  <div class="channel-edit-card">
-    <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
-      <div class="channel-header">
-        <h1># {{ channel.channelName }}</h1>
-        <img src="./assets/img/icons/close.png" alt="#" (click)="closeEditChannel()">
+  <!-- Profile Content -->
+  <div class="overlay" *ngIf="isProfileCardOpen" (click)="closeUserProfile()"></div>
+
+  <section class="user-profile-card-section" *ngIf="isProfileCardOpen">
+    <mat-card class="user-profile-card">
+      <mat-card-header class="user-header">
+        <mat-card-title>Profile</mat-card-title>
+        <mat-icon (click)="closeUserProfile()">close</mat-icon>
+      </mat-card-header>
+      <div class="user-img">
+        <img src="{{ this.userProfile[0].picture }}">
       </div>
-    </div>
-
-    <div *ngIf="!(editChannelName)">
-      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <div class="channel-edit">
-          <h2>Channel-Name</h2>
-          <span (click)="updateChannelName()">Edit</span>
+      <mat-card-content>
+        <div class="user-contact-info">
+          <p>{{ this.userProfile[0].name }}</p>
         </div>
-        <h2># {{ channel.channelName }}</h2>
-      </div>
-    </div>
-
-    <div *ngIf="editChannelName">
-      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <h2>Channel-Name</h2>
-        <span (click)="saveChangesToChannelName()">Save</span>
-      </div>
-      <form [formGroup]="channelName">
-        <div class="channel-inputs">
-          <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
-        </div>
-      </form>
-    </div>
-
-    <div *ngIf="!(editChannelDescription)">
-      <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <div class="channel-edit">
-          <h2># {{ channel.channelName }}</h2>
-          <span (click)="updateChannelDiscription()">Edit</span>
-        </div>
-        <div class="channel-text">
+        <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
           <p>
-            This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share documents
-            and make decisions.</p>
+            <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+              viewBox="0 0 8 8">
+              <circle cx="4" cy="4" r="4" fill="#92C83E" />
+            </svg>
+            <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
+              height="8" viewBox="0 0 8 8">
+              <circle cx="4" cy="4" r="4" fill="#808080" />
+            </svg>
+            {{ this.userProfile[0].status }}
+          </p>
         </div>
-        <div class="under-line"></div>
-        <div class="channel-creator">
-          <h2>Created by</h2>
-          <span>Frederik Beck</span>
+        <div class="user-email">
+          <mat-icon>mail_outline</mat-icon>
+          <div class="user-email-link">
+            <p>E-Mail</p>
+            <a>{{ this.userProfile[0].email }}</a>
+          </div>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="user-message-button">
+        <button (click)="openDirectMessageToUser(this.userProfile[0].id)" mat-flat-button color="primary">
+          <mat-icon>chat_bubble_outline</mat-icon>
+          Message
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
+
+  <!-- Edit Channel -->
+  <mat-card class="overlay" *ngIf="openEditChannel">
+    <div class="channel-edit-card">
+      <div class="channel-text" *ngIf="(receivedChannelData$ | async) as channel">
+        <div class="channel-header">
+          <h1># {{ channel.channelName }}</h1>
+          <img src="./assets/img/icons/close.png" alt="#" (click)="closeEditChannel()">
         </div>
       </div>
-    </div>
 
-    <div *ngIf="editChannelDescription">
-      <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
-        <h2>Bearbeiten</h2>
-        <span (click)="saveChangesToChannelDescription()">Save</span>
-      </div>
-      <form [formGroup]="channelDescription">
-        <div class="channel-inputs">
-          <input class="channel-name" type="text" placeholder="Enter your text..." formControlName="channelDescription">
+      <div *ngIf="!(editChannelName)">
+        <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+          <div class="channel-edit">
+            <h2>Channel-Name</h2>
+            <span (click)="updateChannelName()">Edit</span>
+          </div>
+          <h2># {{ channel.channelName }}</h2>
         </div>
-      </form>
-    </div>
+      </div>
 
-    <div class="btn-area">
-      <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
+      <div *ngIf="editChannelName">
+        <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
+          <h2>Channel-Name</h2>
+          <span (click)="saveChangesToChannelName()">Save</span>
+        </div>
+        <form [formGroup]="channelName">
+          <div class="channel-inputs">
+            <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+              formControlName="channelName">
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="!(editChannelDescription)">
+        <div class="frame-edit" *ngIf="(receivedChannelData$ | async) as channel">
+          <div class="channel-edit">
+            <h2># {{ channel.channelName }}</h2>
+            <span (click)="updateChannelDiscription()">Edit</span>
+          </div>
+          <div class="channel-text">
+            <p>
+              This channel is for everything related to #dfsdf. Here you can hold meetings with your team, share
+              documents
+              and make decisions.</p>
+          </div>
+          <div class="under-line"></div>
+          <div class="channel-creator">
+            <h2>Created by</h2>
+            <span>Frederik Beck</span>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="editChannelDescription">
+        <div class="channel-edit" *ngIf="(receivedChannelData$ | async) as channel">
+          <h2>Bearbeiten</h2>
+          <span (click)="saveChangesToChannelDescription()">Save</span>
+        </div>
+        <form [formGroup]="channelDescription">
+          <div class="channel-inputs">
+            <input class="channel-name" type="text" placeholder="Enter your text..."
+              formControlName="channelDescription">
+          </div>
+        </form>
+      </div>
+
+      <div class="btn-area">
+        <button class="btn-channel" (click)="leaveChannel()">Channel Verlassen</button>
+      </div>
     </div>
-  </div>
-</mat-card>
+  </mat-card>
+</ng-container>

@@ -40,6 +40,7 @@ export class ChannelsComponent implements OnInit {
   channelCard: boolean = false;
   userCard: boolean = false;
   openUserForm: boolean = false;
+  toggleChannelCard: boolean = true;
 
   userData: UserDataInterface[] = [];
   directChatData: UserDataInterface[] = [];
@@ -159,6 +160,11 @@ export class ChannelsComponent implements OnInit {
 
   triggerDirectChat() {
     this.chatBehavior.triggerChat();
+  }
+
+  toggleDirectChatMobile() {
+    this.chatBehavior.triggerChat();
+    this.toggleChannelCard = !this.toggleChannelCard;
   }
 
   getChannelById(channelId: any) {
