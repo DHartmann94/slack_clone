@@ -126,6 +126,10 @@
     margin-top: 25px;
     cursor: pointer;
 
+    @media(max-width: 380px) {
+        margin: 0;
+    }
+
     img:last-child {
         margin-top: .41rem;
         width: 40px;
@@ -188,6 +192,9 @@
     min-height: auto;
     padding: 15px 0 0 35px;
 
+    @media(max-width: 380px) {
+        padding: 15px 0 0 0px;
+    }
 
     .channel-box {
         width: 200px;
@@ -264,6 +271,10 @@
     column-gap: 10px;
     padding: 10px 0 0 15px;
     cursor: pointer;
+
+    @media(max-width: 380px) {
+        padding: 10px 0 0 32px;
+    }
 
     &:hover {
         color: var(--c-purple);
