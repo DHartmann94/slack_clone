@@ -90,7 +90,7 @@
     </div>
   </mat-card>
 
-  <div class="chat-text-area" *ngIf="messageData">
+  <div #chatContainer class="chat-text-area" *ngIf="messageData">
     <div *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <div *ngIf="isNewDay(message, messageData[index - 1])">
@@ -159,6 +159,7 @@
         </div>
       </div>
     </div>
+
   </div>
 
   <!-- Input field -->
@@ -173,7 +174,7 @@
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
-          
+
           <div class="mail-container"  (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu #mention="matMenu">
