@@ -4,6 +4,12 @@
     grid-template-rows: repeat(10, 1fr);
     height: 100vh;
 
+    @media (max-width: 380px) {
+        width: 100%;
+        grid-template-columns: repeat(1, 0fr);
+        grid-template-rows: repeat(1, 0fr);
+    }
+
     .board-flex {
         display: flex;
         flex-direction: row;
@@ -27,17 +33,9 @@
             grid-column: 2/5;
             width: 100%;
 
-
-            @media (max-width: 840px) {
+            @media (max-width: 380px) {
                 display: none;
             }
-        }
-
-        .grid-view-chat-extend {
-            grid-row: 2/11;
-            grid-column: 2/5;
-            width: 100%;
-
 
             @media (max-width: 840px) {
                 display: none;
@@ -53,6 +51,10 @@
     justify-content: center;
     margin-top: -27px;
     gap: 4px;
+
+    @media (max-width: 380px) {
+        display: none;
+    }
 
     a {
         color: #686868;

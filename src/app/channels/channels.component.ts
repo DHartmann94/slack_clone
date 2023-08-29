@@ -301,7 +301,6 @@ export class ChannelsComponent implements OnInit {
     this.userDataResolver.sendDataUsers(this.selectedUser);
 
   }
-
 }
 
 
