@@ -11,6 +11,8 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 })
 
 export class BoardComponent implements OnInit {
+  toggleChannelCard: boolean = true;
+  toggleChatCard: boolean = false;
 
   constructor(
     public threadDataService: ThreadDataService, 
@@ -21,5 +23,11 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  toggleDirectChatMobile() {
+    this.chatBehaviorService.triggerChat();
+    this.toggleChannelCard = !this.toggleChannelCard;
+    this.toggleChatCard = !this.toggleChatCard;
   }
 }

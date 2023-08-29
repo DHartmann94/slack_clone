@@ -5,9 +5,7 @@
     height: 100vh;
 
     @media (max-width: 380px) {
-        width: 100%;
-        grid-template-columns: repeat(1, 0fr);
-        grid-template-rows: repeat(1, 0fr);
+       grid: none;
     }
 
     .board-flex {
@@ -26,6 +24,7 @@
 
         .grid-view-channels {
             grid-row: 2/11;
+            width: 100%;
         }
 
         .grid-view-threads {
@@ -60,4 +59,36 @@
     :hover {
         color: var(--c-purple) !important;
     }
+}
+
+@media(max-width: 380px) {
+    .direct-chat-icon {
+        position: absolute;
+        left: 292px;
+        top: 685px;
+        display: flex;
+        width: 50px;
+        height: 50px;
+        padding: 8px 10px 12px 10px;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 100px;
+        background: var(--purple-1, #444DF2);
+        box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+
+        z-index: 999;
+
+        .edit-icon {
+            width: 45px;
+            object-fit: scale-down;
+            cursor: pointer;
+        }
+    }
+}
+
+@media(min-width: 620px) {
+    .direct-chat-icon {
+        display: none;
+    }    
 }

@@ -66,8 +66,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   toggleChannelList: boolean = false;
   allLists: boolean = false;
   directMessageToUserOpen: boolean = false;
-  toggleChatCard: boolean = true;
-
+  
   deleteUserFormChannel: any;
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
