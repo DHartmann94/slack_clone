@@ -19,7 +19,7 @@ export class BoardComponent implements OnInit {
     public directMessageToUserService: DirectMessageToUserService,
     public directMessageService: DirectMessageService,
     public chatBehaviorService: ChatBehaviorService,
-    private chatBehavior: ChatBehaviorService,
+ 
   ) { }
 
   ngOnInit(): void {
@@ -27,8 +27,9 @@ export class BoardComponent implements OnInit {
   }
 
   toggleDirectChatMobile() {
-    this.chatBehavior.triggerChat();
+    this.chatBehaviorService.triggerChat();
     this.hideChannel = !this.hideChannel;
     this.hideChat = !this.hideChat;
+    this.chatBehaviorService.toggleHeaderView(true);
   }
 }
