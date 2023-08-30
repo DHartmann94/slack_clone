@@ -398,22 +398,13 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     }
   }
 
-  // createElement
-  // append Child
-  //inner text content
-
   addMention(user: any) {
-    if (this.mentionService.chatToggledWithButton) {
-      let mention = ` @${user.name} `;
-      this.messageInput = [this.messageInput + mention];
-    } else {
-      let mention = `${user.name} `;
-      this.messageInput = [this.messageInput + mention];
+    if(!this.mentionService.chatToggledWithButton) {
+       this.messageInput=  this.messageInput.slice(0, -1);
     }
     this.mentionService.updateInputField(user);
   }
 
-  
   updateUsersForMention() {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {

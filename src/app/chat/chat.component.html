@@ -166,7 +166,7 @@
   <div class="message-input-field">
 
     <div class="mentioned-users-container">
-      <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.name}}
+      <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention" >+</div>
       </div>
     </div>
@@ -186,7 +186,7 @@
             [matMenuTriggerFor]="mention"></div>
           <mat-menu class="mention-menu" #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
-              (click)="addMention(user)">@{{ user.name }}</button>
+              (click)="addMention(user)">@{{ user.user.name }}</button>
           </mat-menu>
 
         </div>
