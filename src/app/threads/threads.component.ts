@@ -305,9 +305,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   showReaction(index: number) {
-    let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
+    let item = document.getElementById(`reactionlist-in-thread${index}`);
+    this.threadData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
       hideItems?.classList.remove('show-list-of-reactions');
     });
     if (!this.reactionListOpen) {

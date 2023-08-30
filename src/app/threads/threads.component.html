@@ -66,6 +66,7 @@
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
+            
             <div class="reaction-emojis" id="reaction-in-thread{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id , message)">{{ emoji }}</div>
