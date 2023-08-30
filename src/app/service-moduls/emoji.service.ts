@@ -74,31 +74,18 @@ export class EmojiService {
 
 
   existEmoji(index: number, typedEmoji: string, messageData: MessageDataInterface[]) {
+    debugger
     return messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
     });
   }
   
-  existEmojiThread(index: number, typedEmoji: string, messageData: ThreadDataInterface[]) {
+  existEmojiThread(index: number, typedEmoji: string, messageData: MessageDataInterface[]) {
     return messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
     });
   }
 
-
-  showReaction(index: number) {
-    let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message: any, i: any) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
-      hideItems?.classList.remove('show-list-of-reactions');
-    });
-    if (!this.reactionListOpen) {
-      item?.classList.add('show-list-of-reactions');
-      this.reactionListOpen = true;
-    } else {
-      this.reactionListOpen = false;
-    }
-  }
 
   toggleEmojiPicker(component: string) {
     if (component === 'chat') {

@@ -254,28 +254,44 @@ export class ThreadsComponent implements OnInit, OnChanges {
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
-        .getElementById(`reaction${this.emojisClickedBefore}`)
+        .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
         ?.classList.remove('showEmojis');
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
         document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
+          .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
           ?.classList.remove('showEmojis');
       }
-      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+      document.getElementById(`reaction-in-thread${index}`)?.classList.add('showEmojis');
       this.emojisClickedBefore = index;
     }
   }
 
-  reactWithEmoji(emoji: string, index: number, messageId: string) {
-    let emojiArray = this.messageData[index].emojis;
-    if (this.existReaction(index)) {
-      let indexWithCurrentUser = emojiArray.findIndex((reaction: { [x: string]: string; }) => reaction['reaction-from'] === this.currentUser);
-      emojiArray[indexWithCurrentUser] = { 'emoji': emoji, 'reaction-from': this.currentUser };
+  reactWithEmoji(emoji: string, index: number, messageId: string, message:MessageDataInterface) {
+    let emojiArray = message.emojis;
+    
+    emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
+      if (emoj['reaction-from'].includes(this.userDataService.userName)) {
+        const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
+        emoj['reaction-from'].splice(userIndex, 1);
+      }
+    });
+
+    if (this.emojiService.existEmoji(index, emoji, this.threadData)) {
+      let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
+      emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
-      emojiArray.push({ 'emoji': emoji, 'reaction-from': this.currentUser });
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
     }
+
+    let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
+    if (indexWithEmojiToDelete != -1) {
+      emojiArray.splice(indexWithEmojiToDelete, 1);
+    }
+
+    console.log('my Emoji Array', emojiArray);
+
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
