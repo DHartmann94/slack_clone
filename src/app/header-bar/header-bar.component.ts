@@ -249,6 +249,8 @@ export class HeaderBarComponent {
   }
 
   backToChannelMobile() {
+    this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
+    this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
     this.headerMoveMoblieView = this.originalHeaderView;
   }
   /**

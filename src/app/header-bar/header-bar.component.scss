@@ -6,53 +6,91 @@
     padding: 10px 15px;
     column-gap: 37px;
 
-    .header-logo-container {
+    .header-inline {
         display: flex;
-        align-items: center;
+        flex-direction: row;
+        justify-content: space-between;
+        column-gap: 20px;
 
-        h2 {
-            font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
-            margin: 25px;
-            font-size: 28px;
-            font-weight: bold;
+        .header-logo-container {
+            display: flex;
+            align-items: center;
+    
+            h2 {
+                font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
+                margin: 25px;
+                font-size: 28px;
+                font-weight: bold;
+            }
+    
+            img {
+                width: 55px;
+                object-fit: scale-down;
+            }
         }
 
-        img {
-            width: 55px;
-            object-fit: scale-down;
+        .search-bar-parent {
+            position: relative;
+            width: 35%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+    
+            input {
+                display: flex;
+                min-width: 100%;
+                padding: 17.5px 45px;
+                justify-content: space-between;
+                align-items: center;
+                border-radius: 42px;
+                background: var(--white, #FFF);
+                border-style: none;
+            }
+    
+            img {
+                position: absolute;
+                right: -27px;
+    
+                width: 20px;
+                height: 20px;
+                object-fit: contain;
+            }
+    
+            @media(max-width: 970px) {
+                display: none;
+            }
         }
     }
 
-    .search-bar-parent {
-        position: relative;
-        width: 35%;
+    .channel-header {
         display: flex;
+        flex-direction: row;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-
-        input {
+        column-gap: 10px;
+        
+        .channel-info {
             display: flex;
-            min-width: 100%;
-            padding: 17.5px 45px;
-            justify-content: space-between;
+            flex-direction: row;
+            justify-content: center;
             align-items: center;
-            border-radius: 42px;
-            background: var(--white, #FFF);
-            border-style: none;
-        }
+            column-gap: 20px;
 
-        img {
-            position: absolute;
-            top: 14px;
-            right: -27px;
+            h2 {
+                font-family: 'Nunito';
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 700;
+                margin: 0;
+            }
 
-            width: 20px;
-            height: 20px;
-            object-fit: contain;
-        }
+            .shape {
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background-color: lightgray;
+            }
 
-        @media(max-width: 970px) {
-            display: none;
         }
     }
 
