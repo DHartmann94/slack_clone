@@ -11,25 +11,22 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 })
 
 export class BoardComponent implements OnInit {
-  hideChannel: boolean = false;
-  hideChat: boolean = true;
-
+ 
   constructor(
     public threadDataService: ThreadDataService, 
     public directMessageToUserService: DirectMessageToUserService,
     public directMessageService: DirectMessageService,
     public chatBehaviorService: ChatBehaviorService,
- 
   ) { }
 
   ngOnInit(): void {
-    
+
   }
 
   toggleDirectChatMobile() {
     this.chatBehaviorService.triggerChat();
-    this.hideChannel = !this.hideChannel;
-    this.hideChat = !this.hideChat;
+    this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
+    this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
     this.chatBehaviorService.toggleHeaderView(true);
   }
 }

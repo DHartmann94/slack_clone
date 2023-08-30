@@ -39,6 +39,10 @@
             grid-row: 2/11;
             grid-column: 2/5;
             width: 100%;
+
+            @media(max-width: 380px) {
+                width: 100%;
+            }
         }
     }
 }

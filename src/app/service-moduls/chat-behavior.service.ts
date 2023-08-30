@@ -13,6 +13,9 @@ export class ChatBehaviorService {
 
   ChannelChatIsOpen: boolean = true;
 
+  hideChannel: boolean = false;
+  hideChat: boolean = true;
+
   triggerChat() {
     this.crudTriggeredSubject.next();
   }

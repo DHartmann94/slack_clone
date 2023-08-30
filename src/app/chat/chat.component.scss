@@ -9,6 +9,7 @@
   justify-content: center;
 
   @media(max-width: 380px) {
+    min-width: auto;
     border-radius: 0px;
     margin: 0;
     padding: 0;

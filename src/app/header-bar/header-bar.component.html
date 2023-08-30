@@ -1,11 +1,11 @@
 <div class="header-container">
-    <div *ngIf="headerMoveMoblieView">
+    <div class="header-inline" *ngIf="headerMoveMoblieView">
         <div class="header-logo-container" >
             <img src="./assets/img/Logo-small.png" alt="Logo">
             <h2>DABubble</h2>
         </div>
         <div class="search-bar-parent">
-            <input type="text" placeholder="Code learning durchsuchen" id="searchUser">
+            <input type="text" placeholder="Search in code learning " id="searchUser">
             <img src="./assets/img/icons/search.png" alt="Search">
         </div>
     </div>
@@ -18,14 +18,13 @@
         </div>   
     </div>
    
-    <div>
-        <div (click)="openLogoutContainer()" class="profile">
-            <h2>{{ this.userDataService.userName }}</h2>
-            <img class="user-icon" src="{{ this.userDataService.userPicture }}" alt="">
-            <mat-icon>keyboard_arrow_down</mat-icon>
-            <div class="status"></div>
-        </div>
+    <div (click)="openLogoutContainer()" class="profile">
+        <h2>{{ this.userDataService.userName }}</h2>
+        <img class="user-icon" src="{{ this.userDataService.userPicture }}" alt="">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+        <div class="status"></div>
     </div>
+
 
     <!-- Logout Container -->
     <div class="logout-container" *ngIf="isLogoutContainerOpen" #containerRef>
