@@ -462,7 +462,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     });
 
     if (this.emojiService.existEmoji(index, emoji, this.messageData)) {
-
       let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
       emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
