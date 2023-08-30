@@ -415,7 +415,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   updateUsersForMention() {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {
-        this.mentionService.getUsers(data.users);
+        this.mentionService.getUsers(data.users, this.userDataService.userName);
       }
     });
   }
@@ -479,6 +479,10 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+  }
+
+  preventClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 
 

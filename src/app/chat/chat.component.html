@@ -165,8 +165,8 @@
   <!-- Input field -->
   <div class="message-input-field">
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-      <div *ngIf="this.emojiService.emojipickeractiveChat" class="behind-emoji-popup">
-        <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+      <div (click)="emojiService.emojipickeractiveChat = false" *ngIf="emojiService.emojipickeractiveChat" class="behind-emoji-popup">
+        <app-emojis (click)="preventClick($event)" (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
       </div>
       <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
@@ -177,7 +177,7 @@
 
           <div class="mail-container" (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
-          <mat-menu #mention="matMenu">
+          <mat-menu class="mention-menu" #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
               (click)="addMention(user.name)">@{{ user.name }}</button>
           </mat-menu>

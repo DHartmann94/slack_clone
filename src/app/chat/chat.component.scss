@@ -243,7 +243,12 @@
 
 .app-emojis {
   position: absolute;
-  bottom: 10px;
+  bottom: 240px;
+  left: 340px;
+}
+
+.mention-menu {
+  border-radius: 20px !important;
 }
 
 .chat-left {
@@ -943,6 +948,15 @@ section {
 
 .users-to-mention {
   color:#444df2 !important;
+}
+
+.behind-emoji-popup {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .delete-message-left-corner {
