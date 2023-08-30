@@ -1,4 +1,4 @@
-<div class="direct-chat-icon" (click)="toggleDirectChatMobile()">
+<div *ngIf="chatBehaviorService.toggleDirectChat" class="direct-chat-icon" (click)="toggleDirectChatMobile()">
     <img src="./assets/img/icons/edit_square_white.png" alt="#">
 </div>
 

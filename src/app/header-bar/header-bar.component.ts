@@ -8,6 +8,8 @@ import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { ActivatedRoute } from '@angular/router';
 import { BoardComponent } from '../board/board.component';
 import { ChannelDataInterface } from '../service-moduls/channel.service';
+import { Observable, map } from 'rxjs';
+import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 
 @Component({
   selector: 'app-header-bar',
@@ -27,7 +29,7 @@ export class HeaderBarComponent {
   usernameExists: boolean = false;
   submitted: boolean = false;
   showSlideInNotification: boolean = false;
-  selectedChannel: ChannelDataInterface | null = null;
+  receivedChannelData$!: Observable<ChannelDataInterface | null>;
   selectedPictureIndex: number | null = null;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
@@ -58,6 +60,7 @@ export class HeaderBarComponent {
   constructor(
     public userDataService: UserDataService,
     public validation: ValidationService,
+    private channelDataResolver: ChannelDataResolverService,
     public authentication: AuthenticationService,
     public chatBehaviorService: ChatBehaviorService,
     private firestore: Firestore,
@@ -77,6 +80,7 @@ export class HeaderBarComponent {
       this.headerMoveMoblieView = false;
     });
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
+    this.getDataFromChannel();
   }
 
 /**
@@ -174,6 +178,14 @@ export class HeaderBarComponent {
     this.resetForm();
   }
 
+  async getDataFromChannel(): Promise<void> {
+    this.receivedChannelData$ = this.channelDataResolver.resolve().pipe(
+      map((data: ChannelDataInterface | null) => {
+        return data;
+      })
+    );
+  }
+
   /**
  * Updates the provided value in the database.
  * @async
@@ -252,6 +264,7 @@ export class HeaderBarComponent {
     this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
     this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
     this.headerMoveMoblieView = this.originalHeaderView;
+    this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
   }
   /**
  * Saves the selected profile picture to the database.

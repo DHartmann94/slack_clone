@@ -15,6 +15,7 @@ export class ChatBehaviorService {
 
   hideChannel: boolean = false;
   hideChat: boolean = true;
+  toggleDirectChat: boolean = true;
 
   triggerChat() {
     this.crudTriggeredSubject.next();
