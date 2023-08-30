@@ -317,7 +317,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       this.reactionListOpen = false;
     }
   }
-
+  
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
   }

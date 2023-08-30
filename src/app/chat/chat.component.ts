@@ -402,16 +402,18 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   // append Child
   //inner text content
 
-  addMention(name: string) {
+  addMention(user: any) {
     if (this.mentionService.chatToggledWithButton) {
-      let mention = ` @${name} `;
+      let mention = ` @${user.name} `;
       this.messageInput = [this.messageInput + mention];
     } else {
-      let mention = `${name} `;
+      let mention = `${user.name} `;
       this.messageInput = [this.messageInput + mention];
     }
+    this.mentionService.updateInputField(user);
   }
 
+  
   updateUsersForMention() {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {
@@ -431,8 +433,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     }
   }
 
-
-  // *** EMOJI REACTION ***
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
       document
@@ -453,33 +453,26 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
 
   reactWithEmoji(emoji: string, index: number, messageId: string, message: MessageDataInterface) {
     let emojiArray = message.emojis;
-
     emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
       if (emoj['reaction-from'].includes(this.userDataService.userName)) {
         const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
         emoj['reaction-from'].splice(userIndex, 1);
       }
     });
-
     if (this.emojiService.existEmoji(index, emoji, this.messageData)) {
       let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
       emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
     } else {
       emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
     }
-
     let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
     if (indexWithEmojiToDelete != -1) {
       emojiArray.splice(indexWithEmojiToDelete, 1);
     }
-
-    console.log('my Emoji Array', emojiArray);
-
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
-
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
@@ -494,7 +487,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
       this.reactionListOpen = false;
     }
   }
-
 
   editChannel() {
     this.openEditChannel = true;
