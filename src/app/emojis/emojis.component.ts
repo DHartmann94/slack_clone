@@ -68,7 +68,7 @@ export class EmojisComponent implements OnInit{
    */
   search() {
     const filteredList = this.allEmojis.filter(emoji => {
-      return emoji.unicodeName.toLowerCase().startsWith(this.searchValue.toLowerCase());
+      return emoji.unicodeName.toLowerCase().includes(this.searchValue.toLowerCase());
     });
     this.emojiList = filteredList;
   }

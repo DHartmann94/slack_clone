@@ -4,6 +4,7 @@ import { MessageDataInterface, MessageDataService } from './message.service';
 import { ThreadDataInterface } from './thread.service';
 import { ChannelDataInterface } from './channel.service';
 import { ChatComponent } from '../chat/chat.component';
+import { findIndex } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -17,13 +18,21 @@ export class MentionService {
 
   constructor(public userService: UserDataService) { }
 
-  async getUsers(userData: []){
+  async getUsers(userData: [], currentUser: string) {
     this.usersInCannel = [];
-    userData.forEach(async userID => {
-    this.userService.usersDataBackend(userID);
-    let myuser = await this.userService.usersDataBackend(userID);
-    this.usersInCannel.push(myuser);
-    });
+    for (const userID of userData) {
+      const myuser = await this.userService.usersDataBackend(userID);
+      this.usersInCannel.push(myuser);
+    }
+    this.removeCurrentUser(currentUser);
+  }
+
+
+  removeCurrentUser(currentUser: string) {
+    const index = this.usersInCannel.findIndex(user => user['name'] === currentUser);
+    if (index !== -1) {
+      this.usersInCannel.splice(index, 1);
+    }
   }
 
 
