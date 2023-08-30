@@ -166,7 +166,7 @@
   <div class="message-input-field">
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
       <div (click)="emojiService.emojipickeractiveChat = false" *ngIf="emojiService.emojipickeractiveChat" class="behind-emoji-popup">
-        <app-emojis (click)="preventClick($event)" (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+        <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
       </div>
       <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">

@@ -35,6 +35,10 @@ export class MentionService {
     }
   }
 
+  preventClick(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
 
 
 }

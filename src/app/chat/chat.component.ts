@@ -481,10 +481,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     this.reactionListOpen = false;
   }
 
-  preventClick(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
