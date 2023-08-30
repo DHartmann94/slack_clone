@@ -11,7 +11,8 @@
   @media(max-width: 380px) {
     border-radius: 0px;
     margin: 0;
-    min-width: 380px !important;
+    padding: 0;
+    width: 380px !important;
     height: 130vh;
   }
 }

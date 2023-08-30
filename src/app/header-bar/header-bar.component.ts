@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
 import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { UserDataInterface, UserDataService } from '../service-moduls/user.service';
+import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { ActivatedRoute } from '@angular/router';
+import { BoardComponent } from '../board/board.component';
+import { ChannelDataInterface } from '../service-moduls/channel.service';
 
 @Component({
   selector: 'app-header-bar',
@@ -12,6 +15,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
+  originalHeaderView!: boolean;
+  headerMoveMoblieView: boolean = true;
   showIcon = false;
   statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
@@ -22,6 +27,7 @@ export class HeaderBarComponent {
   usernameExists: boolean = false;
   submitted: boolean = false;
   showSlideInNotification: boolean = false;
+  selectedChannel: ChannelDataInterface | null = null;
   selectedPictureIndex: number | null = null;
   active: boolean = false;
   coll = collection(this.firestore, 'users');
@@ -53,6 +59,7 @@ export class HeaderBarComponent {
     public userDataService: UserDataService,
     public validation: ValidationService,
     public authentication: AuthenticationService,
+    public chatBehaviorService: ChatBehaviorService,
     private firestore: Firestore,
     private route: ActivatedRoute,
   ) { }
@@ -65,6 +72,10 @@ export class HeaderBarComponent {
     this.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.colorStatus();
+    this.chatBehaviorService.headerView$.subscribe(show => {
+      this.originalHeaderView = this.headerMoveMoblieView; 
+      this.headerMoveMoblieView = false;
+    });
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
   }
 
@@ -237,6 +248,9 @@ export class HeaderBarComponent {
     }, 3000);
   }
 
+  backToChannelMobile() {
+    this.headerMoveMoblieView = this.originalHeaderView;
+  }
   /**
  * Saves the selected profile picture to the database.
  * @async

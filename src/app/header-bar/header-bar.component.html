@@ -1,12 +1,23 @@
 <div class="header-container">
-    <div class="header-logo-container">
-        <img src="./assets/img/Logo-small.png" alt="Logo">
-        <h2>DABubble</h2>
+    <div *ngIf="headerMoveMoblieView">
+        <div class="header-logo-container" >
+            <img src="./assets/img/Logo-small.png" alt="Logo">
+            <h2>DABubble</h2>
+        </div>
+        <div class="search-bar-parent">
+            <input type="text" placeholder="Code learning durchsuchen" id="searchUser">
+            <img src="./assets/img/icons/search.png" alt="Search">
+        </div>
     </div>
-    <div class="search-bar-parent">
-        <input type="text" placeholder="Code learning durchsuchen" id="searchUser">
-        <img src="./assets/img/icons/search.png" alt="Search">
+    
+    <div class="channel-header" *ngIf="!headerMoveMoblieView">
+        <mat-icon (click)="backToChannelMobile()">arrow_back_ios</mat-icon>
+        <div class="channel-info" *ngIf="(selectedChannel) as channel">
+            <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt="#"></div>
+            <h2>{{ channel.channelName }}</h2>
+        </div>   
     </div>
+   
     <div>
         <div (click)="openLogoutContainer()" class="profile">
             <h2>{{ this.userDataService.userName }}</h2>
