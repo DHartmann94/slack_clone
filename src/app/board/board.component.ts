@@ -28,5 +28,6 @@ export class BoardComponent implements OnInit {
     this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
     this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
     this.chatBehaviorService.toggleHeaderView(true);
+    this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
   }
 }
