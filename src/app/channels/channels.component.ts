@@ -145,6 +145,8 @@ export class ChannelsComponent implements OnInit {
     this.updateChannelName(this.selectedChannel);
     this.directMessageToUserService.directMessageToUserOpen = false;
     this.chatBehavior.ChannelChatIsOpen = true;
+    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
+    this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
   }
 
   /* selectDirectChat(directChatId: any) {
