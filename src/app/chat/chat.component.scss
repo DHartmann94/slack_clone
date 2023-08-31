@@ -1055,6 +1055,52 @@ section {
   z-index: 1;
 }
 
+.mentioned-users-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 30px;
+  gap: 10px;
+}
+
+.mentioned-user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #adb0d9;
+  color: #444df2;
+  padding: 2px 5px;
+  border-radius: 5px;
+  position: relative;
+  &:hover {
+    .delete-mention {
+      display: flex;
+    }
+  }
+}
+
+.delete-mention {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  transform: rotate(45deg);
+  color: rgb(105, 30, 30);
+  padding: 5px;
+  height: 5px;
+  width: 5px;
+  border-radius: 50%;
+  font-size: 20px;
+  background-color: #c3d4e7;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background-color: rgb(105, 30, 30);
+    color: white;
+  }
+}
+
+
 .delete-message-left-corner {
   display: flex;
   align-items: center;
