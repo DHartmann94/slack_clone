@@ -113,6 +113,10 @@
     justify-content: space-between;
     align-items: center;
 
+    @media (max-width: 380px) {
+      display: none;
+    }
+
     h2 {
       font-family: "Nunito";
       margin-top: 20px;
@@ -294,6 +298,11 @@
   position: absolute;
   bottom: 240px;
   left: 340px;
+
+  @media (max-width: 380px) {
+    bottom: 240px;
+    left: 16px;
+  }
 }
 
 .mention-menu {
