@@ -75,7 +75,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   reactionListOpen = false;
 
   private chatTriggerSubscription!: Subscription;
-  toggleSearchBar: boolean = true;
 
   inviteUserOrChannel!: string;
   searchResultsChannels: ChannelDataInterface[] = [];
@@ -98,7 +97,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
     private userDataResolver: UserDataResolveService,
-    private chatBehavior: ChatBehaviorService,
+    public chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
@@ -181,7 +180,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   toggleChat() {
-    this.toggleSearchBar = !this.toggleSearchBar;
+    this.chatBehavior.toggleSearchBar = !this.chatBehavior.toggleSearchBar;
     this.inviteUserOrChannel = '';
     this.toggleUserList = false;
     this.toggleChannelList = false;
