@@ -60,8 +60,7 @@
         border-radius: 0px;
         margin: 0;
         width: 100% !important;
-        height: 100vh;
-    
+        height: 88vh;
     }
     
     .channel-in-out {
@@ -97,6 +96,10 @@
                     font-style: normal;
                     font-weight: 700;
                     margin: 0;
+
+                    @media (max-width: 380px) {
+                        font-size: 16px;
+                    }
                 }
 
                 .shape {
@@ -151,6 +154,10 @@
             font-style: normal;
             font-weight: 700;
             margin: 0 !important;
+
+            @media (max-width: 380px) {
+                font-size: 16px;
+            }
         }
     }
 }
@@ -162,6 +169,10 @@
     align-items: center;
     margin-top: 25px;
     cursor: pointer;
+
+    @media (max-width: 380px) {
+        margin-top: 10px;
+    }
 
     .massage-info {
         display: flex;
@@ -179,6 +190,10 @@
             font-style: normal;
             font-weight: 700;
             margin: 0;
+
+            @media (max-width: 380px) {
+                font-size: 16px;
+            }
         }
     }
 }
@@ -189,10 +204,10 @@
     align-items: center;
     width: auto;
     min-height: auto;
-    padding: 15px 0 0 35px;
+    padding: 15px 0 0 35px;    
 
     @media(max-width: 380px) {
-        padding: 15px 0 0 0px;
+        padding: 0;
     }
 
     .channel-box {
@@ -201,7 +216,6 @@
         border-radius: 20px;
         margin: 5px 0;
         cursor: pointer;
-
         display: flex;
         justify-content: center;
         align-items: center;
@@ -213,6 +227,10 @@
             font-weight: 700;
             color: var(--white);
             margin: 0;
+
+            @media (max-width: 380px) {
+                font-size: 16px;
+            }
         }
     }
 
@@ -259,6 +277,10 @@
             font-weight: 700;
             color: var(--black);
             margin: 0;
+
+            @media (max-width: 380px) {
+                font-size: 16px;
+            }
         }
     }
 }
@@ -267,7 +289,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    column-gap: 10px;
+    column-gap: 5px;
     padding: 10px 0 0 15px;
     cursor: pointer;
 
@@ -285,6 +307,10 @@
         font-style: normal;
         font-weight: 400;
         margin: 0;
+        
+        @media (max-width: 380px) {
+            font-size: 16px;
+        }
 
         &:hover {
             font-weight: bold;

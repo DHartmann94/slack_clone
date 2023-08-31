@@ -6,6 +6,11 @@
     padding: 10px 15px;
     column-gap: 37px;
 
+    @media (max-width: 380px) {
+        padding: 5px 15px;
+        height: 71px;
+    }
+
     .header-inline {
         display: flex;
         flex-direction: row;
@@ -21,6 +26,11 @@
                 margin: 25px;
                 font-size: 28px;
                 font-weight: bold;
+
+                @media (max-width: 380px) {
+                   font-size: 18px;
+                   margin-left: 10px; 
+                }
             }
     
             img {
@@ -82,6 +92,10 @@
                 font-style: normal;
                 font-weight: 700;
                 margin: 0;
+
+                @media (max-width: 380px) {
+                    font-size: 16px;
+                }
             }
 
             .shape {
@@ -89,6 +103,18 @@
                 height: 60px;
                 border-radius: 50%;
                 background-color: lightgray;
+
+                @media (max-width: 380px) {
+                    width: 45px;
+                    height: 45px;
+                }
+
+                img {
+                    @media (max-width: 380px) {
+                        width: 45px;
+                        height: 45px;
+                    }
+                }
             }
 
         }
@@ -101,7 +127,6 @@
         justify-content: center;
         align-items: center;
         column-gap: 8px;
-        //max-width: 242px;
         cursor: pointer;
 
         .user-icon {
@@ -109,6 +134,11 @@
             width: 60px;
             object-fit: cover;
             border-radius: 50%;
+
+            @media (max-width: 380px) {
+                width: 45px;
+                height: 45px;
+            }
         }
 
         mat-icon {
@@ -142,10 +172,14 @@
             border-radius: 100%;
             border: 2px solid var(--white);
             background-color: #92C83E;
+
+            @media (max-width: 380px) {
+                top: 37px;
+                right: 3px;
+            }
         }
 
         &:hover {
-
             h2,
             mat-icon {
                 color: var(--text-hover);
