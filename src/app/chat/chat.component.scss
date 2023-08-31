@@ -866,6 +866,7 @@ section {
 }
 
 .overlay {
+  padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
@@ -878,7 +879,6 @@ section {
   z-index: 999;
 
   .channel-edit-card {
-    width: 872px;
     height: auto;
     background-color: white;
     border-radius: 25px;
@@ -967,6 +967,11 @@ section {
       justify-content: flex-end;
       margin-top: 30px;
 
+      @media (max-width: 550px) {
+        display: flex;
+        justify-content: center;
+      }
+
       .btn-channel {
         border-radius: 25px;
         background: var(--purple-1, #444df2);
@@ -994,7 +999,6 @@ section {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      width: 95%;
       border-radius: 20px;
       border: 1px solid var(--ligth-purple-lines, #adb0d9);
       padding: 20px;
