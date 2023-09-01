@@ -1,5 +1,5 @@
 import { ScrollService } from './../service-moduls/scroll.service';
-import { AfterViewChecked, Component, ElementRef, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, OnChanges, OnInit, Renderer2, SimpleChanges, ViewChild } from '@angular/core';
 import { MessageDataService, MessageDataInterface } from '../service-moduls/message.service';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
@@ -74,6 +74,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   emojipickeractive = false;
   reactionListOpen = false;
   dataIsLoading = false;
+  mentionListOpen:boolean = false;
 
   private chatTriggerSubscription!: Subscription;
 
@@ -105,6 +106,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     private firestore: Firestore,
     private scrollService: ScrollService,
     public directMessageToUserService: DirectMessageToUserService,
+    private renderer: Renderer2, private el: ElementRef
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleChat();
@@ -398,6 +400,26 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
       console.log('Message input is empty. Cannot send an empty message.');
     }
     this.mentionService.resetArray();
+  }
+
+  showMention(index: number, messageData: MessageDataInterface[]) {
+    const item = this.el.nativeElement.querySelector(`#mentions-in-message${index}`);
+
+    messageData.forEach((message, i) => {
+      if (i !== index) {
+        const hideItem = this.el.nativeElement.querySelector(`#mentions-in-message${i}`);
+        if (hideItem) {
+          this.renderer.addClass(hideItem, 'd-none');
+        }
+      }
+    });
+
+    if (!this.mentionListOpen) {
+      this.renderer.removeClass(item, 'd-none');
+      this.mentionListOpen = true;
+    } else {
+      this.mentionListOpen = false;
+    }
   }
 
   addMention(user: any) {

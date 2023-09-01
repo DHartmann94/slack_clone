@@ -408,6 +408,17 @@
   right: -10px;
 }
 
+.d-none {
+  display: none !important;
+}
+
+.mention-in-message {
+  position: absolute;
+  display: flex;
+  min-height: 100px;
+  width: 100px;
+}
+
 .mention-active {
   color: white;
   background-color: red;

@@ -103,7 +103,7 @@
 
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
-        
+
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
@@ -127,8 +127,16 @@
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}
-              <div class="mentions-button" *ngIf="message.mentionedUser.length > 1" [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  mentionService.checkForMention(message.mentionedUser , currentUserId)}"  >@</div>
-                <div>{{message.mentionedUser}}</div>
+              
+              <div #menuTrigger (click)="showMention(index, messageData)" class="mentions-button" *ngIf="message.mentionedUser.length > 1"
+                [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  mentionService.checkForMention(message.mentionedUser , currentUserId)}">
+                @
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none">
+                  <span *ngFor="let id of message.mentionedUser" ></span>
+                  <!-- mentionService.resolveMentionedUser(id.id) -->
+                </div>
+              </div>
+
             </span>
           </div>
           <div class="like-area">
@@ -172,13 +180,15 @@
 
     <div class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
-        <div (click)="mentionService.deleteMention(i)" class="delete-mention" >+</div>
+        <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
       </div>
     </div>
 
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
-      <div (click)="emojiService.emojipickeractiveChat = false" *ngIf="emojiService.emojipickeractiveChat" class="behind-emoji-popup">
-        <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+      <div (click)="emojiService.emojipickeractiveChat = false" *ngIf="emojiService.emojipickeractiveChat"
+        class="behind-emoji-popup">
+        <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
+          class="app-emojis"></app-emojis>
       </div>
       <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
