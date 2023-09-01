@@ -1,12 +1,12 @@
-<div *ngIf="chatBehaviorService.toggleDirectChat" class="direct-chat-icon" (click)="toggleDirectChatMobile()">
+<div *ngIf="chatBehavior.toggleDirectChat" class="direct-chat-icon" (click)="toggleDirectChatMobile()">
     <img src="./assets/img/icons/edit_square_white.png" alt="#">
 </div>
 
 <div class="grid-view-component">
     <div class="grid-view-header"><app-header-bar></app-header-bar></div>
     <div class="board-flex">
-        <div [ngClass]="{'hidden-channel': chatBehaviorService.hideChannel}" class="grid-view-channels"><app-channels></app-channels></div>
-        <div [ngClass]="{'hidden-chat': chatBehaviorService.hideChat}" *ngIf="this.chatBehaviorService.ChannelChatIsOpen" class="grid-view-chat"><app-chat></app-chat></div>
+        <div [ngClass]="{'hidden-channel': chatBehavior.hideChannel}" class="grid-view-channels"><app-channels></app-channels></div>
+        <div [ngClass]="{'hidden-chat': chatBehavior.hideChat}" *ngIf="this.chatBehavior.ChannelChatIsOpen" class="grid-view-chat"><app-chat></app-chat></div>
         <div *ngIf="this.directMessageToUserService.directMessageToUserOpen" class="grid-view-chat"><app-direct-message-to-user></app-direct-message-to-user></div>
         <div *ngIf="this.threadDataService.threadOpen" class="grid-view-threads"><app-threads></app-threads></div>
     </div>

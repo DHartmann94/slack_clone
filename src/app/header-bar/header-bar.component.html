@@ -1,5 +1,5 @@
 <div class="header-container">
-    <div class="header-inline" *ngIf="headerMoveMoblieView">
+    <div class="header-inline" *ngIf="!(this.chatBehaviorService.headerMoblieView)">
         <div class="header-logo-container" >
             <img src="./assets/img/Logo-small.png" alt="Logo">
             <h2>DABubble</h2>
@@ -10,7 +10,7 @@
         </div>
     </div>
     
-    <div class="channel-header" *ngIf="!headerMoveMoblieView">
+    <div class="channel-header-mobile" *ngIf="this.chatBehaviorService.headerMoblieView">
         <mat-icon (click)="backToChannelMobile()">arrow_back_ios</mat-icon>
         <div class="channel-info" *ngIf="(receivedChannelData$ | async) as channel">
             <div class="shape"><img src="./assets/img/icons/channel-sample-icon.png" alt="#"></div>

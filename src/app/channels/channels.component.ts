@@ -61,7 +61,7 @@ export class ChannelsComponent implements OnInit {
     private channelDataResolver: ChannelDataResolverService,
     private directMessageService: DirectMessageService,
     private userDataResolver: UserDataResolveService,
-    private chatBehavior: ChatBehaviorService,
+    public chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
     public directMessageToUserService: DirectMessageToUserService,
@@ -148,7 +148,8 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
     this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
     this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
-    this.chatBehavior.toggleHeaderView(true);
+    this.chatBehavior.toggleSearchBar = false;
+    this.chatBehavior.headerMoblieView = true; 
   }
 
   /* selectDirectChat(directChatId: any) {

@@ -16,7 +16,7 @@ export class BoardComponent implements OnInit {
     public threadDataService: ThreadDataService, 
     public directMessageToUserService: DirectMessageToUserService,
     public directMessageService: DirectMessageService,
-    public chatBehaviorService: ChatBehaviorService,
+    public chatBehavior: ChatBehaviorService,
   ) { }
 
   ngOnInit(): void {
@@ -24,10 +24,13 @@ export class BoardComponent implements OnInit {
   }
 
   toggleDirectChatMobile() {
-    this.chatBehaviorService.triggerChat();
-    this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
-    this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
-    this.chatBehaviorService.toggleHeaderView(true);
-    this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
+    this.chatBehavior.triggerChat();
+    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
+    this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
+    this.chatBehavior.headerMoblieView = true;
+    this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
+    if (this.chatBehavior.toggleDirectChat) {
+      this.chatBehavior.toggleSearchBar = true;  
+    }
   }
 }

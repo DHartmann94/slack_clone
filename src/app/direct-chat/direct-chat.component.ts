@@ -244,8 +244,8 @@ export class DirectChatComponent implements OnInit {
     this.userDataService.getCurrentUserData(id);
   }
 
-  /* async sendMessage() {
-    if (this.isInvitationValid && this.messageInput.length > 0) {
+  async sendMessage() {
+    /* if (this.isInvitationValid && this.messageInput.length > 0) {
       const threadId = this.threadDirectDataService.generateThreadId();
       const message: DirectMessageInterface = {
         messageText: this.messageInput,
@@ -278,8 +278,8 @@ export class DirectChatComponent implements OnInit {
       );
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
-    }
-  } */
+    } */
+  }
 
   async deleteMessage(messageId: any) {
     if (!messageId) {
@@ -365,6 +365,10 @@ export class DirectChatComponent implements OnInit {
     return this.directMessageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
     });
+  }
+
+  openThread(threadID: string) {
+   /*  this.threadDataService.setThreadId(threadID); */
   }
 
 }

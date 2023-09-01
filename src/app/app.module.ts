@@ -42,6 +42,7 @@ import { EmojisComponent } from './emojis/emojis.component';
 import { ImprintComponent } from './imprint/imprint.component';
 import { LegalComponent } from './legal/legal.component';
 import { DirectMessageToUserComponent } from './direct-message-to-user/direct-message-to-user.component';
+import { DirectChatComponent } from './direct-chat/direct-chat.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { DirectMessageToUserComponent } from './direct-message-to-user/direct-me
     ImprintComponent,
     LegalComponent,
     DirectMessageToUserComponent,
+    DirectChatComponent,
   ],
   imports: [
     BrowserModule,
