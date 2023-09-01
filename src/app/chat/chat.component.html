@@ -127,8 +127,8 @@
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}
-              <div class="mentions-button"  [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId }"  >@</div>
-            
+              <div class="mentions-button" *ngIf="message.mentionedUser.length > 1" [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  mentionService.checkForMention(message.mentionedUser , currentUserId)}"  >@</div>
+                <div>{{message.mentionedUser}}</div>
             </span>
           </div>
           <div class="like-area">

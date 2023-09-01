@@ -24,8 +24,6 @@ export class MentionService {
     for (const userID of userData) {
       const myuser = await this.userService.usersDataBackend(userID);
       this.usersInCannel.push({'user': myuser, 'id': userID});
-      console.log(this.usersInCannel);
-      
     }
     this.removeCurrentUser(currentUser);
   }
@@ -63,4 +61,9 @@ export class MentionService {
   resetArray() {
     this.mentionInMessage = [];
   }
+
+  checkForMention(mentionedUser:any[], CUid:string) {
+    return mentionedUser.includes(CUid);
+  }
+
 }
