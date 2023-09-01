@@ -10,7 +10,10 @@
 
   @media(max-width: 880px) {
     padding: 0px;
-    margin: 15px 0px 0px 10px;
+  }
+
+  @media(max-width: 670px) {
+    display: none;
   }
 
   @media(max-width: 380px) {
@@ -1170,7 +1173,7 @@ section {
   height: 30px;
   gap: 10px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 750px) {
     display: none;
   }
 }
