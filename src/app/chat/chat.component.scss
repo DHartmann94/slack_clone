@@ -807,11 +807,16 @@ $light-blue: #eceefe;
     background: var(--purple-1, #444DF2);
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
     position: absolute;
-    left: 304px;
-    bottom: 8px;
+    left: 290px;
+    bottom: 0px;
     width: 35px;
     height: 35px;
     padding: 8px 10px 12px 10px;
+
+    .send {
+      padding: 5px 0 0 3px;
+      color: var(--white);
+    }
   }
 }
 
