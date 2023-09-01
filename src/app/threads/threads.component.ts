@@ -67,6 +67,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   emojipickeractive = false;
   reactionListOpen = false;
   toggleUserList: boolean = true;
+  dataIsLoading = false;
 
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
@@ -114,7 +115,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewChecked(): void {
-    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.schrollToBottom();
   }
 
   ngOnDestroy() {
@@ -123,6 +124,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   async renderChatByThreadId() {
+    this.dataIsLoading = true;
     if (this.threadDataService.threadId) {
       this.threadDataService.getThreadDataMessages().subscribe(
         (threadData: ThreadDataInterface[]) => {
@@ -215,6 +217,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   async sendMessage() {
+    this.dataIsLoading = true;
     if (this.messageInput.length > 0) {
       const message: MessageDataInterface = {
         messageText: this.messageInput,
@@ -270,7 +273,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   reactWithEmoji(emoji: string, index: number, messageId: string, message:MessageDataInterface) {
     let emojiArray = message.emojis;
-    
+
     emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
       if (emoj['reaction-from'].includes(this.userDataService.userName)) {
         const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
@@ -317,7 +320,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
       this.reactionListOpen = false;
     }
   }
-  
+
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
   }
@@ -424,6 +427,14 @@ export class ThreadsComponent implements OnInit, OnChanges {
   close() {
     this.loading = false;
     this.threadDataService.threadOpen = false;
+  }
+
+  schrollToBottom() {
+    if (this.dataIsLoading === true) {
+      console.log('is data loading?', this.dataIsLoading)
+      this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+      this.dataIsLoading = false;
+    }
   }
 }
 
