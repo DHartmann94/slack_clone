@@ -1,5 +1,5 @@
 <div class="header-container">
-    <div *ngIf="!chatBehaviorService.headerMoblieView; else mobileHeader">
+    <div *ngIf="!(this.chatBehaviorService.headerMoblieView)">
         <div class="header-inline">
             <div class="header-logo-container" >
                 <img src="./assets/img/Logo-small.png" alt="Logo">
@@ -12,7 +12,7 @@
         </div>
     </div>
     
-    <ng-template #mobileHeader>
+    <div *ngIf="this.chatBehaviorService.headerMoblieView">
         <div class="channel-header-mobile">
             <mat-icon (click)="backToChannelMobile()">arrow_back_ios</mat-icon>
             <div class="channel-info" *ngIf="(receivedChannelData$ | async) as channel">
@@ -20,7 +20,7 @@
                 <h2>{{ channel.channelName }}</h2>
             </div>   
         </div>
-    </ng-template>
+    </div>
    
     <div (click)="openLogoutContainer()" class="profile">
         <h2>{{ this.userDataService.userName }}</h2>

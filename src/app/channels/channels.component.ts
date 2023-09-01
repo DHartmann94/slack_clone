@@ -159,7 +159,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
     this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
     this.chatBehavior.toggleSearchBar = false;
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 420) {
       this.chatBehavior.headerMoblieView = true;
     }
   }
