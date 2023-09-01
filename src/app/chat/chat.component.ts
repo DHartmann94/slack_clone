@@ -283,6 +283,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             console.log('Messages to Render:', sortDataAfterTime);
+            this.dataIsLoading = true;
             this.messageData = sortDataAfterTime;
           }
         },
@@ -352,7 +353,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
     const yesterday = new Date(today);
     yesterday.setDate(today.getDate() - 1);
-
     return (
       currentDate.getFullYear() !== previousDate.getFullYear() ||
       currentDate.getMonth() !== previousDate.getMonth() ||
@@ -763,8 +763,10 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   schrollToBottom() {
-    console.log('is data loading?', this.dataIsLoading)
-    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
-    this.dataIsLoading = false;
+    if (this.dataIsLoading === true) {
+      console.log('is data loading?', this.dataIsLoading)
+      this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+      this.dataIsLoading = false;
+    }
   }
 }
