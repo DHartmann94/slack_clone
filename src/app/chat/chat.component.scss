@@ -689,16 +689,18 @@
       outline: none;
     }
   }
-}
 
-.text-editor-bottom {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-
-  @media (max-width: 380px) {
-    display: none;
+  .text-editor-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: 80px;
+  
+    @media (max-width: 380px) {
+      display: none;
+    }
   }
 }
 
@@ -817,6 +819,12 @@ $light-blue: #eceefe;
       padding: 5px 0 0 3px;
       color: var(--white);
     }
+  }
+}
+
+@media (min-width: 420px) {
+  .button-backlayer {
+    display: none;
   }
 }
 
