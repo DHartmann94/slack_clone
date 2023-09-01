@@ -763,7 +763,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   schrollToBottom() {
-    // console.log('is data loading?', this.dataIsLoading)
+    console.log('is data loading?', this.dataIsLoading)
     this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
     this.dataIsLoading = false;
   }
