@@ -22,7 +22,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
+export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
@@ -66,13 +66,14 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   toggleChannelList: boolean = false;
   allLists: boolean = false;
   directMessageToUserOpen: boolean = false;
-  
+
   deleteUserFormChannel: any;
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
   openEditChannel: boolean = false;
   emojipickeractive = false;
   reactionListOpen = false;
+  dataIsLoading = false;
 
   private chatTriggerSubscription!: Subscription;
 
@@ -136,7 +137,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   ngAfterViewChecked(): void {
-    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.schrollToBottom();
   }
 
   ngOnDestroy() {
@@ -360,6 +361,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   async sendMessage(userIdInputSearch: any) {
+    this.dataIsLoading = true;
     if (this.messageInput.length > 0) {
       const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
@@ -369,7 +371,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
         emojis: [],
         thread: threadId,
         channel: this.channelId,
-        mentionedUser: 'user_id_here',
+        mentionedUser: this.mentionService.mentionInMessage,
         channelId: userIdInputSearch,
       };
 
@@ -395,11 +397,12 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
+    this.mentionService.resetArray();
   }
 
   addMention(user: any) {
-    if(!this.mentionService.chatToggledWithButton) {
-       this.messageInput=  this.messageInput.slice(0, -1);
+    if (!this.mentionService.chatToggledWithButton) {
+      this.messageInput = this.messageInput.slice(0, -1);
     }
     this.mentionService.updateInputField(user);
   }
@@ -463,6 +466,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
+
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
@@ -734,5 +738,11 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
 
   getUserById(userId: any) {
     return this.userData.find(user => user.id === userId) || null;
+  }
+
+  schrollToBottom() {
+    console.log('is data loading?', this.dataIsLoading)
+    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.dataIsLoading = false;
   }
 }

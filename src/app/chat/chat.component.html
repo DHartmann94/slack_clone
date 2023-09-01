@@ -103,6 +103,7 @@
 
       <div class="chat-message"
         [ngClass]="{ 'chat-right': message.sentById === currentUserId, 'chat-left': message.sentById !== currentUserId }">
+        
         <div class="profile-picture-container">
           <img class="profile-pictures-chat" src="{{ message.picture }}" alt="#">
         </div>
@@ -125,7 +126,10 @@
           <div>
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
-              message.messageText }}</span>
+              message.messageText }}
+              <div class="mentions-button" *ngIf="message.mentionedUser.length > 1" [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  mentionService.checkForMention(message.mentionedUser , currentUserId)}"  >@</div>
+                <div>{{message.mentionedUser}}</div>
+            </span>
           </div>
           <div class="like-area">
             <div id="reactionlist{{index}}" class="list-of-reactions">
