@@ -1,5 +1,5 @@
 .chat-card {
-  min-width: 500px;
+  min-width: 320px;
   min-height: calc(100vh - 150px);
   border-radius: 15px;
   padding: 25px 35px 111px;
@@ -8,8 +8,12 @@
   flex-direction: column;
   justify-content: center;
 
+  @media(max-width: 880px) {
+    padding: 0px;
+    margin: 15px 0px 0px 10px;
+  }
+
   @media(max-width: 380px) {
-    min-width: 320px;
     padding: 66px 25px 68px 25px;
     border-radius: 0px;
     margin: 0;
@@ -323,6 +327,10 @@
   padding: 0 145px 0 45px;
   transition: background-color 0.3s;
 
+  @media(max-width: 880px) {
+    padding: 0 10px 0 45px;
+  }
+
   @media (max-width: 380px) {
     padding: 0 16px;
   }
@@ -344,6 +352,10 @@
   padding: 0 45px 0 145px;
   transition: background-color 0.3s;
   flex-direction: row-reverse;
+
+  @media(max-width: 880px) {
+    padding: 0 10px 0 45px;
+  }
 
   @media (max-width: 380px) {
     margin: 0;
@@ -389,10 +401,11 @@
   position: absolute;
   top: -10px;
   padding: 10px;
-  background-color: #cbcbeb;
+  background-color: #a0a0d6;
   color: #535af1;
-  border: 0.5px solid grey;
+  border: 0.5px solid rgb(188, 188, 188);
   border-radius: 20px;
+  box-shadow: 2px 2px 2px;
   height: 8px;
   width: 8px;
   display: flex;
@@ -417,6 +430,8 @@
   display: flex;
   min-height: 100px;
   width: 100px;
+  background-color: #ffffff;
+  color: #000;
 }
 
 .mention-active {

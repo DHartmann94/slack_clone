@@ -10,23 +10,23 @@ import { findIndex } from 'rxjs';
   providedIn: 'root'
 })
 export class MentionService {
-  
+
   chatPopupOpen = false;
-  usersInCannel:any[] = [];
+  usersInCannel: any[] = [];
   chatToggledWithButton = true;
-  mentionInMessage:any = [];
-  mentionedUserIds:any = [];
-  mentionListOpen:boolean = false;
+  mentionInMessage: any = [];
+  mentionedUserIds: any = [];
+  mentionListOpen: boolean = false;
 
   constructor(
     public userService: UserDataService,
-    ) { }
+  ) { }
 
   async getUsers(userData: [], currentUser: string) {
     this.usersInCannel = [];
     for (const userID of userData) {
       const myuser = await this.userService.usersDataBackend(userID);
-      this.usersInCannel.push({'user': myuser, 'id': userID});
+      this.usersInCannel.push({ 'user': myuser, 'id': userID });
     }
     this.removeCurrentUser(currentUser);
   }
@@ -43,20 +43,14 @@ export class MentionService {
     event.stopPropagation();
   }
 
-
-
-  /// evtl. reicht das Array mentionMessage -> 
-  // TODO -> ID,s übergeben an Message
   updateInputField(user: any) {
     if (!this.mentionInMessage.includes(user)) {
       this.mentionInMessage.push(user);
-    } 
-    // this.mentionInMessage.forEach((u: { id: any; }) => {
-    //   this.mentionedUserIds.push(u.id);
-    // });
+    }
   }
 
-  deleteMention(index:number) {
+
+  deleteMention(index: number) {
     this.mentionInMessage.splice(index, 1);
 
   }
@@ -65,13 +59,23 @@ export class MentionService {
     this.mentionInMessage = [];
   }
 
-  checkForMention(mentionedUser:any[], CUid:string) {
+  checkForMention(mentionedUser: any[], CUid: string) {
     return mentionedUser.includes(CUid);
   }
 
-  // async resolveMentionedUser(id:string) {
-  //   const myuser = await this.userService.usersDataBackend(id);
-    
-  //     }
+  resolveMentionedUser(id: any) {
+    if (id) {
+      const user = this.userService.userData.filter(user => user.id.includes(id));
+      return user[0].name;
+    }
+    return undefined;
+  }
+
+  // const myuser = await this.userService.usersDataBackend(id);
+
+
+    // if (myuser) {
+    //   return myuser['name'];
+    // }
 
 }

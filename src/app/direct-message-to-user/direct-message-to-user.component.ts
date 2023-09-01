@@ -64,6 +64,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
   toggleChannelList: boolean = true;
+  dataIsLoading = false;
 
   triggerCRUDHTML: boolean = true;
   loading: boolean = false;
@@ -101,7 +102,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   }
 
   ngAfterViewChecked(): void {
-    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.schrollToBottom();
   }
 
   ngOnDestroy() {
@@ -233,6 +234,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
             const filteredData = messagesForUser.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
             this.messageData = sortDataAfterTime;
+            this.dataIsLoading = true;
           } else {
             this.messageData = [];
           }
@@ -412,6 +414,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   }
 
   async sendDirectMessageToUser(userId: string) {
+    this.dataIsLoading = true;
     if (this.messageInput.length > 0) {
       console.log('messageInput', this.messageInput);
       const message: DirectMessageToUserInterface = {
@@ -461,6 +464,14 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       this.messageData = this.messageData.filter((message) => message.id !== messageId);
     } catch (error) {
       console.error('Error deleting message:', error);
+    }
+  }
+
+  schrollToBottom() {
+    if (this.dataIsLoading === true) {
+      console.log('is data loading?', this.dataIsLoading)
+      this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+      this.dataIsLoading = false;
     }
   }
 }
