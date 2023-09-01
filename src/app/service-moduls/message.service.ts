@@ -14,7 +14,7 @@ export interface MessageDataInterface {
   sentBy?: string;
   picture?: string;
   sentById?: string;
-  mentionedUser?: string;
+  mentionedUser?: any;
   senderName?: string;
   numberOfThreads?: any;
 }

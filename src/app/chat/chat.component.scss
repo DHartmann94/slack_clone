@@ -341,10 +341,26 @@
   justify-content: center;
 }
 
+.mentions-button {
+  position: absolute;
+  top: -5px;
+  
+}
+
+.mention-right {
+  left: -5px;
+}
+
+.mention-left {
+  right: -5px;
+}
+
+
+
 .chat-message {
   padding-top: 20px;
   padding-bottom: 25px;
-
+  position: relative;
   @media (max-width: 380px) {}
 }
 
@@ -1054,6 +1070,7 @@ section {
 }
 
 .delete-mention {
+  cursor: pointer;
   position: absolute;
   top: -7px;
   right: -7px;

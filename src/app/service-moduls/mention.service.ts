@@ -47,8 +47,9 @@ export class MentionService {
   /// evtl. reicht das Array mentionMessage -> 
   // TODO -> ID,s übergeben an Message
   updateInputField(user: any) {
-    this.mentionInMessage.push(user);
-
+    if (!this.mentionInMessage.includes(user)) {
+      this.mentionInMessage.push(user);
+    } 
     // this.mentionInMessage.forEach((u: { id: any; }) => {
     //   this.mentionedUserIds.push(u.id);
     // });
@@ -57,5 +58,9 @@ export class MentionService {
   deleteMention(index:number) {
     this.mentionInMessage.splice(index, 1);
 
+  }
+
+  resetArray() {
+    this.mentionInMessage = [];
   }
 }

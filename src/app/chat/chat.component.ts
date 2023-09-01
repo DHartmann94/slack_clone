@@ -370,7 +370,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
         emojis: [],
         thread: threadId,
         channel: this.channelId,
-        mentionedUser: 'user_id_here',
+        mentionedUser: this.mentionService.mentionInMessage,
         channelId: userIdInputSearch,
       };
 
@@ -396,6 +396,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
+    this.mentionService.resetArray();
   }
 
   addMention(user: any) {
@@ -464,6 +465,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
   }
+
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
