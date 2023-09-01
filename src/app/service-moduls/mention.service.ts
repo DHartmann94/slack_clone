@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { UserDataInterface, UserDataService } from './user.service';
 import { MessageDataInterface, MessageDataService } from './message.service';
 import { ThreadDataInterface } from './thread.service';
@@ -16,8 +16,11 @@ export class MentionService {
   chatToggledWithButton = true;
   mentionInMessage:any = [];
   mentionedUserIds:any = [];
+  mentionListOpen:boolean = false;
 
-  constructor(public userService: UserDataService) { }
+  constructor(
+    public userService: UserDataService,
+    ) { }
 
   async getUsers(userData: [], currentUser: string) {
     this.usersInCannel = [];
@@ -65,5 +68,10 @@ export class MentionService {
   checkForMention(mentionedUser:any[], CUid:string) {
     return mentionedUser.includes(CUid);
   }
+
+  async resolveMentionedUser(id:string) {
+    const myuser = await this.userService.usersDataBackend(id);
+    
+      }
 
 }
