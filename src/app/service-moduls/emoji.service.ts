@@ -74,7 +74,6 @@ export class EmojiService {
 
 
   existEmoji(index: number, typedEmoji: string, messageData: MessageDataInterface[]) {
-    debugger
     return messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
     });

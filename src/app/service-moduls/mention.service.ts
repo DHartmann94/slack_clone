@@ -43,18 +43,12 @@ export class MentionService {
     event.stopPropagation();
   }
 
-
-
-  /// evtl. reicht das Array mentionMessage -> 
-  // TODO -> ID,s übergeben an Message
   updateInputField(user: any) {
     if (!this.mentionInMessage.includes(user)) {
       this.mentionInMessage.push(user);
     } 
-    // this.mentionInMessage.forEach((u: { id: any; }) => {
-    //   this.mentionedUserIds.push(u.id);
-    // });
   }
+
 
   deleteMention(index:number) {
     this.mentionInMessage.splice(index, 1);
@@ -69,9 +63,12 @@ export class MentionService {
     return mentionedUser.includes(CUid);
   }
 
-  // async resolveMentionedUser(id:string) {
-  //   const myuser = await this.userService.usersDataBackend(id);
+ resolveMentionedUser(id:string) {
+    // const myuser = await this.userService.usersDataBackend(id);
     
-  //     }
+    
+    
+
+    }
 
 }
