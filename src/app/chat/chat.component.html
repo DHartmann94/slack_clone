@@ -193,10 +193,13 @@
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
               (click)="addMention(user)">@{{ user.user.name }}</button>
           </mat-menu>
-
         </div>
         <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
-          (click)="sendMessage(channel.id)"></div>
+          (click)="sendMessage(channel.id)">
+        </div>
+      </div>
+      <div class="button-backlayer">
+        <mat-icon>send</mat-icon>
       </div>
     </div>
   </div>
