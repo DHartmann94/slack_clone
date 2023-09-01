@@ -17,13 +17,10 @@ export class ChatBehaviorService {
   hideChat: boolean = true;
   hideHeader: boolean = true;
   toggleDirectChat: boolean = true;
-  toggleSearchBar: boolean = true;
+  toggleSearchBar: boolean = false;
+  headerMoblieView: boolean = false;
 
   triggerChat() {
     this.crudTriggeredSubject.next();
-  }
-
-  toggleHeaderView(show: boolean) {
-    this.headerViewSubject.next(show);
   }
 }

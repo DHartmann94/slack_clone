@@ -10,6 +10,8 @@ import { Firestore, addDoc, arrayUnion, collection, doc, getDoc, onSnapshot, upd
 import { firstValueFrom } from 'rxjs';
 import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
 import { DirectMessageService, DirectMessageInterface } from '../service-moduls/direct-message.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 
 @Component({
@@ -61,10 +63,11 @@ export class ChannelsComponent implements OnInit {
     private channelDataResolver: ChannelDataResolverService,
     private directMessageService: DirectMessageService,
     private userDataResolver: UserDataResolveService,
-    private chatBehavior: ChatBehaviorService,
+    public chatBehavior: ChatBehaviorService,
     private fbChannel: FormBuilder,
     private fbUser: FormBuilder,
     public directMessageToUserService: DirectMessageToUserService,
+    private breakpointObserver: BreakpointObserver,
   ) { }
 
   ngOnInit(): void {
@@ -74,6 +77,13 @@ export class ChannelsComponent implements OnInit {
     });
     this.userForm = this.fbUser.group({
       userName: ['', [Validators.required]],
+    });
+    this.breakpointObserver.observe('(max-width: 380px)').subscribe(result => {
+      if (result.matches) {
+        this.chatBehavior.headerMoblieView = true;
+      } else {
+        this.chatBehavior.headerMoblieView = false;
+      }
     });
     this.getChannelData();
     this.getUserData();
@@ -148,7 +158,8 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
     this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
     this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
-    this.chatBehavior.toggleHeaderView(true);
+    this.chatBehavior.toggleSearchBar = false;
+    this.chatBehavior.headerMoblieView = true;
   }
 
   /* selectDirectChat(directChatId: any) {

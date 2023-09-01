@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, HostListener, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
@@ -17,8 +17,6 @@ import { ChannelDataResolverService } from '../service-moduls/channel-data-resol
   styleUrls: ['./header-bar.component.scss']
 })
 export class HeaderBarComponent {
-  originalHeaderView!: boolean;
-  headerMoveMoblieView: boolean = true;
   showIcon = false;
   statusColor = 'Active';
   isLogoutContainerOpen: boolean = false;
@@ -75,10 +73,6 @@ export class HeaderBarComponent {
     this.getCurrentUserId();
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.colorStatus();
-    this.chatBehaviorService.headerView$.subscribe(show => {
-      this.originalHeaderView = this.headerMoveMoblieView; 
-      this.headerMoveMoblieView = false;
-    });
     await this.userDataService.getCurrentUserData(this.userDataService.currentUser);
     this.getDataFromChannel();
   }
@@ -263,8 +257,11 @@ export class HeaderBarComponent {
   backToChannelMobile() {
     this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
     this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
-    this.headerMoveMoblieView = this.originalHeaderView;
     this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
+    if (this.chatBehaviorService.toggleDirectChat) {
+      this.chatBehaviorService.toggleSearchBar = false;
+      this.chatBehaviorService.headerMoblieView = false 
+    }
   }
   /**
  * Saves the selected profile picture to the database.
