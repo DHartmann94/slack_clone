@@ -111,8 +111,11 @@
     }
 }
 
-@media(min-width: 620px) {
+@media(max-width: 1920px) {
     .direct-chat-icon {
         display: none;
+        .edit-icon {
+            display: none;
+        }
     }
 }
