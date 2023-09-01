@@ -69,9 +69,9 @@ export class MentionService {
     return mentionedUser.includes(CUid);
   }
 
-  async resolveMentionedUser(id:string) {
-    const myuser = await this.userService.usersDataBackend(id);
+  // async resolveMentionedUser(id:string) {
+  //   const myuser = await this.userService.usersDataBackend(id);
     
-      }
+  //     }
 
 }

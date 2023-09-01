@@ -131,8 +131,9 @@
               <div #menuTrigger (click)="showMention(index, messageData)" class="mentions-button" *ngIf="message.mentionedUser.length > 1"
                 [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  mentionService.checkForMention(message.mentionedUser , currentUserId)}">
                 @
-                <div id="mentions-in-message{{index}}" class="mention-in-message">
-                  <span *ngFor="let id of message.mentionedUser" >{{mentionService.resolveMentionedUser(id.id)}}</span>
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none">
+                  <span *ngFor="let id of message.mentionedUser" ></span>
+                  <!-- mentionService.resolveMentionedUser(id.id) -->
                 </div>
               </div>
 
