@@ -22,7 +22,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
   styleUrls: ['./chat.component.scss'],
 })
 
-export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
+export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
@@ -66,16 +66,16 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   toggleChannelList: boolean = false;
   allLists: boolean = false;
   directMessageToUserOpen: boolean = false;
-  
+
   deleteUserFormChannel: any;
   editChannelName: boolean = false;
   editChannelDescription: boolean = false;
   openEditChannel: boolean = false;
   emojipickeractive = false;
   reactionListOpen = false;
+  dataIsLoading = false;
 
   private chatTriggerSubscription!: Subscription;
-  toggleSearchBar: boolean = true;
 
   inviteUserOrChannel!: string;
   searchResultsChannels: ChannelDataInterface[] = [];
@@ -98,7 +98,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
     private channelDataService: ChannelDataService,
     private channelDataResolver: ChannelDataResolverService,
     private userDataResolver: UserDataResolveService,
-    private chatBehavior: ChatBehaviorService,
+    public chatBehavior: ChatBehaviorService,
     private fbChannelName: FormBuilder,
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
@@ -137,7 +137,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   ngAfterViewChecked(): void {
-    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.schrollToBottom();
   }
 
   ngOnDestroy() {
@@ -181,7 +181,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   toggleChat() {
-    this.toggleSearchBar = !this.toggleSearchBar;
+    this.chatBehavior.toggleSearchBar = !this.chatBehavior.toggleSearchBar;
     this.inviteUserOrChannel = '';
     this.toggleUserList = false;
     this.toggleChannelList = false;
@@ -361,6 +361,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   async sendMessage(userIdInputSearch: any) {
+    this.dataIsLoading = true;
     if (this.messageInput.length > 0) {
       const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
@@ -400,8 +401,8 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
   }
 
   addMention(user: any) {
-    if(!this.mentionService.chatToggledWithButton) {
-       this.messageInput=  this.messageInput.slice(0, -1);
+    if (!this.mentionService.chatToggledWithButton) {
+      this.messageInput = this.messageInput.slice(0, -1);
     }
     this.mentionService.updateInputField(user);
   }
@@ -737,5 +738,11 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked  {
 
   getUserById(userId: any) {
     return this.userData.find(user => user.id === userId) || null;
+  }
+
+  schrollToBottom() {
+    console.log('is data loading?', this.dataIsLoading)
+    this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
+    this.dataIsLoading = false;
   }
 }
