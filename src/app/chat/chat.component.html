@@ -21,7 +21,7 @@
         </div>
       </div>
     </div>
-    
+
     <div class="search-input-channels" *ngIf="this.chatBehavior.toggleSearchBar">
       <div class="message-head">
         <h2>New Message</h2>
@@ -127,13 +127,13 @@
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}
-              
+
               <div #menuTrigger (click)="showMention(index, messageData)" class="mentions-button" *ngIf="message.mentionedUser.length > 1"
                 [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  message.mentionedUser.id === currentUserId }">
                 @
                 <div id="mentions-in-message{{index}}" class="mention-in-message d-none">
                   <span *ngFor="let user of message.mentionedUser">{{mentionService.resolveMentionedUser(user.id)}}</span>
-                  
+
                 </div>
               </div>
 

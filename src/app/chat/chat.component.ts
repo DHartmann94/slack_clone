@@ -364,41 +364,44 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   async sendMessage(userIdInputSearch: any) {
     this.dataIsLoading = true;
-    if (this.messageInput.length > 0) {
-      const threadId = this.threadDataService.generateThreadId();
-      const message: MessageDataInterface = {
-        messageText: this.messageInput,
-        sentById: this.currentUserId,
-        time: Date.now(),
-        emojis: [],
-        thread: threadId,
-        channel: this.channelId,
-        mentionedUser: this.mentionService.mentionInMessage,
-        channelId: userIdInputSearch,
-      };
 
-      if (this.emojipickeractive) {
-        this.emojiService.toggleEmojiPicker('chat');
-      }
-
-      this.messageData.push(message);
-      this.messageInput = [''];
-      this.messageDataService.sendMessage(message).subscribe(
-        (newMessage) => {
-          if (newMessage && newMessage.id) {
-            const index = this.messageData.findIndex((msg) => msg === message);
-            if (index !== -1) {
-              this.messageData[index].id = newMessage.id;
-            }
-          }
-        },
-        (error) => {
-          console.error('Error sending message:', error);
-        }
-      );
-    } else {
+    if (this.messageInput.length === 0) {
       console.log('Message input is empty. Cannot send an empty message.');
+      return;
     }
+    const threadId = this.threadDataService.generateThreadId();
+    const message: MessageDataInterface = {
+      messageText: this.messageInput,
+      sentById: this.currentUserId,
+      time: Date.now(),
+      emojis: [],
+      thread: threadId,
+      channel: this.channelId,
+      mentionedUser: this.mentionService.mentionInMessage,
+      channelId: userIdInputSearch,
+    };
+
+    if (this.emojipickeractive) {
+      this.emojiService.toggleEmojiPicker('chat');
+    }
+
+    this.messageData.push(message);
+    this.messageInput = [''];
+
+    this.messageDataService.sendMessage(message).subscribe(
+      (newMessage) => {
+        if (newMessage && newMessage.id) {
+          const index = this.messageData.findIndex((msg) => msg === message);
+          if (index !== -1) {
+            this.messageData[index].id = newMessage.id;
+          }
+        }
+      },
+      (error) => {
+        console.error('Error sending message:', error);
+      }
+    );
+
     this.mentionService.resetArray();
   }
 
