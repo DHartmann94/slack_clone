@@ -187,9 +187,10 @@ export class AuthenticationService {
     await this.setUserInactive();
 
     const auth = getAuth();
-    await signOut(auth).then(() => {
+    await signOut(auth).then(async () => {
       // Sign-out successful.
-      this.router.navigateByUrl("/sign-in");
+      await this.router.navigateByUrl("/sign-in");
+      window.location.reload();
     }).catch((error) => {
       console.log('ERROR signOut: ', error);
     });
