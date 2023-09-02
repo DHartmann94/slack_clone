@@ -431,7 +431,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   schrollToBottom() {
     if (this.dataIsLoading === true) {
-      console.log('is data loading?', this.dataIsLoading)
       this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
       this.dataIsLoading = false;
     }

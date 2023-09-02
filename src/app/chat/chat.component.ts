@@ -74,7 +74,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   emojipickeractive = false;
   reactionListOpen = false;
   dataIsLoading = false;
-  mentionListOpen:boolean = false;
+  mentionListOpen: boolean = false;
 
   private chatTriggerSubscription!: Subscription;
 
@@ -764,7 +764,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   schrollToBottom() {
     if (this.dataIsLoading === true) {
-      console.log('is data loading?', this.dataIsLoading)
       this.scrollService.scrollToBottom(this.chatContainer.nativeElement);
       this.dataIsLoading = false;
     }
