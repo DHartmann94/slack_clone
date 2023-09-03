@@ -20,6 +20,11 @@ export class ChatBehaviorService {
   toggleSearchBar: boolean = false;
   headerMoblieView: boolean = false;
 
+  isChatOpenResponsive: boolean = true;
+  isThreadOpenResponsive: boolean = false;
+  isDirectChatToUserOpenResponsive: boolean = false;
+  isResponsive: boolean = false;
+
   triggerChat() {
     this.crudTriggeredSubject.next();
   }

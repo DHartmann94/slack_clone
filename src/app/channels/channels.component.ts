@@ -159,6 +159,10 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
     this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
     this.chatBehavior.toggleSearchBar = false;
+
+    this.chatBehavior.isChatOpenResponsive = true;
+    this.chatBehavior.isThreadOpenResponsive = false;
+    this.chatBehavior.isDirectChatToUserOpenResponsive = false;
     if (window.innerWidth < 420) {
       this.chatBehavior.headerMoblieView = true;
     }
@@ -318,6 +322,10 @@ export class ChannelsComponent implements OnInit {
 
     this.selectedUser = this.getUserById(userId);
     this.userDataResolver.sendDataUsers(this.selectedUser);
+
+    this.chatBehavior.isChatOpenResponsive = false;
+    this.chatBehavior.isThreadOpenResponsive = false;
+    this.chatBehavior.isDirectChatToUserOpenResponsive = true;
 
   }
 }

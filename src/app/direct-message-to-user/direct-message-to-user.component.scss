@@ -57,7 +57,7 @@
 
 .chat-card {
   position: relative;
-  min-width: 500px;
+  min-width: 320px;
   min-height: calc(100vh - 130px);
   border-radius: 15px;
   padding: 25px 35px 111px;
@@ -66,6 +66,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media(max-width: 880px) {
+    padding: 0px;
+  }
 }
 
 .shadow-box {
@@ -374,6 +378,10 @@
       background-color: white;
     }
   }
+
+  @media(max-width: 880px) {
+    padding: 0 10px 0 10px;
+  }
 }
 
 .chat-right {
@@ -386,6 +394,10 @@
 
   &:hover {
     background: var(--bg-color, #eceefe);
+  }
+
+  @media(max-width: 880px) {
+    padding: 0 10px 0 10px;
   }
 }
 

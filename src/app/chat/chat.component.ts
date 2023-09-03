@@ -665,6 +665,10 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   }
 
   openThread(threadID: string) {
+    this.chatBehavior.isChatOpenResponsive = false;
+    this.chatBehavior.isThreadOpenResponsive = true;
+    this.chatBehavior.isDirectChatToUserOpenResponsive = false;
+
     this.threadDataService.setThreadId(threadID);
   }
 
