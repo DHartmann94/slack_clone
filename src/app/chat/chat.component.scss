@@ -414,6 +414,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    :first-child {
+      display: flex !important;
+    }
+  }
+}
+
+.mention-popup-right {
+  top: -0px;
+}
+
+.mention-popup-left {
+  top: -0px;
 }
 
 .mention-right {
@@ -430,11 +445,14 @@
 
 .mention-in-message {
   position: absolute;
-  display: flex;
-  min-height: 100px;
-  width: 100px;
-  background-color: #ffffff;
-  color: #000;
+  top: -120px;
+  right: 10px;
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 20px;
+  background-color:#b3b5f8;
+  color: black;
 }
 
 .mention-active {
@@ -715,7 +733,7 @@
     align-items: center;
     position: relative;
     top: 80px;
-  
+
     @media (max-width: 380px) {
       display: none;
     }
