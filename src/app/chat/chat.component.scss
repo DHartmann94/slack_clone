@@ -12,15 +12,12 @@
     padding: 0px;
   }
 
-  @media(max-width: 670px) {
-    display: none;
-  }
-
   @media(max-width: 380px) {
     padding: 66px 25px 68px 25px;
     border-radius: 0px;
     margin: 0;
     height: 88vh;
+    width: 380px;
   }
 
   .shadow-box {
