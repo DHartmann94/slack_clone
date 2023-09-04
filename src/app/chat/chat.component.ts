@@ -402,25 +402,25 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.mentionService.resetArray();
   }
 
-  showMention(index: number, messageData: MessageDataInterface[]) {
-    const item = this.el.nativeElement.querySelector(`#mentions-in-message${index}`);
+  // showMention(index: number, messageData: MessageDataInterface[]) {
+  //   const item = this.el.nativeElement.querySelector(`#mentions-in-message${index}`);
 
-    messageData.forEach((message, i) => {
-      if (i !== index) {
-        const hideItem = this.el.nativeElement.querySelector(`#mentions-in-message${i}`);
-        if (hideItem) {
-          this.renderer.addClass(hideItem, 'd-none');
-        }
-      }
-    });
+  //   messageData.forEach((message, i) => {
+  //     if (i !== index) {
+  //       const hideItem = this.el.nativeElement.querySelector(`#mentions-in-message${i}`);
+  //       if (hideItem) {
+  //         this.renderer.addClass(hideItem, 'd-none');
+  //       }
+  //     }
+  //   });
 
-    if (!this.mentionListOpen) {
-      this.renderer.removeClass(item, 'd-none');
-      this.mentionListOpen = true;
-    } else {
-      this.mentionListOpen = false;
-    }
-  }
+  //   if (!this.mentionListOpen) {
+  //     this.renderer.removeClass(item, 'd-none');
+  //     this.mentionListOpen = true;
+  //   } else {
+  //     this.mentionListOpen = false;
+  //   }
+  // }
 
   addMention(user: any) {
     if (!this.mentionService.chatToggledWithButton) {

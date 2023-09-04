@@ -28,8 +28,9 @@
         }
     }
 
-    @media (max-width: 1600px) {
-       display: none;
+    @media(max-width: 1380px) {
+        min-width: 320px;
+        width: 99%;
     }
 }
 

@@ -38,6 +38,10 @@
         .grid-view-threads {
             grid-column: 5/7;
             grid-row: 2/11;
+            
+            @media(max-width: 1380px) {
+                width: 100%;
+            }
         }
 
         .grid-view-chat {
@@ -80,13 +84,13 @@
 
 @media(max-width: 380px) {
     .hidden-channel {
-        display: none;
+        display: none !important;
     }
 }
 
 @media(max-width: 380px) {
     .hidden-chat {
-        display: none;
+        display: none !important;
     }
 }
 

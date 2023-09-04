@@ -128,13 +128,13 @@
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}
 
-              <div #menuTrigger (click)="showMention(index, messageData)" class="mentions-button" *ngIf="message.mentionedUser.length > 1"
-                [ngClass]="{ 'mention-right': message.sentById === currentUserId, 'mention-left': message.sentById !== currentUserId, 'mention-active':  message.mentionedUser.id === currentUserId }">
-                @
-                <div id="mentions-in-message{{index}}" class="mention-in-message d-none">
-                  <span *ngFor="let user of message.mentionedUser">{{mentionService.resolveMentionedUser(user.id)}}</span>
-
+              <div #menuTrigger class="mentions-button" *ngIf="message.mentionedUser.length > 0"
+                [ngClass]="{ 'mention-right': message.sentById === userDataService.currentUser, 'mention-left': message.sentById !== userDataService.currentUser, 'mention-active':  mentionService.resolveForRedDisplay(message.mentionedUser) }">
+                @ 
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none" [ngClass]="{'mention-popup-right': message.sentById === userDataService.currentUser, 'mention-popup-left': message.sentById !== userDataService.currentUser}">
+                  <span style=" white-space: nowrap;" *ngFor="let user of message.mentionedUser">@{{mentionService.resolveMentionedUser(user.id)}}</span>
                 </div>
+
               </div>
 
             </span>

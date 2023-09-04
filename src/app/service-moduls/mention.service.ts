@@ -71,11 +71,14 @@ export class MentionService {
     return undefined;
   }
 
-  // const myuser = await this.userService.usersDataBackend(id);
-
-
-    // if (myuser) {
-    //   return myuser['name'];
-    // }
+  resolveForRedDisplay(mentionUsers:any []) {
+    for (const users of mentionUsers){
+      if ( users.id.includes(this.userService.currentUser)) {
+        return true;
+      } 
+      
+    }
+    return false;
+  }
 
 }

@@ -12,15 +12,12 @@
     padding: 0px;
   }
 
-  @media(max-width: 670px) {
-    display: none;
-  }
-
   @media(max-width: 380px) {
     padding: 66px 25px 68px 25px;
     border-radius: 0px;
     margin: 0;
     height: 88vh;
+    width: 380px;
   }
 
   .shadow-box {
@@ -404,16 +401,23 @@
   position: absolute;
   top: -10px;
   padding: 10px;
-  background-color: #a0a0d6;
+  background-color: #ffffff;
   color: #535af1;
   border: 0.5px solid rgb(188, 188, 188);
   border-radius: 20px;
-  box-shadow: 2px 2px 2px;
+  box-shadow: 2px 2px 5px rgb(87, 86, 86);
   height: 8px;
   width: 8px;
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
+  &:hover {
+    :first-child {
+      display: flex !important;
+    }
+  }
 }
 
 .mention-right {
@@ -430,16 +434,26 @@
 
 .mention-in-message {
   position: absolute;
-  display: flex;
-  min-height: 100px;
-  width: 100px;
-  background-color: #ffffff;
-  color: #000;
+  top: 10px;
+  display: none;
+  flex-direction: column;
+  padding: 10px;
+  border-radius: 20px;
+  background-color:#b3b5f8;
+  color: black;
+}
+
+.mention-popup-right {
+  right: 30px;
+}
+
+.mention-popup-left {
+  left: 30px;
 }
 
 .mention-active {
   color: white;
-  background-color: red;
+  background-color: rgb(193, 32, 32);
 }
 
 
@@ -715,7 +729,7 @@
     align-items: center;
     position: relative;
     top: 80px;
-  
+
     @media (max-width: 380px) {
       display: none;
     }
@@ -1229,6 +1243,7 @@ section {
 
 
 .delete-message-left-corner {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1237,6 +1252,7 @@ section {
   opacity: 0.1;
   font-size: 20px;
   transition: transform ease-in-out 200ms;
+  cursor: pointer;
 
   &:hover {
     color: rgb(147, 23, 23);
