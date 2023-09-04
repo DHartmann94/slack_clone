@@ -49,11 +49,6 @@
             grid-column: 2/5;
             width: 100%;
 
-            //deaktiviert, weil sont der chat nicht toggle bar ist, bei max.width: 380px
-            /* @media (max-width: 840px) {
-                display: none;
-            } */
-
             @media(max-width: 380px) {
                 width: 100%;
             }
