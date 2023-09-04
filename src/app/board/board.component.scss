@@ -38,17 +38,16 @@
         .grid-view-threads {
             grid-column: 5/7;
             grid-row: 2/11;
+            
+            @media(max-width: 1380px) {
+                width: 100%;
+            }
         }
 
         .grid-view-chat {
             grid-row: 2/11;
             grid-column: 2/5;
             width: 100%;
-
-            //deaktiviert, weil sont der chat nicht toggle bar ist, bei max.width: 380px
-            /* @media (max-width: 840px) {
-                display: none;
-            } */
 
             @media(max-width: 380px) {
                 width: 100%;
