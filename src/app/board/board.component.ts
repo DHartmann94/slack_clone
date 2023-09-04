@@ -22,7 +22,7 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.breakpointObserver.observe([Breakpoints.Handset,'(max-width: 1268px)']).subscribe(result => {
+    this.breakpointObserver.observe([Breakpoints.Handset,'(max-width: 1380px)']).subscribe(result => {
       this.chatBehavior.isResponsive = result.matches;
     });
   }

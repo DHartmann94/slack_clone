@@ -27,6 +27,11 @@
             }
         }
     }
+
+    @media(max-width: 1380px) {
+        min-width: 320px;
+        width: 99%;
+    }
 }
 
 .chat-card {
