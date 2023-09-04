@@ -260,7 +260,7 @@ export class HeaderBarComponent {
     this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
     if (this.chatBehaviorService.toggleDirectChat) {
       this.chatBehaviorService.toggleSearchBar = false;
-      this.chatBehaviorService.headerMoblieView = false 
+      this.chatBehaviorService.headerMoblieView = false;
     }
   }
   /**
