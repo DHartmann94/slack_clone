@@ -81,11 +81,4 @@ export class MentionService {
     return false;
   }
 
-  // const myuser = await this.userService.usersDataBackend(id);
-
-
-    // if (myuser) {
-    //   return myuser['name'];
-    // }
-
 }

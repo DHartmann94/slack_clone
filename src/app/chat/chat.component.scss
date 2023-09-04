@@ -405,7 +405,7 @@
   color: #535af1;
   border: 0.5px solid rgb(188, 188, 188);
   border-radius: 20px;
-  box-shadow: 2px 2px 2px;
+  box-shadow: 2px 2px 5px rgb(87, 86, 86);
   height: 8px;
   width: 8px;
   display: flex;
@@ -1243,6 +1243,7 @@ section {
 
 
 .delete-message-left-corner {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1251,6 +1252,7 @@ section {
   opacity: 0.1;
   font-size: 20px;
   transition: transform ease-in-out 200ms;
+  cursor: pointer;
 
   &:hover {
     color: rgb(147, 23, 23);
