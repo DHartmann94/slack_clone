@@ -71,6 +71,16 @@ export class MentionService {
     return undefined;
   }
 
+  resolveForRedDisplay(mentionUsers:any []) {
+    for (const users of mentionUsers){
+      if ( users.id.includes(this.userService.currentUser)) {
+        return true;
+      } 
+      
+    }
+    return false;
+  }
+
   // const myuser = await this.userService.usersDataBackend(id);
 
 
