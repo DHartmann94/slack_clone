@@ -1,10 +1,15 @@
 
-<div class="logo-parent">
+<div  *ngIf="!mobile" class="logo-parent">
     <div [ngClass]="{'make-logo':toLeft}" class="logo-container">
         <img class="logo" src="assets/img/logo-quarter.png" alt="Logo">
         <div class="animation-headline">DABubble</div>
-    </div>   
-    
+    </div>  
 </div>
 
-<div class="background" *ngIf="!workmode" [ngClass]="{'hide-bg' : hideIntro }"></div>
+<div  class="background" *ngIf="!workmode" [ngClass]="{'hide-bg' : hideIntro }"></div>
+
+<div *ngIf="mobile" class="logo-parent">
+    <div [ngClass]="{'hide-bg' : hideIntro }" class="logo-container-mb">
+        <img class="logo-mb" src="assets/img/logo-quarter.png" alt="Logo">
+    </div>  
+</div>

@@ -124,3 +124,54 @@
         
     }
 }
+
+// ******** RESPONSIVE ANIMATION *************
+
+.logo-container-mb {
+    position: relative;
+    top: 50%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+    height: 150px;
+    width: 300px;
+    @extend .center;
+}
+
+
+.logo-mb {
+    height: 90px;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    // transform: translate(-50%, -50%);
+    animation: slideLeftMB 2s ease;
+    z-index: 3;
+    opacity: 1 !important;
+    
+}
+
+@keyframes slideLeftMB {
+    0% {
+        transform:  rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(720deg);
+    }
+}
+
+.animation-headline-mb {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0;
+    animation: slideRight 2s ease;
+    @extend .center;
+}
+
+
