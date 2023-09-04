@@ -423,14 +423,6 @@
   }
 }
 
-.mention-popup-right {
-  top: -0px;
-}
-
-.mention-popup-left {
-  top: -0px;
-}
-
 .mention-right {
   left: -10px;
 }
@@ -445,14 +437,21 @@
 
 .mention-in-message {
   position: absolute;
-  top: -120px;
-  right: 10px;
+  top: 10px;
   display: none;
   flex-direction: column;
   padding: 10px;
   border-radius: 20px;
   background-color:#b3b5f8;
   color: black;
+}
+
+.mention-popup-right {
+  right: 30px;
+}
+
+.mention-popup-left {
+  left: 30px;
 }
 
 .mention-active {
