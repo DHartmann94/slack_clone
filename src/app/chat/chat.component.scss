@@ -1211,7 +1211,8 @@ section {
   gap: 10px;
 
   @media (max-width: 750px) {
-    display: none;
+    height: 40px;
+    overflow-x: scroll;
   }
 }
 
@@ -1224,12 +1225,19 @@ section {
   padding: 2px 5px;
   border-radius: 5px;
   position: relative;
+  white-space: nowrap;
 
   &:hover {
     .delete-mention {
       display: flex;
     }
   }
+
+  @media (max-width:380px) {
+    font-size: 10px;
+  }
+
+
 }
 
 .delete-mention {
