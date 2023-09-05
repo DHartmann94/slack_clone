@@ -317,8 +317,18 @@
   }
 }
 
-.mention-menu {
+.mention-menu > mat-menu {
   border-radius: 20px !important;
+
+  @media (max-width: 380px) { 
+    position: absolute;
+    left: 0;
+    bottom: 50px;
+    width: 100%;
+    height: 50px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+  }
 }
 
 .chat-left {
@@ -856,6 +866,20 @@ $light-blue: #eceefe;
 
 @media (min-width: 420px) {
   .button-backlayer {
+    display: none;
+  }
+}
+
+@media (max-width: 380px) {
+  .emoji-mobile {
+    position: absolute;
+    left: 240px;
+    bottom: 13px;
+  }
+}
+
+@media (min-width: 420px) {
+  .emoji-mobile {
     display: none;
   }
 }

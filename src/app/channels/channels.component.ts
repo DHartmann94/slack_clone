@@ -81,6 +81,8 @@ export class ChannelsComponent implements OnInit {
     this.breakpointObserver.observe('(max-width: 380px)').subscribe(result => {
       if (result.matches) {
         this.chatBehavior.headerMoblieView = false;
+      } else {
+        this.chatBehavior.headerMoblieView = false;
       }
     });
     this.getChannelData();
@@ -161,7 +163,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.isChatOpenResponsive = true;
     this.chatBehavior.isThreadOpenResponsive = false;
     this.chatBehavior.isDirectChatToUserOpenResponsive = false;
-    if (window.innerWidth < 420) {
+    if (window.innerWidth <= 380) {
       this.chatBehavior.headerMoblieView = true;
     }
   }
