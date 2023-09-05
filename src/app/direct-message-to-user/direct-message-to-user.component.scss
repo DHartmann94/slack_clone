@@ -1,34 +1,23 @@
-.threads-card {
+.direct-chat-card {
   height: calc(100vh - 150px);
   border-radius: 15px;
-  padding: 32px 30px;
+  padding: 100px 30px 244px 30px;
   margin: 15px 10px 0 10px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 
-  .threads-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 65px;
-
-    .thread-info {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      column-gap: 10px;
-
-      h2 {
-        margin: 0;
-      }
-    }
+  @media(max-width: 880px) {
+    padding: 0;
   }
 
-  @media (max-width: 1600px) {
-    //  display: none;
-    // todo: display width
+  @media(max-width: 380px) {
+    padding: 66px 25px 68px 25px;
+    border-radius: 0;
+    margin: 0;
+    height: 88vh;
+    width: 380px;
+    overflow-y: hidden;
   }
 }
 
@@ -38,9 +27,20 @@
 }
 
 .status {
-  position: absolute;
-  top: 57px;
-  left: 52px;
+  position: relative;
+  top: 14px;
+  left: -4px;
+  width: 16.667px;
+  height: 16.667px;
+  border-radius: 100%;
+  border: 2px solid var(--white);
+  background-color: #92C83E;
+}
+
+.status-empty-chat {
+  position: relative;
+  top: 6px;
+  left: -33px;
   width: 16.667px;
   height: 16.667px;
   border-radius: 100%;
@@ -55,26 +55,10 @@
   line-height: normal;
 }
 
-.chat-card {
-  position: relative;
-  min-width: 320px;
-  min-height: calc(100vh - 130px);
-  border-radius: 15px;
-  padding: 25px 35px 111px;
-  margin: 15px 10px 10px 10px;
-  /*    border-radius: 30px;*/
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  @media(max-width: 880px) {
-    padding: 0px;
-  }
-}
-
 .shadow-box {
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
   background-color: var(--white);
+  padding: 10px 0;
   height: auto;
   position: absolute;
   width: 100%;
@@ -83,6 +67,22 @@
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
   z-index: 1;
+
+  @media (max-width: 380px) {
+    padding: 0;
+  }
+
+  .chat-first-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+
+    @media (max-width: 380px) {
+      padding: 10px 15px;
+    }
+  }
 }
 
 .search-input-channels {
@@ -93,22 +93,39 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 
+  @media(max-width: 380px) {
+    padding: 5px;
+    height: auto;
+  }
+
   .message-head {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 380px) {
+      display: none;
+    }
+
     h2 {
-        font-family: "Nunito";
-        margin-top: 20px;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 700;
+      margin-top: 20px;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+
+      @media(max-width: 380px) {
+        font-size: 16px;
+        margin-left: 10px;
+        margin-top: 0;
+        margin-bottom: 5px;
+      }
     }
 
     img {
-        width: 45px;
-        object-fit: scale-down;
-        cursor: pointer;
+      width: 45px;
+      object-fit: scale-down;
+      cursor: pointer;
     }
   }
 
@@ -123,6 +140,12 @@
     border: 1px solid var(--ligth-purple-lines, #adb0d9);
     padding: 20px;
     gap: 20px;
+
+    @media(max-width: 380px) {
+      width: 85%;
+      height: 10px;
+      margin: 6px;
+    }
   }
 }
 
@@ -130,25 +153,22 @@
   margin-top: 25px;
   border-radius: 20px;
   border: 1px solid var(--ligth-purple-lines, #adb0d9);
-  background-color: var(--white);
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.08);
 
   .user-list {
     padding: 10px 0;
-    font-family: "Nunito";
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
     cursor: pointer;
 
     &:hover {
-        color: var(--c-purple);
+      color: var(--c-purple);
     }
   }
 
   .channel-list {
     padding: 10px 0;
-    font-family: "Nunito";
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -166,8 +186,11 @@
   overflow-x: hidden;
   padding-top: 20px;
   border-radius: 5px;
-  top: 82px;
-  position: relative;
+
+  @media(max-width: 380px) {
+    height: 345px;
+    padding: 40px 0;
+  }
 }
 
 .reaction-emojis {
@@ -208,18 +231,6 @@
   padding: 20px;
 }
 
-.shadow-box {
-  box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
-  height: auto;
-  position: absolute;
-  width: 100%;
-  left: 0;
-  top: 0;
-  border-top-left-radius: 20px !important;
-  border-top-right-radius: 20px !important;
-  z-index: 1;
-}
-
 .search-input-channels {
   display: flex;
   flex-direction: column;
@@ -227,7 +238,6 @@
   padding: 0 20px 15px 20px;
 
   h2 {
-    font-family: "Nunito";
     margin-top: 20px;
     font-size: 18px;
     font-style: normal;
@@ -236,7 +246,6 @@
 
   .user-list {
     padding: 10px 0;
-    font-family: "Nunito";
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -261,79 +270,27 @@
   }
 }
 
-.right-corner {
-  display: flex;
-  align-items: center;
-}
-
-.flex-row {
-  display: flex;
-  flex-direction: row;
-}
-
 .profile-pictures-chat {
   height: 70px;
   width: 70px;
   object-fit: cover;
   margin: 0 15px;
   border-radius: 50%;
-}
 
-.participant-icon {
-  height: 50px;
-  width: 50px;
-  object-fit: cover;
-  margin-right: 15px;
-  border: 2px solid white;
-  border-radius: 50%;
-}
-
-.participant-amount {
-  margin-left: 20px;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-  margin-right: 20px;
-}
-
-.add-participant {
-  height: 24px;
-  width: 24px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  cursor: pointer;
-}
-
-.add-participant-background {
-  border-radius: 20px;
-  background: var(--bg-color, #eceefe);
-  height: 40px;
-  width: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.chat-head {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  cursor: pointer;
-
-  &:hover {
-    width: auto;
-    height: auto;
-    background-color: var(--text-hover);
-    border-radius: 20px;
+  @media (max-width: 380px) {
+    width: 45px;
     height: 45px;
-    min-width: 200px;
+    object-fit: cover;
   }
 }
 
-.hash-chat-name {
-  margin-right: 15px;
+.participant-icon {
+  height: 40px;
+  width: 40px;
+  object-fit: cover;
+  margin-right: -10px;
+  border: 2px solid white;
+  border-radius: 50%;
 }
 
 .chat-name {
@@ -342,21 +299,17 @@
   font-weight: 700;
   line-height: normal;
   margin-right: 10px;
-  cursor: pointer;
+  max-width: 200px;
   transition: color 0.3s;
+  cursor: pointer;
+
+  @media (max-width: 380px) {
+    font-size: 16px;
+  }
 
   &:hover {
     color: var(--purple-2, #797ef3);
   }
-}
-
-.chat-name-blue {
-  color: var(--purple-2, #797EF3);
-  font-family: Nunito;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 }
 
 .app-emojis {
@@ -367,8 +320,16 @@
 .chat-left {
   display: flex;
   flex-direction: row;
-  padding: 0 40px 0 40px;
+  padding: 0 145px 0 45px;
   transition: background-color 0.3s;
+
+  @media(max-width: 880px) {
+    padding: 0 10px 0 10px;
+  }
+
+  @media (max-width: 380px) {
+    padding: 0 16px;
+  }
 
   &:hover {
     cursor: pointer;
@@ -378,26 +339,27 @@
       background-color: white;
     }
   }
-
-  @media(max-width: 880px) {
-    padding: 0 10px 0 10px;
-  }
 }
 
 .chat-right {
   display: flex;
   justify-content: flex-start;
   margin: 40px 0;
-  padding: 0 40px 0 40px;
+  padding: 0 45px 0 145px;
   transition: background-color 0.3s;
   flex-direction: row-reverse;
 
-  &:hover {
-    background: var(--bg-color, #eceefe);
-  }
-
   @media(max-width: 880px) {
     padding: 0 10px 0 10px;
+  }
+
+  @media (max-width: 380px) {
+    margin: 0;
+    padding: 0 16px;
+  }
+
+  &:hover {
+    background: var(--bg-color, #eceefe);
   }
 }
 
@@ -439,6 +401,19 @@
   background: white;
   position: absolute;
   top: 23px;
+
+  @media (max-width: 380px) {
+    font-size: 16px;
+    padding: 0 15px;
+  }
+}
+
+.chat-timeStamp {
+  color: var(--text-gray, #686868);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .flex-center {
@@ -449,6 +424,9 @@
 .chat-message {
   padding-top: 20px;
   padding-bottom: 25px;
+  position: relative;
+
+  @media (max-width: 380px) {}
 }
 
 .chat-message-left {
@@ -457,7 +435,7 @@
   font-weight: 400;
   line-height: normal;
   color: #000;
-  border-radius: 0px 30px 30px 30px;
+  border-radius: 0 30px 30px 30px;
   background: var(--bg-color, #eceefe);
   display: flex;
   padding: 15px;
@@ -466,6 +444,10 @@
   gap: 8px;
   align-self: stretch;
   margin: 8px 0;
+
+  @media (max-width: 380px) {
+    font-size: 14px;
+  }
 }
 
 .chat-message-right {
@@ -474,35 +456,24 @@
   font-weight: 400;
   line-height: normal;
   color: #fff;
-  border-radius: 30px 0px 30px 30px;
+  border-radius: 30px 0 30px 30px;
   background: var(--purple-2, #797ef3);
   display: inline-flex;
-  /* Änderung hier */
   padding: 15px;
   flex-direction: column;
   align-items: center;
   align-self: stretch;
   margin: 8px 0;
-}
 
-.message-content-left {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
+  @media (max-width: 380px) {
+    font-size: 14px;
+  }
 }
 
 .message-content-right {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-}
-
-.chat-timeStamp {
-  color: var(--text-gray, #686868);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
 }
 
 .chat-bubble-head {
@@ -517,11 +488,6 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-}
-
-.no-messages {
-  padding-bottom: 235px;
-  height: 151px;
 }
 
 .participant-status-no-message {
@@ -548,21 +514,6 @@
   cursor: pointer;
 }
 
-.wid-max {
-  width: 100%;
-}
-
-.flex-right {
-  justify-content: flex-end;
-}
-
-.messages-right {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 8px;
-}
-
 .time-partLine {
   position: relative;
   top: -40px;
@@ -573,6 +524,7 @@
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  position: relative;
 }
 
 .list-of-reactions {
@@ -584,10 +536,6 @@
   display: none;
 }
 
-.show-list-of-reactions {
-  display: unset;
-}
-
 .list-item-reaction {
   width: calc(90% - 20px);
   height: 30px;
@@ -596,7 +544,6 @@
   align-items: center;
   margin: 10px;
 }
-
 
 .reaction-icon-container {
   display: flex;
@@ -643,6 +590,12 @@
   bottom: 20px;
   left: 20px;
   background: #fff;
+
+  @media (max-width: 380px) {
+    margin: 0;
+    bottom: 15px;
+    left: 20px;
+  }
 }
 
 .text-editor {
@@ -651,6 +604,52 @@
   min-height: 145px;
   padding: 20px;
   margin-top: 6px;
+
+  @media (max-width: 380px) {
+    min-height: 30px;
+    margin: 0;
+    padding: 8px;
+    width: 75%;
+  }
+
+  textarea {
+    border: 0;
+    font-size: 18px;
+    font-weight: 400;
+    width: 100%;
+    height: 30px;
+    resize: none;
+
+    @media (max-width: 380px) {
+      position: relative;
+      top: 7px;
+      font-size: 14px;
+      max-height: 25px;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  .text-editor-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    top: 80px;
+
+    @media (max-width: 380px) {
+      width: 0;
+      height: 0;
+
+      * {
+        width: 0;
+        height: 0;
+      }
+    }
+  }
 }
 
 textarea {
@@ -670,12 +669,6 @@ textarea {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-}
-
-.vertical-line-textEditor {
-  border: solid 1px #adb0d9;
-  width: 0px;
-  height: 40px;
 }
 
 .text-editor-left-btns {
@@ -745,10 +738,31 @@ $light-blue: #eceefe;
   box-shadow: 0 0 6px 3px $light-blue;
 }
 
-.mail-container {
-  @extend .container;
-  background-image: url(../../assets/img/icons/alternate_email.svg);
-  transition: background-image 0.3s, box-shadow 0.3s;
+.mail-container:hover {
+  background-image: url(../../assets/img/icons/alternate_email_hover.svg);
+  box-shadow: 0 0 6px 3px $light-blue;
+}
+
+@media (max-width: 380px) {
+  .button-backlayer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100px;
+    background: var(--purple-1, #444DF2);
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 290px;
+    bottom: 0;
+    width: 35px;
+    height: 35px;
+    padding: 8px 10px 12px 10px;
+
+    .send {
+      padding: 5px 0 0 3px;
+      color: var(--white);
+    }
+  }
 }
 
 .mail-container:hover {
@@ -882,6 +896,7 @@ section {
 }
 
 .overlay {
+  padding: 20px;
   position: fixed;
   top: 0;
   left: 0;
@@ -894,7 +909,6 @@ section {
   z-index: 999;
 
   .channel-edit-card {
-    width: 872px;
     height: auto;
     background-color: white;
     border-radius: 25px;
@@ -911,7 +925,6 @@ section {
       width: 100%;
 
       h2 {
-        font-family: "Nunito";
         margin-top: 20px;
         font-size: 18px;
         font-style: normal;
@@ -919,8 +932,6 @@ section {
       }
 
       span {
-        font-family: "Nunito";
-        margin-top: 20px;
         font-size: 18px;
         font-style: normal;
         color: var(--c-mediun-purple);
@@ -943,7 +954,6 @@ section {
       }
 
       h1 {
-        font-family: "Nunito";
         font-size: 20px;
         font-style: normal;
         font-weight: 700;
@@ -951,7 +961,6 @@ section {
     }
 
     h3 {
-      font-family: "Nunito";
       margin-top: 20px;
       font-size: 18px;
       font-style: normal;
@@ -974,7 +983,6 @@ section {
       width: 95%;
       border-radius: 20px;
       border: 1px solid var(--ligth-purple-lines, #adb0d9);
-      padding: 20px;
       gap: 20px;
     }
 
@@ -982,6 +990,11 @@ section {
       display: flex;
       justify-content: flex-end;
       margin-top: 30px;
+
+      @media (max-width: 550px) {
+        display: flex;
+        justify-content: center;
+      }
 
       .btn-channel {
         border-radius: 25px;
@@ -1010,15 +1023,11 @@ section {
       flex-direction: column;
       justify-content: center;
       align-items: flex-start;
-      width: 95%;
       border-radius: 20px;
       border: 1px solid var(--ligth-purple-lines, #adb0d9);
-      padding: 20px;
       gap: 20px;
 
       h2 {
-        font-family: "Nunito";
-        margin-top: 20px;
         font-size: 18px;
         font-style: normal;
         font-weight: 700;
@@ -1031,8 +1040,6 @@ section {
         row-gap: 10px;
 
         span {
-          font-family: "Nunito";
-          margin-top: 20px;
           font-size: 18px;
           font-style: normal;
           color: var(--c-mediun-purple);
@@ -1052,7 +1059,6 @@ section {
   .error-massage {
     position: relative;
     left: 18px;
-    font-family: "Nunito";
     margin-top: 20px;
     font-size: 18px;
     font-style: normal;
@@ -1061,8 +1067,6 @@ section {
   }
 }
 
-
-
 .chat-right-first-row-right {
   gap: 20px;
   display: flex;
@@ -1070,7 +1074,21 @@ section {
   justify-content: flex-end;
 }
 
+.users-to-mention {
+  color: #444df2 !important;
+}
+
+.behind-emoji-popup {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
 .delete-message-left-corner {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1079,6 +1097,7 @@ section {
   opacity: 0.1;
   font-size: 20px;
   transition: transform ease-in-out 200ms;
+  cursor: pointer;
 
   &:hover {
     color: rgb(147, 23, 23);
