@@ -123,7 +123,7 @@
               <span class="chat-name" (click)="openUserProfile(message.sentById)">{{ message.sentBy }}</span>
             </div>
           </div>
-          <div>
+          <div class="chat-message-mobile-scroll">
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
               message.messageText }}

@@ -12,7 +12,7 @@
   }
 
   @media(max-width: 380px) {
-    padding: 66px 25px 68px 25px;
+    padding: 66px 10px 68px 10px;
     border-radius: 0;
     margin: 0;
     height: 88vh;
@@ -46,6 +46,11 @@
   border-radius: 100%;
   border: 2px solid var(--white);
   background-color: #92C83E;
+
+  @media (max-width: 380px) {
+    top: 20px;
+    left: -18px;
+  }
 }
 
 .participant-name {
@@ -53,6 +58,10 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+
+  @media (max-width: 380px) {
+    font-size: 18px;
+  }
 }
 
 .shadow-box {
@@ -281,6 +290,7 @@
     width: 45px;
     height: 45px;
     object-fit: cover;
+    margin: 0;
   }
 }
 
@@ -495,6 +505,20 @@
   align-items: flex-end;
   flex-direction: row;
   margin-bottom: 24px;
+
+  @media (max-width: 380px) {
+    margin-bottom: 14px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 380px) {
+  .no-messages {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: 5px;
+  }
 }
 
 .no-message-span {
@@ -503,6 +527,10 @@
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  @media (max-width: 380px) {
+    font-size: 16px;
+  }
 }
 
 .user-tagged-no-message {

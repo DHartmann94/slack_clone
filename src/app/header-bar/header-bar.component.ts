@@ -262,7 +262,7 @@ export class HeaderBarComponent {
     if (this.chatBehaviorService.toggleDirectChatIcon) {
       this.chatBehaviorService.toggleSearchBar = false;
       this.chatBehaviorService.headerMoblieView = false;
-    }
+    } 
   }
   /**
  * Saves the selected profile picture to the database.
