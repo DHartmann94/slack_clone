@@ -3,13 +3,13 @@
     height: calc(100vh - 150px);
     border-radius: 15px;
     padding: 32px 30px;
-    margin: 15px 10px 0 0;
+    margin: 15px 10px 10px 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
 
     @media(max-width: 380px) {
-        width: 100% !important;
+        width: 380px !important;
         padding: 66px 10px 68px 10px;
         border-radius: 0px;
         margin: 0;
@@ -37,7 +37,6 @@
     }
 
     @media(min-width: 420px) {
-        min-width: 320px;
         width: 100%;
         margin-left: 5px;
     }
@@ -121,8 +120,8 @@
     width: 100%;
     left: 0;
     top: 0;
-    border-top-left-radius: 30px !important;
-    border-top-right-radius: 30px !important;
+    border-top-left-radius: 15px !important;
+    border-top-right-radius: 15px !important;
     z-index: 1;
 }
 
