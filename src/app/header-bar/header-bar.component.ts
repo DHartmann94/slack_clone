@@ -257,8 +257,9 @@ export class HeaderBarComponent {
   backToChannelMobile() {
     this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
     this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
-    this.chatBehaviorService.toggleDirectChat = !this.chatBehaviorService.toggleDirectChat;
-    if (this.chatBehaviorService.toggleDirectChat) {
+    this.chatBehaviorService.hideDirectChat = !this.chatBehaviorService.hideDirectChat;
+    this.chatBehaviorService.toggleDirectChatIcon = !this.chatBehaviorService.toggleDirectChatIcon;
+    if (this.chatBehaviorService.toggleDirectChatIcon) {
       this.chatBehaviorService.toggleSearchBar = false;
       this.chatBehaviorService.headerMoblieView = false;
     }

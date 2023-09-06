@@ -157,12 +157,32 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.ChannelChatIsOpen = true;
     this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
     this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
-    this.chatBehavior.toggleDirectChat = !this.chatBehavior.toggleDirectChat;
+    this.chatBehavior.toggleDirectChatIcon = !this.chatBehavior.toggleDirectChatIcon;
     this.chatBehavior.toggleSearchBar = false;
 
     this.chatBehavior.isChatOpenResponsive = true;
     this.chatBehavior.isThreadOpenResponsive = false;
     this.chatBehavior.isDirectChatToUserOpenResponsive = false;
+    if (window.innerWidth <= 380) {
+      this.chatBehavior.headerMoblieView = true;
+    }
+  }
+
+  openDirectMessageToUser(userId: any) {
+    this.directMessageToUserService.setDirectMessageToUserId();
+    this.chatBehavior.ChannelChatIsOpen = false;
+
+    this.selectedUser = this.getUserById(userId);
+    this.userDataResolver.sendDataUsers(this.selectedUser);
+
+    this.chatBehavior.isChatOpenResponsive = false;
+    this.chatBehavior.isThreadOpenResponsive = false;
+    this.chatBehavior.isDirectChatToUserOpenResponsive = true;
+
+    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
+    this.chatBehavior.hideDirectChat = !this.chatBehavior.hideDirectChat;
+    this.chatBehavior.toggleDirectChatIcon = !this.chatBehavior.toggleDirectChatIcon;
+
     if (window.innerWidth <= 380) {
       this.chatBehavior.headerMoblieView = true;
     }
@@ -314,19 +334,6 @@ export class ChannelsComponent implements OnInit {
       console.error('Error adding users:', error);
     }
     this.userCard = false;
-  }
-
-  openDirectMessageToUser(userId: any) {
-    this.directMessageToUserService.setDirectMessageToUserId();
-    this.chatBehavior.ChannelChatIsOpen = false;
-
-    this.selectedUser = this.getUserById(userId);
-    this.userDataResolver.sendDataUsers(this.selectedUser);
-
-    this.chatBehavior.isChatOpenResponsive = false;
-    this.chatBehavior.isThreadOpenResponsive = false;
-    this.chatBehavior.isDirectChatToUserOpenResponsive = true;
-
   }
 }
 

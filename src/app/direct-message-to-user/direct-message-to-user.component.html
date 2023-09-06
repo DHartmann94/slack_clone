@@ -130,12 +130,11 @@
 
   <!-- Input field -->
   <div class="message-input-field">
-    <div class="text-editor">
+    <div class="text-editor" *ngIf="(receivedUserData$ | async) as user">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-
-      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4"
+      <textarea placeholder="Message to @ {{ user.name }}" [(ngModel)]="messageInput" name="" rows="4"
         (keyup.enter)="sendDirectMessageToUser(userData.id)">
-    </textarea>
+      </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="toggleEmojiPicker()"></div>
@@ -144,6 +143,9 @@
         <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn"
           (click)="sendDirectMessageToUser(userData.id)">
         </div>
+      </div>
+      <div class="button-backlayer">
+        <mat-icon class="send">send</mat-icon>
       </div>
     </div>
   </div>
