@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 
@@ -8,19 +8,24 @@ import { Router } from '@angular/router';
   styleUrls: ['./startscreen.component.scss']
 })
 export class StartscreenComponent implements OnInit {
+  @HostListener('window:resize', ['$event'])
+
   hideIntro = false;
   toLeft = false;
   workmode = false;
+  mobile:boolean = false;
 
   constructor(private router: Router) {}
 
 
   ngOnInit(): void {
+    this.checkForScreenWidth();
     setTimeout(() => {
       this.hideIntro = true;
       this.toLeft = true;
       this.hideBG();
     }, 2000);
+
   }
 
   hideBG() {
@@ -29,4 +34,19 @@ export class StartscreenComponent implements OnInit {
       this.router.navigateByUrl("/sign-in");
     }, 1000);
   }
+
+ 
+
+  checkForScreenWidth(){
+    if (window.innerWidth < 800) {
+      this.mobile = true;
+    } else {
+      this.mobile = false;
+    }
+  }
+
+  onWindowResize(event: Event): void {
+    this.checkForScreenWidth();
+  }
+
 } 
