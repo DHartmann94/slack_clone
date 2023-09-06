@@ -29,11 +29,12 @@ export class BoardComponent implements OnInit {
 
   toggleDirectChatMobile() {
     this.chatBehavior.triggerChat();
-    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
-    this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
-    this.chatBehavior.headerMoblieView = true;
-    this.chatBehavior.toggleDirectChatIcon = !this.chatBehavior.toggleDirectChatIcon;
     if (this.chatBehavior.toggleDirectChatIcon) {
+      this.chatBehavior.hideChannel = true;
+      this.chatBehavior.hideChat = false;
+      this.chatBehavior.hideDirectChat = false;
+      this.chatBehavior.headerMoblieView = true;
+      this.chatBehavior.toggleDirectChatIcon = false;
       this.chatBehavior.toggleSearchBar = true;
     }
   }

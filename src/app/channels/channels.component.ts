@@ -155,9 +155,10 @@ export class ChannelsComponent implements OnInit {
     this.updateChannelName(this.selectedChannel);
     this.directMessageToUserService.directMessageToUserOpen = false;
     this.chatBehavior.ChannelChatIsOpen = true;
-    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
-    this.chatBehavior.hideChat = !this.chatBehavior.hideChat;
-    this.chatBehavior.toggleDirectChatIcon = !this.chatBehavior.toggleDirectChatIcon;
+
+    this.chatBehavior.hideChannel = true;
+    this.chatBehavior.hideChat = false;
+    this.chatBehavior.toggleDirectChatIcon = false;
     this.chatBehavior.toggleSearchBar = false;
 
     this.chatBehavior.isChatOpenResponsive = true;
@@ -179,10 +180,9 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.isThreadOpenResponsive = false;
     this.chatBehavior.isDirectChatToUserOpenResponsive = true;
 
-    this.chatBehavior.hideChannel = !this.chatBehavior.hideChannel;
-    this.chatBehavior.hideDirectChat = !this.chatBehavior.hideDirectChat;
-    this.chatBehavior.toggleDirectChatIcon = !this.chatBehavior.toggleDirectChatIcon;
-
+    this.chatBehavior.hideChannel = true;
+    this.chatBehavior.hideDirectChat = false;
+    this.chatBehavior.toggleDirectChatIcon = false;
     if (window.innerWidth <= 380) {
       this.chatBehavior.headerMoblieView = true;
     }

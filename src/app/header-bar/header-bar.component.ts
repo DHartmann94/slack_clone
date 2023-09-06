@@ -255,11 +255,11 @@ export class HeaderBarComponent {
   }
 
   backToChannelMobile() {
-    this.chatBehaviorService.hideChannel = !this.chatBehaviorService.hideChannel;
-    this.chatBehaviorService.hideChat = !this.chatBehaviorService.hideChat;
-    this.chatBehaviorService.hideDirectChat = !this.chatBehaviorService.hideDirectChat;
-    this.chatBehaviorService.toggleDirectChatIcon = !this.chatBehaviorService.toggleDirectChatIcon;
-    if (this.chatBehaviorService.toggleDirectChatIcon) {
+    this.chatBehaviorService.hideChannel = false;
+    this.chatBehaviorService.hideChat = true;
+    this.chatBehaviorService.hideDirectChat = true;
+    this.chatBehaviorService.toggleDirectChatIcon = true;
+    if (this.chatBehaviorService.toggleDirectChatIcon === true) {
       this.chatBehaviorService.toggleSearchBar = false;
       this.chatBehaviorService.headerMoblieView = false;
     } 
