@@ -35,7 +35,7 @@ export class BoardComponent implements OnInit {
       this.chatBehavior.hideDirectChat = false;
       this.chatBehavior.headerMoblieView = true;
       this.chatBehavior.toggleDirectChatIcon = false;
-      this.chatBehavior.toggleSearchBar = true;
+      this.chatBehavior.toggleSearchBar === true;
     }
   }
 }

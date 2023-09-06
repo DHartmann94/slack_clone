@@ -40,7 +40,8 @@
           </div>
           <div class="chat-bubble-head right-bubble" *ngIf="message.sentById === currentUserId">
             <div>
-              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'" class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
+              <mat-icon *ngIf="message.messageText !== 'This message has been deleted'"
+                class="delete-message-left-corner" (click)="deleteMessage(message.id)">delete</mat-icon>
             </div>
             <div class="chat-right-first-row-right">
               <span class="chat-timeStamp">{{ message.time | date:'mediumTime' }}</span>
@@ -61,7 +62,8 @@
               </div>
             </div>
 
-            <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"  *ngIf="message.emojis.length > 0" class="reaction-icon-container">
+            <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)" *ngIf="message.emojis.length > 0"
+              class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
@@ -86,27 +88,31 @@
   <!-- Input field -->
   <div class="message-input-field">
     <div class="text-editor">
-
-      <div (click)="emojiService.emojipickeractiveThread = false" *ngIf="emojiService.emojipickeractiveThread" class="behind-emoji-popup">
-        <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)" class="app-emojis"></app-emojis>
+      <div (click)="emojiService.emojipickeractiveThread = false" *ngIf="emojiService.emojipickeractiveThread"
+        class="behind-emoji-popup">
+        <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
+          class="app-emojis"></app-emojis>
       </div>
-
-
-      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4"
-                (keyup.enter)="sendMessage()">
-</textarea>
+      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4" (keyup.enter)="sendMessage()">
+      </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
 
-          <div class="mail-container"  #menuTrigger mat-button
-            [matMenuTriggerFor]="mention"></div>
+          <div class="mail-container" #menuTrigger mat-button [matMenuTriggerFor]="mention"></div>
           <mat-menu #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
               (click)="addMention(user.name)">@{{ user.name }}</button>
           </mat-menu>
         </div>
-        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage()"></div>
+        <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage()">
+        </div>
+      </div>
+      <div class="button-backlayer">
+        <mat-icon class="send">send</mat-icon>
+      </div>
+      <div class="emoji-mobile">
+        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
       </div>
     </div>
   </div>
@@ -130,12 +136,12 @@
       </div>
       <div class="user-status" [ngClass]="{'user-active': this.userProfile[0].status === 'Active'}">
         <p>
-          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
+          <svg *ngIf="this.userProfile[0].status === 'Active'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+            viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#92C83E" />
           </svg>
-          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8"
-            height="8" viewBox="0 0 8 8">
+          <svg *ngIf="this.userProfile[0].status === 'Inactive'" xmlns="http://www.w3.org/2000/svg" width="8" height="8"
+            viewBox="0 0 8 8">
             <circle cx="4" cy="4" r="4" fill="#808080" />
           </svg>
           {{ this.userProfile[0].status }}
