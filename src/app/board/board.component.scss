@@ -95,6 +95,12 @@
     }
 }
 
+@media (max-width: 420px) {
+    .hidden-thread {
+        display: none !important;
+    }
+}
+
 @media(max-width: 420px) {
     .direct-chat-icon {
         position: absolute;

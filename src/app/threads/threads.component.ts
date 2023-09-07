@@ -427,6 +427,16 @@ export class ThreadsComponent implements OnInit, OnChanges {
   close() {
     this.loading = false;
     this.threadDataService.threadOpen = false;
+    this.chatBehavior.hideChannel = false;
+    this.chatBehavior.hideChat = true;
+    this.chatBehavior.hideDirectChat = true;
+    this.chatBehavior.hideThread = true
+    this.chatBehavior.toggleDirectChatIcon = true;
+
+    if (this.chatBehavior.toggleDirectChatIcon) {
+      this.chatBehavior.toggleSearchBar = false;
+      this.chatBehavior.headerMoblieView = false;
+    } 
   }
 
   schrollToBottom() {

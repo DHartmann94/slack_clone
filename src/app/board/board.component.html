@@ -8,7 +8,7 @@
         <div [ngClass]="{'hidden-channel': chatBehavior.hideChannel}" class="grid-view-channels"><app-channels></app-channels></div>
         <div [ngClass]="{'hidden-chat': chatBehavior.hideChat}" *ngIf="(this.chatBehavior.ChannelChatIsOpen && !this.chatBehavior.isResponsive) || (this.chatBehavior.isChatOpenResponsive && this.chatBehavior.isResponsive)" class="grid-view-chat"><app-chat></app-chat></div>
         <div [ngClass]="{'hidden-direct-chat': chatBehavior.hideDirectChat}" *ngIf="(this.directMessageToUserService.directMessageToUserOpen && !this.chatBehavior.isResponsive) || (this.chatBehavior.isDirectChatToUserOpenResponsive && this.chatBehavior.isResponsive)" class="grid-view-chat"><app-direct-message-to-user></app-direct-message-to-user></div>
-        <div *ngIf="(this.threadDataService.threadOpen && !this.chatBehavior.isResponsive) || (this.chatBehavior.isThreadOpenResponsive && this.chatBehavior.isResponsive)" class="grid-view-threads"><app-threads></app-threads></div>
+        <div [ngClass]="{'hidden-thread': chatBehavior.hideThread}" *ngIf="(this.threadDataService.threadOpen && !this.chatBehavior.isResponsive) || (this.chatBehavior.isThreadOpenResponsive && this.chatBehavior.isResponsive)" class="grid-view-threads"><app-threads></app-threads></div>
     </div>
 </div>
 
