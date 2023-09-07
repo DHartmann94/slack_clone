@@ -12,12 +12,12 @@
     padding: 0px;
   }
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     padding: 66px 10px 68px 10px;
     border-radius: 0px;
     margin: 0;
     height: 88vh;
-    width: 380px;
+    width: 420px;
     overflow-y: hidden;
   }
 
@@ -34,7 +34,7 @@
     border-top-right-radius: 15px !important;
     z-index: 1;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       padding: 0;
     }
 
@@ -45,7 +45,7 @@
       align-items: center;
       padding: 0 20px;
 
-      @media (max-width: 380px) {
+      @media (max-width: 420px) {
         padding: 10px 15px;
       }
     }
@@ -59,7 +59,7 @@
   padding-top: 20px;
   border-radius: 5px;
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     height: 345px;
     padding: 40px 0;
   }
@@ -98,13 +98,13 @@
 }
 
 .participant-container {
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     display: none;
   }
 }
 
 .participant-amount {
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     display: none;
   }
 }
@@ -117,7 +117,7 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     padding: 5px;
     height: auto;
   }
@@ -128,7 +128,7 @@
     justify-content: space-between;
     align-items: center;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       display: none;
     }
 
@@ -139,7 +139,7 @@
       font-weight: 700;
       margin: 0;
 
-      @media(max-width: 380px) {
+      @media(max-width: 420px) {
         font-size: 16px;
         margin-left: 10px;
         margin-top: 0;
@@ -166,7 +166,7 @@
     padding: 20px;
     gap: 20px;
 
-    @media(max-width: 380px) {
+    @media(max-width: 420px) {
       width: 85%;
       height: 10px;
       margin: 6px;
@@ -224,7 +224,7 @@
   margin: 0 15px;
   border-radius: 50%;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     width: 45px;
     height: 45px;
     object-fit: cover;
@@ -294,7 +294,7 @@
   transition: color 0.3s;
   cursor: pointer;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 16px;
   }
 
@@ -314,7 +314,7 @@
   bottom: 240px;
   left: 340px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     bottom: 240px;
     left: 16px;
   }
@@ -323,7 +323,7 @@
 .mention-menu > mat-menu {
   border-radius: 20px !important;
 
-  @media (max-width: 380px) { 
+  @media (max-width: 420px) { 
     position: absolute;
     left: 0;
     bottom: 50px;
@@ -344,7 +344,7 @@
     padding: 0 10px 0 10px;
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     padding: 0 16px;
   }
 
@@ -370,7 +370,7 @@
     padding: 0 10px 0 10px;
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     margin: 0;
     padding: 0 16px;
   }
@@ -400,7 +400,7 @@
   top: 23px;
   z-index: 1;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 16px;
     padding: 0 15px;
   }
@@ -475,7 +475,7 @@
   padding-bottom: 25px;
   position: relative;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     padding-top: 15px;
     padding-bottom: 20px;
   }
@@ -497,7 +497,7 @@
   align-self: stretch;
   margin: 8px 0;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 }
@@ -517,7 +517,7 @@
   align-self: stretch;
   margin: 8px 0;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 }
@@ -582,7 +582,7 @@
   position: relative;
   transition: font-weight 0.3s, text-shadow 0.3s;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 
@@ -607,7 +607,7 @@
     text-shadow: 2px 0 2px rgba(0, 0, 0, 0.1);
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 }
@@ -696,7 +696,7 @@
   left: 20px;
   background: #fff;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     margin: 0;
     bottom: 15px;
     left: 20px;
@@ -710,7 +710,7 @@
   padding: 20px;
   margin-top: 6px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     min-height: 30px;
     margin: 0;
     padding: 8px;
@@ -725,7 +725,7 @@
     height: 30px;
     resize: none;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       position: relative;
       top: 7px;
       font-size: 14px;
@@ -745,7 +745,7 @@
     position: relative;
     top: 80px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       width: 0;
       height: 0;
 
@@ -847,7 +847,7 @@ $light-blue: #eceefe;
   background-image: url(../../assets/img/icons/alternate_email.svg);
   transition: background-image 0.3s, box-shadow 0.3s;
 
-  @media (max-width:380px) {
+  @media (max-width:420px) {
     position: fixed;
     bottom: 30px;
   }
@@ -858,7 +858,7 @@ $light-blue: #eceefe;
   box-shadow: 0 0 6px 3px $light-blue;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .button-backlayer {
     display: flex;
     justify-content: center;
@@ -886,7 +886,7 @@ $light-blue: #eceefe;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .emoji-mobile {
     position: absolute;
     left: 240px;
@@ -1259,7 +1259,7 @@ section {
     }
   }
 
-  @media (max-width:380px) {
+  @media (max-width: 420px) {
     font-size: 10px;
   }
 

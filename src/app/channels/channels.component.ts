@@ -78,7 +78,7 @@ export class ChannelsComponent implements OnInit {
     this.userForm = this.fbUser.group({
       userName: ['', [Validators.required]],
     });
-    this.breakpointObserver.observe('(max-width: 380px)').subscribe(result => {
+    this.breakpointObserver.observe('(max-width: 420px)').subscribe(result => {
       if (result.matches) {
         this.chatBehavior.headerMoblieView = false;
       } else {
@@ -164,7 +164,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.isChatOpenResponsive = true;
     this.chatBehavior.isThreadOpenResponsive = false;
     this.chatBehavior.isDirectChatToUserOpenResponsive = false;
-    if (window.innerWidth <= 380) {
+    if (window.innerWidth <= 420) {
       this.chatBehavior.headerMoblieView = true;
     }
   }
@@ -183,7 +183,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChannel = true;
     this.chatBehavior.hideDirectChat = false;
     this.chatBehavior.toggleDirectChatIcon = false;
-    if (window.innerWidth <= 380) {
+    if (window.innerWidth <= 420) {
       this.chatBehavior.headerMoblieView = true;
     }
   }

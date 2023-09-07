@@ -11,12 +11,12 @@
     padding: 0;
   }
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     padding: 66px 10px 68px 10px;
     border-radius: 0;
     margin: 0;
     height: 88vh;
-    width: 380px;
+    width: 420px;
     overflow-y: hidden;
   }
 }
@@ -47,7 +47,7 @@
   border: 2px solid var(--white);
   background-color: #92C83E;
 
-  @media (max-width: 380px) {
+  @media (max-width: px) {
     top: 20px;
     left: -18px;
   }
@@ -59,7 +59,7 @@
   font-weight: 700;
   line-height: normal;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 18px;
   }
 }
@@ -77,7 +77,7 @@
   border-top-right-radius: 15px !important;
   z-index: 1;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     padding: 0;
   }
 
@@ -88,7 +88,7 @@
     align-items: center;
     padding: 0 20px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       padding: 10px 15px;
     }
   }
@@ -102,7 +102,7 @@
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     padding: 5px;
     height: auto;
   }
@@ -113,7 +113,7 @@
     justify-content: space-between;
     align-items: center;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       display: none;
     }
 
@@ -123,7 +123,7 @@
       font-style: normal;
       font-weight: 700;
 
-      @media(max-width: 380px) {
+      @media(max-width: 420px) {
         font-size: 16px;
         margin-left: 10px;
         margin-top: 0;
@@ -150,7 +150,7 @@
     padding: 20px;
     gap: 20px;
 
-    @media(max-width: 380px) {
+    @media(max-width: 420px) {
       width: 85%;
       height: 10px;
       margin: 6px;
@@ -196,7 +196,7 @@
   padding-top: 20px;
   border-radius: 5px;
 
-  @media(max-width: 380px) {
+  @media(max-width: 420px) {
     height: 345px;
     padding: 40px 0;
   }
@@ -286,7 +286,7 @@
   margin: 0 15px;
   border-radius: 50%;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     width: 45px;
     height: 45px;
     object-fit: cover;
@@ -313,7 +313,7 @@
   transition: color 0.3s;
   cursor: pointer;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 16px;
   }
 
@@ -337,7 +337,7 @@
     padding: 0 10px 0 10px;
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     padding: 0 16px;
   }
 
@@ -363,7 +363,7 @@
     padding: 0 10px 0 10px;
   }
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     margin: 0;
     padding: 0 16px;
   }
@@ -412,7 +412,7 @@
   position: absolute;
   top: 23px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 16px;
     padding: 0 15px;
   }
@@ -436,7 +436,7 @@
   padding-bottom: 25px;
   position: relative;
 
-  @media (max-width: 380px) {}
+  @media (max-width: 420px) {}
 }
 
 .chat-message-left {
@@ -455,7 +455,7 @@
   align-self: stretch;
   margin: 8px 0;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 }
@@ -475,7 +475,7 @@
   align-self: stretch;
   margin: 8px 0;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 14px;
   }
 }
@@ -506,13 +506,13 @@
   flex-direction: row;
   margin-bottom: 24px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     margin-bottom: 14px;
     align-items: center;
   }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .no-messages {
     display: flex;
     flex-direction: column;
@@ -528,7 +528,7 @@
   font-weight: 400;
   line-height: normal;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     font-size: 16px;
   }
 }
@@ -619,7 +619,7 @@
   left: 20px;
   background: #fff;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     margin: 0;
     bottom: 15px;
     left: 20px;
@@ -633,7 +633,7 @@
   padding: 20px;
   margin-top: 6px;
 
-  @media (max-width: 380px) {
+  @media (max-width: 420px) {
     min-height: 30px;
     margin: 0;
     padding: 8px;
@@ -648,7 +648,7 @@
     height: 30px;
     resize: none;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       position: relative;
       top: 7px;
       font-size: 14px;
@@ -668,7 +668,7 @@
     position: relative;
     top: 80px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       width: 0;
       height: 0;
 
@@ -771,7 +771,7 @@ $light-blue: #eceefe;
   box-shadow: 0 0 6px 3px $light-blue;
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .button-backlayer {
     display: flex;
     justify-content: center;
