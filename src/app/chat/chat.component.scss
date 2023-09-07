@@ -16,7 +16,7 @@
     padding: 66px 10px 68px 10px;
     border-radius: 0px;
     margin: 0;
-    height: 88vh;
+    height: 90vh;
     width: 420px;
     overflow-y: hidden;
   }
@@ -60,8 +60,8 @@
   border-radius: 5px;
 
   @media(max-width: 420px) {
-    height: 345px;
-    padding: 40px 0;
+    height: 500px;
+    padding: 25px 0 35px 0;
   }
 }
 
@@ -867,8 +867,8 @@ $light-blue: #eceefe;
     background: var(--purple-1, #444DF2);
     box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.2);
     position: absolute;
-    right: 1px;
-    bottom: 0px;
+    right: 0;
+    bottom: 0;
     width: 35px;
     height: 35px;
     padding: 8px 10px 12px 10px;
@@ -880,7 +880,7 @@ $light-blue: #eceefe;
   }
 }
 
-@media (min-width: 420px) {
+@media (min-width: 480px) {
   .button-backlayer {
     display: none;
   }
@@ -889,12 +889,12 @@ $light-blue: #eceefe;
 @media (max-width: 420px) {
   .emoji-mobile {
     position: absolute;
-    left: 240px;
+    right: 90px;
     bottom: 13px;
   }
 }
 
-@media (min-width: 420px) {
+@media (min-width: 480px) {
   .emoji-mobile {
     display: none;
   }

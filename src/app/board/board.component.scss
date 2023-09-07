@@ -104,8 +104,8 @@
 @media(max-width: 420px) {
     .direct-chat-icon {
         position: absolute;
-        right: 10px;
-        top: 598px;
+        right: 20px;
+        bottom: 16px;
         display: flex;
         width: 35px;
         height: 35px;
@@ -125,4 +125,10 @@
             cursor: pointer;
         }
     }
+}
+
+@media (min-width: 480px) {
+    .direct-chat-icon {
+        display: none;
+    }    
 }

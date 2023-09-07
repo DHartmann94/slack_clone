@@ -15,7 +15,7 @@
     padding: 66px 10px 68px 10px;
     border-radius: 0;
     margin: 0;
-    height: 88vh;
+    height: 90vh;
     width: 420px;
     overflow-y: hidden;
   }
@@ -197,8 +197,8 @@
   border-radius: 5px;
 
   @media(max-width: 420px) {
-    height: 345px;
-    padding: 40px 0;
+    height: 500px;
+    padding: 25px 0 35px 0;
   }
 }
 
@@ -780,7 +780,7 @@ $light-blue: #eceefe;
     background: var(--purple-1, #444DF2);
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.2);
     position: absolute;
-    left: 290px;
+    right: 0;
     bottom: 0;
     width: 35px;
     height: 35px;
