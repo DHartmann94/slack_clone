@@ -164,7 +164,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.isChatOpenResponsive = true;
     this.chatBehavior.isThreadOpenResponsive = false;
     this.chatBehavior.isDirectChatToUserOpenResponsive = false;
-    if (window.innerWidth <= 380) {
+    if (window.innerWidth <= 420) {
       this.chatBehavior.headerMoblieView = true;
     }
   }
@@ -183,7 +183,7 @@ export class ChannelsComponent implements OnInit {
     this.chatBehavior.hideChannel = true;
     this.chatBehavior.hideDirectChat = false;
     this.chatBehavior.toggleDirectChatIcon = false;
-    if (window.innerWidth <= 380) {
+    if (window.innerWidth <= 420) {
       this.chatBehavior.headerMoblieView = true;
     }
   }

@@ -8,8 +8,8 @@
     flex-direction: column;
     justify-content: center;
 
-    @media(max-width: 380px) {
-        width: 380px !important;
+    @media(max-width: 420px) {
+        width: 420px !important;
         padding: 66px 10px 68px 10px;
         border-radius: 0px;
         margin: 0;
@@ -66,8 +66,8 @@
     padding-top: 20px;
     border-radius: 5px;
 
-    @media(max-width: 380px) {
-        height: 380px;
+    @media(max-width: 420px) {
+        height: 420px;
         padding: 20px 0;
     }
 }
@@ -109,7 +109,7 @@
     align-items: center;
     padding: 10px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         padding: 10px 15px;
     }
 }
@@ -184,7 +184,7 @@
     margin: 0 15px;
     border-radius: 50%;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         width: 45px;
         height: 45px;
         object-fit: cover;
@@ -257,7 +257,7 @@
     cursor: pointer;
     transition: color 0.3s;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         font-size: 16px;
     }
 
@@ -366,7 +366,7 @@
     position: absolute;
     top: 23px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         font-size: 16px;
         padding: 0 15px;
     }
@@ -398,7 +398,7 @@
     align-self: stretch;
     margin: 8px 0;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         font-size: 14px;
     }
 }
@@ -418,7 +418,7 @@
     align-self: stretch;
     margin: 8px 0;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         font-size: 14px;
     }
 }
@@ -556,7 +556,7 @@
     left: 20px;
     background: #fff;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         margin: 0;
         bottom: 15px;
         left: 20px;
@@ -570,7 +570,7 @@
     padding: 20px;
     margin-top: 6px;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         min-height: 30px;
         margin: 0;
         padding: 8px;
@@ -585,7 +585,7 @@ textarea {
     width: 100%;
     resize: none;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         position: relative;
         top: 7px;
         font-size: 14px;
@@ -603,7 +603,7 @@ textarea {
     justify-content: space-between;
     align-items: center;
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
         width: 0;
         height: 0;
 
@@ -614,7 +614,7 @@ textarea {
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
     .button-backlayer {
         display: flex;
         justify-content: center;
@@ -642,7 +642,7 @@ textarea {
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
     .emoji-mobile {
         position: absolute;
         left: 240px;
