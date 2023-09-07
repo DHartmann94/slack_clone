@@ -78,7 +78,7 @@ export class ChannelsComponent implements OnInit {
     this.userForm = this.fbUser.group({
       userName: ['', [Validators.required]],
     });
-    this.breakpointObserver.observe('(max-width: 380px)').subscribe(result => {
+    this.breakpointObserver.observe('(max-width: 420px)').subscribe(result => {
       if (result.matches) {
         this.chatBehavior.headerMoblieView = false;
       } else {
