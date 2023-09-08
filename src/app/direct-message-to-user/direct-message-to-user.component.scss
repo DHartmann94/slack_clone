@@ -40,16 +40,16 @@
 .status-empty-chat {
   position: relative;
   top: 6px;
-  left: -33px;
+  right: 36px;
   width: 16.667px;
   height: 16.667px;
   border-radius: 100%;
   border: 2px solid var(--white);
   background-color: #92C83E;
 
-  @media (max-width: px) {
-    top: 20px;
-    left: -18px;
+  @media (max-width: 420px) {
+    top: 19px;
+    right: 17px;
   }
 }
 
