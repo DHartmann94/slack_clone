@@ -427,7 +427,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
   close() {
     this.loading = false;
     this.threadDataService.threadOpen = false;
-    this.chatBehavior.hideChannel = false;
+    /* this.chatBehavior.hideChannel = false;
     this.chatBehavior.hideChat = true;
     this.chatBehavior.hideDirectChat = true;
     this.chatBehavior.hideThread = true
@@ -436,7 +436,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     if (this.chatBehavior.toggleDirectChatIcon) {
       this.chatBehavior.toggleSearchBar = false;
       this.chatBehavior.headerMoblieView = false;
-    } 
+    }  */
   }
 
   schrollToBottom() {

@@ -16,7 +16,7 @@ export class ChatBehaviorService {
   hideChannel: boolean = false;
   hideChat: boolean = true;
   hideDirectChat: boolean = true;
-  hideThread: boolean = false;
+  hideThread: boolean = true;
   hideHeader: boolean = true;
   toggleDirectChatIcon: boolean = true;
   toggleSearchBar: boolean = false;

@@ -258,6 +258,7 @@ export class HeaderBarComponent {
     this.chatBehaviorService.hideChannel = false;
     this.chatBehaviorService.hideChat = true;
     this.chatBehaviorService.hideDirectChat = true;
+    this.chatBehaviorService.hideThread = true;
     this.chatBehaviorService.toggleDirectChatIcon = true;
     if (this.chatBehaviorService.toggleDirectChatIcon) {
       this.chatBehaviorService.toggleSearchBar = false;

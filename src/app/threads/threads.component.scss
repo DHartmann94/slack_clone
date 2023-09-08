@@ -110,7 +110,7 @@
     padding: 10px;
 
     @media (max-width: 420px) {
-        padding: 10px 15px;
+        padding: 15px 15px;
     }
 }
 
@@ -170,6 +170,10 @@
 .right-corner {
     display: flex;
     align-items: center;
+
+    @media (max-width: 420px) {
+        display: none;
+    }
 }
 
 .flex-row {
