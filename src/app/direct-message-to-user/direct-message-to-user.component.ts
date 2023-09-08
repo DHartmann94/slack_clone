@@ -10,6 +10,7 @@ import { MessageDataInterface, MessageDataService } from '../service-moduls/mess
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
 import { DirectMessageToUserDataResolverService } from '../service-moduls/direct-messsage-to-user-data-resolver.service';
 import { ScrollService } from '../service-moduls/scroll.service';
+import { EmojiService } from '../service-moduls/emoji.service';
 
 @Component({
   selector: 'app-direct-message-to-user',
@@ -74,6 +75,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   constructor(
     private directMessageToUserService: DirectMessageToUserService,
     public userDataService: UserDataService,
+    public emojiService: EmojiService,
     public messageDataService: MessageDataService,
     public channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,

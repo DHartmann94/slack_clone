@@ -92,7 +92,7 @@
             </div>
             <h3>Channel-Name</h3>
             <div class="channel-inputs">
-                <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte"
+                <input class="channel-name" type="text" placeholder="For example Angular"
                     formControlName="channelName">
                 <div *ngIf="channelForm.controls['channelName'].invalid && channelForm.controls['channelName'].touched">
                     <div class="error-massage" *ngIf="channelForm.controls['channelName'].errors?.['required']">Title is
@@ -102,10 +102,9 @@
             </div>
             <h3>Description (optional)</h3>
             <div class="channel-inputs">
-                <input class="channel-name" type="text" placeholder="Dein Text hier"
+                <input class="channel-name" type="text" placeholder="Your channel description"
                     formControlName="channelDescription">
-                <div
-                    *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
+                <div *ngIf="channelForm.controls['channelDescription'].invalid && channelForm.controls['channelDescription'].touched">
                     <div class="error-massage" *ngIf="channelForm.controls['channelDescription'].errors?.['required']">
                         Title is
                         required.

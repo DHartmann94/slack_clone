@@ -52,6 +52,7 @@ export class ChannelsComponent implements OnInit {
 
   channelId: string = '';
   selectedUserType: string = '';
+  createByUser: string = '';
   selectedChannel: ChannelDataInterface | null = null;
   selectedUser: UserDataInterface | null = null;
   selectedDirectChat: DirectMessageInterface | null = null;
@@ -234,6 +235,7 @@ export class ChannelsComponent implements OnInit {
 
   async submitChannel() {
     if (this.channelForm.valid) {
+      const userCreatedChannel = this.userDataService.currentUser;
       const channel: ChannelDataInterface = {
         channelName: this.channelForm.value.channelName,
         channelDescription: this.channelForm.value.channelDescription,
@@ -242,6 +244,7 @@ export class ChannelsComponent implements OnInit {
       this.channelDataService.addChannelData(channel).subscribe(
         (docId) => {
           this.channelId = docId;
+          this.createByUser = userCreatedChannel; 
           this.channelData.push(channel);
           console.log('Channel created with ID:', docId);
         },

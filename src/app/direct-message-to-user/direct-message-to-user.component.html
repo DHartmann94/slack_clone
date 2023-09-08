@@ -147,6 +147,9 @@
       <div class="button-backlayer">
         <mat-icon class="send">send</mat-icon>
       </div>
+      <div class="emoji-mobile">
+        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
+      </div>
     </div>
   </div>
 </mat-card>

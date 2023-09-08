@@ -324,7 +324,13 @@
 
 .app-emojis {
   position: absolute;
-  bottom: 10px;
+  bottom: 187px;
+  left: 0;
+
+  @media (max-width: 420px) {
+    bottom: 70px;
+    left: 22px;
+  }
 }
 
 .chat-left {
@@ -790,6 +796,26 @@ $light-blue: #eceefe;
       padding: 5px 0 0 3px;
       color: var(--white);
     }
+  }
+}
+
+@media (min-width: 480px) {
+  .button-backlayer {
+    display: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .emoji-mobile {
+    position: absolute;
+    right: 90px;
+    bottom: 13px;
+  }
+}
+
+@media (min-width: 480px) {
+  .emoji-mobile {
+    display: none;
   }
 }
 
