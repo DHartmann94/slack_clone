@@ -258,12 +258,12 @@ export class HeaderBarComponent {
     this.chatBehaviorService.hideChannel = false;
     this.chatBehaviorService.hideChat = true;
     this.chatBehaviorService.hideDirectChat = true;
-    this.chatBehaviorService.hideThread = true;
     this.chatBehaviorService.toggleDirectChatIcon = true;
-    if (this.chatBehaviorService.toggleDirectChatIcon) {
-      this.chatBehaviorService.toggleSearchBar = false;
-      this.chatBehaviorService.headerMoblieView = false;
-    } 
+    this.chatBehaviorService.toggleSearchBar = false;
+    this.chatBehaviorService.headerMoblieView = false;
+
+    this.chatBehaviorService.isChatOpenResponsive = true;
+    this.chatBehaviorService.isThreadOpenResponsive = false;
   }
   /**
  * Saves the selected profile picture to the database.
