@@ -235,16 +235,15 @@ export class ChannelsComponent implements OnInit {
 
   async submitChannel() {
     if (this.channelForm.valid) {
-      const userCreatedChannel = this.userDataService.currentUser;
       const channel: ChannelDataInterface = {
         channelName: this.channelForm.value.channelName,
         channelDescription: this.channelForm.value.channelDescription,
+        createdByUser: this.userDataService.currentUser && this.userDataService.userName,
         color: this.newColor(),
       };
       this.channelDataService.addChannelData(channel).subscribe(
         (docId) => {
           this.channelId = docId;
-          this.createByUser = userCreatedChannel; 
           this.channelData.push(channel);
           console.log('Channel created with ID:', docId);
         },

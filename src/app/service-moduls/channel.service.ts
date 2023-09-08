@@ -6,6 +6,7 @@ export interface ChannelDataInterface {
   id?: any;
   channelName: string;
   channelDescription: string;
+  createdByUser?: string;
   color?: any;
   users?: any;
 }
@@ -35,11 +36,12 @@ export class ChannelDataService {
 
         querySnapshot.forEach(doc => {
           const data = doc.data();
-          const { channelName, channelDescription, color, users } = data;
+          const { channelName, channelDescription, color, createdByUser, users } = data;
           const channel: ChannelDataInterface = {
             id: doc.id,
             channelName: channelName,
             channelDescription: channelDescription,
+            createdByUser: createdByUser,
             color: color,
             users: users,
           };
@@ -56,13 +58,13 @@ export class ChannelDataService {
 
   addChannelData(channel: ChannelDataInterface): Observable<string> {
     const channels = collection(this.firestore, 'channels');
-    const { id, ...channelDataWithoutId } = channel;
-    const channelData = {
-      ...channelDataWithoutId,
-      users: channel.users || []
+    const { ...channelData } = channel;
+    const storedChannelData = {
+      ...channelData,
+      users: channel.users || [],
     };
 
-    return from(addDoc(channels, channelData)).pipe(
+    return from(addDoc(channels, storedChannelData)).pipe(
       map((docRef) => {
         return docRef.id;
       })

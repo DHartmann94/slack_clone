@@ -105,9 +105,8 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
     private scrollService: ScrollService,
-    public directMessageToUserService: DirectMessageToUserService,
-    private renderer: Renderer2, private el: ElementRef
-  ) {
+    public directMessageToUserService: DirectMessageToUserService
+    ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleChat();
     });
@@ -132,7 +131,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.deleteUserFromChannel();
     this.getThreadData();
     this.updateUsersForMention();
-
     this.receivedChannelData$.pipe(
       switchMap(channelData => this.loadUserProfilePicture(channelData))
     ).subscribe();
