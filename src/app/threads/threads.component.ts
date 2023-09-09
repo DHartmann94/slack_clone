@@ -218,9 +218,9 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   async sendMessage() {
     this.dataIsLoading = true;
-    if (this.messageInput.length > 0) {
+    if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       const message: MessageDataInterface = {
-        messageText: this.messageInput,
+        messageText: this.messageInput[0],
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],

@@ -417,16 +417,17 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   async sendDirectMessageToUser(userId: string) {
     this.dataIsLoading = true;
-    if (this.messageInput.length > 0) {
+
+    if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       console.log('messageInput', this.messageInput);
       const message: DirectMessageToUserInterface = {
-        messageText: this.messageInput,
+        messageText: this.messageInput[0],
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
         user: userId,
-        userSentTo: this.userDataService.currentUser
+        userSentTo: this.userDataService.currentUser,
       };
 
 
