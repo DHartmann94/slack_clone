@@ -6,7 +6,7 @@
         <span class="chat-name-blue"># {{ channelData[0].channelName }}</span>
       </div>
       <div class="right-corner">
-        <div class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close()"></div>
+        <div *ngIf="loading" class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close(channelData[0].id)"></div>
       </div>
     </div>
   </div>

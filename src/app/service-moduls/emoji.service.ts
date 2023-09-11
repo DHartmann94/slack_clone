@@ -42,37 +42,6 @@ export class EmojiService {
   }
 
 
-  // reactWithEmoji(emoji: string, index: number, messageId: string, message: MessageDataInterface) {
-  //   let emojiArray = message.emojis;
-  //   debugger
-  //   emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
-  //     if (emoj['reaction-from'].includes(this.userDataService.userName)) {
-  //       const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
-  //       emoj['reaction-from'].splice(userIndex, 1);
-  //     }
-  //   });
-
-  //   if (this.existEmoji(index, emoji, this.messageData)) {
-
-  //     let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
-  //     emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
-  //   } else {
-  //     emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
-  //   }
-
-  //   let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
-  //   if (indexWithEmojiToDelete != -1) {
-  //     emojiArray.splice(indexWithEmojiToDelete, 1);
-  //   }
-
-  //   console.log('my Emoji Array', emojiArray);
-
-  //   this.messageDataService.updateMessage(messageId, emojiArray);
-  //   this.emojisClickedBefore = undefined;
-  //   this.reactionListOpen = false;
-  // }
-
-
   existEmoji(index: number, typedEmoji: string, messageData: MessageDataInterface[]) {
     return messageData[index].emojis.some((emoji: { [x: string]: string; }) => {
       return emoji['emoji'] === typedEmoji;
