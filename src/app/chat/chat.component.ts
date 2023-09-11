@@ -23,6 +23,7 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 
 export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
+  @ViewChild('chatTextarea') chatTextarea!: ElementRef;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
@@ -81,6 +82,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   inviteUserOrChannel!: string;
   searchResultsChannels: ChannelDataInterface[] = [];
   searchResultsUsers: UserDataInterface[] = [];
+  closeSearchContainer: boolean = false;
 
   isInviteUserOpen: boolean = false;
   toggleList: boolean = false;
@@ -106,7 +108,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     private firestore: Firestore,
     private scrollService: ScrollService,
     public directMessageToUserService: DirectMessageToUserService
-    ) {
+  ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
       this.toggleChat();
     });
@@ -185,6 +187,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.inviteUserOrChannel = '';
     this.toggleUserList = false;
     this.toggleChannelList = false;
+    this.closeSearchContainer = false;
   }
 
   filterUsers(): void {
@@ -196,6 +199,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
           user.name.toLowerCase().includes(userName)
         );
         this.toggleUserList = true;
+        this.closeSearchContainer = true;
       } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
         this.channelDataService.getChannelData().subscribe(
@@ -211,6 +215,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
           }
         );
         this.toggleChannelList = true;
+        this.closeSearchContainer = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
@@ -229,6 +234,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
       this.userIdInputSearch = user.id;
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
+      this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
     }
   }
@@ -239,6 +245,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
       this.userIdInputSearch = channel.id;
       this.selectedUserNameOrChannelName = channel.channelName;
       this.toggleChannelList = false;
+      this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
       this.renderChatByChannelId(this.userIdInputSearch);
       this.sendMessage(this.userIdInputSearch);
@@ -274,8 +281,12 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
               (message.channel && message.channelId === invitedChannelId) ||
               (message.channel === invitedChannelId && message.channelId)
             );
-
             messagesForChannel.push(...messagesForInvitedUser);
+            this.userIdInputSearch = channel;
+            const channelName = this.channelData.find((c) => c.id === channel)?.channelName;
+            if (channelName) {
+              this.chatTextarea.nativeElement.placeholder = `Message to #${channelName}`;
+            }
           }
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
@@ -285,6 +296,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
             this.messageData = sortDataAfterTime;
           }
         },
+
         (error) => {
           console.error('ERROR rendering messages in channel:', error);
         }

@@ -31,7 +31,7 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
+      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">
@@ -190,7 +190,7 @@
         <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
           class="app-emojis"></app-emojis>
       </div>
-      <textarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
+      <textarea #chatTextarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
       </textarea>
       <div class="text-editor-bottom">

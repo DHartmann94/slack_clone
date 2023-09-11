@@ -1,5 +1,6 @@
 .threads-card {
     width: 485px;
+    min-width: 485px;
     height: calc(100vh - 150px);
     border-radius: 15px;
     padding: 32px 30px;
@@ -7,6 +8,10 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+
+    @media(max-width: 1450px) {
+        min-width: none;
+    }
 
     @media(max-width: 420px) {
         width: 100%;
@@ -55,7 +60,7 @@
     justify-content: center;
 
     @media(max-width: 880px) {
-        padding: 0px;
+        padding: 5px 5px 111px;
     }
 }
 
@@ -309,7 +314,7 @@
         }
     }
 
-    @media(max-width: 880px) {
+    @media(max-width: 1450px) {
         padding: 0 10px 0 10px;
     }
 }
@@ -326,7 +331,7 @@
         background: var(--bg-color, #eceefe);
     }
 
-    @media(max-width: 880px) {
+    @media(max-width: 1450px) {
         padding: 0 10px 0 10px;
     }
 }
