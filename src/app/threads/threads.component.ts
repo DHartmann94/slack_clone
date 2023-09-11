@@ -425,7 +425,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   close(id: any) {
-    console.log('IDDDDDD', id)
     this.loading = false;
     this.threadDataService.threadOpen = false;
 
