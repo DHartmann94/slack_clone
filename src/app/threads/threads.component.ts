@@ -220,7 +220,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.dataIsLoading = true;
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       const message: MessageDataInterface = {
-        messageText: this.messageInput[0],
+        messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],

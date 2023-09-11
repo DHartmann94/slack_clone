@@ -377,7 +377,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       const threadId = this.threadDataService.generateThreadId();
       const message: MessageDataInterface = {
-        messageText: this.messageInput[0],
+        messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
