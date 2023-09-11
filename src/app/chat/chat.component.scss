@@ -65,13 +65,10 @@
   }
 }
 
-
-
 .reaction-emojis {
-  display: none;
+  display: flex;
   height: 24px;
   align-items: center;
-  width: 0;
   border-radius: 20px;
   background-color: white;
   padding: 5px;

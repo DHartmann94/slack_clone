@@ -463,7 +463,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     }
   }
 
-
   reactWithEmoji(emoji: string, index: number, messageId: string, message: MessageDataInterface) {
     let emojiArray = message.emojis;
     emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
