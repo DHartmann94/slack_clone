@@ -424,9 +424,16 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
-  close() {
+  close(id: any) {
     this.loading = false;
     this.threadDataService.threadOpen = false;
+
+    const channel = this.channelDataService.channelData.filter(channel => channel.id.includes(id));
+    if(channel) {
+      this.chatBehavior.isChatOpenResponsive = true;
+      this.chatBehavior.isThreadOpenResponsive = false;
+      this.chatBehavior.isDirectChatToUserOpenResponsive = false;
+    }
     /* this.chatBehavior.hideChannel = false;
     this.chatBehavior.hideChat = true;
     this.chatBehavior.hideDirectChat = true;
