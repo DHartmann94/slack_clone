@@ -10,6 +10,7 @@ export interface DirectMessageToUserInterface {
   time?: number;
   emojis?: any;
   user?: any;
+  invitedUserId: any;
   sentBy?: string;
   picture?: string;
   sentById?: string;
@@ -46,7 +47,7 @@ export class DirectMessageToUserService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, emojis, sentById, mentionedUser, user, userSentTo } = data;
+          const { messageText, time, emojis, sentById, mentionedUser, user,  invitedUserId, userSentTo } = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -58,6 +59,7 @@ export class DirectMessageToUserService {
               emojis: emojis,
               sentBy: userName,
               user: user,
+              invitedUserId: invitedUserId,
               picture: userPicture,
               sentById: sentById,
               mentionedUser: mentionedUser,
@@ -133,7 +135,4 @@ export class DirectMessageToUserService {
     //}, 100);
 
   }
-
- 
-  
 }

@@ -45,7 +45,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   directChat: string = '';
   updateDirectChatId: string = '';
   selectedUserNameOrChannelName: string = '';
-  userIdInputSearch: string = '';
+  inputSearchId: any;
 
   messageInput: string[] = [];
   messageId: string = '';
@@ -65,6 +65,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   reactionListOpen = false;
   toggleUserList: boolean = true;
   toggleChannelList: boolean = true;
+  closeSearchContainer: boolean = false;
+  inputSearchIdResults: string = '';
   dataIsLoading = false;
 
   triggerCRUDHTML: boolean = true;
@@ -80,7 +82,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     public channelDataService: ChannelDataService,
     private chatBehavior: ChatBehaviorService,
     private userDataResolver: UserDataResolveService,
-    private directMessageToUserDataResolverService: DirectMessageToUserDataResolverService,
     private scrollService: ScrollService,
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
@@ -151,6 +152,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           user.name.toLowerCase().includes(userName)
         );
         this.toggleUserList = true;
+        this.closeSearchContainer = true;
       } else if (this.inviteUserOrChannel && this.inviteUserOrChannel.startsWith('#')) {
         const channelName = this.inviteUserOrChannel.substr(1).toLowerCase();
         this.channelDataService.getChannelData().subscribe(
@@ -166,6 +168,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           }
         );
         this.toggleChannelList = true;
+        this.closeSearchContainer = true;
       } else {
         this.searchResultsUsers = this.userDataService.userData.filter(user =>
           user.email.toLowerCase().includes(searchBy)
@@ -179,25 +182,30 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
-      console.log(user);
       this.isInvitationValid = true;
-      this.userIdInputSearch = user.id;
+      this.inputSearchId = user.id;
+      console.log(this.inputSearchId);
+      if (this.inputSearchId) {
+        this.inputSearchIdResults = user.name;
+        this.renderMessage(this.inputSearchId);
+        this.sendDirectMessageToUser(this.inputSearchId);
+      }
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
+      this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
-      this.renderMessage(this.userIdInputSearch);
-      console.log(this.userIdInputSearch);
+
     }
   }
 
   inviteChannel(channel: ChannelDataInterface):void {
     if (channel) {
       this.isInvitationValid = true;
-      this.userIdInputSearch = channel.id;
+      this.inputSearchId = channel.id;
       this.selectedUserNameOrChannelName = channel.channelName;
       this.toggleChannelList = false;
+      this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
-      console.log(this.userIdInputSearch);
     }
   }
 
@@ -206,6 +214,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.inviteUserOrChannel = '';
     this.toggleUserList = false;
     this.toggleChannelList = false;
+    this.closeSearchContainer = false;
   }
 
   processUserData(userId: string) {
@@ -216,7 +225,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   renderMessage(userId: any) {
     if (userId) {
-      const invitedUserId = this.userIdInputSearch;
+      const invitedUserId = this.inputSearchId;
       console.log("Get search input", invitedUserId);
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
@@ -226,10 +235,9 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
           );
           if (invitedUserId) {
             const messagesForInvitedUser = messageData.filter(message =>
-              (message.user === this.userDataService.currentUser && message.userSentTo === invitedUserId) ||
-              (message.user === invitedUserId && message.userSentTo === this.userDataService.currentUser)
+              (message.user && message.invitedUserId === invitedUserId) ||
+              (message.user === invitedUserId && message.invitedUserId)
             );
-
             messagesForUser.push(...messagesForInvitedUser);
           }
           if (messagesForUser.length > 0) {
@@ -257,10 +265,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  isNewDay(
-    currentMessage: DirectMessageToUserInterface,
-    previousMessage: DirectMessageToUserInterface
-  ): boolean {
+  isNewDay(currentMessage: DirectMessageToUserInterface, previousMessage: DirectMessageToUserInterface): boolean {
     if (!previousMessage) {
       return true;
     }
@@ -417,9 +422,8 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   async sendDirectMessageToUser(userId: string) {
     this.dataIsLoading = true;
-
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
-      console.log('messageInput', this.messageInput);
+      const resultSearchingUser = this.inputSearchId;
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
@@ -428,6 +432,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         mentionedUser: 'user_id_here',
         user: userId,
         userSentTo: this.userDataService.currentUser,
+        invitedUserId: resultSearchingUser,
       };
 
 
@@ -437,7 +442,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
       console.log('user', this.userId),
 
-        this.messageData.push(message);
+      this.messageData.push(message);
       this.messageInput = [''];
 
       this.directMessageToUserService.sendMessage(message).subscribe(

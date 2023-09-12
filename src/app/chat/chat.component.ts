@@ -230,7 +230,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   inviteUser(user: UserDataInterface): void {
     if (user) {
-      console.log(user);
       this.isInvitationValid = true;
       this.inputSearchId = user.id;
       this.selectedUserNameOrChannelName = user.name;

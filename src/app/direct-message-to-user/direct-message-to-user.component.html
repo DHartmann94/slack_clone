@@ -11,9 +11,10 @@
           height="8" viewBox="0 0 8 8">
           <circle cx="4" cy="4" r="4" fill="#808080" />
         </svg>
-        <span class="participant-name">{{ userData.name }}</span>
+        <span class="participant-name">{{ inputSearchIdResults ? inputSearchIdResults : userData.name }}</span>
       </div>
     </div>
+    
     <div class="search-input-channels" *ngIf="!(toggleSearchBar)">
       <div class="message-head">
         <h2>New Message</h2>
@@ -23,24 +24,25 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @jemand oder e-mail address">
       </div>
-    </div>
-    <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0">
-      <ul *ngIf="toggleUserList">
-        <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
-          <div class="user-list">
-            {{ user.name }} ({{ user.email }})
-          </div>
-        </li>
-      </ul>
-      <ul *ngIf="toggleChannelList">
-        <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
-          <div class="channel-list">
-            {{ channel.channelName }}
-          </div>
-        </li>
-      </ul>
+      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
+        <ul *ngIf="toggleUserList">
+          <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
+            <div class="user-list">
+              {{ user.name }} ({{ user.email }})
+            </div>
+          </li>
+        </ul>
+        <ul *ngIf="toggleChannelList">
+          <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
+            <div class="channel-list">
+              {{ channel.channelName }}
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
+  
   <div #chatContainer class="chat-text-area" *ngIf="messageData">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
@@ -132,7 +134,7 @@
   <div class="message-input-field">
     <div class="text-editor" *ngIf="(receivedUserData$ | async) as user">
       <app-emojis (newEmoji)="typeEmoji($event)" class="app-emojis" *ngIf="emojipickeractive"></app-emojis>
-      <textarea placeholder="Message to @ {{ user.name }}" [(ngModel)]="messageInput" name="" rows="4"
+      <textarea placeholder="Message to # {{ inputSearchIdResults ? inputSearchIdResults : user.name }}" [(ngModel)]="messageInput" name="" rows="4"
         (keyup.enter)="sendDirectMessageToUser(userData.id)">
       </textarea>
       <div class="text-editor-bottom">
