@@ -23,7 +23,6 @@ import { MatMenuTrigger } from '@angular/material/menu';
 })
 
 export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
-  @ViewChild('chatTextarea') chatTextarea!: ElementRef;
   @ViewChild('chatContainer') chatContainer!: ElementRef;
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
@@ -54,7 +53,8 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   messageInput: string[] = [];
   messageId: string = '';
-  userIdInputSearch: string = '';
+  inputSearchId: any;
+  inputSearchIdResults: string = '';
   channelId: string = "";
   sentByName: string[] = [];
   usersFromUserData: string[] = [];
@@ -92,6 +92,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   selectedUserToChannel: UserDataInterface[] = [];
 
   channelUserPicture: string[] = [];
+  channelFromSearchResult: any;
 
   constructor(
     private messageDataService: MessageDataService,
@@ -231,7 +232,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     if (user) {
       console.log(user);
       this.isInvitationValid = true;
-      this.userIdInputSearch = user.id;
+      this.inputSearchId = user.id;
       this.selectedUserNameOrChannelName = user.name;
       this.toggleUserList = false;
       this.closeSearchContainer = false;
@@ -242,13 +243,16 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   inviteChannel(channel: ChannelDataInterface): void {
     if (channel) {
       this.isInvitationValid = true;
-      this.userIdInputSearch = channel.id;
+      this.inputSearchId = channel.id;
+      if (this.inputSearchId) {
+        this.inputSearchIdResults = channel.channelName
+        this.renderChatByChannelId(this.inputSearchId);
+        this.sendMessage(this.inputSearchId);
+      }
       this.selectedUserNameOrChannelName = channel.channelName;
       this.toggleChannelList = false;
       this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
-      this.renderChatByChannelId(this.userIdInputSearch);
-      this.sendMessage(this.userIdInputSearch);
     }
   }
 
@@ -268,25 +272,20 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   renderChatByChannelId(channel: string) {
     if (channel) {
-      const invitedChannelId = this.userIdInputSearch;
+      const invitedChannelId = this.inputSearchId;
       console.log("Invited channel ID:", invitedChannelId);
       this.messageDataService.getMessageData().subscribe(
         (messageData: MessageDataInterface[]) => {
           const messagesForChannel = messageData.filter(message =>
-            (message.channel && message.channelId === channel) ||
-            (message.channel === channel && message.channelId)
+            (message.channel && message.channel === channel) ||
+            (message.channel === channel && message.channel)
           );
           if (invitedChannelId) {
             const messagesForInvitedUser = messageData.filter(message =>
-              (message.channel && message.channelId === invitedChannelId) ||
-              (message.channel === invitedChannelId && message.channelId)
+              (message.channel && message.invitedChannelId === invitedChannelId) ||
+              (message.channel === invitedChannelId && message.invitedChannelId)
             );
             messagesForChannel.push(...messagesForInvitedUser);
-            this.userIdInputSearch = channel;
-            const channelName = this.channelData.find((c) => c.id === channel)?.channelName;
-            if (channelName) {
-              this.chatTextarea.nativeElement.placeholder = `Message to #${channelName}`;
-            }
           }
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
@@ -296,7 +295,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
             this.messageData = sortDataAfterTime;
           }
         },
-
         (error) => {
           console.error('ERROR rendering messages in channel:', error);
         }
@@ -347,10 +345,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  isNewDay(
-    currentMessage: MessageDataInterface,
-    previousMessage: MessageDataInterface
-  ): boolean {
+  isNewDay(currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {
     if (!previousMessage) {
       return true;
     }
@@ -372,10 +367,12 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     );
   }
 
-  async sendMessage(userIdInputSearch: any) {
+  async sendMessage(channel: ChannelDataInterface) {
     this.dataIsLoading = true;
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       const threadId = this.threadDataService.generateThreadId();
+      const resultSearchingChannel = this.inputSearchId;
+      console.log("Result invited channel",  resultSearchingChannel);
       const message: MessageDataInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
@@ -384,7 +381,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
         thread: threadId,
         channel: this.channelId,
         mentionedUser: this.mentionService.mentionInMessage,
-        channelId: userIdInputSearch,
+        invitedChannelId: resultSearchingChannel,
       };
 
       if (this.emojipickeractive) {
