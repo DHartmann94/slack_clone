@@ -177,20 +177,18 @@
 
   <!-- Input field -->
   <div class="message-input-field">
-
     <div class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
       </div>
     </div>
-
     <div class="text-editor" *ngIf="(receivedChannelData$ | async) as channel">
       <div (click)="emojiService.emojipickeractiveChat = false" *ngIf="emojiService.emojipickeractiveChat"
         class="behind-emoji-popup">
         <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
           class="app-emojis"></app-emojis>
       </div>
-      <textarea #chatTextarea (input)="checkForMention($event)" placeholder="Message to # {{ channel.channelName }}"
+      <textarea (input)="checkForMention($event)" placeholder="Message to # {{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
       </textarea>
       <div class="text-editor-bottom">
