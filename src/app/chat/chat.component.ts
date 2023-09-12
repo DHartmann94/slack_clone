@@ -441,17 +441,16 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   reaction(messageEmoji: string, index: number) {
     if (this.emojisClickedBefore === index) {
-      document
-        .getElementById(`reaction${this.emojisClickedBefore}`)
-        ?.classList.remove('showEmojis');
+      document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+      document.getElementById(`behind-reaction-popup`)?.classList.remove('showEmojis');
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
-        document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
-          ?.classList.remove('showEmojis');
+        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
+        document.getElementById(`behind-reaction-popup`)?.classList.remove('showEmojis');
       }
       document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+      document.getElementById(`behind-reaction-popup`)?.classList.add('showEmojis');
       this.emojisClickedBefore = index;
     }
   }
