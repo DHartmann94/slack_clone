@@ -31,7 +31,8 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
+      <div class="search-results"
+        *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">
@@ -130,9 +131,11 @@
 
               <div #menuTrigger class="mentions-button" *ngIf="message.mentionedUser.length > 0"
                 [ngClass]="{ 'mention-right': message.sentById === userDataService.currentUser, 'mention-left': message.sentById !== userDataService.currentUser, 'mention-active':  mentionService.resolveForRedDisplay(message.mentionedUser) }">
-                @ 
-                <div id="mentions-in-message{{index}}" class="mention-in-message d-none" [ngClass]="{'mention-popup-right': message.sentById === userDataService.currentUser, 'mention-popup-left': message.sentById !== userDataService.currentUser}">
-                  <span style=" white-space: nowrap;" *ngFor="let user of message.mentionedUser">@{{mentionService.resolveMentionedUser(user.id)}}</span>
+                @
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none"
+                  [ngClass]="{'mention-popup-right': message.sentById === userDataService.currentUser, 'mention-popup-left': message.sentById !== userDataService.currentUser}">
+                  <span style=" white-space: nowrap;"
+                    *ngFor="let user of message.mentionedUser">@{{mentionService.resolveMentionedUser(user.id)}}</span>
                 </div>
 
               </div>
@@ -152,10 +155,14 @@
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
+
+            <div id="behind-reaction-popup"></div>
             <div class="reaction-emojis" id="reaction{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
             </div>
+
+
             <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
               class="reaction-button-container">
               <div class="reaction-button"></div>
@@ -194,7 +201,7 @@
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
-          
+
           <div class="mail-container" (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu class="mention-menu" #mention="matMenu">
