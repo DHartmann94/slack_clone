@@ -3,7 +3,7 @@
     <div class="chat-first-row" *ngIf="!(this.chatBehavior.toggleSearchBar)">
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
-        <span class="chat-name">{{ channel.channelName }}</span>
+        <span class="chat-name">{{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}</span>
         <img class="add-participant" src="./assets/img/icons/keyboard_arrow_down.png" alt="#">
       </div>
       <div class="right-corner">
@@ -31,8 +31,7 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div class="search-results"
-        *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
+      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">
@@ -296,7 +295,7 @@
       </div>
       <form [formGroup]="channelName">
         <div class="channel-inputs">
-          <input class="channel-name" type="text" placeholder="z.B. Kooperationsprojekte" formControlName="channelName">
+          <input class="channel-name" type="text" placeholder="For example Cooperation" formControlName="channelName">
         </div>
       </form>
     </div>

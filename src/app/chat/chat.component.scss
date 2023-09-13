@@ -323,8 +323,8 @@
   left: 340px;
 
   @media (max-width: 420px) {
-    bottom: 70px;
-    left: 16px;
+    bottom: 76px;
+    left: 11px;
   }
 }
 
@@ -406,7 +406,6 @@
   background: white;
   position: absolute;
   top: 23px;
-  z-index: 1;
 
   @media (max-width: 420px) {
     font-size: 16px;

@@ -184,7 +184,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     if (user) {
       this.isInvitationValid = true;
       this.inputSearchId = user.id;
-      console.log(this.inputSearchId);
       if (this.inputSearchId) {
         this.inputSearchIdResults = user.name;
         this.renderMessage(this.inputSearchId);
@@ -194,7 +193,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       this.toggleUserList = false;
       this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
-
     }
   }
 
