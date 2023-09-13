@@ -435,21 +435,43 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     }
   }
 
-  reaction(messageEmoji: string, index: number) {
+  reaction(messageEmoji:string, index:number) {
     if (this.emojisClickedBefore === index) {
-      document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-      document.getElementById(`behind-reaction-popup`)?.classList.remove('showEmojis');
+      this.hideEmojis(this.emojisClickedBefore);
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
-        document.getElementById(`reaction${this.emojisClickedBefore}`)?.classList.remove('showEmojis');
-        document.getElementById(`behind-reaction-popup`)?.classList.remove('showEmojis');
+       this.hideEmojis(this.emojisClickedBefore);
       }
-      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
-      document.getElementById(`behind-reaction-popup`)?.classList.add('showEmojis');
+      this.showEmojis(index);
       this.emojisClickedBefore = index;
     }
   }
+
+  showEmojis(emojiIndex:number) {
+    let button = document.getElementById(`reaction-button${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction${emojiIndex}`);
+    if (emojiElement) {
+      emojiElement.classList.add('showEmojis');
+    }
+    this.emojiService.behindReactionContainer = true;
+    button?.classList.add('d-none');
+  }
+
+  
+  hideEmojis(emojiIndex:any) {
+    let button = document.getElementById(`reaction-button${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction${emojiIndex}`);
+    const behindReactionPopup = document.getElementById(`behind-reaction-popup`);
+    
+    if (emojiElement) {
+      emojiElement.classList.remove('showEmojis');
+    }
+    this.emojisClickedBefore = undefined;
+    this.emojiService.behindReactionContainer = false;
+    button?.classList.remove('d-none');
+  }
+
 
   reactWithEmoji(emoji: string, index: number, messageId: string, message: MessageDataInterface) {
     let emojiArray = message.emojis;
@@ -472,6 +494,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+    this.hideEmojis(index);
   }
 
 

@@ -7,6 +7,8 @@ import { ThreadDataInterface } from './thread.service';
   providedIn: 'root'
 })
 export class EmojiService {
+  behindReactionContainer = false;
+
   messageData: any;
   emojisClickedBefore: number | undefined;
   reactionListOpen: any;
@@ -20,26 +22,6 @@ export class EmojiService {
     public messageDataService: MessageDataService,
     
     ) { }
-
-
-
-   // *** EMOJI REACTION ***
-   reaction(messageEmoji: string, index: number) {
-    if (this.emojisClickedBefore === index) {
-      document
-        .getElementById(`reaction${this.emojisClickedBefore}`)
-        ?.classList.remove('showEmojis');
-      this.emojisClickedBefore = undefined;
-    } else {
-      if (this.emojisClickedBefore !== null) {
-        document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
-          ?.classList.remove('showEmojis');
-      }
-      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
-      this.emojisClickedBefore = index;
-    }
-  }
 
 
   existEmoji(index: number, typedEmoji: string, messageData: MessageDataInterface[]) {
