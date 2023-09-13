@@ -149,7 +149,8 @@
               </div>
             </div>
 
-            <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"
+            
+            <div *ngFor="let emoji of message.emojis" (click)="showReaction(index)"
               class="reaction-icon-container">
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
