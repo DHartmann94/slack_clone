@@ -8,6 +8,7 @@ import { ThreadDataInterface } from './thread.service';
 })
 export class EmojiService {
   behindReactionContainer = false;
+  behindShowReactionContainer = false;
 
   messageData: any;
   emojisClickedBefore: number | undefined;

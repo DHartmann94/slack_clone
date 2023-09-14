@@ -462,7 +462,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   hideEmojis(emojiIndex:any) {
     let button = document.getElementById(`reaction-button${emojiIndex}`)
     const emojiElement = document.getElementById(`reaction${emojiIndex}`);
-    const behindReactionPopup = document.getElementById(`behind-reaction-popup`);
     
     if (emojiElement) {
       emojiElement.classList.remove('showEmojis');
@@ -500,17 +499,25 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
-      hideItems?.classList.remove('show-list-of-reactions');
-    });
+    this.hideAllReactionLists();
     if (!this.reactionListOpen) {
       item?.classList.add('show-list-of-reactions');
       this.reactionListOpen = true;
+      this.emojiService.behindShowReactionContainer = true;
     } else {
       this.reactionListOpen = false;
     }
   }
+
+  hideAllReactionLists() {
+    this.messageData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist${i}`);
+      hideItems?.classList.remove('show-list-of-reactions');
+    });
+    this.emojiService.behindShowReactionContainer = false;
+    this.reactionListOpen = false;
+  }
+
 
   editChannel() {
     this.openEditChannel = true;

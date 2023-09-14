@@ -65,7 +65,16 @@
   }
 }
 
-#behind-reaction-popup {
+.behind-reaction-popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.behind-show-reaction {
   height: 100vh;
   width: 100%;
   position: fixed;
@@ -478,7 +487,9 @@
   flex-direction: column;
   padding: 10px;
   border-radius: 20px;
-  background-color: #b3b5f8;
+  box-shadow: 4px 4px 8px black;
+  background-color: #a5a7f1;
+  z-index: 5;
   color: black;
 }
 
@@ -652,11 +663,14 @@
 
 .list-of-reactions {
   position: absolute;
-  right: -30%;
+  left: 0;
+  right: 0;
+  top: 0;
   z-index: 10;
   min-width: 100px;
   min-height: 50px;
-  background-color: #c1c3d7;
+  background-color: #ffffff;
+  box-shadow: 4px 4px 8px black;
   border-radius: 20px;
   display: none;
 }

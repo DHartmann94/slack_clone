@@ -254,22 +254,61 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
-  reaction(messageEmoji: string, index: number) {
+  // reaction(messageEmoji: string, index: number) {
+  //   if (this.emojisClickedBefore === index) {
+  //     document
+  //       .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
+  //       ?.classList.remove('showEmojis');
+  //     this.emojisClickedBefore = undefined;
+  //   } else {
+  //     if (this.emojisClickedBefore !== null) {
+  //       document
+  //         .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
+  //         ?.classList.remove('showEmojis');
+  //     }
+  //     document.getElementById(`reaction-in-thread${index}`)?.classList.add('showEmojis');
+  //     this.emojisClickedBefore = index;
+  //   }
+  // }
+
+  reaction(messageEmoji:string, index:number) {
     if (this.emojisClickedBefore === index) {
-      document
-        .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
-        ?.classList.remove('showEmojis');
+      this.hideEmojis(this.emojisClickedBefore);
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
-        document
-          .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
-          ?.classList.remove('showEmojis');
+       this.hideEmojis(this.emojisClickedBefore);
       }
-      document.getElementById(`reaction-in-thread${index}`)?.classList.add('showEmojis');
+      this.showEmojis(index);
       this.emojisClickedBefore = index;
     }
   }
+
+
+  showEmojis(emojiIndex:number) {
+    let button = document.getElementById(`reaction-button-thread${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction-in-thread${emojiIndex}`);
+    if (emojiElement) {
+      emojiElement.classList.add('showEmojis');
+    }
+    this.emojiService.behindReactionContainer = true;
+    button?.classList.add('d-none');
+  }
+
+
+
+  hideEmojis(emojiIndex:any) {
+    let button = document.getElementById(`reaction-button-thread${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction-in-thread${emojiIndex}`);
+    
+    if (emojiElement) {
+      emojiElement.classList.remove('showEmojis');
+    }
+    this.emojisClickedBefore = undefined;
+    this.emojiService.behindReactionContainer = false;
+    button?.classList.remove('d-none');
+  }
+
 
   reactWithEmoji(emoji: string, index: number, messageId: string, message:MessageDataInterface) {
     let emojiArray = message.emojis;
@@ -298,6 +337,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+    this.hideEmojis(index);
   }
 
 

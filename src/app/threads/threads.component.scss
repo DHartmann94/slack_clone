@@ -77,6 +77,24 @@
     }
 }
 
+.behind-reaction-popup {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
+  
+  .behind-show-reaction {
+    height: 100vh;
+    width: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+  }
+
 .reaction-emojis {
     display: none;
     height: 24px;
@@ -87,10 +105,16 @@
     padding: 5px;
 }
 
+.d-none {
+    display: none !important;
+  }
+  
+
 .showEmojis {
     display: flex !important;
     animation: all 500ms ease-in-out;
     width: auto !important;
+    z-index: 5;
 }
 
 .r-emoji {
@@ -496,14 +520,17 @@
 
 .list-of-reactions {
     position: absolute;
-    right: -20%;
+    left: 0;
+    right: 0;
+    top: 0;
     z-index: 10;
     min-width: 100px;
     min-height: 50px;
-    background-color: #c1c3d7;
+    background-color: #ffffff;
+    box-shadow: 4px 4px 8px black;
     border-radius: 20px;
     display: none;
-}
+  }
 
 .show-list-of-reactions {
     display: unset;

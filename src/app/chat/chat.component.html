@@ -148,15 +148,15 @@
                 <span>&nbsp;{{ emoji['reaction-from'] }}</span>
               </div>
             </div>
-
             
+            <div class="behind-show-reaction" *ngIf="emojiService.behindShowReactionContainer" class="behind-show-reaction" (click)="hideAllReactionLists()"></div>
             <div *ngFor="let emoji of message.emojis" (click)="showReaction(index)"
               class="reaction-icon-container">
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
 
-            <div id="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer" (click)="hideEmojis(this.emojisClickedBefore)"></div>
+            <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer" (click)="hideEmojis(this.emojisClickedBefore)"></div>
             <div class="reaction-emojis" id="reaction{{index}}">
               <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
