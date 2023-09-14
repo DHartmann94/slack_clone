@@ -82,7 +82,7 @@ section {
     align-items: flex-end;
 
     p {
-        margin: 0px;
+        margin: 0;
     }
 
     @media(max-width: 970px) {
@@ -98,7 +98,7 @@ section {
     align-items: center;
 
     p {
-        margin: 0px;
+        margin: 0;
     }
 
     @media(min-width: 970px) {
@@ -119,14 +119,14 @@ mat-card {
     align-items: center;
 
     h1 {
-        margin: 0px 0px 35px 0px !important;
+        margin: 0 0 35px 0 !important;
 
         font-size: 3rem !important;
         color: var(--c-purple);
     }
 
     p {
-        margin: 5px 0px 35px 0px;
+        margin: 5px 0 35px 0;
 
         text-align: center;
     }
@@ -136,12 +136,12 @@ mat-card {
         padding: 25px;
 
         h1 {
-            margin: 0px 0px 25px 0px !important;
+            margin: 0 0 25px 0 !important;
             font-size: 2.5rem !important;
         }
 
         p {
-            margin: 0px 0px 25px 0px;
+            margin: 0 0 25px 0;
             text-align: center;
         }
     }
@@ -372,7 +372,7 @@ mat-error {
     a {
         color: #686868;
     }
-    
+
     :hover {
         color: var(--c-purple) !important;
     }
@@ -405,7 +405,7 @@ mat-spinner {
     border-top-right-radius: 10px;
     border-bottom-left-radius: 10px;
 
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
     opacity: 0;
 
     div {
