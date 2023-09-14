@@ -27,7 +27,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
   @ViewChild(MatMenuTrigger)
   trigger!: MatMenuTrigger;
 
-  reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
 
   [x: string]: any;

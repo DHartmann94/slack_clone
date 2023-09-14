@@ -25,7 +25,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   private threadUpdateSubscription: Subscription = new Subscription();
 
   typedEmoji: string = '';
-  reactionEmojis = ['👍', '😂', '🚀', '❤️', '😮', '🎉'];
   emojisClickedBefore: number | undefined;
 
   [x: string]: any;
@@ -254,22 +253,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     }
   }
 
-  // reaction(messageEmoji: string, index: number) {
-  //   if (this.emojisClickedBefore === index) {
-  //     document
-  //       .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
-  //       ?.classList.remove('showEmojis');
-  //     this.emojisClickedBefore = undefined;
-  //   } else {
-  //     if (this.emojisClickedBefore !== null) {
-  //       document
-  //         .getElementById(`reaction-in-thread${this.emojisClickedBefore}`)
-  //         ?.classList.remove('showEmojis');
-  //     }
-  //     document.getElementById(`reaction-in-thread${index}`)?.classList.add('showEmojis');
-  //     this.emojisClickedBefore = index;
-  //   }
-  // }
 
   reaction(messageEmoji:string, index:number) {
     if (this.emojisClickedBefore === index) {
@@ -341,12 +324,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
 
-  // existReaction(index: number): boolean {
-  //   return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-  //     return reaction['reaction-from'] === this.currentUser;
-  //   });
-  // }
-
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist-in-thread${index}`);
     this.hideAllReactionLists();
@@ -368,21 +345,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.reactionListOpen = false;
   }
 
-
-
-  // showReaction(index: number) {
-  //   let item = document.getElementById(`reactionlist-in-thread${index}`);
-  //   this.threadData.forEach((message, i) => {
-  //     let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
-  //     hideItems?.classList.remove('show-list-of-reactions');
-  //   });
-  //   if (!this.reactionListOpen) {
-  //     item?.classList.add('show-list-of-reactions');
-  //     this.reactionListOpen = true;
-  //   } else {
-  //     this.reactionListOpen = false;
-  //   }
-  // }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;

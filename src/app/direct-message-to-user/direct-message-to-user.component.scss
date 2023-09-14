@@ -216,10 +216,44 @@
   padding: 5px;
 }
 
+.behind-reaction-popup {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.behind-show-reaction {
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+.reaction-emojis {
+  display: none;
+  height: 24px;
+  align-items: center;
+  width: 0;
+  border-radius: 20px;
+  background-color: white;
+  padding: 5px;
+}
+
+.d-none {
+  display: none !important;
+}
+
+
 .showEmojis {
   display: flex !important;
   animation: all 500ms ease-in-out;
   width: auto !important;
+  z-index: 5;
 }
 
 .r-emoji {

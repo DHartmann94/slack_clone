@@ -286,40 +286,64 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  reaction(messageEmoji: string, index: number) {
+  reaction(messageEmoji:string, index:number) {
     if (this.emojisClickedBefore === index) {
-      document
-        .getElementById(`reaction${this.emojisClickedBefore}`)
-        ?.classList.remove('showEmojis');
+      this.hideEmojis(this.emojisClickedBefore);
       this.emojisClickedBefore = undefined;
     } else {
       if (this.emojisClickedBefore !== null) {
-        document
-          .getElementById(`reaction${this.emojisClickedBefore}`)
-          ?.classList.remove('showEmojis');
+       this.hideEmojis(this.emojisClickedBefore);
       }
-      document.getElementById(`reaction${index}`)?.classList.add('showEmojis');
+      this.showEmojis(index);
       this.emojisClickedBefore = index;
     }
   }
 
-  reactWithEmoji(emoji: string, index: number, messageId: string) {
-    let emojiArray = this.messageData[index].emojis;
-    if (this.existReaction(index)) {
-      let indexWithCurrentUser = emojiArray.findIndex(
-        (reaction: { [x: string]: string }) =>
-          reaction['reaction-from'] === this.currentUser
-      );
-      emojiArray[indexWithCurrentUser] = {
-        emoji: emoji,
-        'reaction-from': this.currentUser,
-      };
-    } else {
-      emojiArray.push({ emoji: emoji, 'reaction-from': this.currentUser });
+  showEmojis(emojiIndex:number) {
+    let button = document.getElementById(`reaction-button${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction${emojiIndex}`);
+    if (emojiElement) {
+      emojiElement.classList.add('showEmojis');
     }
-    this.directMessageToUserService.updateMessage(messageId, emojiArray);
+    this.emojiService.behindReactionContainer = true;
+    button?.classList.add('d-none');
+  }
+
+  
+  hideEmojis(emojiIndex:any) {
+    let button = document.getElementById(`reaction-button${emojiIndex}`)
+    const emojiElement = document.getElementById(`reaction${emojiIndex}`);
+    
+    if (emojiElement) {
+      emojiElement.classList.remove('showEmojis');
+    }
+    this.emojisClickedBefore = undefined;
+    this.emojiService.behindReactionContainer = false;
+    button?.classList.remove('d-none');
+  }
+
+  reactWithEmoji(emoji: string, index: number, messageId: string, message: DirectMessageToUserInterface) {
+    let emojiArray = message.emojis;
+    emojiArray.forEach((emoj: { [x: string]: any[]; }) => {
+      if (emoj['reaction-from'].includes(this.userDataService.userName)) {
+        const userIndex = emoj['reaction-from'].indexOf(this.userDataService.userName);
+        emoj['reaction-from'].splice(userIndex, 1);
+      }
+    });
+    if (this.emojiService.existEmoji(index, emoji, this.messageData)) {
+      let indexWithTypedEmoji = emojiArray.findIndex((em: { [x: string]: string; }) => em['emoji'] === emoji);
+      emojiArray[indexWithTypedEmoji]['reaction-from'].push(this.userDataService.userName);
+    } else {
+      emojiArray.push({ 'emoji': emoji, 'reaction-from': [this.userDataService.userName] });
+    }
+    let indexWithEmojiToDelete = emojiArray.findIndex((em: { [x: string]: string; }) => em['reaction-from'].length == 0);
+    if (indexWithEmojiToDelete != -1) {
+      emojiArray.splice(indexWithEmojiToDelete, 1);
+    }
+    this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;
     this.reactionListOpen = false;
+    this.hideEmojis(index);
   }
 
   existReaction(index: number): boolean {
@@ -332,18 +356,26 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist${index}`);
-    this.messageData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist${i}`);
-      hideItems?.classList.remove('show-list-of-reactions');
-    });
+    this.hideAllReactionLists();
     if (!this.reactionListOpen) {
       item?.classList.add('show-list-of-reactions');
       this.reactionListOpen = true;
+      this.emojiService.behindShowReactionContainer = true;
     } else {
       this.reactionListOpen = false;
     }
   }
 
+  hideAllReactionLists() {
+    this.messageData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist${i}`);
+      hideItems?.classList.remove('show-list-of-reactions');
+    });
+    this.emojiService.behindShowReactionContainer = false;
+    this.reactionListOpen = false;
+  }
+
+  
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
   }

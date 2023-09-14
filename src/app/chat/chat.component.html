@@ -158,7 +158,7 @@
 
             <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer" (click)="hideEmojis(this.emojisClickedBefore)"></div>
             <div class="reaction-emojis" id="reaction{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
+              <div *ngFor="let emoji of emojiService.reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
             </div>
 
