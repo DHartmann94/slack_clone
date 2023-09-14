@@ -341,25 +341,48 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
 
-  existReaction(index: number): boolean {
-    return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
-      return reaction['reaction-from'] === this.currentUser;
-    });
-  }
+  // existReaction(index: number): boolean {
+  //   return this.messageData[index].emojis.some((reaction: { [x: string]: string; }) => {
+  //     return reaction['reaction-from'] === this.currentUser;
+  //   });
+  // }
 
   showReaction(index: number) {
     let item = document.getElementById(`reactionlist-in-thread${index}`);
-    this.threadData.forEach((message, i) => {
-      let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
-      hideItems?.classList.remove('show-list-of-reactions');
-    });
+    this.hideAllReactionLists();
     if (!this.reactionListOpen) {
       item?.classList.add('show-list-of-reactions');
       this.reactionListOpen = true;
+      this.emojiService.behindShowReactionContainer = true;
     } else {
       this.reactionListOpen = false;
     }
   }
+
+  hideAllReactionLists() {
+    this.threadData.forEach((message, i) => {
+      let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
+      hideItems?.classList.remove('show-list-of-reactions');
+    });
+    this.emojiService.behindShowReactionContainer = false;
+    this.reactionListOpen = false;
+  }
+
+
+
+  // showReaction(index: number) {
+  //   let item = document.getElementById(`reactionlist-in-thread${index}`);
+  //   this.threadData.forEach((message, i) => {
+  //     let hideItems = document.getElementById(`reactionlist-in-thread${i}`);
+  //     hideItems?.classList.remove('show-list-of-reactions');
+  //   });
+  //   if (!this.reactionListOpen) {
+  //     item?.classList.add('show-list-of-reactions');
+  //     this.reactionListOpen = true;
+  //   } else {
+  //     this.reactionListOpen = false;
+  //   }
+  // }
 
   toggleEmojiPicker() {
     this.emojipickeractive = !this.emojipickeractive;
