@@ -101,6 +101,7 @@
   animation: growContainer 500ms ease-in-out;
   width: auto !important;
   height: 24px;
+
   .r-emoji {
     display: flex;
     width: auto;
@@ -113,6 +114,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -214,7 +216,7 @@
     border: 1px solid var(--ligth-purple-lines, #adb0d9);
     box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.08);
     z-index: 10;
-  
+
     .user-list {
       padding: 10px 0;
       font-family: "Nunito";
@@ -222,12 +224,12 @@
       font-style: normal;
       font-weight: 500;
       cursor: pointer;
-  
+
       &:hover {
         color: var(--c-purple);
       }
     }
-  
+
     .channel-list {
       padding: 10px 0;
       font-family: "Nunito";
@@ -235,7 +237,7 @@
       font-style: normal;
       font-weight: 500;
       cursor: pointer;
-  
+
       &:hover {
         color: var(--c-purple);
       }
@@ -286,8 +288,8 @@
 }
 
 .add-participant {
-  height: 24px;
-  width: 24px;
+  height: 20px;
+  width: 20px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -309,14 +311,12 @@
   align-items: center;
   flex-direction: row;
   cursor: pointer;
-
+  box-shadow: 1px 1px 5px rgb(214, 214, 214);
+  border-radius: 15px;
+  height: 45px;
+  padding: 0px 10px;
   &:hover {
-    width: auto;
-    height: auto;
-    border: 1px solid var(--ligth-purple-lines, #adb0d9);
-    padding: 0 5px;
-    border-radius: 20px;
-    height: 45px;
+    box-shadow: 3px 3px 10px rgb(214, 214, 214);
   }
 }
 
@@ -325,7 +325,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-right: 10px;
   max-width: 200px;
   transition: color 0.3s;
   cursor: pointer;
@@ -333,15 +332,11 @@
   @media (max-width: 420px) {
     font-size: 16px;
   }
-
-  &:hover {
-    color: var(--purple-2, #797ef3);
-  }
 }
 
 .hash-chat-name {
-  margin-right: 15px;
-  width: 18px;
+  margin-right: 5px;
+  width: 15px;
   object-fit: scale-down;
 }
 
@@ -356,10 +351,10 @@
   }
 }
 
-.mention-menu > mat-menu {
+.mention-menu>mat-menu {
   border-radius: 20px !important;
 
-  @media (max-width: 420px) { 
+  @media (max-width: 420px) {
     position: absolute;
     left: 0;
     bottom: 50px;
