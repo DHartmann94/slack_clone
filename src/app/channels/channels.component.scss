@@ -62,6 +62,10 @@
         width: 420px !important;
         height: 90vh;
     }
+
+    @media (min-width: 440px) {
+        display: none;
+    }
     
     .channel-in-out {
         padding: 35px;
