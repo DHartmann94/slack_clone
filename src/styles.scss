@@ -4,7 +4,7 @@
 html,
 body {
   font-family: 'Nunito', Arial, Helvetica, sans-serif !important;
-  margin: 0px;
+  margin: 0;
   background-color: var(--bg-color);
 }
 
@@ -56,5 +56,24 @@ li {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+@media (max-width: 420px) {
+  .channel-nav-toggle {
+      display: none;
+  }
+}
+
+@media (min-width: 420px) {
+  .channel-nav-toggle {
+      color: var(--black);
+  }
+}
+
+@media (min-width: 840px) {
+  .channel-nav-toggle {
+      display: none;
+  }    
+}
+
 
 

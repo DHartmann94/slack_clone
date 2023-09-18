@@ -62,18 +62,20 @@
               </div>
             </div>
 
-            <div (mouseover)="showReaction(index)" (mouseout)="showReaction(index)" *ngIf="message.emojis.length > 0"
+            <div class="behind-show-reaction" *ngIf="emojiService.behindShowReactionContainer" class="behind-show-reaction" (click)="hideAllReactionLists()"></div>
+            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0"
               class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
 
+            <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer" (click)="hideEmojis(this.emojisClickedBefore)"></div>
             <div class="reaction-emojis" id="reaction-in-thread{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
+              <div *ngFor="let emoji of emojiService.reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id , message)">{{ emoji }}</div>
             </div>
 
-            <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
+            <div *ngIf="message.sentById !== currentUserId" id="reaction-button-thread{{index}}" (click)="reaction(message.emojis, index)"
               class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>

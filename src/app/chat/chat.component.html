@@ -1,6 +1,11 @@
 <mat-card class="chat-card">
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="!(this.chatBehavior.toggleSearchBar)">
+      <div class="channel-nav-toggle">
+        <mat-icon class="material-symbols-outlined">
+          side_navigation
+        </mat-icon>
+      </div>
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
         <span class="chat-name">{{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}</span>
@@ -31,7 +36,8 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
+      <div class="search-results"
+        *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">
@@ -149,21 +155,23 @@
               </div>
             </div>
 
-            <div *ngFor="let emoji of message.emojis" (mouseover)="showReaction(index)" (mouseout)="showReaction(index)"
-              class="reaction-icon-container">
+            <div class="behind-show-reaction" *ngIf="emojiService.behindShowReactionContainer"
+              class="behind-show-reaction" (click)="hideAllReactionLists()"></div>
+            <div *ngFor="let emoji of message.emojis" (click)="showReaction(index)" class="reaction-icon-container">
               <div class="reaction-counter">{{ emoji['emoji'] }}</div>
               <span class="reaction-counter">{{ emoji['reaction-from'].length }}</span>
             </div>
 
-            <div id="behind-reaction-popup"></div>
+            <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer"
+              (click)="hideEmojis(this.emojisClickedBefore)"></div>
             <div class="reaction-emojis" id="reaction{{index}}">
-              <div *ngFor="let emoji of reactionEmojis" class="r-emoji"
+              <div *ngFor="let emoji of emojiService.reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id, message)">{{ emoji }}</div>
             </div>
 
 
             <div *ngIf="message.sentById !== currentUserId" (click)="reaction(message.emojis, index)"
-              class="reaction-button-container">
+              id="reaction-button{{ index }}" class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>
@@ -194,7 +202,8 @@
         <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
           class="app-emojis"></app-emojis>
       </div>
-      <textarea (input)="checkForMention($event)" placeholder="Message to # {{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}"
+      <textarea (input)="checkForMention($event)"
+        placeholder="Message to # {{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}"
         [(ngModel)]="messageInput" rows="4" (keyup.enter)="sendMessage(channel.id)">
       </textarea>
       <div class="text-editor-bottom">

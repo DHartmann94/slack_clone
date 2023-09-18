@@ -38,7 +38,7 @@
         .grid-view-threads {
             grid-column: 5/7;
             grid-row: 2/11;
-            
+
             @media(max-width: 1380px) {
                 width: 100%;
             }
@@ -115,7 +115,7 @@
 
         border-radius: 100px;
         background: var(--purple-1, #444DF2);
-        box-shadow: 0px 6px 10px 0px rgba(0, 0, 0, 0.20);
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.20);
 
         z-index: 999;
 
@@ -127,8 +127,8 @@
     }
 }
 
-@media (min-width: 480px) {
+@media (min-width: 420px) {
     .direct-chat-icon {
         display: none;
-    }    
+    }
 }
