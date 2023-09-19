@@ -5,6 +5,18 @@
     <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
 </mat-card>
 
+<div *ngIf="showFiller" class="channel-nav-toggle" (click)="toggle()">
+  <mat-icon class="material-symbols-outlined">
+    side_navigation
+  </mat-icon>
+</div>
+
+<div *ngIf="!showFiller" class="channel-nav-toggle-off" (click)="toggle()">
+  <mat-icon class="material-symbols-outlined">
+    side_navigation
+  </mat-icon>
+</div>
+
 <mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
     <div class="channel-in-out" *ngIf="showFiller">
         <div class="channel-header">
@@ -67,9 +79,9 @@
                         </svg>
                         <svg *ngIf="directChat.status === 'Inactive'" class="status" xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 8 8">
                             <circle cx="4" cy="4" r="4" fill="#808080" />
-                        </svg> 
+                        </svg>
                     </div>
-                    <h3 (click)="selectDirectChat(directChat.id)">{{ directChat.name }}</h3>    
+                    <h3 (click)="selectDirectChat(directChat.id)">{{ directChat.name }}</h3>
                 </div> -->
         </div>
     </div>

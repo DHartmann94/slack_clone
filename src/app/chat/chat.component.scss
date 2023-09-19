@@ -46,6 +46,10 @@
       align-items: center;
       padding: 0 20px;
 
+      @media (max-width: 840px) {
+        padding-left: 55px;
+      }
+
       @media (max-width: 420px) {
         padding: 10px 15px;
       }
@@ -1497,3 +1501,4 @@ section {
     width: 310px;
   }
 }
+

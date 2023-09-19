@@ -1,11 +1,6 @@
 <mat-card class="chat-card">
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="!(this.chatBehavior.toggleSearchBar)">
-      <div class="channel-nav-toggle">
-        <mat-icon class="material-symbols-outlined">
-          side_navigation
-        </mat-icon>
-      </div>
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
         <img class="hash-chat-name" src="./assets/img/icons/tag.svg" alt="#">
         <span class="chat-name">{{ inputSearchIdResults ? inputSearchIdResults : channel.channelName }}</span>
