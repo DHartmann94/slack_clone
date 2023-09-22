@@ -315,6 +315,7 @@
   border-radius: 15px;
   height: 45px;
   padding: 0 10px;
+
   &:hover {
     box-shadow: 3px 3px 10px rgb(214, 214, 214);
   }
@@ -1498,3 +1499,57 @@ section {
   }
 }
 
+@media (max-width: 840px) and (min-width: 421px) {
+  .chat-message {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin: 8px 0;
+  }
+
+  .time-stamp {
+    top: 28px;
+    padding: 0 5px;
+  }
+
+  .profile-pictures-chat {
+    height: 50px;
+    width: 50px;
+  }
+
+  .chat-text-area {
+    padding-top: 38px;
+    padding-bottom: 69px;
+  }
+
+  .mentioned-users-container {
+    height: 20px;
+  }
+
+  .chat-name,
+  .chat-timeStamp,
+  .time-stamp,
+  .chat-message,
+  textarea,
+  .responses  {
+    font-size: 16px !important;
+  }
+
+  .reaction-icon-container[_ngcontent-nft-c48] {
+    padding: 4px 8px;
+    height: 22px;
+    width: 44px;
+    gap: 8px;
+}
+
+.search-bar {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: flex-start !important;
+  width: -webkit-fill-available !important;
+  padding: 15px !important;
+  gap: 20px !important;
+  margin-left: 6px !important;
+  margin-right: auto !important;
+}
+}

@@ -37,7 +37,6 @@
 
   @media (max-width: 840px) {
     width: 73px;
-    left: le;
     left: -21px;
     top: 50%;
   }
@@ -627,4 +626,20 @@
   font-size: 30px !important;
   height: 30px !important;
   width: 30px !important;
+}
+
+@media (max-width: 840px) and (min-width: 421px) {
+  .channel-in-out {
+    padding: 16px !important;
+  }
+
+  .shape,
+  .shape > img {
+    height: 50px !important;
+    width: 50px !important;
+  }
+
+  h2 {
+    font-size: 18px !important;
+  }
 }
