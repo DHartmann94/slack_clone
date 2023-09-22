@@ -162,7 +162,6 @@
     padding: 0 20px 15px 20px;
 
     h2 {
-        font-family: "Nunito";
         margin-top: 20px;
         font-size: 18px;
         font-style: normal;
@@ -171,7 +170,6 @@
 
     .user-list {
         padding: 10px 0;
-        font-family: "Nunito";
         font-size: 16px;
         font-style: normal;
         font-weight: 500;
@@ -301,7 +299,6 @@
 
 .chat-name-blue {
     color: var(--purple-2, #797EF3);
-    font-family: Nunito;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -944,16 +941,14 @@ section {
             width: 100%;
 
             h2 {
-                font-family: "Nunito";
-                margin-top: 20px;
+                        margin-top: 20px;
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 700;
             }
 
             span {
-                font-family: "Nunito";
-                margin-top: 20px;
+                        margin-top: 20px;
                 font-size: 18px;
                 font-style: normal;
                 color: var(--c-mediun-purple);
@@ -976,16 +971,14 @@ section {
             }
 
             h1 {
-                font-family: "Nunito";
-                font-size: 20px;
+                        font-size: 20px;
                 font-style: normal;
                 font-weight: 700;
             }
         }
 
         h3 {
-            font-family: "Nunito";
-            margin-top: 20px;
+                margin-top: 20px;
             font-size: 18px;
             font-style: normal;
             font-weight: 700;
@@ -1050,8 +1043,7 @@ section {
             gap: 20px;
 
             h2 {
-                font-family: "Nunito";
-                margin-top: 20px;
+                        margin-top: 20px;
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 700;
@@ -1064,8 +1056,7 @@ section {
                 row-gap: 10px;
 
                 span {
-                    font-family: "Nunito";
-                    margin-top: 20px;
+                                margin-top: 20px;
                     font-size: 18px;
                     font-style: normal;
                     color: var(--c-mediun-purple);
@@ -1085,7 +1076,6 @@ section {
     .error-massage {
         position: relative;
         left: 18px;
-        font-family: "Nunito";
         margin-top: 20px;
         font-size: 18px;
         font-style: normal;
