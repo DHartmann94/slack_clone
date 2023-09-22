@@ -5,18 +5,6 @@
     <div class="sidenav-icon"><img src="./assets/img/icons/show_menu.png" alt="#"></div>
 </mat-card>
 
-<div *ngIf="showFiller" class="channel-nav-toggle" (click)="toggle()">
-  <mat-icon class="material-symbols-outlined">
-    side_navigation
-  </mat-icon>
-</div>
-
-<div *ngIf="!showFiller" class="channel-nav-toggle-off" (click)="toggle()">
-  <mat-icon class="material-symbols-outlined">
-    side_navigation
-  </mat-icon>
-</div>
-
 <mat-card [@cardWidth]="showFiller ? 'open' : 'closed'" class="channel-container">
     <div class="channel-in-out" *ngIf="showFiller">
         <div class="channel-header">
