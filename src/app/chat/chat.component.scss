@@ -1529,26 +1529,26 @@ section {
   .time-stamp,
   .chat-message,
   textarea,
-  .responses  {
+  .responses {
     font-size: 16px !important;
   }
 
-  .reaction-icon-container[_ngcontent-nft-c48] {
+  .reaction-icon-container {
     padding: 4px 8px;
     height: 22px;
     width: 44px;
     gap: 8px;
-}
+  }
 
-.search-bar {
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  align-items: flex-start !important;
-  width: -webkit-fill-available !important;
-  padding: 15px !important;
-  gap: 20px !important;
-  margin-left: 6px !important;
-  margin-right: auto !important;
-}
+  .search-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    width: -webkit-fill-available !important;
+    padding: 15px !important;
+    gap: 20px !important;
+    margin-left: 6px !important;
+    margin-right: auto !important;
+  }
 }

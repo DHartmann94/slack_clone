@@ -14,7 +14,7 @@
         <span class="participant-name">{{ inputSearchIdResults ? inputSearchIdResults : userData.name }}</span>
       </div>
     </div>
-    
+
     <div class="search-input-channels" *ngIf="!(toggleSearchBar)">
       <div class="message-head">
         <h2>New Message</h2>
@@ -42,7 +42,7 @@
       </div>
     </div>
   </div>
-  
+
   <div #chatContainer class="chat-text-area" *ngIf="messageData">
     <ng-container *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
