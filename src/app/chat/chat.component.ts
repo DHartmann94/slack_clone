@@ -365,12 +365,10 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     );
   }
 
-  async sendMessage(channel: ChannelDataInterface) {
+  async sendMessage(inputSearchId: any) {
     this.dataIsLoading = true;
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
       const threadId = this.threadDataService.generateThreadId();
-      const resultSearchingChannel = this.inputSearchId;
-      console.log("Result invited channel",  resultSearchingChannel);
       const message: MessageDataInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
@@ -378,8 +376,8 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
         emojis: [],
         thread: threadId,
         channel: this.channelId,
-        mentionedUser: this.mentionService.mentionInMessage,
-        invitedChannelId: resultSearchingChannel,
+        mentionedUser: this.mentionService.mentionInMessage,    
+        invitedChannelId: inputSearchId,   
       };
 
       if (this.emojipickeractive) {

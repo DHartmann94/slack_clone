@@ -31,8 +31,7 @@
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
           placeholder="To: #channel, or @somebody oder e-mail address">
       </div>
-      <div class="search-results"
-        *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
+      <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
           <li *ngFor="let user of searchResultsUsers" (click)="inviteUser(user)">
             <div class="user-list">

@@ -218,7 +218,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   processUserData(userId: string) {
     this.userId = userId;
     this.renderMessage(this.userId);
-    console.log('userId IST:::', this.userId);
   }
 
   renderMessage(userId: any) {
@@ -450,27 +449,23 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
   }
 
-  async sendDirectMessageToUser(userId: string) {
+  async sendDirectMessageToUser(inputSearchId: any) {
     this.dataIsLoading = true;
     if (this.messageInput.length > 0 && this.messageInput[0].trim().length > 0) {
-      const resultSearchingUser = this.inputSearchId;
       const message: DirectMessageToUserInterface = {
         messageText: this.messageInput,
         sentById: this.currentUserId,
         time: Date.now(),
         emojis: [],
         mentionedUser: 'user_id_here',
-        user: userId,
+        user: this.userId,
         userSentTo: this.userDataService.currentUser,
-        invitedUserId: resultSearchingUser,
+        invitedUserId: inputSearchId,
       };
-
 
       if (this.emojipickeractive) {
         this.toggleEmojiPicker();
       }
-
-      console.log('user', this.userId),
 
       this.messageData.push(message);
       this.messageInput = [''];
