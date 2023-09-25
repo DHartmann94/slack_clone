@@ -196,7 +196,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     }
   }
 
-  inviteChannel(channel: ChannelDataInterface):void {
+ /*  inviteChannel(channel: ChannelDataInterface):void {
     if (channel) {
       this.isInvitationValid = true;
       this.inputSearchId = channel.id;
@@ -205,7 +205,7 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
       this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
     }
-  }
+  } */
 
   toggleChat() {
     this.toggleSearchBar = !this.toggleSearchBar;

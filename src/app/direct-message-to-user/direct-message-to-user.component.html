@@ -22,7 +22,7 @@
       </div>
       <div class="channel-inputs">
         <input class="search-bar" [(ngModel)]="inviteUserOrChannel" (input)="filterUsers()" type="text"
-          placeholder="To: #channel, or @jemand oder e-mail address">
+          placeholder="To: #@someone or e-mail address, type the name or start with a @">
       </div>
       <div class="search-results" *ngIf="searchResultsUsers.length > 0 || searchResultsChannels.length > 0 && closeSearchContainer">
         <ul *ngIf="toggleUserList">
@@ -32,13 +32,13 @@
             </div>
           </li>
         </ul>
-        <ul *ngIf="toggleChannelList">
+       <!--  <ul *ngIf="toggleChannelList">
           <li *ngFor="let channel of searchResultsChannels" (click)="inviteChannel(channel)">
             <div class="channel-list">
               {{ channel.channelName }}
             </div>
           </li>
-        </ul>
+        </ul> -->
       </div>
     </div>
   </div>

@@ -227,7 +227,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     }
   }
 
-  inviteUser(user: UserDataInterface): void {
+  /* inviteUser(user: UserDataInterface): void {
     if (user) {
       this.isInvitationValid = true;
       this.inputSearchId = user.id;
@@ -236,7 +236,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
       this.closeSearchContainer = false;
       this.inviteUserOrChannel = '';
     }
-  }
+  } */
 
   inviteChannel(channel: ChannelDataInterface): void {
     if (channel) {
