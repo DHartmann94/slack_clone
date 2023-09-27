@@ -344,8 +344,9 @@
   left: 340px;
 
   @media (max-width: 420px) {
-    bottom: 76px;
-    left: 11px;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%);
   }
 }
 
@@ -732,9 +733,17 @@
   @media (max-width: 420px) {
     margin: 0;
     bottom: 15px;
-    left: 20px;
   }
 }
+
+.input-when-emoji-picker-active {
+  bottom: 250px;
+}
+
+.chat-card-when-emoji-picker-active {
+  justify-content: flex-start !important;
+}
+
 
 .text-editor {
   border-radius: 20px;
@@ -1509,6 +1518,10 @@ section {
   .chat-text-area {
     padding-top: 38px;
     padding-bottom: 69px;
+  }
+
+  .text-area-when-emoji-picker-active{
+    height: 300px !important;
   }
 
   .mentioned-users-container {

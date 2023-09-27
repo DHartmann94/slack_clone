@@ -1,4 +1,4 @@
-<mat-card class="chat-card">
+<mat-card [ngClass]="{'chat-card-when-emoji-picker-active': emojiService.emojipickeractiveChat}" class="chat-card">
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="!(this.chatBehavior.toggleSearchBar)">
       <div class="chat-head" *ngIf="(receivedChannelData$ | async) as channel" (click)="editChannel()">
@@ -91,7 +91,7 @@
     </div>
   </mat-card>
 
-  <div #chatContainer class="chat-text-area" *ngIf="messageData">
+  <div #chatContainer [ngClass]="{'text-area-when-emoji-picker-active': emojiService.emojipickeractiveChat}"  class="chat-text-area" *ngIf="messageData">
     <div *ngFor="let message of messageData; let index = index">
       <!-- Time stamp parting line -->
       <div *ngIf="isNewDay(message, messageData[index - 1])">
@@ -184,7 +184,7 @@
   </div>
 
   <!-- Input field -->
-  <div class="message-input-field">
+  <div [ngClass]="{'input-when-emoji-picker-active': emojiService.emojipickeractiveChat}" class="message-input-field">
     <div class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
