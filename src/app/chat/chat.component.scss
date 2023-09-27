@@ -737,11 +737,15 @@
 }
 
 .input-when-emoji-picker-active {
-  bottom: 250px;
+  @media (max-width:420px) {
+    bottom: 250px;
+  }
 }
 
 .chat-card-when-emoji-picker-active {
-  justify-content: flex-start !important;
+  @media (max-width:420px) {
+    justify-content: flex-start !important;
+  }
 }
 
 
