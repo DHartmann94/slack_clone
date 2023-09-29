@@ -22,11 +22,14 @@ export class MentionService {
     public userService: UserDataService,
   ) { }
 
-  async getUsers(userData: [], currentUser: string) {
+  async getUsers(userData: string[], currentUser: string) {
     this.usersInCannel = [];
     for (const userID of userData) {
       const myuser = await this.userService.usersDataBackend(userID);
-      this.usersInCannel.push({ 'user': myuser, 'id': userID });
+      const userIndex = this.usersInCannel.findIndex((user) => user.id === userID);
+      if (userIndex === -1) {
+        this.usersInCannel.push({ 'user': myuser, 'id': userID });
+      }
     }
     this.removeCurrentUser(currentUser);
   }
@@ -71,12 +74,12 @@ export class MentionService {
     return undefined;
   }
 
-  resolveForRedDisplay(mentionUsers:any []) {
-    for (const users of mentionUsers){
-      if ( users.id.includes(this.userService.currentUser)) {
+  resolveForRedDisplay(mentionUsers: any[]) {
+    for (const users of mentionUsers) {
+      if (users.id.includes(this.userService.currentUser)) {
         return true;
-      } 
-      
+      }
+
     }
     return false;
   }

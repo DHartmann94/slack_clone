@@ -417,6 +417,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {
         this.mentionService.getUsers(data.users, this.userDataService.userName);
+        debugger
       }
     });
   }
