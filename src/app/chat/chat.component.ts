@@ -376,8 +376,8 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
         emojis: [],
         thread: threadId,
         channel: this.channelId,
-        mentionedUser: this.mentionService.mentionInMessage,    
-        invitedChannelId: inputSearchId,   
+        mentionedUser: this.mentionService.mentionInMessage,
+        invitedChannelId: inputSearchId,
       };
 
       if (this.emojipickeractive) {
@@ -417,7 +417,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     this.receivedChannelData$.subscribe(data => {
       if (data && data.users) {
         this.mentionService.getUsers(data.users, this.userDataService.userName);
-        debugger
       }
     });
   }
@@ -456,11 +455,11 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     button?.classList.add('d-none');
   }
 
-  
+
   hideEmojis(emojiIndex:any) {
     let button = document.getElementById(`reaction-button${emojiIndex}`)
     const emojiElement = document.getElementById(`reaction${emojiIndex}`);
-    
+
     if (emojiElement) {
       emojiElement.classList.remove('showEmojis');
     }

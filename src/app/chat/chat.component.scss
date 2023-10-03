@@ -59,6 +59,7 @@
   overflow-x: hidden;
   padding-top: 20px;
   border-radius: 5px;
+  padding-bottom: 50px;
 
   @media(max-width: 420px) {
     height: 500px;
@@ -504,6 +505,7 @@
 .chat-message {
   padding-top: 20px;
   padding-bottom: 25px;
+  word-break: break-word;
   position: relative;
 
   @media (max-width: 420px) {
