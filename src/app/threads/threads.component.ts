@@ -13,6 +13,7 @@ import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/fir
 import { EmojiService } from '../service-moduls/emoji.service';
 import { MentionService } from '../service-moduls/mention.service';
 import { ScrollService } from '../service-moduls/scroll.service';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-threads',
@@ -21,6 +22,8 @@ import { ScrollService } from '../service-moduls/scroll.service';
 })
 export class ThreadsComponent implements OnInit, OnChanges {
   @ViewChild('chatContainer') chatContainer!: ElementRef;
+  @ViewChild(MatMenuTrigger)
+  trigger!: MatMenuTrigger;
 
   private threadUpdateSubscription: Subscription = new Subscription();
 
@@ -187,9 +190,30 @@ export class ThreadsComponent implements OnInit, OnChanges {
     this.messageInput = this.messageInput + $event.character;
   }
 
-  addMention(name: string) {
-    let mention = ` @${name} `;
-    this.messageInput = [this.messageInput + mention];
+  addMention(user: any) {
+    if (!this.mentionService.threadToggledWithButton) {
+      this.messageInput = this.messageInput.slice(0, -1);
+    }
+    this.mentionService.updateInputField(user);
+  }
+
+  updateUsersForMention() {
+    this.receivedChannelData$.subscribe(data => {
+      if (data && data.users) {
+        this.mentionService.getUsers(data.users, this.userDataService.userName);
+      }
+    });
+  }
+
+  checkForMention(event: Event) {
+    const inputValue = (event.target as HTMLInputElement).value;
+    const lastCharacter = inputValue[inputValue.length - 1];
+    if (lastCharacter === '@') {
+      this.trigger.openMenu();
+      this.mentionService.threadToggledWithButton = false;
+    } else {
+      this.trigger.closeMenu();
+    }
   }
 
   isNewDay( currentMessage: MessageDataInterface, previousMessage: MessageDataInterface): boolean {

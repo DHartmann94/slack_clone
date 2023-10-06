@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { UserDataService } from './user.service';
 import { MessageDataInterface, MessageDataService } from './message.service';
 import { ThreadDataInterface } from './thread.service';
+import { ScrollService } from './scroll.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class EmojiService {
   constructor(
     public userDataService: UserDataService,
     public messageDataService: MessageDataService,
-    
+    public scrollService: ScrollService
     ) { }
 
 
@@ -44,7 +45,6 @@ export class EmojiService {
     } else if (component === 'thread') {
       this.emojipickeractiveThread = !this.emojipickeractiveThread;
     }
-    
   }
 
 }

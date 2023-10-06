@@ -507,7 +507,9 @@
   padding-bottom: 25px;
   word-break: break-word;
   position: relative;
-
+  span {
+    max-width: 50%;
+  }
   @media (max-width: 420px) {
     padding-top: 15px;
     padding-bottom: 20px;

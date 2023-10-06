@@ -14,6 +14,7 @@ export class MentionService {
   chatPopupOpen = false;
   usersInCannel: any[] = [];
   chatToggledWithButton = true;
+  threadToggledWithButton = true;
   mentionInMessage: any = [];
   mentionedUserIds: any = [];
   mentionListOpen: boolean = false;
