@@ -211,6 +211,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
     if (lastCharacter === '@') {
       this.trigger.openMenu();
       this.mentionService.threadToggledWithButton = false;
+      this.mentionService.mentionInThread = true;
     } else {
       this.trigger.closeMenu();
     }

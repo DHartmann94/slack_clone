@@ -1,4 +1,4 @@
-<mat-card class="threads-card">
+<mat-card [ngClass]="{'chat-card-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="threads-card">
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="triggerCRUDHTML">
       <div class="chat-head" *ngIf="loading">
@@ -12,7 +12,7 @@
     </div>
   </div>
 
-  <div #chatContainer class="chat-text-area" *ngIf="threadData">
+  <div #chatContainer [ngClass]="{'text-area-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="chat-text-area" *ngIf="threadData">
     <ng-container *ngFor="let message of threadData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -105,7 +105,7 @@
   </div>
 
   <!-- Input field -->
-  <div [ngClass]="{'input-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="message-input-field">
+  <div [ngClass]="{'input-thread-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="message-input-field">
     <div *ngIf="mentionService.mentionInThread" class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
@@ -138,7 +138,7 @@
         <mat-icon class="send">send</mat-icon>
       </div>
       <div class="emoji-mobile">
-        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
+        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
       </div>
     </div>
   </div>
