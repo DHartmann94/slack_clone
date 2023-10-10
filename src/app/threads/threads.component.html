@@ -52,7 +52,22 @@
           <div>
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
-              message.messageText }}</span>
+              message.messageText }}
+                
+
+              <div #menuTrigger class="mentions-button" *ngIf="message.mentionedUser.length > 0"
+                [ngClass]="{ 'mention-right': message.sentById === userDataService.currentUser, 'mention-left': message.sentById !== userDataService.currentUser, 'mention-active':  mentionService.resolveForRedDisplay(message.mentionedUser) }">
+                @
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none"
+                  [ngClass]="{'mention-popup-right': message.sentById === userDataService.currentUser, 'mention-popup-left': message.sentById !== userDataService.currentUser}">
+                  <span style=" white-space: nowrap;"
+                    *ngFor="let user of message.mentionedUser">@{{mentionService.resolveMentionedUser(user.id)}}</span>
+                </div>
+              </div>
+            
+            
+            
+            </span>
           </div>
           <div class="like-area">
 
@@ -91,7 +106,7 @@
 
   <!-- Input field -->
   <div [ngClass]="{'input-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="message-input-field">
-    <div class="mentioned-users-container">
+    <div *ngIf="mentionService.mentionInThread" class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
       </div>
@@ -109,7 +124,7 @@
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
 
-          <div class="mail-container" (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
+          <div class="mail-container" (click)="mentionService.chatToggledWithButton = true; mentionService.mentionInThread = true;" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu class="mention-menu" #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item

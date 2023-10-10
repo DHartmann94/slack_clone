@@ -106,7 +106,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
     private fbChannelDescription: FormBuilder,
     private threadDataService: ThreadDataService,
     private firestore: Firestore,
-    private scrollService: ScrollService,
+    public scrollService: ScrollService,
     public directMessageToUserService: DirectMessageToUserService
   ) {
     this.chatTriggerSubscription = this.chatBehavior.crudTriggered$.subscribe(() => {
@@ -784,4 +784,5 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
       this.dataIsLoading = false;
     }
   }
+
 }

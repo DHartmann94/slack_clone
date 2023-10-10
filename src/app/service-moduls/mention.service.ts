@@ -18,6 +18,7 @@ export class MentionService {
   mentionInMessage: any = [];
   mentionedUserIds: any = [];
   mentionListOpen: boolean = false;
+  mentionInThread:boolean = false;
 
   constructor(
     public userService: UserDataService,

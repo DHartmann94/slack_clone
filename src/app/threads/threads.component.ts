@@ -249,7 +249,7 @@ export class ThreadsComponent implements OnInit, OnChanges {
         emojis: [],
         thread: this.threadDataService.threadId,
         channel: 'Thread Message',
-        mentionedUser: 'user_id_here',
+        mentionedUser:  this.mentionService.mentionInMessage,
       };
 
       if (this.emojipickeractive) {
@@ -275,6 +275,8 @@ export class ThreadsComponent implements OnInit, OnChanges {
     } else {
       console.log('Message input is empty. Cannot send an empty message.');
     }
+
+    this.mentionService.resetArray();
   }
 
 

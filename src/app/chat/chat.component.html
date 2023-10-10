@@ -185,7 +185,7 @@
 
   <!-- Input field -->
   <div [ngClass]="{'input-when-emoji-picker-active': emojiService.emojipickeractiveChat}" class="message-input-field">
-    <div class="mentioned-users-container">
+    <div *ngIf="!mentionService.mentionInThread" class="mentioned-users-container">
       <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
         <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
       </div>
@@ -202,9 +202,9 @@
       </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
-          <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
+          <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat'); scrollService.scrollToBottom(this.chatContainer.nativeElement);"></div>
 
-          <div class="mail-container" (click)="mentionService.chatToggledWithButton = true" #menuTrigger mat-button
+          <div class="mail-container" (click)="mentionService.chatToggledWithButton = true; mentionService.mentionInThread = false;" #menuTrigger mat-button
             [matMenuTriggerFor]="mention"></div>
           <mat-menu class="mention-menu" #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item

@@ -14,7 +14,7 @@ export interface ThreadDataInterface {
   sentBy?: string;
   picture?: string;
   sentById?: string;
-  mentionedUser?: string;
+  mentionedUser?: any;
   senderName?: string;
 }
 
@@ -76,7 +76,7 @@ export class ThreadDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentById, channel } = data;
+          const { messageText, time, thread, emojis, sentById, channel, mentionedUser} = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -91,6 +91,7 @@ export class ThreadDataService {
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,
+              mentionedUser: mentionedUser,
             };
             storedMessageData.push(threadData);
           } catch (error) {
