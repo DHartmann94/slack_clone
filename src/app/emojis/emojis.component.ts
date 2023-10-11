@@ -1,6 +1,4 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { ChatComponent } from '../chat/chat.component';
-import {ThreadsComponent} from "../threads/threads.component";
 
 
 @Component({

@@ -102,7 +102,13 @@ export class AuthenticationService {
     });
   }
 
+  /**
+   * In firebase-auth, change the link to the correct route.
+   * Use: http://localhost:4200/auth-action for testing.
+   * @param {object} user - User Data
+   */
   async sendVerificationMail(user: any) {
+    console.log(typeof(user));
     await sendEmailVerification(user)
       .then(() => {
         // Email verification sent!
@@ -113,7 +119,7 @@ export class AuthenticationService {
   }
 
   /**
- * 
+ * In firebase-auth, change the link to the correct route.
  * Use: http://localhost:4200/auth-action for testing.
  * @param {string} emailLowerCase - The email address where the reset e-mail should be sent.
  */

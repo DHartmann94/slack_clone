@@ -1,4 +1,4 @@
-import { Component, HostListener, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from '../service-moduls/authentication.service';
 import { ValidationService } from '../service-moduls/validation.service';
@@ -6,7 +6,6 @@ import { Firestore, collection, doc, updateDoc } from '@angular/fire/firestore';
 import { UserDataInterface, UserDataService } from '../service-moduls/user.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { ActivatedRoute } from '@angular/router';
-import { BoardComponent } from '../board/board.component';
 import { ChannelDataInterface } from '../service-moduls/channel.service';
 import { Observable, map } from 'rxjs';
 import { ChannelDataResolverService } from '../service-moduls/channel-data-resolver.service';
@@ -190,9 +189,8 @@ export class HeaderBarComponent {
     const userDocRef = doc(this.firestore, 'users', this.userDataService.currentUser);
     try {
       await updateDoc(userDocRef, { [type]: newValue });
-      console.log('E-Mail erfolgreich aktualisiert.');
     } catch (error) {
-      console.error('Fehler beim Aktualisieren der E-Mail:', error);
+      console.error('ERROR update e-Mail:', error);
     }
   }
 
@@ -278,7 +276,6 @@ export class HeaderBarComponent {
     try {
       await updateDoc(userDocRef, { picture: `/assets/profile-pictures/avatar${selectedPicture + 1}.png` });
       this.userDataService.getCurrentUserData(this.userDataService.currentUser);
-      console.log('Bild erfolgreich aktualisiert.', selectedPicture);
 
       this.selectedPictureIndex = null;
       this.closeProfilePictureContainer();

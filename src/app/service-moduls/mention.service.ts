@@ -1,10 +1,6 @@
-import { ElementRef, Injectable, Renderer2 } from '@angular/core';
-import { UserDataInterface, UserDataService } from './user.service';
-import { MessageDataInterface, MessageDataService } from './message.service';
-import { ThreadDataInterface } from './thread.service';
-import { ChannelDataInterface } from './channel.service';
-import { ChatComponent } from '../chat/chat.component';
-import { findIndex } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { UserDataService } from './user.service';
+
 
 @Injectable({
   providedIn: 'root'

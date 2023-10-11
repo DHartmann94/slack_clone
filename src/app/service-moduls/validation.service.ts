@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 import { getAuth, fetchSignInMethodsForEmail } from '@angular/fire/auth';
-import { Firestore, collection, getDocs, where, query } from '@angular/fire/firestore';
+import { Firestore, collection, getDocs } from '@angular/fire/firestore';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class ValidationService {
       return false;;
 
     } catch (error) {
-      console.log('Error: ', error);
+      console.log('Error check e-Mail exists: ', error);
       return true;
     }
   }

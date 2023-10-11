@@ -4,11 +4,10 @@ import { UserDataInterface, UserDataService } from "../service-moduls/user.servi
 import { DirectMessageToUserInterface, DirectMessageToUserService } from "../service-moduls/direct-message-to-user.service";
 import { map } from "rxjs/operators";
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
+import { FormControl } from "@angular/forms";
 import { ChannelDataService, ChannelDataInterface } from '../service-moduls/channel.service';
-import { MessageDataInterface, MessageDataService } from '../service-moduls/message.service';
+import { MessageDataService } from '../service-moduls/message.service';
 import { UserDataResolveService } from '../service-moduls/user-data-resolve.service';
-import { DirectMessageToUserDataResolverService } from '../service-moduls/direct-messsage-to-user-data-resolver.service';
 import { ScrollService } from '../service-moduls/scroll.service';
 import { EmojiService } from '../service-moduls/emoji.service';
 
@@ -99,9 +98,9 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     this.compareIds();
     this.getDataFromChannel();
 
-    setTimeout(() => {
+    /*setTimeout(() => {
       console.log('messageData', this.messageData);
-    }, 1000);
+    }, 1000);*/
   }
 
   ngAfterViewChecked(): void {
@@ -135,7 +134,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
     );
     this.receivedUserData$.subscribe(
       (userData: UserDataInterface | null) => {
-        console.log("User received from channel: ", userData);
       },
       (error) => {
         console.error('Error retrieving user data:', error);
@@ -223,7 +221,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
   renderMessage(userId: any) {
     if (userId) {
       const invitedUserId = this.inputSearchId;
-      console.log("Get search input", invitedUserId);
       this.directMessageToUserService.getMessageData().subscribe(
         (messageData: DirectMessageToUserInterface[]) => {
           const messagesForUser = messageData.filter(message =>
@@ -255,7 +252,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
 
   getCurrentUserId() {
     this.currentUserId = this.userDataService.currentUser;
-    console.log('currentUserId ist::::', this.currentUserId);
   }
 
   public typeEmoji($event: any): void {
@@ -484,7 +480,6 @@ export class DirectMessageToUserComponent implements OnInit, OnChanges {
         }
       );
     } else {
-      console.log('Message input is empty. Cannot send an empty message.');
     }
   }
 

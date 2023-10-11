@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, addDoc, collection, doc, getDoc, getDocs, query } from '@angular/fire/firestore';
+import { DocumentData, Firestore, QuerySnapshot, collection, doc, getDoc, getDocs, query } from '@angular/fire/firestore';
 import { Observable, from, map } from 'rxjs';
 
 export interface UserDataInterface {
@@ -70,8 +70,6 @@ export class UserDataService {
         if (this.currentUser === userID) {
           this.currentUserData(userData);
         }
-      } else {
-        console.log('The document does not exist.');
       }
     } catch (error) {
       console.log('ERROR retrieving user data:', error);
@@ -92,7 +90,6 @@ export class UserDataService {
         const userData = docSnapshot.data();
         return userData;
       } else {
-        console.log('The document does not exist.');
         return null;
       }
     } catch (error) {

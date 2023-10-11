@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
-import { DirectMessageToUserInterface, DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
-import { DirectMessageInterface, DirectMessageService } from '../service-moduls/direct-message.service';
+import { ThreadDataService } from "../service-moduls/thread.service";
+import { DirectMessageToUserService } from '../service-moduls/direct-message-to-user.service';
+import { DirectMessageService } from '../service-moduls/direct-message.service';
 import { ChatBehaviorService } from '../service-moduls/chat-behavior.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 

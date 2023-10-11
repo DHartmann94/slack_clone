@@ -9,7 +9,7 @@ import { ChannelDataResolverService } from "../service-moduls/channel-data-resol
 import { ChatBehaviorService } from "../service-moduls/chat-behavior.service";
 import { FormBuilder, FormControl, FormGroup, Validators } from "@angular/forms";
 import { ThreadDataInterface, ThreadDataService } from "../service-moduls/thread.service";
-import { collection, doc, Firestore, getDoc, updateDoc } from "@angular/fire/firestore";
+import { Firestore } from "@angular/fire/firestore";
 import { EmojiService } from '../service-moduls/emoji.service';
 import { MentionService } from '../service-moduls/mention.service';
 import { ScrollService } from '../service-moduls/scroll.service';
@@ -134,12 +134,10 @@ export class ThreadsComponent implements OnInit, OnChanges {
           if (messagesForChannel.length > 0) {
             const filteredData = messagesForChannel.filter((message) => message.time !== undefined && message.time !== null);
             const sortDataAfterTime = filteredData.sort((a, b) => a.time! > b.time! ? 1 : -1);
-            console.log('Messages to Render in Thread:', sortDataAfterTime);
             this.threadData = sortDataAfterTime;
 
             this.getChannelData();
           } else {
-            console.log('No messages found in Thread:', this.threadDataService.threadId);
             this.threadData = [];
           }
         },
@@ -153,7 +151,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
   }
 
   async getChannelData() {
-    console.log(this.threadData[0].channel);
     this.processChannelData(this.threadData[0].channel);
   }
 
@@ -165,13 +162,11 @@ export class ThreadsComponent implements OnInit, OnChanges {
 
   renderChatByChannelId(channel: string) {
     if (channel) {
-      console.log(channel);
       this.channelDataService.getChannelData().subscribe(
         (channelData: ChannelDataInterface[]) => {
           const filterChannel = channelData.filter((channelItem) => channelItem.id === channel);
           this.channelData = filterChannel;
           this.loading = true;
-          console.log("The filterd channel id in THREAD", this.channelData);
         },
         (error) => {
           console.error('Error THREAD chat data:', error);
@@ -274,7 +269,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
         }
       );
     } else {
-      console.log('Message input is empty. Cannot send an empty message.');
     }
 
     this.mentionService.resetArray();
@@ -341,8 +335,6 @@ export class ThreadsComponent implements OnInit, OnChanges {
     if (indexWithEmojiToDelete != -1) {
       emojiArray.splice(indexWithEmojiToDelete, 1);
     }
-
-    console.log('my Emoji Array', emojiArray);
 
     this.messageDataService.updateMessage(messageId, emojiArray);
     this.emojisClickedBefore = undefined;

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserDataService } from './user.service';
 import { MessageDataInterface, MessageDataService } from './message.service';
-import { ThreadDataInterface } from './thread.service';
 import { ScrollService } from './scroll.service';
 
 @Injectable({
