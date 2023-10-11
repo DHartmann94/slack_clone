@@ -607,6 +607,7 @@
   position: relative;
 }
 
+
 .list-of-reactions {
   position: absolute;
   left: 0;
@@ -616,7 +617,7 @@
   min-width: 100px;
   min-height: 50px;
   background-color: #ffffff;
-  box-shadow: 4px 4px 8px black;
+  box-shadow: 1px 1px 8px rgb(124, 124, 124);
   border-radius: 20px;
   display: none;
 }
