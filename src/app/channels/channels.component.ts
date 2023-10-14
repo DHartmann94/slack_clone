@@ -272,6 +272,7 @@ export class ChannelsComponent implements OnInit {
   }
 
   async submitUserToChannel() {
+    let userCreatedChannel  = this.userDataService.currentUser;
     if (this.userForm.valid && this.channelId) {
       try {
         const userName = this.userForm.value.userName;
@@ -282,7 +283,8 @@ export class ChannelsComponent implements OnInit {
           console.log('User not found.');
           return
         }
-        const users: string[] = [matchingUser.id];
+        const users: string[] = [userCreatedChannel, matchingUser.id];
+        console.log("Im the user array in the channel", users);
         await this.addUserToChannel(users, userName);
       } catch (error) {
         console.error('Error adding user:', error);
@@ -296,14 +298,17 @@ export class ChannelsComponent implements OnInit {
       try {
         const matchingChannelFromList = this.selectedChannel;
         const users = matchingChannelFromList.users;
-        console.log("User can be added", users);
         if (!(matchingChannelFromList && this.selectedUserType === 'addFromGroup')) {
           console.log('User not found.');
           return;
         }
-        const userGroup: string[] = users;
-        console.log(userGroup);
-        await this.addGroupToChannel(userGroup)
+        const usersArray: string[] = [userCreatedChannel, ...users];
+        console.log("Users array", usersArray);
+  
+        const userGroup: string[] = [...usersArray];
+        console.log("User group array", userGroup);
+        
+        await this.addGroupToChannel(userGroup);
       } catch (error) {
         console.error('Error adding user:', error);
       }
