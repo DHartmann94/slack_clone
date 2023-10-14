@@ -40,7 +40,7 @@
                 <img [ngClass]="{'arrow-for-dropdown-open': openDirect}" class="arrow-for-dropdown-closed"
                     src="./assets/img/icons/arrow_drop_down.png" alt="#" (click)="toggleDirect()">
                 <img src="./assets/img/icons/account_circle.png" alt="#">
-                <h2>Direct Message</h2>
+                <h2 style="white-space: nowrap;" >Direct Message</h2>
             </div>
         </div>
         <div class="dropdown-container" *ngIf="openDirect">
@@ -112,7 +112,7 @@
                 </div>
             </div>
             <div class="btn-area">
-                <button class="btn-channel" (click)="submitChannel()">Erstellen</button>
+                <button class="btn-channel" (click)="submitChannel()">Create</button>
             </div>
         </form>
     </div>
@@ -122,22 +122,22 @@
     <div class="user-edit-card">
         <div class="channel-introduction">
             <div class="channel-text">
-                <h2>Leute hinzufügen</h2>
+                <h2>Add people</h2>
             </div>
         </div>
         <div class="radio-selection">
             <mat-radio-group>
                 <mat-radio-button *ngFor="let channel of channelData.slice(0, 1); let i = index" color="primary"
                     value="addFromGroup" (click)="addUser('addFromGroup')">
-                    Alle Mitglieder von <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName ||
-                        channel.channelName }}</span> hinzufügen
+                    All members of <span [matMenuTriggerFor]="channelMenu">{{ selectedChannel?.channelName ||
+                        channel.channelName }}</span> add
                     <mat-menu #channelMenu="matMenu">
                         <button mat-menu-item *ngFor="let channel of channelData"
                             (click)="selectChannelFromList(channel.id)">{{ channel.channelName }}</button>
                     </mat-menu>
                 </mat-radio-button>
                 <mat-radio-button color="primary" value="addByUser" (click)="addUser('addByUser')">
-                    Bestimmte Leute hinzufügen
+                    Add certain people
                 </mat-radio-button>
             </mat-radio-group>
         </div>
@@ -152,7 +152,7 @@
             </div>
         </form>
         <div class="btn-area">
-            <button class="btn-channel" (click)="submitUserToChannel()">Erstellen</button>
+            <button class="btn-channel" (click)="submitUserToChannel()">Create</button>
         </div>
     </div>
 </mat-card>

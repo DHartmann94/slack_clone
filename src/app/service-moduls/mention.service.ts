@@ -1,10 +1,6 @@
-import { ElementRef, Injectable, Renderer2 } from '@angular/core';
-import { UserDataInterface, UserDataService } from './user.service';
-import { MessageDataInterface, MessageDataService } from './message.service';
-import { ThreadDataInterface } from './thread.service';
-import { ChannelDataInterface } from './channel.service';
-import { ChatComponent } from '../chat/chat.component';
-import { findIndex } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { UserDataService } from './user.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -14,19 +10,24 @@ export class MentionService {
   chatPopupOpen = false;
   usersInCannel: any[] = [];
   chatToggledWithButton = true;
+  threadToggledWithButton = true;
   mentionInMessage: any = [];
   mentionedUserIds: any = [];
   mentionListOpen: boolean = false;
+  mentionInThread:boolean = false;
 
   constructor(
     public userService: UserDataService,
   ) { }
 
-  async getUsers(userData: [], currentUser: string) {
+  async getUsers(userData: string[], currentUser: string) {
     this.usersInCannel = [];
     for (const userID of userData) {
       const myuser = await this.userService.usersDataBackend(userID);
-      this.usersInCannel.push({ 'user': myuser, 'id': userID });
+      const userIndex = this.usersInCannel.findIndex((user) => user.id === userID);
+      if (userIndex === -1) {
+        this.usersInCannel.push({ 'user': myuser, 'id': userID });
+      }
     }
     this.removeCurrentUser(currentUser);
   }
@@ -71,12 +72,12 @@ export class MentionService {
     return undefined;
   }
 
-  resolveForRedDisplay(mentionUsers:any []) {
-    for (const users of mentionUsers){
-      if ( users.id.includes(this.userService.currentUser)) {
+  resolveForRedDisplay(mentionUsers: any[]) {
+    for (const users of mentionUsers) {
+      if (users.id.includes(this.userService.currentUser)) {
         return true;
-      } 
-      
+      }
+
     }
     return false;
   }

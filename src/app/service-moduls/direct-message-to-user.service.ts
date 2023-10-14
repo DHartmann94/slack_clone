@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, doc, updateDoc, setDoc, deleteDoc } from '@angular/fire/firestore';
+import { Firestore, collection, query, addDoc, onSnapshot, doc, updateDoc } from '@angular/fire/firestore';
 import { Observable, from, map, BehaviorSubject } from 'rxjs';
 import { UserDataService } from './user.service';
 import { ChatBehaviorService } from './chat-behavior.service';

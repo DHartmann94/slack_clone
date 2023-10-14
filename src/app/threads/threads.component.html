@@ -1,4 +1,4 @@
-<mat-card class="threads-card">
+<mat-card [ngClass]="{'chat-card-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="threads-card">
   <div class="shadow-box">
     <div class="chat-first-row" *ngIf="triggerCRUDHTML">
       <div class="chat-head" *ngIf="loading">
@@ -6,12 +6,13 @@
         <span class="chat-name-blue"># {{ channelData[0].channelName }}</span>
       </div>
       <div class="right-corner">
-        <div *ngIf="loading" class="close-icon"><img src="./assets/img/icons/close.png" alt="#" (click)="close(channelData[0].id)"></div>
+        <div *ngIf="loading" class="close-icon"><img src="./assets/img/icons/close.png" alt="#"
+            (click)="close(channelData[0].id)"></div>
       </div>
     </div>
   </div>
 
-  <div #chatContainer class="chat-text-area" *ngIf="threadData">
+  <div #chatContainer [ngClass]="{'text-area-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="chat-text-area" *ngIf="threadData">
     <ng-container *ngFor="let message of threadData; let index = index">
       <!-- Time stamp parting line -->
       <ng-container *ngIf="isNewDay(message, messageData[index - 1])">
@@ -51,7 +52,22 @@
           <div>
             <span class="chat-message"
               [ngClass]="{ 'chat-message-right': message.sentById === currentUserId, 'chat-message-left': message.sentById !== currentUserId }">{{
-              message.messageText }}</span>
+              message.messageText }}
+                
+
+              <div #menuTrigger class="mentions-button" *ngIf="message.mentionedUser.length > 0"
+                [ngClass]="{ 'mention-right': message.sentById === userDataService.currentUser, 'mention-left': message.sentById !== userDataService.currentUser, 'mention-active':  mentionService.resolveForRedDisplay(message.mentionedUser) }">
+                @
+                <div id="mentions-in-message{{index}}" class="mention-in-message d-none"
+                  [ngClass]="{'mention-popup-right': message.sentById === userDataService.currentUser, 'mention-popup-left': message.sentById !== userDataService.currentUser}">
+                  <span style=" white-space: nowrap;"
+                    *ngFor="let user of message.mentionedUser">@{{mentionService.resolveMentionedUser(user.id)}}</span>
+                </div>
+              </div>
+            
+            
+            
+            </span>
           </div>
           <div class="like-area">
 
@@ -62,21 +78,22 @@
               </div>
             </div>
 
-            <div class="behind-show-reaction" *ngIf="emojiService.behindShowReactionContainer" class="behind-show-reaction" (click)="hideAllReactionLists()"></div>
-            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0"
-              class="reaction-icon-container">
+            <div class="behind-show-reaction" *ngIf="emojiService.behindShowReactionContainer"
+              class="behind-show-reaction" (click)="hideAllReactionLists()"></div>
+            <div (click)="showReaction(index)" *ngIf="message.emojis.length > 0" class="reaction-icon-container">
               <div class="reaction-counter">{{ message.emojis[0]['emoji'] }}</div>
               <span class="reaction-counter">{{ message.emojis.length }}</span>
             </div>
 
-            <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer" (click)="hideEmojis(this.emojisClickedBefore)"></div>
+            <div class="behind-reaction-popup" *ngIf="emojiService.behindReactionContainer"
+              (click)="hideEmojis(this.emojisClickedBefore)"></div>
             <div class="reaction-emojis" id="reaction-in-thread{{index}}">
               <div *ngFor="let emoji of emojiService.reactionEmojis" class="r-emoji"
                 (click)="reactWithEmoji(emoji, index, message.id , message)">{{ emoji }}</div>
             </div>
 
-            <div *ngIf="message.sentById !== currentUserId" id="reaction-button-thread{{index}}" (click)="reaction(message.emojis, index)"
-              class="reaction-button-container">
+            <div *ngIf="message.sentById !== currentUserId" id="reaction-button-thread{{index}}"
+              (click)="reaction(message.emojis, index)" class="reaction-button-container">
               <div class="reaction-button"></div>
             </div>
           </div>
@@ -88,23 +105,30 @@
   </div>
 
   <!-- Input field -->
-  <div class="message-input-field">
+  <div [ngClass]="{'input-thread-when-emoji-picker-active': emojiService.emojipickeractiveThread}" class="message-input-field">
+    <div *ngIf="mentionService.mentionInThread" class="mentioned-users-container">
+      <div *ngFor="let user of mentionService.mentionInMessage; index as i" class="mentioned-user">@{{user.user.name}}
+        <div (click)="mentionService.deleteMention(i)" class="delete-mention">+</div>
+      </div>
+    </div>
+
     <div class="text-editor">
       <div (click)="emojiService.emojipickeractiveThread = false" *ngIf="emojiService.emojipickeractiveThread"
         class="behind-emoji-popup">
         <app-emojis (click)="mentionService.preventClick($event)" (newEmoji)="typeEmoji($event)"
           class="app-emojis"></app-emojis>
       </div>
-      <textarea placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4" (keyup.enter)="sendMessage()">
+      <textarea (input)="checkForMention($event)" placeholder="Answer..." [(ngModel)]="messageInput" name="" rows="4" (keyup.enter)="sendMessage()">
       </textarea>
       <div class="text-editor-bottom">
         <div class="text-editor-left-btns">
           <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
 
-          <div class="mail-container" #menuTrigger mat-button [matMenuTriggerFor]="mention"></div>
-          <mat-menu #mention="matMenu">
+          <div class="mail-container" (click)="mentionService.chatToggledWithButton = true; mentionService.mentionInThread = true;" #menuTrigger mat-button
+            [matMenuTriggerFor]="mention"></div>
+          <mat-menu class="mention-menu" #mention="matMenu">
             <button class="users-to-mention" *ngFor="let user of mentionService.usersInCannel" mat-menu-item
-              (click)="addMention(user.name)">@{{ user.name }}</button>
+              (click)="addMention(user)">@ {{ user.user.name }}</button>
           </mat-menu>
         </div>
         <div [style.opacity]="messageInput.length === 0 ? '0.5' : '1'" class="send-message-btn" (click)="sendMessage()">
@@ -114,7 +138,7 @@
         <mat-icon class="send">send</mat-icon>
       </div>
       <div class="emoji-mobile">
-        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('chat')"></div>
+        <div class="emoji-container" (click)="this.emojiService.toggleEmojiPicker('thread')"></div>
       </div>
     </div>
   </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DocumentData, Firestore, QuerySnapshot, collection, getDocs, query, addDoc, onSnapshot, where, updateDoc, doc, getDoc, setDoc, } from '@angular/fire/firestore';
-import { Observable, from, map, BehaviorSubject, Subscription, Subject } from 'rxjs';
-import { UserDataInterface, UserDataService } from './user.service';
+import { Firestore, collection, query, addDoc, onSnapshot, updateDoc, doc } from '@angular/fire/firestore';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
+import { UserDataService } from './user.service';
 
 export interface ThreadDataInterface {
   id?: any;
@@ -14,7 +14,7 @@ export interface ThreadDataInterface {
   sentBy?: string;
   picture?: string;
   sentById?: string;
-  mentionedUser?: string;
+  mentionedUser?: any;
   senderName?: string;
 }
 
@@ -57,11 +57,9 @@ export class ThreadDataService {
   async updateThreadData(existThread: any, newThreadData: any) {
     const threadDocRef = doc(this.firestore, 'threads', existThread.threadId);
     await updateDoc(threadDocRef, newThreadData);
-    console.log('Exist Thread', newThreadData);
   }
 
   async newThreadData(newThreadData: any) {
-    console.log('New Thread', newThreadData);
     const threadCollectionRef = collection(this.firestore, 'threads');
     await addDoc(threadCollectionRef, newThreadData);
   }
@@ -76,7 +74,7 @@ export class ThreadDataService {
 
         for (const doc of querySnapshot.docs) {
           const data = doc.data();
-          const { messageText, time, thread, emojis, sentById, channel } = data;
+          const { messageText, time, thread, emojis, sentById, channel, mentionedUser} = data;
 
           try {
             const { userName, userPicture } = await this.getUserData(sentById);
@@ -91,6 +89,7 @@ export class ThreadDataService {
               sentBy: userName,
               picture: userPicture,
               sentById: sentById,
+              mentionedUser: mentionedUser,
             };
             storedMessageData.push(threadData);
           } catch (error) {

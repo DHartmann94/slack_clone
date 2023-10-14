@@ -18,7 +18,6 @@
     border-radius: 0;
     margin: 0;
     height: 90vh;
-    width: 420px;
     overflow-y: hidden;
   }
 
@@ -59,6 +58,7 @@
   overflow-x: hidden;
   padding-top: 20px;
   border-radius: 5px;
+  padding-bottom: 50px;
 
   @media(max-width: 420px) {
     height: 500px;
@@ -440,72 +440,23 @@
   justify-content: center;
 }
 
-.mentions-button {
-  position: absolute;
-  top: -10px;
-  padding: 10px;
-  background-color: #ffffff;
-  color: #535af1;
-  border: 0.5px solid rgb(188, 188, 188);
-  border-radius: 20px;
-  box-shadow: 2px 2px 5px rgb(87, 86, 86);
-  height: 8px;
-  width: 8px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-
-  &:hover {
-    :first-child {
-      display: flex !important;
-    }
-  }
-}
-
-.mention-right {
-  left: -10px;
-}
-
-.mention-left {
-  right: -10px;
-}
-
-.d-none {
-  display: none !important;
-}
-
-.mention-in-message {
-  position: absolute;
-  top: 10px;
-  display: none;
-  flex-direction: column;
-  padding: 10px;
-  border-radius: 20px;
-  box-shadow: 4px 4px 8px black;
-  background-color: #a5a7f1;
-  z-index: 5;
-  color: black;
-}
-
-.mention-popup-right {
-  right: 30px;
-}
-
-.mention-popup-left {
-  left: 30px;
-}
-
-.mention-active {
-  color: white;
-  background-color: rgb(193, 32, 32);
-}
-
 .chat-message {
   padding-top: 20px;
   padding-bottom: 25px;
+  word-break: break-word;
   position: relative;
-
+  span {
+    max-width: 500px;
+    @media (max-width: 1750px){
+    max-width: 300px;
+    }
+    @media (max-width: 1180px){
+    max-width: 150px;
+    }
+    @media (max-width: 850px){
+    max-width: 80px;
+    }
+  }
   @media (max-width: 420px) {
     padding-top: 15px;
     padding-bottom: 20px;
@@ -656,6 +607,7 @@
   position: relative;
 }
 
+
 .list-of-reactions {
   position: absolute;
   left: 0;
@@ -665,7 +617,7 @@
   min-width: 100px;
   min-height: 50px;
   background-color: #ffffff;
-  box-shadow: 4px 4px 8px black;
+  box-shadow: 1px 1px 8px rgb(124, 124, 124);
   border-radius: 20px;
   display: none;
 }
@@ -739,6 +691,9 @@
 .input-when-emoji-picker-active {
   @media (max-width:420px) {
     bottom: 250px;
+    input{
+      margin-bottom: 20px;
+    }
   }
 }
 
@@ -1268,66 +1223,6 @@ section {
   z-index: 1;
 }
 
-.mentioned-users-container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 30px;
-  gap: 10px;
-
-  @media (max-width: 750px) {
-    height: 40px;
-    overflow-x: scroll;
-  }
-}
-
-.mentioned-user {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #adb0d9;
-  color: #444df2;
-  padding: 2px 5px;
-  border-radius: 5px;
-  position: relative;
-  white-space: nowrap;
-
-  &:hover {
-    .delete-mention {
-      display: flex;
-    }
-  }
-
-  @media (max-width: 420px) {
-    font-size: 10px;
-  }
-
-
-}
-
-.delete-mention {
-  cursor: pointer;
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  transform: rotate(45deg);
-  color: rgb(105, 30, 30);
-  padding: 5px;
-  height: 5px;
-  width: 5px;
-  border-radius: 50%;
-  font-size: 20px;
-  background-color: #c3d4e7;
-  display: none;
-  justify-content: center;
-  align-items: center;
-
-  &:hover {
-    background-color: rgb(105, 30, 30);
-    color: white;
-  }
-}
-
 
 .delete-message-left-corner {
   position: absolute;
@@ -1525,7 +1420,7 @@ section {
   }
 
   .text-area-when-emoji-picker-active{
-    height: 300px !important;
+     height: 200px !important;
   }
 
   .mentioned-users-container {
