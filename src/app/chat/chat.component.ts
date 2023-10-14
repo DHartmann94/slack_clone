@@ -270,6 +270,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewChecked {
 
   renderChatByChannelId(channel: string) {
     if (channel) {
+      this.messageData = [];
       const invitedChannelId = this.inputSearchId;
       console.log("Invited channel ID:", invitedChannelId);
       this.messageDataService.getMessageData().subscribe(
