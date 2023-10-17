@@ -66,7 +66,6 @@
   border-radius: 15px;
   margin: 15px 0 0 10px;
   height: calc(100vh - 150px);
-
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -75,8 +74,8 @@
   @media (max-width: 420px) {
     border-radius: 0;
     margin: 0;
-    width: 420px !important;
-    height: 90vh;
+    width: 100% !important;
+    height: 89vh;
   }
 
   .channel-in-out {
@@ -86,6 +85,7 @@
 
     @media (max-width: 420px) {
       padding: 15px;
+      height: calc(100% - 30px);
     }
 
     .channel-header {
